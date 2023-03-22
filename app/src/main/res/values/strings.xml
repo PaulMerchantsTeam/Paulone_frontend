@@ -1,0 +1,14 @@
+<resources>
+
+    <string name="app_name">Gold</string>
+    <string name="powered_by">Powered By</string>
+    <string name="track_your_dues_and_bills">Track your dues and bills like never before. We bring punctuality in your life</string>
+    <string name="next">Next</string>
+    <string name="your_payment_checklist">Your payment checklist  </string>
+    <string name="sorted"> sorted</string>
+    <string name="payment_is_equal">Payment = </string>
+    <string name="rewards"> Rewards</string>
+    <string name="register_all_the_detail">Register all the details here and we make sure you don’t miss out on any payments.</string>
+    <string name="we_dont_just_ask">We don’t just ask for money. Claim amazing rewards by being a punctual customer </string>
+    <string name="proceed">Proceed</string>
+</resources>
