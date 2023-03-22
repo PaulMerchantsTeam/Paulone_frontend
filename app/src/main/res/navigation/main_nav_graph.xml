@@ -7,7 +7,12 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        tools:layout="@layout/splash_fragment"
         android:name="com.paulmerchants.gold.ui.splash.SplashFragment"
-        android:label="SplashFragment" />
+        android:label="SplashFragment"
+        tools:layout="@layout/splash_fragment" />
+    <fragment
+        android:id="@+id/phoenNumVerifiactionFragment"
+        android:name="com.paulmerchants.gold.ui.auth.PhoenNumVerifiactionFragment"
+        android:label="PhoenNumVerifiactionFragment"
+        tools:layout="@layout/phone_auth_fragment" />
 </navigation>

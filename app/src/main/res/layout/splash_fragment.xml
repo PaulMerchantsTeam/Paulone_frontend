@@ -4,18 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-x
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/mainSplash"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/splash_screen_one"
         android:visibility="visible"
+        android:animateLayoutChanges="true"
+        app:layoutDescription="@xml/splash_fragment_xml_mainsplash_scene"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
 
         <ImageView
             android:id="@+id/imageView"
@@ -49,7 +50,7 @@ x
             app:layout_constraintBottom_toTopOf="@+id/imageView2"
             app:layout_constraintEnd_toEndOf="@+id/imageView2"
             app:layout_constraintStart_toStartOf="@+id/imageView2" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/introMainPage"
@@ -95,8 +96,8 @@ x
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:fontFamily="@font/poppins_bold"
-            android:paddingEnd="@dimen/screen_end_margin"
             android:paddingStart="3dp"
+            android:paddingEnd="@dimen/screen_end_margin"
             android:text="easy"
             android:textColor="@color/splash_screen_one"
             android:textSize="18sp"
@@ -150,6 +151,7 @@ x
             android:layout_marginBottom="42dp"
             android:backgroundTint="@color/splash_screen_one"
             android:text="@string/next"
+            android:textAllCaps="false"
             android:textColor="@color/yellow_main"
             app:cornerRadius="25dp"
             app:layout_constraintBottom_toBottomOf="@+id/circleBtmIv"

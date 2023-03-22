@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/splash_screen_two"
+    android:paddingStart="@dimen/screen_start_margin"
+    android:paddingEnd="@dimen/screen_end_margin">
+
+
+    <TextView
+        android:id="@+id/titleWelcomTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="80dp"
+        android:fontFamily="@font/poppins_bold"
+        android:lineSpacingExtra="5dp"
+        android:text="@string/welocome_to_paul_gold"
+        android:textColor="@color/splash_screen_three"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/enterPhoneNumMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="116dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/proceedAuthBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleWelcomTv"
+        app:layout_constraintVertical_bias="0.13999999">
+
+        <TextView
+            android:id="@+id/pleaseTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/please_enter_phone"
+            android:textColor="@color/splash_screen_three"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/etPhoenNum"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:inputType="number"
+            android:maxLength="10"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/etTv"
+            app:layout_constraintTop_toBottomOf="@+id/pleaseTv" />
+
+        <!--    <View-->
+        <!--        android:layout_width="2dp"-->
+        <!--        android:layout_height="0dp"-->
+        <!--        android:layout_marginStart="2dp"-->
+        <!--        android:layout_marginTop="3dp"-->
+        <!--        android:layout_marginEnd="5dp"-->
+        <!--        android:layout_marginBottom="3dp"-->
+        <!--        android:background="@color/view_color"-->
+        <!--        android:orientation="vertical"-->
+        <!--        app:layout_constraintBottom_toBottomOf="@+id/etPhoenNum"-->
+        <!--        app:layout_constraintEnd_toStartOf="@+id/etPhoenNum"-->
+        <!--        app:layout_constraintStart_toEndOf="@+id/etTv"-->
+        <!--        app:layout_constraintTop_toTopOf="@+id/etPhoenNum" />-->
+
+        <TextView
+            android:id="@+id/etTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/str_91"
+            android:textColor="@color/splash_screen_three"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/etPhoenNum"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/etPhoenNum" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fillOtpParent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="98dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleWelcomTv">
+
+        <TextView
+            android:id="@+id/pleaseOtpTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:lineSpacingExtra="5dp"
+            android:textColor="@color/splash_screen_three"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/otpOneEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/otpTwoEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pleaseOtpTv" />
+
+        <EditText
+            android:id="@+id/otpTwoEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/otpOneEt"
+            app:layout_constraintEnd_toStartOf="@+id/otpThreeEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/otpOneEt"
+            app:layout_constraintTop_toTopOf="@+id/otpOneEt" />
+
+
+        <EditText
+            android:id="@+id/otpThreeEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/otpTwoEt"
+            app:layout_constraintEnd_toStartOf="@+id/otpFourEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/otpTwoEt"
+            app:layout_constraintTop_toTopOf="@+id/otpTwoEt" />
+
+        <EditText
+            android:id="@+id/otpFourEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/otpThreeEt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/otpThreeEt"
+            app:layout_constraintTop_toTopOf="@+id/otpThreeEt" />
+
+
+        <TextView
+            android:id="@+id/didnotReceiveTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:fontFamily="@font/poppins_medium"
+            android:lineSpacingExtra="5dp"
+            android:paddingStart="23dp"
+            android:text="Didn’t receive? 00:30"
+            android:textColor="@color/view_color"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/otpFourEt" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/proceedAuthBtn"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/splash_screen_one"
+        android:text="@string/proceed"
+        android:textColor="@color/yellow_main"
+        android:textSize="12sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fillOtpParent"
+        app:layout_constraintVertical_bias="0.70" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainPgCons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="@style/CircularDeterminateProgressBar"
+            android:layout_width="137dp"
+            android:layout_height="137dp"
+            android:indeterminateOnly="false"
+            android:progress="60"
+            android:progressDrawable="@drawable/circle_pg_gradient"
+            android:rotation="-90"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:trackColor="@color/view_color" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:lineSpacingExtra="5dp"
+            android:text="Verifying"
+            android:textAlignment="center"
+            android:textColor="@color/yellow_main"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/progressBar2"
+            app:layout_constraintEnd_toEndOf="@+id/progressBar2"
+            app:layout_constraintStart_toStartOf="@+id/progressBar2"
+            app:layout_constraintTop_toTopOf="@+id/progressBar2" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
