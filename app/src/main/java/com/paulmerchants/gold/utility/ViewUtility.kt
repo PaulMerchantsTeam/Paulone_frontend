@@ -19,7 +19,7 @@ fun View.invisible() {
     visibility = View.INVISIBLE
 }
 
-fun ViewGroup.show() {
+fun ViewGroup.showVg() {
     visibility = View.VISIBLE
 }
 
@@ -36,7 +36,20 @@ fun View.hideView() {
         })
 }
 
- fun toggle(view: View, show: Boolean) {
+fun View.showViewWithAnim() {
+    this.animate()
+        .translationY(this.height.toFloat())
+        .alpha(0.0f)
+        .setDuration(300)
+        .setListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                super.onAnimationEnd(animation)
+                visibility = View.VISIBLE
+            }
+        })
+}
+
+fun toggle(view: View, show: Boolean) {
     val transition: Transition = Fade()
     transition.duration = 600
     transition.addTarget(view)

@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/splash_screen_two"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/setUpMPinParent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/titleWelcomTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:fontFamily="@font/poppins_bold"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/please_create_a_acc"
+            android:textColor="@color/splash_screen_three"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/weBeleTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="39dp"
+            android:fontFamily="@font/poppins_bold"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/we_beleive_in"
+            android:textColor="@color/splash_screen_three"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleWelcomTv" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/setUpMPinTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:fontFamily="@font/poppins_bold"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/set_up_mpin"
+            android:textColor="@color/splash_screen_three"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weBeleTv" />
+
+        <EditText
+            android:id="@+id/pinOneEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/pinTwoEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/setUpMPinTv" />
+
+        <EditText
+            android:id="@+id/pinTwoEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/pinOneEt"
+            app:layout_constraintEnd_toStartOf="@+id/pinThreeEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/pinOneEt"
+            app:layout_constraintTop_toTopOf="@+id/pinOneEt" />
+
+
+        <EditText
+            android:id="@+id/pinThreeEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/pinTwoEt"
+            app:layout_constraintEnd_toStartOf="@+id/pinFourEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/pinTwoEt"
+            app:layout_constraintTop_toTopOf="@+id/pinTwoEt" />
+
+        <EditText
+            android:id="@+id/pinFourEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/pinThreeEt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/pinThreeEt"
+            app:layout_constraintTop_toTopOf="@+id/pinThreeEt" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/cnfPinTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:fontFamily="@font/poppins_bold"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/conf_the_mpin"
+            android:textColor="@color/splash_screen_three"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pinOneEt" />
+
+        <EditText
+            android:id="@+id/pinOneCnfEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/pinTwoCnfEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cnfPinTv" />
+
+        <EditText
+            android:id="@+id/pinTwoCnfEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/pinOneCnfEt"
+            app:layout_constraintEnd_toStartOf="@+id/pinThreeCnfEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/pinOneCnfEt"
+            app:layout_constraintTop_toTopOf="@+id/pinOneCnfEt" />
+
+
+        <EditText
+            android:id="@+id/pinThreeCnfEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/pinTwoCnfEt"
+            app:layout_constraintEnd_toStartOf="@+id/pinFourCnfEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/pinTwoCnfEt"
+            app:layout_constraintTop_toTopOf="@+id/pinTwoCnfEt" />
+
+        <EditText
+            android:id="@+id/pinFourCnfEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/pinThreeCnfEt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/pinThreeCnfEt"
+            app:layout_constraintTop_toTopOf="@+id/pinThreeCnfEt" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/proceedAuthBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/color_prim_one_40"
+            android:enabled="false"
+            android:text="@string/confirm"
+            android:textAllCaps="false"
+            android:textColor="@color/yellow_main"
+            android:textSize="12sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pinOneCnfEt"
+            app:layout_constraintVertical_bias="0.25" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/finalSIgnUpParent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/finallySignUpDoneTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:fontFamily="@font/poppins_bold"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/finally_done_sighup"
+            android:textColor="@color/splash_screen_three"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ellipse_yellow" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/undraw_completed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

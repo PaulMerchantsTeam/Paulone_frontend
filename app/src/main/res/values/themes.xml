@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.Gold" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/splash_screen_one</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -15,7 +15,12 @@
     </style>
 
     <style name="CircularDeterminateProgressBar">
-        <item name="android:indeterminateOnly">false </item>
+        <item name="android:indeterminateOnly">false</item>
         <item name="android:progressDrawable">@drawable/circle_pg_gradient</item>
     </style>
+
+    <style name="button_overlay">
+        <item name="colorOnSurface">@color/color_prim_one_40</item>
+    </style>
+
 </resources>

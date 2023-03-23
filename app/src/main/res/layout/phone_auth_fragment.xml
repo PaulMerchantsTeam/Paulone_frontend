@@ -9,7 +9,7 @@
     android:paddingEnd="@dimen/screen_end_margin">
 
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/titleWelcomTv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -215,59 +215,39 @@
         android:id="@+id/proceedAuthBtn"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/splash_screen_one"
+        android:backgroundTint="@color/color_prim_one_40"
+        android:enabled="false"
+        android:fontFamily="@font/poppins_medium"
         android:text="@string/proceed"
         android:textColor="@color/yellow_main"
         android:textSize="12sp"
         android:visibility="visible"
+        app:cornerRadius="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fillOtpParent"
         app:layout_constraintVertical_bias="0.70" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <include
         android:id="@+id/mainPgCons"
+        layout="@layout/common_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="20dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ProgressBar
-            android:id="@+id/progressBar2"
-            style="@style/CircularDeterminateProgressBar"
-            android:layout_width="137dp"
-            android:layout_height="137dp"
-            android:indeterminateOnly="false"
-            android:progress="60"
-            android:progressDrawable="@drawable/circle_pg_gradient"
-            android:rotation="-90"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:trackColor="@color/view_color" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
-            android:lineSpacingExtra="5dp"
-            android:text="Verifying"
-            android:textAlignment="center"
-            android:textColor="@color/yellow_main"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/progressBar2"
-            app:layout_constraintEnd_toEndOf="@+id/progressBar2"
-            app:layout_constraintStart_toStartOf="@+id/progressBar2"
-            app:layout_constraintTop_toTopOf="@+id/progressBar2" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/signUpParentMain"
+        layout="@layout/signup_fragment"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

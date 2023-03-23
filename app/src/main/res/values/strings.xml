@@ -17,4 +17,32 @@
     <string name="please_fill_the_otp">Please fill the OTP sent to the given number</string>
     <string name="change_q"><u>CHANGE?</u></string>
     <string name="give_us_some">Give us some moment to verify few things. Much appreciated.</string>
+    <string name="verify">VERIFY</string>
+    <string name="verified">Verified</string>
+
+    <!--    signup screen-->
+    <string name="please_create_a_acc">Please create an account before we proceed.</string>
+    <string name="full_name">Full Name</string>
+    <string name="email_id">Email ID</string>
+    <string name="set_up_mpin">Set Up a M-Pin</string>
+    <string name="by_creating_the_account">By creating the account, I accept to the Terms and Conditions.</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="cont_with_google">Continue with google</string>
+    <string name="already_have_an_acc">Already have an account?</string>
+    <string name="log_in">Log In</string>
+    <string name="this_may_take_some">This may take up sometime, but please bear with</string>
+    <string name="us">us!</string>
+
+    <string name="signup_via_g">Sign up via google</string>
+    <string name="successfull">successful!</string>
+    <string name="we_beleive_in">We believe in</string>
+    <string name="security">security.</string>
+    <string name="please_cr_mpin">Please create a</string>
+    <string name="m_pin">M-pin</string>
+    <string name="for_u">for you</string>
+    <string name="conf_the_mpin">Confirm the Pin</string>
+    <string name="confirm">Confirm</string>
+
+    <string name="finally_done_sighup">And we are finally done, welcome home user. We are glad to have you with us.</string>
+
 </resources>

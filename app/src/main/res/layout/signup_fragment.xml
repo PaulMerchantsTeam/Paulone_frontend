@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/splash_screen_two"
+    android:scrollbars="none">
+
+    <ScrollView
+        android:id="@+id/scrollAuth"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/createAccTitleTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:fontFamily="@font/poppins_bold"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/please_create_a_acc"
+                android:textColor="@color/splash_screen_three"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mainFIllCons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/createAccTitleTv">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/fullName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:lineSpacingExtra="5dp"
+                        android:text="@string/full_name"
+                        android:textColor="@color/splash_screen_three"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/etName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/view_color"
+                        android:fontFamily="@font/poppins_semi_bold"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/splash_screen_one"
+                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/fullName" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/emailId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="21dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:lineSpacingExtra="5dp"
+                        android:text="@string/email_id"
+                        android:textColor="@color/splash_screen_three"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/etName" />
+
+                    <EditText
+                        android:id="@+id/etEmailId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/view_color"
+                        android:fontFamily="@font/poppins_semi_bold"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/splash_screen_one"
+                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/emailId" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/mpin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="21dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:lineSpacingExtra="5dp"
+                        android:text="@string/set_up_mpin"
+                        android:textColor="@color/splash_screen_three"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/etEmailId" />
+
+
+                    <EditText
+                        android:id="@+id/otpOneEt"
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/view_color"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:textColor="@color/splash_screen_one"
+                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toStartOf="@+id/otpTwoEt"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/mpin" />
+
+                    <EditText
+                        android:id="@+id/otpTwoEt"
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/view_color"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:textColor="@color/splash_screen_one"
+                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/otpOneEt"
+                        app:layout_constraintEnd_toStartOf="@+id/otpThreeEt"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/otpOneEt"
+                        app:layout_constraintTop_toTopOf="@+id/otpOneEt" />
+
+
+                    <EditText
+                        android:id="@+id/otpThreeEt"
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/view_color"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:textColor="@color/splash_screen_one"
+                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/otpTwoEt"
+                        app:layout_constraintEnd_toStartOf="@+id/otpFourEt"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/otpTwoEt"
+                        app:layout_constraintTop_toTopOf="@+id/otpTwoEt" />
+
+                    <EditText
+                        android:id="@+id/otpFourEt"
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/view_color"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:textColor="@color/splash_screen_one"
+                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/otpThreeEt"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/otpThreeEt"
+                        app:layout_constraintTop_toTopOf="@+id/otpThreeEt" />
+
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/termsCb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:buttonTint="@color/splash_screen_one"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/by_creating_the_account"
+                        android:textColor="@color/splash_screen_one"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/otpOneEt" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/proceedAuthBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="54dp"
+                        android:backgroundTint="@color/color_prim_one_40"
+                        android:enabled="false"
+                        android:text="@string/sign_up"
+                        android:textAllCaps="false"
+                        android:textColor="@color/yellow_main"
+                        android:textSize="12sp"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/termsCb" />
+
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="91dp"
+                        android:layout_height="1dp"
+                        android:background="@color/color_prim_one_40"
+                        app:layout_constraintBottom_toBottomOf="@+id/materialTextView"
+                        app:layout_constraintEnd_toStartOf="@+id/materialTextView"
+                        app:layout_constraintTop_toTopOf="@+id/materialTextView" />
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="91dp"
+                        android:layout_height="1dp"
+                        android:background="@color/color_prim_one_40"
+                        app:layout_constraintBottom_toBottomOf="@+id/materialTextView"
+                        app:layout_constraintStart_toEndOf="@+id/materialTextView"
+                        app:layout_constraintTop_toTopOf="@+id/materialTextView" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/materialTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="or"
+                        android:textAlignment="gravity"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/proceedAuthBtn" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/googleSignInTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="26dp"
+                        android:background="@drawable/rec_back_btn"
+                        android:drawableStart="@drawable/google_svg"
+                        android:drawablePadding="20dp"
+                        android:fontFamily="@font/poppins_semi_bold"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:paddingStart="38dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="74dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/cont_with_google"
+                        android:textAlignment="gravity"
+                        android:textColor="@color/splash_screen_one"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/alreadyHaveAccTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="21dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:lineSpacingExtra="5dp"
+                        android:text="@string/already_have_an_acc"
+                        android:textColor="@color/splash_screen_three"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/googleSignInTv"
+                        app:layout_constraintStart_toStartOf="@+id/googleSignInTv"
+                        app:layout_constraintTop_toBottomOf="@+id/googleSignInTv" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                android:id="@+id/mainPgCons"
+                layout="@layout/common_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

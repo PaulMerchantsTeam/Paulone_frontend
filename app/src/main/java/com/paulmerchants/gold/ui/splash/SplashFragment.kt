@@ -26,7 +26,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
     private val splashViewModel: SplashViewModel by viewModels()
 
     override fun SplashFragmentBinding.initialize() {
-        AppUtility.changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_one)
+        AppUtility.changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
         binding.mainSplash.show()
     }
 
@@ -118,7 +118,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
     }
 
     private fun showFirstPageIntro() {
-        AppUtility.changeStatusBarWithReqdColor(requireActivity(), R.color.white)
+        AppUtility.changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_one)
         binding.apply {
             mainSplash.hideViewGrp()
             introMainPage.show()
