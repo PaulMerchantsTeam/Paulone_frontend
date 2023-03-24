@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/billsAndMoreScreenFrag"
+        android:icon="@drawable/gold_loan_bottom"
+        android:title="@string/bills_amp_more" />
+    <item
+        android:id="@+id/goldLoanScreenFrag"
+        android:icon="@drawable/gold_loan_bottom"
+        android:title="@string/gold_loan" />
+    <item
+        android:id="@+id/homeScreenFrag"
+        android:icon="@drawable/home_bottom"
+        android:title="@string/home" />
+
+    <item
+        android:id="@+id/locateUsFrag"
+        android:icon="@drawable/locator_bottom"
+        android:title="@string/locate_us" />
+    <item
+        android:id="@+id/menuScreenFrag"
+        android:icon="@drawable/menu_bottom_up"
+        android:title="@string/menu" />
+</menu>

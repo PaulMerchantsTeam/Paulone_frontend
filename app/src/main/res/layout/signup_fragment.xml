@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingStart="@dimen/screen_start_margin"
+    android:paddingEnd="@dimen/screen_end_margin"
     android:background="@color/splash_screen_two"
     android:scrollbars="none">
 
@@ -18,10 +20,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.motion.widget.MotionLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
+            app:layoutDescription="@xml/signup_fragment_xml_constraintlayout_scene"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,9 +57,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/createAccTitleTv">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.constraintlayout.motion.widget.MotionLayout
+                    android:id="@+id/constraintLayout2"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:paddingBottom="20dp"
+                    app:layoutDescription="@xml/signup_fragment_xml_constraintlayout2_scene"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
@@ -131,7 +138,7 @@
 
 
                     <EditText
-                        android:id="@+id/otpOneEt"
+                        android:id="@+id/mpinOneEt"
                         android:layout_width="65dp"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/view_color"
@@ -142,13 +149,13 @@
                         android:textColor="@color/splash_screen_one"
                         android:textCursorDrawable="@drawable/custom_edit_text_cursor"
                         android:textSize="16sp"
-                        app:layout_constraintEnd_toStartOf="@+id/otpTwoEt"
+                        app:layout_constraintEnd_toStartOf="@+id/mpinTwoEt"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/mpin" />
 
                     <EditText
-                        android:id="@+id/otpTwoEt"
+                        android:id="@+id/mpinTwoEt"
                         android:layout_width="65dp"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/view_color"
@@ -159,15 +166,15 @@
                         android:textColor="@color/splash_screen_one"
                         android:textCursorDrawable="@drawable/custom_edit_text_cursor"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/otpOneEt"
-                        app:layout_constraintEnd_toStartOf="@+id/otpThreeEt"
+                        app:layout_constraintBottom_toBottomOf="@+id/mpinOneEt"
+                        app:layout_constraintEnd_toStartOf="@+id/mpinThreeEt"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/otpOneEt"
-                        app:layout_constraintTop_toTopOf="@+id/otpOneEt" />
+                        app:layout_constraintStart_toEndOf="@+id/mpinOneEt"
+                        app:layout_constraintTop_toTopOf="@+id/mpinOneEt" />
 
 
                     <EditText
-                        android:id="@+id/otpThreeEt"
+                        android:id="@+id/mpinThreeEt"
                         android:layout_width="65dp"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/view_color"
@@ -178,14 +185,14 @@
                         android:textColor="@color/splash_screen_one"
                         android:textCursorDrawable="@drawable/custom_edit_text_cursor"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/otpTwoEt"
-                        app:layout_constraintEnd_toStartOf="@+id/otpFourEt"
+                        app:layout_constraintBottom_toBottomOf="@+id/mpinTwoEt"
+                        app:layout_constraintEnd_toStartOf="@+id/mpinFourEt"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/otpTwoEt"
-                        app:layout_constraintTop_toTopOf="@+id/otpTwoEt" />
+                        app:layout_constraintStart_toEndOf="@+id/mpinTwoEt"
+                        app:layout_constraintTop_toTopOf="@+id/mpinTwoEt" />
 
                     <EditText
-                        android:id="@+id/otpFourEt"
+                        android:id="@+id/mpinFourEt"
                         android:layout_width="65dp"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/view_color"
@@ -196,11 +203,11 @@
                         android:textColor="@color/splash_screen_one"
                         android:textCursorDrawable="@drawable/custom_edit_text_cursor"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/otpThreeEt"
+                        app:layout_constraintBottom_toBottomOf="@+id/mpinThreeEt"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/otpThreeEt"
-                        app:layout_constraintTop_toTopOf="@+id/otpThreeEt" />
+                        app:layout_constraintStart_toEndOf="@+id/mpinThreeEt"
+                        app:layout_constraintTop_toTopOf="@+id/mpinThreeEt" />
 
                     <com.google.android.material.checkbox.MaterialCheckBox
                         android:id="@+id/termsCb"
@@ -214,10 +221,10 @@
                         android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/otpOneEt" />
+                        app:layout_constraintTop_toBottomOf="@+id/mpinOneEt" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/proceedAuthBtn"
+                        android:id="@+id/signUpBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:layout_marginTop="54dp"
@@ -264,7 +271,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/proceedAuthBtn" />
+                        app:layout_constraintTop_toBottomOf="@+id/signUpBtn" />
 
 
                     <com.google.android.material.textview.MaterialTextView
@@ -279,9 +286,9 @@
                         android:gravity="center_vertical"
                         android:padding="5dp"
                         android:paddingStart="38dp"
-                        android:paddingTop="10dp"
+                        android:paddingTop="15dp"
                         android:paddingEnd="74dp"
-                        android:paddingBottom="10dp"
+                        android:paddingBottom="15dp"
                         android:text="@string/cont_with_google"
                         android:textAlignment="gravity"
                         android:textColor="@color/splash_screen_one"
@@ -305,7 +312,7 @@
                         app:layout_constraintEnd_toEndOf="@+id/googleSignInTv"
                         app:layout_constraintStart_toStartOf="@+id/googleSignInTv"
                         app:layout_constraintTop_toBottomOf="@+id/googleSignInTv" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.motion.widget.MotionLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <include
@@ -320,7 +327,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.motion.widget.MotionLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

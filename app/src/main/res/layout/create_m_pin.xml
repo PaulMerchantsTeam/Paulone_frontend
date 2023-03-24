@@ -3,14 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/splash_screen_two"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/splash_screen_two">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/setUpMPinParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
+        android:paddingStart="@dimen/screen_start_margin"
+        android:paddingEnd="@dimen/screen_end_margin"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -238,11 +240,13 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/finalSIgnUpParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:background="@color/splash_screen_two"
+        android:visibility="visible"
+        app:layoutDescription="@xml/create_m_pin_xml_finalsignupparent_scene"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -255,6 +259,8 @@
             android:layout_marginTop="100dp"
             android:fontFamily="@font/poppins_bold"
             android:lineSpacingExtra="5dp"
+            android:paddingStart="@dimen/screen_start_margin"
+            android:paddingEnd="@dimen/screen_end_margin"
             android:text="@string/finally_done_sighup"
             android:textColor="@color/splash_screen_three"
             android:textSize="18sp"
@@ -273,6 +279,7 @@
             app:srcCompat="@drawable/ellipse_yellow" />
 
         <ImageView
+            android:id="@+id/imageView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/undraw_completed"
@@ -280,6 +287,6 @@
             app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

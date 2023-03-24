@@ -23,9 +23,17 @@ object AppUtility {
     }
 
 
-    fun diffColorText(first: String, second: String, third: String, tv: TextView) {
+    fun diffColorText(
+        first: String,
+        second: String,
+        third: String,
+        fourth: String = "",
+        fifth: String = "",
+        sixth: String = "",
+        tv: TextView
+    ) {
         val text =
-            "<font color=#3F72AF>$first</font> <font color=#150750>$second</font> <font color=#3F72AF>$third</font>"
+            "<font color=#3F72AF>$first</font> <font color=#150750>$second</font> <font color=#3F72AF>$third</font> <font color=#150750>$fourth</font> <font color=#3F72AF>$fifth</font> <font color=#150750>$sixth</font>"
         tv.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 

@@ -6,19 +6,18 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import com.paulmerchants.gold.MainActivity
+import androidx.navigation.fragment.findNavController
+import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.PhoneAuthFragmentBinding
+import com.paulmerchants.gold.utility.*
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.diffColorText
-import com.paulmerchants.gold.utility.hideView
-import com.paulmerchants.gold.utility.show
-import com.paulmerchants.gold.utility.showVg
-import com.paulmerchants.gold.utility.showViewWithAnim
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -28,6 +27,7 @@ import kotlinx.coroutines.launch
 class PhoenNumVerifiactionFragment :
     BaseFragment<PhoneAuthFragmentBinding>(PhoneAuthFragmentBinding::inflate) {
     private var isMobileEntered: Boolean = false
+    private var isOtpVerified: Boolean = false
 
     override fun PhoneAuthFragmentBinding.initialize() {
         changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
@@ -41,6 +41,9 @@ class PhoenNumVerifiactionFragment :
             "Welcome to Paul Gold,\nwe are",
             "happy",
             "to serve you!!",
+            "",
+            "",
+            "",
             binding.titleWelcomTv
         )
         binding.proceedAuthBtn.setOnClickListener {
@@ -50,30 +53,20 @@ class PhoenNumVerifiactionFragment :
                     isMobileEntered = true
                 }
             } else {
-                if (binding.otpOneEt.text.isNotEmpty() &&
-                    binding.otpTwoEt.text.isNotEmpty() &&
-                    binding.otpThreeEt.text.isNotEmpty() &&
-                    binding.otpFourEt.text.isNotEmpty()
-                ) {
-                    hideAndShowProgressView()
+                if (binding.otpOneEt.text.isNotEmpty() && binding.otpTwoEt.text.isNotEmpty() && binding.otpThreeEt.text.isNotEmpty() && binding.otpFourEt.text.isNotEmpty()) {
+                    hideAndShowProgressView(false)
                     lifecycleScope.launch {
                         delay(2000)
-                        binding.mainPgCons.cirStreakTimePg.apply {
-                            isIndeterminate = false
-                            progress = 100
-                        }
+                        binding.mainPgCons.cirStreakTimePg.endProgress(requireContext())
                         binding.mainPgCons.progessTv.apply {
-                            text = getString(R.string.verified)
-                            setTextColor(
-                                ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.green_verified
-                                )
+                            setTColor(
+                                getString(R.string.verified),
+                                requireContext(), R.color.green_verified
                             )
-
                         }
                         delay(1000)
                     }
+                    isOtpVerified = true
                     hideAndShowSignUpScreen()
                 }
             }
@@ -90,16 +83,14 @@ class PhoenNumVerifiactionFragment :
                     binding.proceedAuthBtn.isEnabled = true
                     binding.proceedAuthBtn.setBackgroundColor(
                         ContextCompat.getColor(
-                            requireContext(),
-                            R.color.splash_screen_one
+                            requireContext(), R.color.splash_screen_one
                         )
                     )
                 } else {
                     binding.proceedAuthBtn.isEnabled = false
                     binding.proceedAuthBtn.setBackgroundColor(
                         ContextCompat.getColor(
-                            requireContext(),
-                            R.color.color_prim_one_40
+                            requireContext(), R.color.color_prim_one_40
                         )
                     )
                 }
@@ -113,10 +104,26 @@ class PhoenNumVerifiactionFragment :
     }
 
     private fun hideAndShowSignUpScreen() {
-        (activity as MainActivity).commonViewModel.timer?.cancel()
+        (activity as MainActivity).mViewModel.timer?.cancel()
         binding.fillOtpParent.hideView()
         binding.signUpParentMain.root.show()
         customizeText()
+        callMpinNextFocus()
+
+
+        binding.signUpParentMain.signUpBtn.setOnClickListener {
+            if (binding.signUpParentMain.etName.text.isNotEmpty() &&
+                binding.signUpParentMain.etEmailId.text.isNotEmpty() && binding.signUpParentMain.mpinOneEt.text.isNotEmpty() &&
+                binding.signUpParentMain.mpinTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty()
+                && binding.signUpParentMain.mpinFourEt.text.isNotEmpty() && binding.signUpParentMain.termsCb.isChecked
+            ) {
+                binding.signUpParentMain.root.hideView()
+                hideAndShowProgressView(true)
+            }
+        }
+        binding.signUpParentMain.googleSignInTv.setOnClickListener {
+            //flow_remaining...
+        }
 
     }
 
@@ -125,6 +132,9 @@ class PhoenNumVerifiactionFragment :
             "Please",
             "create",
             "an account before we proceed.",
+            "",
+            "",
+            "",
             binding.signUpParentMain.createAccTitleTv
         )
         diffColorText(
@@ -134,28 +144,73 @@ class PhoenNumVerifiactionFragment :
         )
     }
 
-    private fun hideAndShowProgressView() {
-        //Give us some moment to verify few things. Much appreciated.
-        diffColorText(
-            "Give us some moment to",
-            "verify",
-            "few things. Much appreciated",
-            binding.titleWelcomTv
-        )
+    private fun hideAndShowProgressView(isSignedUp: Boolean) {
+        if (!isSignedUp) {
+            diffColorText(
+                "Give us some moment to",
+                "verify",
+                "few things. Much appreciated",
+                "",
+                "",
+                "",
+                binding.titleWelcomTv
+            )
+            binding.fillOtpParent.hideView()
+        } else {
+            diffColorText(
+                getString(R.string.this_may_take_some),
+                getString(R.string.us),
+                binding.titleWelcomTv
+            )
+            lifecycleScope.launch {
+                binding.mainPgCons.progessTv.apply {
+                    setTColor(getString(R.string.verifying), requireContext(), R.color.yellow_main)
+                }
+                binding.mainPgCons.cirStreakTimePg.startProgress(requireContext())
+                delay(1000)
+                binding.mainPgCons.progessTv.apply {
+                    setTColor(
+                        getString(R.string.verified),
+                        requireContext(),
+                        R.color.green_verified
+                    )
+                }
+                binding.mainPgCons.cirStreakTimePg.endProgress(requireContext())
+
+                delay(1000)
+                hideAndShowSignUpDoneScreen()
+            }
+        }
         binding.apply {
-            fillOtpParent.hideView()
             mainPgCons.root.show()
             proceedAuthBtn.hideView()
+        }
+
+    }
+
+    private fun hideAndShowSignUpDoneScreen() {
+        binding.titleWelcomTv.hideView()
+        binding.mainPgCons.root.hideView()
+        diffColorText(
+            "And we are",
+            "finally",
+            "done, welcome",
+            " home ",
+            " user . We are glad to have ", "you with us ",
+            binding.createMpinAndSuccessMain.finallySignUpDoneTv
+        )
+
+        binding.createMpinAndSuccessMain.root.show()
+        lifecycleScope.launchWhenCreated {
+            delay(2000)
+            findNavController().navigate(R.id.homeScreenFrag)
         }
     }
 
     private fun hideAndShowOtpView() {
         binding.apply {
             proceedAuthBtn.apply {
-                setBackgroundColor(
-                    ContextCompat.getColor(requireContext(), R.color.color_prim_one_40)
-                )
-                isEnabled = false
+                disableButton(requireContext())
                 text = getString(R.string.verify)
             }
             enterPhoneNumMain.hideView()
@@ -167,8 +222,8 @@ class PhoenNumVerifiactionFragment :
             "+91${binding.etPhoenNum.text}. <u>${getString(R.string.change_q)}</u>",
             binding.pleaseOtpTv
         )
-        (activity as MainActivity).commonViewModel.timerStart(30000)
-        (activity as MainActivity).commonViewModel.countNum.observe(viewLifecycleOwner, Observer {
+        (activity as MainActivity).mViewModel.timerStart(30000)
+        (activity as MainActivity).mViewModel.countNum.observe(viewLifecycleOwner, Observer {
             it?.let {
                 var count = "$it"
                 if (it < 10) {
@@ -185,20 +240,17 @@ class PhoenNumVerifiactionFragment :
         //first parameter is the current EditText and second parameter is next EditText
         binding.otpOneEt.addTextChangedListener(
             GenericTextWatcher(
-                binding.otpOneEt,
-                binding.otpTwoEt
+                binding.otpOneEt, binding.otpTwoEt
             )
         )
         binding.otpTwoEt.addTextChangedListener(
             GenericTextWatcher(
-                binding.otpTwoEt,
-                binding.otpThreeEt
+                binding.otpTwoEt, binding.otpThreeEt
             )
         )
         binding.otpThreeEt.addTextChangedListener(
             GenericTextWatcher(
-                binding.otpThreeEt,
-                binding.otpFourEt
+                binding.otpThreeEt, binding.otpFourEt
             )
         )
         binding.otpFourEt.addTextChangedListener(GenericTextWatcher(binding.otpFourEt, null))
@@ -211,9 +263,63 @@ class PhoenNumVerifiactionFragment :
         binding.otpFourEt.setOnKeyListener(GenericKeyEvent(binding.otpFourEt, binding.otpThreeEt))
     }
 
+
+    private fun callMpinNextFocus() {
+        //GenericTextWatcher here works only for moving to next EditText when a number is entered
+        //first parameter is the current EditText and second parameter is next EditText
+        binding.signUpParentMain.mpinOneEt.addTextChangedListener(
+            GenericTextWatcher(
+                binding.signUpParentMain.mpinOneEt, binding.signUpParentMain.mpinTwoEt
+            )
+        )
+        binding.signUpParentMain.mpinTwoEt.addTextChangedListener(
+            GenericTextWatcher(
+                binding.signUpParentMain.mpinTwoEt, binding.signUpParentMain.mpinThreeEt
+            )
+        )
+        binding.signUpParentMain.mpinThreeEt.addTextChangedListener(
+            GenericTextWatcher(
+                binding.signUpParentMain.mpinThreeEt, binding.signUpParentMain.mpinFourEt
+            )
+        )
+        binding.signUpParentMain.mpinFourEt.addTextChangedListener(
+            GenericTextWatcher(
+                binding.signUpParentMain.mpinFourEt,
+                null
+            )
+        )
+
+        //GenericKeyEvent here works for deleting the element and to switch back to previous EditText
+        //first parameter is the current EditText and second parameter is previous EditText
+        binding.signUpParentMain.mpinOneEt.setOnKeyListener(
+            GenericKeyEvent(
+                binding.signUpParentMain.mpinOneEt,
+                null
+            )
+        )
+        binding.signUpParentMain.mpinTwoEt.setOnKeyListener(
+            GenericKeyEvent(
+                binding.signUpParentMain.mpinTwoEt,
+                binding.signUpParentMain.mpinOneEt
+            )
+        )
+        binding.signUpParentMain.mpinThreeEt.setOnKeyListener(
+            GenericKeyEvent(
+                binding.signUpParentMain.mpinThreeEt,
+                binding.signUpParentMain.mpinTwoEt
+            )
+        )
+        binding.signUpParentMain.mpinFourEt.setOnKeyListener(
+            GenericKeyEvent(
+                binding.signUpParentMain.mpinFourEt,
+                binding.signUpParentMain.mpinThreeEt
+            )
+        )
+    }
+
+
     inner class GenericKeyEvent internal constructor(
-        private val currentView: EditText,
-        private val previousView: EditText?
+        private val currentView: EditText, private val previousView: EditText?
     ) : View.OnKeyListener {
         override fun onKey(p0: View?, keyCode: Int, event: KeyEvent?): Boolean {
             if (event?.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL && currentView.id != R.id.otpOneEt && currentView.text.isEmpty()) {
@@ -229,42 +335,75 @@ class PhoenNumVerifiactionFragment :
     }
 
     inner class GenericTextWatcher internal constructor(
-        private val currentView: View,
-        private val nextView: View?
-    ) :
-        TextWatcher {
+        private val currentView: View, private val nextView: View?
+    ) : TextWatcher {
         override fun afterTextChanged(editable: Editable) {
             val text = editable.toString()
             when (currentView.id) {
                 R.id.otpOneEt -> {
-                    if (text.length == 1) nextView?.requestFocus()
+                    if (text.length == 1) {
+                        binding.proceedAuthBtn.enableButton(requireContext())
+                        nextView?.requestFocus()
+                    } else {
+                        binding.proceedAuthBtn.disableButton(requireContext())
+                    }
 
                 }
                 R.id.otpTwoEt -> {
-                    if (text.length == 1) nextView?.requestFocus()
+                    if (text.length == 1) {
+                        binding.proceedAuthBtn.enableButton(requireContext())
+                        nextView?.requestFocus()
+                    } else {
+                        binding.proceedAuthBtn.disableButton(requireContext())
+                    }
                 }
                 R.id.otpThreeEt -> {
-                    if (text.length == 1) nextView?.requestFocus()
+                    if (text.length == 1) {
+                        binding.proceedAuthBtn.enableButton(requireContext())
+                        nextView?.requestFocus()
+                    } else {
+                        binding.proceedAuthBtn.disableButton(requireContext())
+                    }
                 }
                 R.id.otpFourEt -> {
                     if (text.length == 1) {
+                        binding.proceedAuthBtn.enableButton(requireContext())
                         nextView?.requestFocus()
-                        binding.proceedAuthBtn.apply {
-                            isEnabled = true
-                            setBackgroundColor(
-                                ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.splash_screen_one
-                                )
-                            )
-                        }
                     } else {
-                        binding.proceedAuthBtn.apply {
-                            setBackgroundColor(
-                                ContextCompat.getColor(requireContext(), R.color.color_prim_one_40)
-                            )
-                            isEnabled = false
-                        }
+                        binding.proceedAuthBtn.disableButton(requireContext())
+                    }
+                }
+
+                R.id.mpinOneEt -> {
+                    if (text.length == 1) {
+                        binding.signUpParentMain.signUpBtn.enableButton(requireContext())
+                        nextView?.requestFocus()
+                    } else {
+                        binding.signUpParentMain.signUpBtn.disableButton(requireContext())
+                    }
+                }
+                R.id.mpinTwoEt -> {
+                    if (text.length == 1) {
+                        binding.signUpParentMain.signUpBtn.enableButton(requireContext())
+                        nextView?.requestFocus()
+                    } else {
+                        binding.signUpParentMain.signUpBtn.disableButton(requireContext())
+                    }
+                }
+                R.id.mpinThreeEt -> {
+                    if (text.length == 1) {
+                        binding.signUpParentMain.signUpBtn.enableButton(requireContext())
+                        nextView?.requestFocus()
+                    } else {
+                        binding.signUpParentMain.signUpBtn.disableButton(requireContext())
+                    }
+                }
+                R.id.mpinFourEt -> {
+                    if (text.length == 1) {
+                        binding.signUpParentMain.signUpBtn.enableButton(requireContext())
+                        nextView?.requestFocus()
+                    } else {
+                        binding.signUpParentMain.signUpBtn.disableButton(requireContext())
                     }
 
                 }
@@ -273,18 +412,12 @@ class PhoenNumVerifiactionFragment :
         }
 
         override fun beforeTextChanged(
-            arg0: CharSequence,
-            arg1: Int,
-            arg2: Int,
-            arg3: Int
+            arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int
         ) {
         }
 
         override fun onTextChanged(
-            arg0: CharSequence,
-            arg1: Int,
-            arg2: Int,
-            arg3: Int
+            arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int
         ) {
         }
 

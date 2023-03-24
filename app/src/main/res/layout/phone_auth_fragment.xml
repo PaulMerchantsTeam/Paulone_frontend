@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/splash_screen_two"
-    android:paddingStart="@dimen/screen_start_margin"
-    android:paddingEnd="@dimen/screen_end_margin">
+    android:background="@color/splash_screen_two">
 
 
     <com.google.android.material.textview.MaterialTextView
@@ -17,6 +15,8 @@
         android:layout_marginEnd="80dp"
         android:fontFamily="@font/poppins_bold"
         android:lineSpacingExtra="5dp"
+        android:paddingStart="@dimen/screen_start_margin"
+        android:paddingEnd="@dimen/screen_end_margin"
         android:text="@string/welocome_to_paul_gold"
         android:textColor="@color/splash_screen_three"
         android:textSize="18sp"
@@ -30,6 +30,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="116dp"
+        android:paddingStart="@dimen/screen_start_margin"
+        android:paddingEnd="@dimen/screen_end_margin"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/proceedAuthBtn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -101,6 +103,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="98dp"
+        android:paddingStart="@dimen/screen_start_margin"
+        android:paddingEnd="@dimen/screen_end_margin"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -173,6 +177,8 @@
             app:layout_constraintStart_toEndOf="@+id/otpTwoEt"
             app:layout_constraintTop_toTopOf="@+id/otpTwoEt" />
 
+        signUpParentMain.mpinThreeEt
+
         <EditText
             android:id="@+id/otpFourEt"
             android:layout_width="65dp"
@@ -243,6 +249,15 @@
     <include
         android:id="@+id/signUpParentMain"
         layout="@layout/signup_fragment"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/createMpinAndSuccessMain"
+        layout="@layout/create_m_pin"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

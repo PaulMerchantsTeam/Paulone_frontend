@@ -15,4 +15,34 @@
         android:name="com.paulmerchants.gold.ui.auth.PhoenNumVerifiactionFragment"
         android:label="PhoenNumVerifiactionFragment"
         tools:layout="@layout/phone_auth_fragment" />
+    <fragment
+        android:id="@+id/mainScreenFrag"
+        tools:layout="@layout/main_screen_fragment"
+        android:name="com.paulmerchants.gold.ui.MainScreenFrag"
+        android:label="MainScreenFrag" />
+    <fragment
+        android:id="@+id/billsAndMoreScreenFrag"
+        tools:layout="@layout/bill_n_more_screen_fragment"
+        android:name="com.paulmerchants.gold.ui.bottom.BillsAndMoreScreenFrag"
+        android:label="BillsAndMoreScreenFrag" />
+    <fragment
+        android:id="@+id/goldLoanScreenFrag"
+        tools:layout="@layout/gold_loan_screen_fragment"
+        android:name="com.paulmerchants.gold.ui.bottom.GoldLoanScreenFrag"
+        android:label="GoldLoanScreenFrag" />
+    <fragment
+        android:id="@+id/locateUsFrag"
+        tools:layout="@layout/locate_us_screen_fragment"
+        android:name="com.paulmerchants.gold.ui.bottom.LocateUsFrag"
+        android:label="LocateUsFrag" />
+    <fragment
+        android:id="@+id/homeScreenFrag"
+        tools:layout="@layout/home_screen_fragment"
+        android:name="com.paulmerchants.gold.ui.bottom.HomeScreenFrag"
+        android:label="HomeScreenFrag" />
+    <fragment
+        android:id="@+id/menuScreenFrag"
+        tools:layout="@layout/menu_screen_fragment"
+        android:name="com.paulmerchants.gold.ui.bottom.MenuScreenFrag"
+        android:label="MenuScreenFrag" />
 </navigation>

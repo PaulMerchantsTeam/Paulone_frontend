@@ -18,6 +18,7 @@
     <string name="change_q"><u>CHANGE?</u></string>
     <string name="give_us_some">Give us some moment to verify few things. Much appreciated.</string>
     <string name="verify">VERIFY</string>
+    <string name="verifying">Verifying</string>
     <string name="verified">Verified</string>
 
     <!--    signup screen-->
@@ -44,5 +45,11 @@
     <string name="confirm">Confirm</string>
 
     <string name="finally_done_sighup">And we are finally done, welcome home user. We are glad to have you with us.</string>
+
+    <string name="bills_amp_more"><![CDATA[BILLS & MORE]]></string>
+    <string name="gold_loan">GOLD LOAN</string>
+    <string name="home">HOME</string>
+    <string name="locate_us">LOCATE US</string>
+    <string name="menu">MENU</string>
 
 </resources>

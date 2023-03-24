@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.paulmerchants.gold.MainActivity
+import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.animations.AppAnimation
 import com.paulmerchants.gold.common.BaseFragment
@@ -109,11 +109,11 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
 
     private suspend fun animateOne() {
         AppAnimation.scaler(binding.imageView)
-        delay(1000)
+        delay(500)
         animateSecondScreen(R.color.splash_screen_three, R.color.white)
-        delay(1000)
+        delay(500)
         animateSecondScreen(R.color.splash_screen_two, R.color.splash_screen_one)
-        delay(1000)
+        delay(500)
         showFirstPageIntro()
     }
 
