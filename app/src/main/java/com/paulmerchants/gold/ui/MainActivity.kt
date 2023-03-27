@@ -38,6 +38,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         navOption = NavOptions.Builder().setEnterAnim(R.anim.slide_in_right)
             .setExitAnim(R.anim.slide_out_left).setPopEnterAnim(R.anim.slide_in_left)
             .setPopExitAnim(R.anim.slide_out_right).build()
+        binding.bottomNavigationView.itemIconTintList = null
         binding.bottomNavigationView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             Log.d("TAG", "onCreate:${destination.displayName} ")

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!--    <gradient android:startColor="@color/bar_clicked_dark"-->
+    <!--        android:endColor="@color/bar_clicked_light"-->
+    <!--        android:angle="90"/>-->
+    <solid
+        android:width="1.5dp"
+        android:color="@color/red" />
+
+</shape>

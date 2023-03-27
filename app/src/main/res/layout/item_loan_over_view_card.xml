@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rec_frch_blue_solid">
+
+
+        <TextView
+            android:id="@+id/youHaveTotalLoanTv"
+            style="@style/text_12_regular_white"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="17dp"
+            android:text="You are having 4 active loans totalling upto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/totalLoanAmountTv"
+            style="@style/text_24_regular_blue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="10dp"
+            android:text="INR 3,00,000"
+            app:layout_constraintEnd_toStartOf="@+id/imageView6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/youHaveTotalLoanTv" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/viewLoanBtn"
+            style="@style/text_12_bold_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:layout_marginBottom="23dp"
+            android:background="@drawable/rec_one_yellow_btn"
+            android:padding="@dimen/ten_dp"
+            android:text="View Loans"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/totalLoanAmountTv"
+            app:layout_constraintTop_toBottomOf="@+id/totalLoanAmountTv" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/renewLoansTv"
+            style="@style/text_12_bold_yellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:background="@drawable/rec_yellow_empty_btn"
+            android:padding="@dimen/ten_dp"
+            android:text="Renew Loans"
+            app:layout_constraintBottom_toBottomOf="@+id/viewLoanBtn"
+            app:layout_constraintStart_toEndOf="@+id/viewLoanBtn"
+            app:layout_constraintTop_toTopOf="@+id/viewLoanBtn" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="88dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/gold_coin_rupees" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

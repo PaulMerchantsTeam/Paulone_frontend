@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="10dp"
+    app:cardCornerRadius="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/screen_start_margin"
+        android:background="@color/splash_screen_two"
+        android:paddingTop="38dp"
+        android:paddingEnd="@dimen/screen_end_margin">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/circle_profile_black" />
+
+        <ImageView
+            android:id="@+id/notImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView5"
+            app:srcCompat="@drawable/bell_notification" />
+
+        <ImageView
+            android:id="@+id/notRedDot"
+            android:layout_width="@dimen/ten_dp"
+            android:layout_height="@dimen/ten_dp"
+            android:background="@drawable/circle_red_"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/notImage"
+            app:layout_constraintEnd_toEndOf="@+id/notImage"
+            app:layout_constraintHorizontal_bias="0.61"
+            app:layout_constraintStart_toStartOf="@+id/notImage"
+            app:layout_constraintTop_toTopOf="@+id/notImage"
+            app:layout_constraintVertical_bias="0.24000001" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="P"
+            android:gravity="center_vertical"
+            android:textColor="@color/splash_screen_one"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+            app:layout_constraintEnd_toEndOf="@+id/imageView5"
+            app:layout_constraintStart_toStartOf="@+id/imageView5"
+            app:layout_constraintTop_toTopOf="@+id/imageView5" />
+
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:background="@drawable/rec_search_"
+            android:iconifiedByDefault="false"
+            android:padding="4dp"
+            android:queryHint="@string/search_for_loans"
+            app:layout_constraintTop_toBottomOf="@+id/imageView5"
+            tools:layout_editor_absoluteX="20dp" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/twenty_four"
+            android:fontFamily="@font/poppins_bold"
+            android:lineSpacingExtra="5dp"
+            android:text="Hey Prithvi"
+            android:textColor="@color/splash_screen_three"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchView" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/descTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/poppins_medium"
+            android:lineSpacingExtra="5dp"
+            android:text="This is your space"
+            android:textColor="@color/splash_screen_three"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userName" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

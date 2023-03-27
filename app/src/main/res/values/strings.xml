@@ -51,5 +51,7 @@
     <string name="home">HOME</string>
     <string name="locate_us">LOCATE US</string>
     <string name="menu">MENU</string>
+    <string name="search_for_loans">Search for “Loans”</string>
+    <string name="be_a_loyal_payer_">(Be a loyal payer and keep no dues)</string>
 
 </resources>

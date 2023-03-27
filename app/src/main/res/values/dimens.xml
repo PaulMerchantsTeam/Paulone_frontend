@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="screen_start_margin">20dp</dimen>
     <dimen name="screen_end_margin">20dp</dimen>
+    <dimen name="twenty_four">24dp</dimen>
+
+    <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>
+    <dimen name="ten_dp">10dp</dimen>
+
 </resources>

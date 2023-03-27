@@ -24,7 +24,14 @@
     <color name="no_color">#00FFFFFF</color>
 
     <color name="green_verified">#0C9200</color>
+    <color name="brown">#484848</color>
+    <color name="red">#E20000</color>
+    <color name="due_4days_red">#E20000</color>
+    <color name="due_2days_red">#E43700</color>
+    <color name="due_yellow">#E4A400</color>
+    <color name="green_due">#67B800</color>
 
+    <color name="back_blue_light">#F2F3F6</color>
 
 
 </resources>

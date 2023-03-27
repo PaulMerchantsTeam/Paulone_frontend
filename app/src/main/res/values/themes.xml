@@ -19,8 +19,48 @@
         <item name="android:progressDrawable">@drawable/circle_pg_gradient</item>
     </style>
 
-    <style name="button_overlay">
-        <item name="colorOnSurface">@color/color_prim_one_40</item>
+    <style name="BottomNavigationView">
+        <item name="itemIconTint">@null</item>
     </style>
+
+    <style name="text_12_regular_white">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#F9F7F7</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <style name="text_24_regular_blue">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/splash_screen_one</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+
+    <style name="text_16_bold">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#3F72AF</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="text_12_bold_blue">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/splash_screen_one</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="text_12_bold_yellow">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/yellow_main</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="text_8_semi_bold_blue">
+        <item name="android:textSize">8sp</item>
+        <item name="android:textColor">@color/splash_screen_one</item>
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+    </style>
+    <!--    <style name="button_overlay">-->
+    <!--        <item name="colorOnSurface">@color/color_prim_one_40</item>-->
+    <!--    </style>-->
 
 </resources>
