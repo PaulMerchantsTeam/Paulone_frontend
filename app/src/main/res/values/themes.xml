@@ -59,6 +59,12 @@
         <item name="android:textColor">@color/splash_screen_one</item>
         <item name="android:fontFamily">@font/poppins_semi_bold</item>
     </style>
+
+    <style name="text_12_semi_bold_sky">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/splash_screen_three</item>
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+    </style>
     <!--    <style name="button_overlay">-->
     <!--        <item name="colorOnSurface">@color/color_prim_one_40</item>-->
     <!--    </style>-->

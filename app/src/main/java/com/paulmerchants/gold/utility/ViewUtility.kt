@@ -4,8 +4,10 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.graphics.drawable.AnimationDrawable
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.transition.Fade
@@ -15,6 +17,15 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.paulmerchants.gold.R
 import kotlinx.coroutines.NonDisposableHandle.parent
 
+
+fun ImageView.startCustomAnimation(drawable: Int) {
+    val animationDrawable: AnimationDrawable
+    this.apply {
+        setBackgroundResource(drawable)
+        animationDrawable = background as AnimationDrawable
+        animationDrawable.start()
+    }
+}
 
 fun View.show() {
     visibility = View.VISIBLE

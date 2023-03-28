@@ -31,7 +31,8 @@
     <color name="due_yellow">#E4A400</color>
     <color name="green_due">#67B800</color>
 
-    <color name="back_blue_light">#F2F3F6</color>
+    <color name="back_blue_light">#E0E6EF</color>
+    <color name="back_blue_light2">#F2F3F6</color>
 
 
 </resources>

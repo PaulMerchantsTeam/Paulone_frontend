@@ -53,5 +53,26 @@
     <string name="menu">MENU</string>
     <string name="search_for_loans">Search for “Loans”</string>
     <string name="be_a_loyal_payer_">(Be a loyal payer and keep no dues)</string>
+    <string name="dth_services">DTH SERVICES</string>
+    <string name="electricity">ELECTRICITY</string>
+    <string name="broadband">BROADBAND</string>
+    <string name="mobile">MOBILE</string>
+    <string name="home_sweet_home_bills">Home sweet Home bills</string>
+    <string name="cabletv">CABLE TV</string>
+    <string name="landline">LANDLINE</string>
+    <string name="water">WATER</string>
+    <string name="homerent">HOME RENT</string>
+    <string name="gas_pipline">GAS PIPELINE</string>
+    <string name="apartment">APARTMENT</string>
+    <string name="gas_cylinder">GAS CYLINDER</string>
+    <string name="education">EDUCATION</string>
+    <string name="financial_security">Financial Security</string>
+    <string name="insurance">INSURANCE</string>
+    <string name="muncipal_tex">MUNICIPAL TAX</string>
+    <string name="transit_window">Transit Window</string>
+    <string name="fastag">FASTag</string>
+    <string name="challan">CHALLAN</string>
+    <string name="metrocard">METRO CARD</string>
+    <string name="back">BACK</string>
 
 </resources>
