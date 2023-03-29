@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.SearchView
+        android:layout_width="match_parent"
+        android:hint="@string/search"
+
+        app:queryHint="@string/search"
+        android:background="@drawable/rec_search_"
+        android:layout_height="wrap_content">
+        <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+
+    </androidx.appcompat.widget.SearchView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

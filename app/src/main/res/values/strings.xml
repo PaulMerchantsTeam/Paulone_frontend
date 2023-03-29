@@ -74,5 +74,11 @@
     <string name="challan">CHALLAN</string>
     <string name="metrocard">METRO CARD</string>
     <string name="back">BACK</string>
+    <string name="notifications">Notifications</string>
+    <string name="profile">Profile</string>
+    <string name="search">Search</string>
+    <string name="search_fr_bills">Search for “Bills“</string>
+    <string name="search_fr_credit">Search for “Credit Card”</string>
+    <string name="search_fr_upcoming_dues">Search for “upcoming dues”</string>
 
 </resources>

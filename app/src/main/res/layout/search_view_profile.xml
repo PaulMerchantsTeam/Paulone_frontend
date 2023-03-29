@@ -9,9 +9,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="@dimen/screen_start_margin"
+        android:layout_height="wrap_content"
         android:background="@color/splash_screen_two"
+        android:paddingStart="@dimen/screen_start_margin"
         android:paddingTop="38dp"
         android:paddingEnd="@dimen/screen_end_margin">
 
@@ -52,8 +52,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="P"
             android:gravity="center_vertical"
+            android:text="P"
             android:textColor="@color/splash_screen_one"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView5"
@@ -62,18 +62,31 @@
             app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
 
-        <androidx.appcompat.widget.SearchView
+        <EditText
             android:id="@+id/searchView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="11dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="@dimen/ten_dp"
             android:background="@drawable/rec_search_"
-            android:iconifiedByDefault="false"
-            android:padding="4dp"
-            android:queryHint="@string/search_for_loans"
+            android:drawableStart="@drawable/search"
+            android:drawablePadding="14dp"
+            android:maxLines="1"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            android:imeOptions="actionSearch"
+            android:hint="@string/search_for_loans"
+            android:paddingStart="@dimen/ten_dp"
+            android:paddingEnd="@dimen/ten_dp"
+            android:textColorHint="@color/brown"
+            app:autoShowKeyboard="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView5"
-            tools:layout_editor_absoluteX="20dp" />
-
+            app:queryHint="@string/search"
+            app:searchIcon="@drawable/search"/>
+        <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/userName"
@@ -92,7 +105,6 @@
             android:id="@+id/descTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="8dp"
             android:fontFamily="@font/poppins_medium"
             android:lineSpacingExtra="5dp"
@@ -104,5 +116,6 @@
             app:layout_constraintTop_toBottomOf="@+id/userName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </com.google.android.material.card.MaterialCardView>
