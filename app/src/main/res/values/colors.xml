@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="open_loans">#DBE2EF</color>
+
     <!--    color of splash-->
     <color name="splash_screen_one">#150750</color>
     <color name="splash_screen_two">#F9F7F7</color>

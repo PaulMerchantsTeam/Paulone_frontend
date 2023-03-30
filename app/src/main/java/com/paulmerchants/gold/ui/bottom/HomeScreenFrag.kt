@@ -17,7 +17,7 @@ import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.DueLoans
-import com.paulmerchants.gold.utility.startCustomAnimation
+import com.paulmerchants.gold.utility.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -41,6 +41,7 @@ class HomeScreenFrag :
         setProfileUi()
         startAnimationOnIcon()
         setUiOnHomeSweetHomeBills()
+        handleRechargeAndBillUi()
     }
 
     private fun setProfileUi() {
@@ -98,12 +99,19 @@ class HomeScreenFrag :
          * show---home_sweet_home, financial_Security,transit_window ,back_top
          *
          */
-        binding.allPaymnetActionParent.apply {
-            moreParent.setOnClickListener {
-
-            }
+        binding.allPaymnetActionParent.moreParent.setOnClickListener {
+            binding.allPaymnetActionParent.billsNRechargerParent.hide()
+            binding.allPaymnetActionParent.forMoreParentAllAction.show()
+            binding.allPaymnetActionParent.backToNormalAction.show()
         }
+        binding.allPaymnetActionParent.backToNormalAction.setOnClickListener {
+            binding.allPaymnetActionParent.apply {
+                billsNRechargerParent.show()
+                forMoreParentAllAction.hide()
+                backToNormalAction.hide()
+            }
 
+        }
     }
 
     private fun animateHintEditText() {
@@ -136,7 +144,6 @@ class HomeScreenFrag :
             elecIv.startCustomAnimation(R.drawable.elec_icon_anim)
             boradBandIv.startCustomAnimation(R.drawable.broadband_icon_anim)
             mobileIv.startCustomAnimation(R.drawable.mobile_icon_anim)
-            creditCardIv.startCustomAnimation(R.drawable.credit_icon_anim)
         }
     }
 

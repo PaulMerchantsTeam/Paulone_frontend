@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/ten_dp"
+    android:background="@drawable/rec_sky_loan_blue_solid"
+    android:paddingStart="@dimen/ten_dp"
+    android:paddingTop="@dimen/ten_dp"
+    android:paddingEnd="15dp"
+    android:paddingBottom="@dimen/ten_dp">
+
+
+    <TextView
+        android:id="@+id/loanNumTitle"
+        style="@style/text_10_semi_bold_sky_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loan Number"
+        app:layout_constraintBottom_toTopOf="@+id/loanNumTv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/loanNumTv"
+        style="@style/text_12_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="231212121"
+        app:layout_constraintBottom_toTopOf="@+id/intDueTitleTv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loanNumTitle" />
+
+    <TextView
+        android:id="@+id/viewDetailsBtn"
+        style="@style/text_10_semi_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rec_back_btn"
+        android:paddingStart="22dp"
+        android:paddingTop="11dp"
+        android:paddingEnd="22dp"
+        android:paddingBottom="11dp"
+        android:text="@string/view_details"
+        app:layout_constraintBottom_toBottomOf="@+id/loanClosedBtn"
+        app:layout_constraintEnd_toStartOf="@+id/loanClosedBtn"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/intDueDateTv" />
+
+    <TextView
+        android:id="@+id/loanClosedBtn"
+        style="@style/text_10_semi_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/rec_one_blue_btn"
+        android:paddingStart="22dp"
+        android:paddingTop="11dp"
+        android:paddingEnd="22dp"
+        android:paddingBottom="11dp"
+        android:text="@string/loan_closed"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/intDueAmountTv"
+        app:layout_constraintTop_toBottomOf="@+id/intDueAmountTv"
+        app:layout_constraintVertical_bias="0.51" />
+
+
+    <TextView
+        android:id="@+id/outStaTitleTv"
+        style="@style/text_10_semi_bold_sky_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Outstanding Loan Balance"
+        app:layout_constraintBottom_toTopOf="@+id/outStandValueTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/outStandValueTv"
+        style="@style/text_12_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="INR 1,20,000"
+        app:layout_constraintBottom_toTopOf="@+id/intDueAmountTitleTv"
+        app:layout_constraintStart_toStartOf="@+id/outStaTitleTv"
+        app:layout_constraintTop_toBottomOf="@+id/outStaTitleTv" />
+
+
+    <TextView
+        android:id="@+id/intDueTitleTv"
+        style="@style/text_10_semi_bold_sky_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:text="Interest Due Date "
+        app:layout_constraintBottom_toTopOf="@+id/intDueDateTv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loanNumTv" />
+
+    <TextView
+        android:id="@+id/intDueDateTv"
+        style="@style/text_12_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="24/02/2023"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/intDueTitleTv" />
+
+    <TextView
+        android:id="@+id/intDueAmountTitleTv"
+        style="@style/text_10_semi_bold_sky_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Interest \nDue Amount"
+        app:layout_constraintBottom_toTopOf="@+id/intDueAmountTv"
+        app:layout_constraintStart_toStartOf="@+id/outStandValueTv"
+        app:layout_constraintTop_toBottomOf="@+id/outStandValueTv" />
+
+    <TextView
+        android:id="@+id/intDueAmountTv"
+        style="@style/text_12_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="INR 6,000"
+        app:layout_constraintBottom_toTopOf="@+id/loanClosedBtn"
+        app:layout_constraintStart_toStartOf="@+id/intDueAmountTitleTv"
+        app:layout_constraintTop_toBottomOf="@+id/intDueAmountTitleTv" />
+</androidx.constraintlayout.widget.ConstraintLayout>

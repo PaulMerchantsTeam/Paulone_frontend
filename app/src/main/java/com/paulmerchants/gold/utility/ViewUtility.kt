@@ -30,7 +30,9 @@ fun ImageView.startCustomAnimation(drawable: Int) {
 fun View.show() {
     visibility = View.VISIBLE
 }
-
+fun View.hide() {
+    visibility = View.GONE
+}
 fun View.invisible() {
     visibility = View.INVISIBLE
 }
@@ -79,23 +81,20 @@ fun View.hideView() {
         })
 }
 
+fun View.shoViewWithAnim() {
+    visibility = View.VISIBLE
+    alpha =0.0f
+    this.animate()
+        .translationY(this.height.toFloat())
+        .alpha(1.0f)
+        .setListener(null)
+}
+
 fun TextView.setTColor(str: String, context: Context, colorId: Int) {
     text = str
     setTextColor(ContextCompat.getColor(context, colorId))
 }
 
-fun View.showViewWithAnim() {
-    this.animate()
-        .translationY(this.height.toFloat())
-        .alpha(0.0f)
-        .setDuration(300)
-        .setListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                super.onAnimationEnd(animation)
-                visibility = View.VISIBLE
-            }
-        })
-}
 
 fun toggle(view: View, show: Boolean) {
     val transition: Transition = Fade()

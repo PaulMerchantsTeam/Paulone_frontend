@@ -57,6 +57,8 @@
     <string name="electricity">ELECTRICITY</string>
     <string name="broadband">BROADBAND</string>
     <string name="mobile">MOBILE</string>
+    <string name="mobile_recharge">MOBILE RECHARGE</string>
+    <string name="mobile_postpaid">MOBILE POSTPAID</string>
     <string name="home_sweet_home_bills">Home sweet Home bills</string>
     <string name="cabletv">CABLE TV</string>
     <string name="landline">LANDLINE</string>
@@ -80,5 +82,17 @@
     <string name="search_fr_bills">Search for “Bills“</string>
     <string name="search_fr_credit">Search for “Credit Card”</string>
     <string name="search_fr_upcoming_dues">Search for “upcoming dues”</string>
+    <string name="ott_world">OTT World</string>
+    <string name="your_cards">YOUR CARDS</string>
+    <string name="you_wont_lose_them_from_here">(You wont lose them from here)</string>
+    <string name="prepaid_card">PREPAID CARD</string>
+    <string name="view">View</string>
+    <string name="loan_overview">LOAN OVERVIEW</string>
+    <string name="search_for_specific_loans">Search for the specific loans</string>
+    <string name="you_have_taken_up_4_act">You have taken up 4 active loans. And they total upto INR 3,00,000</string>
+    <string name="open_loans">Open Loans</string>
+    <string name="closed_loans">Closed Loans</string>
+    <string name="view_details">VIEW DETAILS</string>
+    <string name="loan_closed">LOAN CLOSED</string>
 
 </resources>
