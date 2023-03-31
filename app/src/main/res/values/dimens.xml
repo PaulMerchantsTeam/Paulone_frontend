@@ -6,5 +6,6 @@
 
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>
     <dimen name="ten_dp">10dp</dimen>
+    <dimen name="card_margin_23">23dp</dimen>
 
 </resources>
