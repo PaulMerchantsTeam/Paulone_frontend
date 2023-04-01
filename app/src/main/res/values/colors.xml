@@ -21,6 +21,8 @@
 
     <color name="yellow_main">#F8B814</color>
 
+    <color name="white_gray">#AFAFAF</color>
+
     <color name="view_color">#663F72AF</color>
     <color name="pg_color">#3F72AF</color>
     <color name="no_color">#00FFFFFF</color>
@@ -35,6 +37,10 @@
 
     <color name="back_blue_light">#E0E6EF</color>
     <color name="back_blue_light2">#F2F3F6</color>
+
+    <color name="view_line">#D7D7D7</color>
+    <color name="view_line_dark">#555555</color>
+    <color name="text_dark_color">#202020</color>
 
 
 </resources>

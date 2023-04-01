@@ -27,7 +27,7 @@
         app:itemIconSize="@dimen/twenty_four"
         app:itemPaddingBottom="10dp"
         app:itemPaddingTop="10dp"
-        app:itemRippleColor="@color/color_prim_one_40"
+        app:itemRippleColor="@color/white_gray"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

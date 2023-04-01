@@ -12,7 +12,6 @@ import com.paulmerchants.gold.model.ActionItem
 class HomeSweetBillsAdapter :
     ListAdapter<ActionItem, HomeBillsViewHolder>(DIFF_CALLBACK) {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = HomeBillsViewHolder(
         ItemActionBillBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )

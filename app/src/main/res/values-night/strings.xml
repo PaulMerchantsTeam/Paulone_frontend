@@ -8,4 +8,14 @@
     <string name="gas_pipline">GAS PIPELINE</string>
     <string name="apartment">APARTMENT</string>
     <string name="metrocard">METRO CARD</string>
+    <string name="services">Services</string>
+    <string name="transaction">Transactions</string>
+    <string name="settings">Settings</string>
+    <string name="loan_renewed">Loans Renewal</string>
+    <string name="recharge">Recharges</string>
+    <string name="other_bills">Other Bills</string>
+    <string name="other_emis">Other EMI’s</string>
+    <string name="other_emi_pay">Others EMI payments</string>
+    <string name="others">Others</string>
+    <string name="credit_score">Credit Score</string>
 </resources>

@@ -27,7 +27,8 @@ import kotlinx.coroutines.delay
 class HomeScreenFrag :
     BaseFragment<DummyHomeScreenFragmentBinding>(DummyHomeScreenFragmentBinding::inflate) {
     private val upcomingLoanAdapter = UpcomingLoanAdapter()
-    private val homeSweetBillsAdapter = HomeSweetBillsAdapter()
+
+    //    private val homeSweetBillsAdapter = HomeSweetBillsAdapter()
     private val TAG = "HomeScreenFrag"
 
     //    private var isStartAnim = true
@@ -158,34 +159,7 @@ class HomeScreenFrag :
     }
 
     private fun setUiOnHomeSweetHomeBills() {
-        val actionItem1 = ActionItem(1, R.drawable.elec_bill, getString(R.string.electricity))
-        val actionItem2 = ActionItem(2, R.drawable.broadband_bill, getString(R.string.broadband))
-        val actionItem3 = ActionItem(3, R.drawable.education_loan, getString(R.string.education))
-        val actionItem4 = ActionItem(4, R.drawable.cylinder_gas, getString(R.string.gas_cylinder))
-        val actionItem5 = ActionItem(5, R.drawable.apartment_group, getString(R.string.apartment))
-        val actionItem6 = ActionItem(6, R.drawable.pipeline_gas, getString(R.string.gas_pipline))
-        val actionItem7 = ActionItem(7, R.drawable.home_rent, getString(R.string.homerent))
-        val actionItem8 = ActionItem(8, R.drawable.tap, getString(R.string.water))
-        val actionItem9 = ActionItem(9, R.drawable.landline_action, getString(R.string.landline))
-        val actionItem10 = ActionItem(10, R.drawable.cable_tv, getString(R.string.cabletv))
-        val list = listOf(
-            actionItem1,
-            actionItem2,
-            actionItem3,
-            actionItem4,
-            actionItem5,
-            actionItem6,
-            actionItem7,
-            actionItem8,
-            actionItem9,
-            actionItem10
-        )
-        val staggeredGridLayoutManager = StaggeredGridLayoutManager(4, LinearLayoutManager.VERTICAL)
-        homeSweetBillsAdapter.submitList(list)
-        binding.allPaymnetActionParent.homeSweetHomBillsRv.apply {
-            layoutManager = staggeredGridLayoutManager
-            adapter = homeSweetBillsAdapter
-        }
+        binding.allPaymnetActionParent.homeSweetHomBillsRv.setUiOnHomeSweetHomeBills(requireContext())
     }
 
 

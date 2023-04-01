@@ -5,17 +5,13 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.databinding.ActivityMainBinding
-import com.paulmerchants.gold.utility.hideView
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +21,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
     lateinit var navOption: NavOptions
+    lateinit var navOptionTop: NavOptions
     lateinit var navController: NavController
+
     public override val mViewModel: CommonViewModel by viewModels()
     override fun getViewBinding() = ActivityMainBinding.inflate(layoutInflater)
 
@@ -37,6 +35,9 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         navController = navHostFragment.navController
         navOption = NavOptions.Builder().setEnterAnim(R.anim.slide_in_right)
             .setExitAnim(R.anim.slide_out_left).setPopEnterAnim(R.anim.slide_in_left)
+            .setPopExitAnim(R.anim.slide_out_right).build()
+        navOptionTop = NavOptions.Builder().setEnterAnim(R.anim.slide_in_bottom)
+            .setExitAnim(R.anim.slide_out_bottom).setPopEnterAnim(R.anim.slide_in_left)
             .setPopExitAnim(R.anim.slide_out_right).build()
         binding.bottomNavigationView.itemIconTintList = null
         binding.bottomNavigationView.setupWithNavController(navController)
@@ -53,6 +54,34 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                 binding.bottomNavigationView.show()
             } else {
                 binding.bottomNavigationView.visibility = View.GONE
+            }
+        }
+
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.homeScreenFrag -> {
+                    navController.navigate(R.id.homeScreenFrag, null, navOption)
+                    true
+                }
+                R.id.goldLoanScreenFrag -> {
+                    navController.navigate(R.id.goldLoanScreenFrag)
+                    true
+                }
+                R.id.billsAndMoreScreenFrag -> {
+                    navController.navigate(R.id.billsAndMoreScreenFrag, null, navOptionTop)
+                    true
+                }
+                R.id.locateUsFrag -> {
+                    navController.navigate(R.id.locateUsFrag, null, navOption)
+                    true
+                }
+                R.id.menuScreenFrag -> {
+                    navController.navigate(R.id.menuScreenFrag, null, navOptionTop)
+                    true
+                }
+                else -> {
+                    false
+                }
             }
         }
     }
