@@ -1,4 +1,3 @@
 package com.paulmerchants.gold.utility
 
-object Validation {
-}
+object Validation

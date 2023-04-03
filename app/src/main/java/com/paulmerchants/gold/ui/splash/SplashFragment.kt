@@ -65,7 +65,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                     personIv.setBackgroundResource(R.drawable.online_payment_person_plant)
                     nextBtn.apply {
                         setBackgroundColor(
-                            ContextCompat.getColor(
+                            getColor(
                                 requireContext(),
                                 R.color.yellow_main
                             )
@@ -85,7 +85,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                     nextBtn.apply {
                         text = getString(R.string.proceed)
                         setBackgroundColor(
-                            ContextCompat.getColor(
+                            getColor(
                                 requireContext(),
                                 R.color.splash_screen_three
                             )
@@ -101,10 +101,6 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
 
     private fun updateTopCounter() {
         binding.countTv.text = "${splashViewModel.counter}/3"
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     private suspend fun animateOne() {
@@ -131,12 +127,12 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         lifecycleScope.launch(Dispatchers.Main) {
             binding.apply {
                 mainSplash.setBackgroundColor(
-                    ContextCompat.getColor(
+                    getColor(
                         requireContext(), colorBg
                     )
                 )
                 poweredByTv.setTextColor(
-                    ContextCompat.getColor(
+                    getColor(
                         requireContext(), tvColor
                     )
                 )

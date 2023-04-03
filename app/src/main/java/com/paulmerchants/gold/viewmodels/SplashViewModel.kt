@@ -19,7 +19,4 @@ class SplashViewModel @Inject constructor() : ViewModel() {
         counter += 1
     }
 
-    override fun onCleared() {
-        super.onCleared()
-    }
 }

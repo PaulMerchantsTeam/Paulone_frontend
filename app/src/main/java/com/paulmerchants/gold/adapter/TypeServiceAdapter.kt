@@ -9,16 +9,19 @@ import com.paulmerchants.gold.adapterviewholders.TypeServiceHolder
 import com.paulmerchants.gold.databinding.ItemOptionMenuBinding
 import com.paulmerchants.gold.model.TypeService
 
-class TypeServiceAdapter :
+class TypeServiceAdapter(
+    private val onTypeServiceClicked: (TypeService) -> Unit,
+) :
     ListAdapter<TypeService, TypeServiceHolder>(DIFF_CALLBACK) {
 
+    private var isSelected: Int? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TypeServiceHolder(
         ItemOptionMenuBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
     override fun onBindViewHolder(holder: TypeServiceHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onTypeServiceClicked, position, isSelected)
     }
 
     companion object {
@@ -39,4 +42,7 @@ class TypeServiceAdapter :
     }
 
 
+    fun setSelectedPosition(i: Int) {
+        isSelected = i
+    }
 }

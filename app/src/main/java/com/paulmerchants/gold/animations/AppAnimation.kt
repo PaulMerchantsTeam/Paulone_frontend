@@ -45,7 +45,7 @@ object AppAnimation {
             iv.parent,
             "backgroundColor", R.color.splash_screen_one, R.color.splash_screen_three
         )
-        animator.setDuration(500)
+        animator.duration = 500
         animator.repeatCount = 1
         animator.repeatMode = ObjectAnimator.REVERSE
 //        animator.disableViewDuringAnimation(colorizeButton)

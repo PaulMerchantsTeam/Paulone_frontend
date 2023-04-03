@@ -19,9 +19,4 @@ class GoldLoanScreenFrag :
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-
-    }
-
 }

@@ -28,9 +28,4 @@ class CommonViewModel @Inject constructor() : ViewModel() {
         timer?.start()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-
-    }
-
 }

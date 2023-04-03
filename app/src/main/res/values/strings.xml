@@ -37,7 +37,7 @@
     <string name="signup_via_g">Sign up via google</string>
     <string name="successfull">successful!</string>
     <string name="we_beleive_in">We believe in</string>
-    <string name="security">security.</string>
+    <string name="security">security.</string>We believe in security
     <string name="please_cr_mpin">Please create a</string>
     <string name="m_pin">M-pin</string>
     <string name="for_u">for you</string>
@@ -105,5 +105,21 @@
     <string name="others">Others</string>
     <string name="credit_score">Credit Score</string>
     <string name="one_place_for_everything">(One place for everything)</string>
+    <string name="pay_bill_point_desc">*Pay bills and more to win \nPaul Points and get exciting offers.</string>
+    <string name="search_yr_transac">Search your transactions</string>
+    <string name="history">History</string>
+    <string name="view_trans">View Transactions</string>
+    <string name="bank_acc">Bank Accounts</string>
+    <string name="upi_setting">UPI Settings</string>
+    <string name="card_setting">Card Settings</string>
+    <string name="acc_sett">Account Settings</string>
+    <string name="man_yr_Account">Account Settings</string>
+    <string name="add_or_mange_add">Add or manage addresses</string>
+    <string name="all_abt_us">All about us</string>
+    <string name="wht_we_r">What are we?</string>
+    <string name="our_priv_policy">Our Privacy policy</string>
+    <string name="we_beleive_in_sec">We believe in security</string>
+    <string name="termNCondn"><![CDATA[Terms & Conditions]]></string>
+    <string name="faqs">FAQ\'s</string>
 
 </resources>

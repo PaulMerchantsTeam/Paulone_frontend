@@ -11,9 +11,4 @@ class MainScreenFrag : BaseFragment<MainScreenFragmentBinding>(MainScreenFragmen
 
     }
 
-    override fun onStart() {
-        super.onStart()
-
-    }
-
 }

@@ -165,13 +165,7 @@ fun ViewGroup.hideViewGrp() {
 
 fun ObjectAnimator.disableViewDuringAnimation(view: View) {
     addListener(object : AnimatorListenerAdapter() {
-        override fun onAnimationStart(animation: Animator, isReverse: Boolean) {
-            super.onAnimationStart(animation, isReverse)
-        }
 
-        override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
-            super.onAnimationEnd(animation, isReverse)
-        }
     })
 }
 

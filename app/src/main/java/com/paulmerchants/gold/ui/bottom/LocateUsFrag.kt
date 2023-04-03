@@ -11,9 +11,4 @@ class LocateUsFrag : BaseFragment<LocateUsScreenFragmentBinding>(LocateUsScreenF
 
     }
 
-    override fun onStart() {
-        super.onStart()
-
-    }
-
 }

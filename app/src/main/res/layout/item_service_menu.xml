@@ -51,7 +51,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view3" />
 
     <ImageView
-        android:id="@+id/imageView12"
+        android:id="@+id/option2Next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -61,7 +61,7 @@
         app:srcCompat="@drawable/arrow_right_black" />
 
     <ImageView
-        android:id="@+id/imageView13"
+        android:id="@+id/option1Next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
