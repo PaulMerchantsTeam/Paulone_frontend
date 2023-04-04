@@ -6,8 +6,10 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MenuServicesAdapter
+import com.paulmerchants.gold.adapter.TransacDoneAdapter
 import com.paulmerchants.gold.adapter.TypeServiceAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.customviews.CustomViews
@@ -20,14 +22,18 @@ import com.paulmerchants.gold.model.TypeService
 import com.paulmerchants.gold.prefrences.ServiceType
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
+import com.paulmerchants.gold.utility.showVg
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.pow
 
 @AndroidEntryPoint
 class MenuScreenFrag :
     BaseFragment<DummyMenuScreenFragmentBinding>(DummyMenuScreenFragmentBinding::inflate) {
+
     private var myView: CustomViews? = null
     private val menuServiceAdapter = MenuServicesAdapter()
+    private val transacDoneAdapter = TransacDoneAdapter()
+
     private val typeServicesAdapter = TypeServiceAdapter(::onTypeServiceClicked)
 
     override fun DummyMenuScreenFragmentBinding.initialize() {
@@ -40,6 +46,13 @@ class MenuScreenFrag :
         setServicesUi()
         myView = CustomViews(requireContext(), binding.linearOne)
         binding.linearOne.addView(myView)
+        navigateToAnotherScreen()
+    }
+
+    private fun navigateToAnotherScreen() {
+        binding.prepaidMenuCard.setOnClickListener {
+            findNavController().navigate(R.id.pcFrag)
+        }
     }
 
     private fun setTypeServiceUi() {
@@ -77,10 +90,13 @@ class MenuScreenFrag :
         //no data available
         binding.transacSearchView.hide()
         binding.servicesRv.hide()
+        binding.lotteAwards.root.show()
     }
 
     private fun setSettingsUi() {
+        binding.lotteAwards.root.hide()
         binding.transacSearchView.hide()
+        binding.servicesRv.show()
         val service1 = MenuServices(
             1,
             getString(R.string.history),
@@ -141,6 +157,8 @@ class MenuScreenFrag :
 
     private fun setTransactionUi() {
         binding.transacSearchView.show()
+        binding.servicesRv.show()
+        binding.lotteAwards.root.hide()
         val trans1 = TransDoneModel(
             0,
             R.drawable.transc_gold_icon,
@@ -162,20 +180,22 @@ class MenuScreenFrag :
         val trans3 = TransDoneModel(
             3,
             R.drawable.transc_gold_icon,
-            1,
+            3,
             "Gold Loan",
             "3500",
             "Feb 1st, 2023 at 7:30 pm"
         )
         val listService =
-            listOf(trans1)
-//        menuServiceAdapter.submitList(listService)
-        binding.servicesRv.adapter = menuServiceAdapter
+            listOf(trans1, trans2, trans3)
+        transacDoneAdapter.submitList(listService)
+        binding.servicesRv.adapter = transacDoneAdapter
     }
 
 
     private fun setServicesUi() {
         binding.transacSearchView.hide()
+        binding.servicesRv.show()
+        binding.lotteAwards.root.hide()
         val service1 = MenuServices(
             1,
             getString(R.string.gold_loan),

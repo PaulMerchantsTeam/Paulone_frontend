@@ -6,7 +6,7 @@
     <!--        android:endColor="@color/bar_clicked_light"-->
     <!--        android:angle="90"/>-->
 
-    <corners android:radius="14dp" />
+    <corners android:radius="@dimen/frtn_dp" />
 
     <solid android:color="@color/splash_screen_three" />
 

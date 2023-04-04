@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentCardInfo"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/prepaid_card_back_half">
+
+
+    <TextView
+        android:id="@+id/titleNameCardTv"
+        style="@style/text_16_bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Prithvi Kumar"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/cardNumTv"
+        style="@style/text_16_bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
+        android:gravity="center"
+        android:text="xxxx   xxxx   xxxx   4536"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleNameCardTv" />
+
+    <TextView
+        android:id="@+id/expTv"
+        style="@style/text_16_bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Exp: 12/2025"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/cardNumTv"
+        app:layout_constraintTop_toBottomOf="@+id/cardNumTv" />
+
+    <TextView
+        android:id="@+id/cvvTv"
+        style="@style/text_16_bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CVV: xxx"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/expTv"
+        app:layout_constraintEnd_toEndOf="@+id/cardNumTv"
+        app:layout_constraintTop_toTopOf="@+id/expTv" />
+
+    <TextView
+        android:id="@+id/getDetailsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rec_one_yellow_btn"
+        android:fontFamily="@font/poppins_bold"
+        android:paddingStart="22dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="22dp"
+        android:paddingBottom="3dp"
+        android:text="Get details"
+        android:textColor="@color/splash_screen_one"
+        android:textSize="11sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/viewCardBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expTv" />
+
+    <TextView
+        android:id="@+id/viewCardBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rec_one_yellow_btn"
+        android:fontFamily="@font/poppins_bold"
+        android:paddingStart="22dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="22dp"
+        android:paddingBottom="3dp"
+        android:text="View Card"
+        android:textColor="@color/splash_screen_one"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvvTv" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

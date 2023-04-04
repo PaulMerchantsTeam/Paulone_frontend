@@ -15,6 +15,21 @@ class TransDoneHolder(private val binding: ItemTransactionServicesBinding) :
         binding.apply {
             binding.apply {
 
+                if (actionItem.transImage != null) {
+                    transacIv.setImageResource(actionItem.transImage)
+                }
+                if (actionItem.transTitle != null) {
+                    transacTitalTv.text = actionItem.transTitle
+                }
+                if (actionItem.dateDone != null) {
+                    transacDateAndTimeTv.text = actionItem.dateDone
+
+                }
+                if (actionItem.amountDone != null) {
+                    amountTransacTv.text = actionItem.amountDone
+                }else{
+                    parentTransService.hide()
+                }
             }
         }
     }

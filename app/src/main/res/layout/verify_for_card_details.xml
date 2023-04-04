@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/splash_screen_two"
+    android:paddingTop="32dp"
+    android:paddingBottom="32dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/materialTextView10"
+        style="@style/text_16_bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/please_verify_to_access_your_card_details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parentCodeVerify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialTextView10">
+
+
+        <EditText
+            android:id="@+id/codeCardsOneEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/codeCardsTwoEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/codeCardsTwoEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/codeCardsOneEt"
+            app:layout_constraintEnd_toStartOf="@+id/codeCardsThreeEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/codeCardsOneEt"
+            app:layout_constraintTop_toTopOf="@+id/codeCardsOneEt" />
+
+
+        <EditText
+            android:id="@+id/codeCardsThreeEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/codeCardsTwoEt"
+            app:layout_constraintEnd_toStartOf="@+id/codeCardsFourEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/codeCardsTwoEt"
+            app:layout_constraintTop_toTopOf="@+id/codeCardsTwoEt" />
+
+        <EditText
+            android:id="@+id/codeCardsFourEt"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/codeCardsThreeEt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/codeCardsThreeEt"
+            app:layout_constraintTop_toTopOf="@+id/codeCardsThreeEt" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/materialTextView11"
+        style="@style/text_10_medium_sky"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:text="Resend Code? 00:59"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/parentCodeVerify" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/verifyCodeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:background="@drawable/rec_one_yellow_btn"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:paddingStart="@dimen/twnty_dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="@dimen/twnty_dp"
+        android:paddingBottom="5dp"
+        android:text="Verify"
+        android:textColor="@color/splash_screen_one"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialTextView11" />
+</androidx.constraintlayout.widget.ConstraintLayout>

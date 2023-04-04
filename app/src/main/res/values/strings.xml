@@ -121,5 +121,8 @@
     <string name="we_beleive_in_sec">We believe in security</string>
     <string name="termNCondn"><![CDATA[Terms & Conditions]]></string>
     <string name="faqs">FAQ\'s</string>
+    <string name="patience_is_the_key_to_a_healthy">Patience is the key to a healthy life. Rewards coming soon!!</string>
+    <string name="view_card">View Card</string>
+    <string name="please_verify_to_access_your_card_details">Please verify to access your\n card details</string>
 
 </resources>
