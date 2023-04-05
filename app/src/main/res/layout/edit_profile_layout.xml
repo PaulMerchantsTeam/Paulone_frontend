@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/include2"
+            layout="@layout/header_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="47dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include2">
+
+            <ImageView
+                android:id="@id/userImageIv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dummy_profile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/changePrfoilePicTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/change_profile_picture"
+                android:textColor="@color/splash_screen_three"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="@+id/userImageIv"
+                app:layout_constraintStart_toStartOf="@+id/userImageIv"
+                app:layout_constraintTop_toBottomOf="@+id/userImageIv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/fullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_bold"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/full_name"
+                android:textColor="@color/splash_screen_three"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/changePrfoilePicTv" />
+
+            <EditText
+                android:id="@+id/etName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/view_color"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:inputType="textPersonName"
+                android:text="Prithvi Kumar"
+                android:textColor="@color/splash_screen_one"
+                android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fullName" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/emailId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                android:fontFamily="@font/poppins_bold"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/email_id"
+                android:textColor="@color/splash_screen_three"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etName" />
+
+            <EditText
+                android:id="@+id/etEmailId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/view_color"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:inputType="textEmailAddress"
+                android:text="kprithvi26@gmail.com"
+                android:textColor="@color/splash_screen_one"
+                android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/emailId" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mpin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                android:fontFamily="@font/poppins_bold"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/set_up_mpin"
+                android:textColor="@color/splash_screen_three"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etEmailId" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mChangePinTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:fontFamily="@font/poppins_regular"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/change"
+                android:textColor="@color/splash_screen_three"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@+id/mpin"
+                app:layout_constraintStart_toEndOf="@+id/mpin"
+                app:layout_constraintTop_toTopOf="@+id/mpin" />
+
+            <EditText
+                android:id="@+id/mpinOneEt"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/view_color"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/splash_screen_one"
+                android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/mpinTwoEt"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mpin" />
+
+            <EditText
+                android:id="@+id/mpinTwoEt"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/view_color"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/splash_screen_one"
+                android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/mpinOneEt"
+                app:layout_constraintEnd_toStartOf="@+id/mpinThreeEt"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/mpinOneEt"
+                app:layout_constraintTop_toTopOf="@+id/mpinOneEt" />
+
+
+            <EditText
+                android:id="@+id/mpinThreeEt"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/view_color"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/splash_screen_one"
+                android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/mpinTwoEt"
+                app:layout_constraintEnd_toStartOf="@+id/mpinFourEt"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/mpinTwoEt"
+                app:layout_constraintTop_toTopOf="@+id/mpinTwoEt" />
+
+            <EditText
+                android:id="@+id/mpinFourEt"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/view_color"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/splash_screen_one"
+                android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/mpinThreeEt"
+                app:layout_constraintEnd_toStartOf="@+id/viewPinTv"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/mpinThreeEt"
+                app:layout_constraintTop_toTopOf="@+id/mpinThreeEt" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/viewPinTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="3dp"
+                android:fontFamily="@font/poppins_regular"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/view_under_line"
+                android:textColor="@color/splash_screen_three"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@+id/mpinFourEt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/mpinFourEt" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/panCardTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_bold"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/pan_card"
+                android:textColor="@color/splash_screen_three"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mpinOneEt" />
+
+            <EditText
+                android:id="@+id/etPanCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/view_color"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:hint="@string/please_enter_your_pan_number_here"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/splash_screen_one"
+                android:textColorHint="@color/color_prim_one_40"
+                android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/panCardTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/addressTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                android:fontFamily="@font/poppins_bold"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/address"
+                android:textColor="@color/splash_screen_three"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etPanCard" />
+
+            <EditText
+                android:id="@+id/etAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/view_color"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:hint="@string/please_add_your_address_here"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/splash_screen_one"
+                android:textColorHint="@color/color_prim_one_40"
+                android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addressTv" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/editProfileBtn"
+                style="@style/text_10_semi_bold_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/rec_one_yellow_btn_9"
+                android:paddingStart="24dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="24dp"
+                android:paddingBottom="10dp"
+                android:text="@string/confirm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etAddress" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/verifyPanCardBtn"
+                style="@style/text_10_semi_bold_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rec_one_yellow_btn_9"
+                android:paddingStart="20dp"
+                android:paddingTop="9dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="9dp"
+                android:text="Verify"
+                app:layout_constraintBottom_toBottomOf="@+id/etPanCard"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/etPanCard"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

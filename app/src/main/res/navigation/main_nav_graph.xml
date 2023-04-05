@@ -57,4 +57,10 @@
         android:id="@+id/billsFragment"
         android:name="com.paulmerchants.gold.ui.others.BillsFragment"
         android:label="BillsFragment" />
+
+    <fragment
+        android:id="@+id/profileFrag"
+        android:name="com.paulmerchants.gold.ui.others.ProfileFrag"
+        android:label="ProfileFrag"
+        tools:layout="@layout/profile_layout" />
 </navigation>

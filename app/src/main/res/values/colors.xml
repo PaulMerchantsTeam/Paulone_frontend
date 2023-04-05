@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="open_loans">#DBE2EF</color>
+    <color name="blue_light">#2C9AEA</color>
 
     <!--    color of splash-->
     <color name="splash_screen_one">#150750</color>
@@ -47,6 +48,6 @@
 <color name="edit_text_border_clr">#A4A4A4</color>
 
     <color name="bg_blue_dif">#2B5588</color>
-
+    <color name="green_verified_card">#0FB800</color>
 
 </resources>

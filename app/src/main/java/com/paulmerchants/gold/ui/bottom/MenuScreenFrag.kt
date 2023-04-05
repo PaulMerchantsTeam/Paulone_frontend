@@ -53,6 +53,9 @@ class MenuScreenFrag :
         binding.prepaidMenuCard.setOnClickListener {
             findNavController().navigate(R.id.pcFrag)
         }
+        binding.viewProfileVBtn.setOnClickListener {
+            findNavController().navigate(R.id.profileFrag)
+        }
     }
 
     private fun setTypeServiceUi() {
@@ -128,6 +131,7 @@ class MenuScreenFrag :
                 getString(R.string.our_priv_policy),
                 ""
             )
+
         val service6 =
             MenuServices(
                 6,

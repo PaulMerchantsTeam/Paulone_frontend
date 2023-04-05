@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/card_top_radius_19">
+
+    <TextView
+        android:id="@+id/quickPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/screen_start_margin"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/poppins_bold_italic"
+        android:text="QUICK"
+        android:textColor="@color/splash_screen_one"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="pay"
+        android:textColor="@color/splash_screen_one"
+        app:layout_constraintBottom_toBottomOf="@+id/quickPay"
+        app:layout_constraintStart_toEndOf="@+id/quickPay" />
+
+
+    <TextView
+        android:id="@+id/upcomDTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Upcoming Due Interest payment"
+        android:textColor="@color/splash_screen_one"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/quickPay"
+        app:layout_constraintTop_toBottomOf="@+id/quickPay" />
+
+    <TextView
+        android:id="@+id/goldLoanNumTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:drawableStart="@drawable/gold_loan_with_border"
+        android:drawablePadding="8dp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:gravity="center_vertical"
+        android:text="Gold Loan - xxxx4857"
+        android:textColor="@color/splash_screen_three"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@+id/upcomDTv"
+        app:layout_constraintTop_toBottomOf="@+id/upcomDTv" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="21dp"
+        android:background="@color/view_line"
+        app:layout_constraintEnd_toEndOf="@+id/upcomDTv"
+        app:layout_constraintStart_toStartOf="@+id/goldLoanNumTv"
+        app:layout_constraintTop_toBottomOf="@+id/goldLoanNumTv" />
+
+    <TextView
+        android:id="@+id/prefPyModeTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Preferred Payment Mode"
+        android:textColor="@color/splash_screen_one"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@+id/view4"
+        app:layout_constraintStart_toStartOf="@+id/view4"
+        app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+    <TextView
+        android:id="@+id/prepaidCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:drawableStart="@drawable/paul_pay_small"
+        android:drawablePadding="8dp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:gravity="center_vertical"
+        android:text="Paulpay prepaid card"
+        android:textColor="@color/splash_screen_three"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@+id/prefPyModeTv"
+        app:layout_constraintTop_toBottomOf="@+id/prefPyModeTv" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change_underln"
+        android:textColor="@color/blue_light"
+        app:layout_constraintBottom_toBottomOf="@+id/prepaidCard"
+        app:layout_constraintEnd_toEndOf="@+id/prefPyModeTv"
+        app:layout_constraintTop_toTopOf="@+id/prepaidCard" />
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationViewCard"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="-75dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout8"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout8"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout8"
+        app:layout_constraintTop_toBottomOf="@+id/prepaidCard"
+        app:layout_constraintVertical_bias="1.0"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/credit_card" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationViewCeleb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout8"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout8"
+        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        app:layout_constraintVertical_bias="1.0"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/celeb_confetti" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout8"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginEnd="31dp"
+        android:background="@drawable/yellow_half_8"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/text_11_medium_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pay_now_and_win_"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout7"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/splash_screen_one"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            style="@style/text_16_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/ic_arrow_yellow"
+            android:drawablePadding="20dp"
+            android:text="Pay INR 6,000"
+            android:textColor="@color/yellow_main"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

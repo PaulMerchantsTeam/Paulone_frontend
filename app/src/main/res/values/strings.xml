@@ -41,7 +41,7 @@
     <string name="please_cr_mpin">Please create a</string>
     <string name="m_pin">M-pin</string>
     <string name="for_u">for you</string>
-    <string name="conf_the_mpin">Confirm the Pin</string>
+    <string name="conf_the_mpin">Confirm new M-Pin</string>
     <string name="confirm">Confirm</string>
 
     <string name="finally_done_sighup">And we are finally done, welcome home user. We are glad to have you with us.</string>
@@ -86,6 +86,7 @@
     <string name="your_cards">YOUR CARDS</string>
     <string name="you_wont_lose_them_from_here">(You wont lose them from here)</string>
     <string name="prepaid_card">PREPAID CARD</string>
+    <string name="view_under_line"><u>View</u></string>
     <string name="view">View</string>
     <string name="loan_overview">LOAN OVERVIEW</string>
     <string name="search_for_specific_loans">Search for the specific loans</string>
@@ -124,6 +125,7 @@
     <string name="patience_is_the_key_to_a_healthy">Patience is the key to a healthy life. Rewards coming soon!!</string>
     <string name="view_card">View Card</string>
     <string name="please_verify_to_access_your_card_details">Please verify to access your\n card details</string>
+
     <string name="select_your_bank_lender">Select your Bank/Lender</string>
     <string name="type_of_loan">Type of Loan</string>
     <string name="enter_your_loan_account_number">Enter your Loan Account Number</string>
@@ -141,5 +143,20 @@
     <string name="mobile_number">Mobile Number</string>
     <string name="your_bank_lender_name">Your Bank/Lender Name</string>
     <string name="account_number">Account Number</string>
+
+    <string name="edit_profile">Edit Profile</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="change_profile_picture"><u>Change profile picture</u></string>
+    <string name="change"><u>(Change?)</u></string>
+    <string name="change_underln"><u>Change</u></string>
+    <string name="pan_card">Pan Card</string>
+    <string name="address">Address</string>
+    <string name="please_add_your_address_here">Please add your address here</string>
+    <string name="please_enter_your_pan_number_here">Please enter your pan number here</string>
+    <string name="reset_yr_pin">Reset your  M-Pin</string>
+    <string name="curr_mpin">Current M-Pin</string>
+    <string name="new_mpin">New M-Pin</string>
+    <string name="pay_now_and_win_">Pay now and win exciting offers and gold points!!</string>
+
 
 </resources>
