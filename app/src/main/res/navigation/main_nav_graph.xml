@@ -53,4 +53,8 @@
         android:name="com.paulmerchants.gold.ui.others.PcFrag"
         android:label="PcFrag"
         tools:layout="@layout/prepaid_screen_frag" />
+    <fragment
+        android:id="@+id/billsFragment"
+        android:name="com.paulmerchants.gold.ui.others.BillsFragment"
+        android:label="BillsFragment" />
 </navigation>

@@ -124,5 +124,22 @@
     <string name="patience_is_the_key_to_a_healthy">Patience is the key to a healthy life. Rewards coming soon!!</string>
     <string name="view_card">View Card</string>
     <string name="please_verify_to_access_your_card_details">Please verify to access your\n card details</string>
+    <string name="select_your_bank_lender">Select your Bank/Lender</string>
+    <string name="type_of_loan">Type of Loan</string>
+    <string name="enter_your_loan_account_number">Enter your Loan Account Number</string>
+    <string name="enter_your_mobile_number">Enter your Mobile Number</string>
+    <string name="emi_to_be_paid">EMI to be paid</string>
+    <string name="your_bank_lender">Your bank/Lender</string>
+    <string name="your_account_number">Your Account Number</string>
+    <string name="bill_date">Bill Date</string>
+    <string name="bill_period">Bill Period</string>
+    <string name="bill_number">Bill Number</string>
+    <string name="due_date">Due Date</string>
+    <string name="bill_amount">Bill Amount</string>
+    <string name="customer_convenience_fees">Customer Convenience Fees</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="your_bank_lender_name">Your Bank/Lender Name</string>
+    <string name="account_number">Account Number</string>
 
 </resources>

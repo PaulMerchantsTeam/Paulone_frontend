@@ -8,6 +8,8 @@ import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.paulmerchants.gold.R
@@ -27,6 +29,7 @@ import kotlinx.coroutines.delay
 class HomeScreenFrag :
     BaseFragment<DummyHomeScreenFragmentBinding>(DummyHomeScreenFragmentBinding::inflate) {
     private val upcomingLoanAdapter = UpcomingLoanAdapter()
+    lateinit var navController:NavController
 
     //    private val homeSweetBillsAdapter = HomeSweetBillsAdapter()
     private val TAG = "HomeScreenFrag"
@@ -34,6 +37,7 @@ class HomeScreenFrag :
     //    private var isStartAnim = true
     private var isStartAnim = MutableLiveData<Boolean>()
     override fun DummyHomeScreenFragmentBinding.initialize() {
+        navController = findNavController()
         setUpComingDueLoans()
     }
 
@@ -112,6 +116,9 @@ class HomeScreenFrag :
                 backToNormalAction.hide()
             }
 
+            binding.allPaymnetActionParent.homeLoanParent.setOnClickListener {
+                navController.navigate(R.id.billsFragment)
+            }
         }
     }
 

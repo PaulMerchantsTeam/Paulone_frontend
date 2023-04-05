@@ -16,10 +16,13 @@
     <color name="splash_screen_three">#3F72AF</color>
 
     <color name="color_prim_one_40">#66150750</color>
+    <color name="text_color">#151515</color>
+
     <!--    bg_color-->
     <color name="bg_screen_color">#F9F7F7</color>
 
     <color name="yellow_main">#F8B814</color>
+
 
     <color name="white_gray">#AFAFAF</color>
 
@@ -41,7 +44,7 @@
     <color name="view_line">#D7D7D7</color>
     <color name="view_line_dark">#555555</color>
     <color name="text_dark_color">#202020</color>
-
+<color name="edit_text_border_clr">#A4A4A4</color>
 
     <color name="bg_blue_dif">#2B5588</color>
 

@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/splash_screen_two">
+<!--<ScrollView-->
+<!--    android:id="@+id/scrollView"-->
+<!--    android:layout_width="match_parent"-->
+<!--    app:layout_constraintBottom_toTopOf="@+id/proceedParent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    android:layout_height="0dp"-->
+<!--    android:paddingBottom="50dp">-->
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+
+
+    <include
+        android:id="@+id/header_loan"
+        layout="@layout/header_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/loanPersonIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/header_loan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/loan_person"
+        android:layout_marginTop="40dp"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loanDetailsEnterParent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/loanPersonIv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp"
+        android:visibility="gone">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/bankTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_your_bank_lender"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="21dp"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/text_12_semi_bold_sky"
+            android:textColor="@color/pg_color"
+            />
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            app:layout_constraintTop_toBottomOf="@+id/bankTv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/edit_text_rect"
+            android:spinnerMode="dropdown"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/loanTypeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/type_of_loan"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/spinner"
+            style="@style/text_12_semi_bold_sky"
+            android:textColor="@color/pg_color"
+            />
+        <Spinner
+            android:id="@+id/spinner_loan"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            app:layout_constraintTop_toBottomOf="@+id/loanTypeTv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/edit_text_rect"
+            android:spinnerMode="dropdown"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/loanAcntNoTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_your_loan_account_number"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_loan"
+            style="@style/text_12_semi_bold_sky"
+            android:textColor="@color/pg_color"
+            />
+        <EditText
+            android:id="@+id/enterLoanEt"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            app:layout_constraintTop_toBottomOf="@+id/loanAcntNoTv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/edit_text_rect"
+            />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mobileNoTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_your_mobile_number"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/enterLoanEt"
+            style="@style/text_12_semi_bold_sky"
+            android:textColor="@color/pg_color"
+            />
+        <EditText
+            android:id="@+id/mobileNoEt"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            app:layout_constraintTop_toBottomOf="@+id/mobileNoTv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/edit_text_rect"
+            />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/emiPaidTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/emi_to_be_paid"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/mobileNoEt"
+            style="@style/text_12_semi_bold_sky"
+            android:textColor="@color/pg_color"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            app:layout_constraintTop_toBottomOf="@+id/emiPaidTv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/edit_text_rect"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/loanProccedDetailParent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loanPersonIv">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/aboutBankTv"
+                style="@style/text_12_semi_bold_sky"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="21dp"
+                android:text="@string/your_bank_lender"
+                android:textColor="@color/pg_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/spinner_bank"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edit_text_rect"
+                android:spinnerMode="dropdown"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/aboutBankTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/accountNoTv"
+                style="@style/text_12_semi_bold_sky"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="21dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/your_account_number"
+                android:textColor="@color/pg_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinner_bank" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/enteredAccountTv"
+                style="@style/text_12_regular_white"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edit_text_rect"
+                android:padding="10dp"
+                android:text="654054XXXXXXX4"
+                android:textColor="@color/text_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/accountNoTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/nameTv"
+                style="@style/text_12_semi_bold_sky"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="21dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/your_account_number"
+                android:textColor="@color/pg_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/enteredAccountTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/customerNameTv"
+                style="@style/text_12_regular_white"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edit_text_rect"
+                android:padding="10dp"
+                android:text="Prithvi"
+                android:textColor="@color/text_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nameTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/billDateTv"
+                style="@style/text_12_semi_bold_sky"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="21dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/bill_date"
+                android:textColor="@color/pg_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/customerNameTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/enteredBillDateTv"
+                style="@style/text_12_regular_white"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edit_text_rect"
+                android:padding="10dp"
+                android:text="11/02/2023"
+                android:textColor="@color/text_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/billDateTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/billPeriodTv"
+                style="@style/text_12_semi_bold_sky"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="21dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/bill_period"
+                android:textColor="@color/pg_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/enteredBillDateTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/enteredBillPeriodTv"
+                style="@style/text_12_regular_white"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edit_text_rect"
+                android:padding="10dp"
+                android:text="2 months"
+                android:textColor="@color/text_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/billPeriodTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/billNoTv"
+                style="@style/text_12_semi_bold_sky"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="21dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/bill_number"
+                android:textColor="@color/pg_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/enteredBillPeriodTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/enteredBillNoTv"
+                style="@style/text_12_regular_white"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edit_text_rect"
+                android:padding="10dp"
+                android:text="123456"
+                android:textColor="@color/text_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/billNoTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dueDateTv"
+                style="@style/text_12_semi_bold_sky"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="21dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/due_date"
+                android:textColor="@color/pg_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/enteredBillNoTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/enteredDueDateTv"
+                style="@style/text_12_regular_white"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edit_text_rect"
+                android:padding="10dp"
+                android:text="13/12/2023"
+                android:textColor="@color/text_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dueDateTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/billAmountTv"
+                style="@style/text_12_semi_bold_sky"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="21dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/bill_amount"
+                android:textColor="@color/pg_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/enteredDueDateTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/enteredBillAmountTv"
+                style="@style/text_12_regular_white"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edit_text_rect"
+                android:padding ="10dp"
+                android:text = "INR 2500"
+                android:textColor ="@color/text_color"
+                app:layout_constraintEnd_toEndOf ="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/billAmountTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/conFeesTv"
+                style="@style/text_12_semi_bold_sky"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="21dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/customer_convenience_fees"
+                android:textColor="@color/pg_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/enteredBillAmountTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/enteredConFeesTv"
+                style="@style/text_12_regular_white"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edit_text_rect"
+                android:padding="10dp"
+                android:text="INR 0"
+                android:textColor="@color/text_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/conFeesTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/totalAmountTv"
+                style="@style/text_12_semi_bold_sky"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="21dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/total_amount"
+                android:textColor="@color/pg_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/enteredConFeesTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/enteredTotalAmountTv"
+                style="@style/text_12_regular_white"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/edit_text_rect"
+                android:padding="10dp"
+                android:text="INR 2500"
+                android:textColor="@color/text_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/totalAmountTv" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--</ScrollView>-->
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/proceedParent"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf=""
+        android:background="@color/pg_color">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/proceed"
+            android:background="@color/splash_screen_one"
+            style="@style/text_12_semi_bold_sky"
+            android:textColor="@color/yellow_main"
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:paddingStart="90dp"
+            android:paddingEnd="90dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
