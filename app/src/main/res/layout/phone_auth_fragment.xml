@@ -177,7 +177,7 @@
             app:layout_constraintStart_toEndOf="@+id/otpTwoEt"
             app:layout_constraintTop_toTopOf="@+id/otpTwoEt" />
 
-        signUpParentMain.mpinThreeEt
+
 
         <EditText
             android:id="@+id/otpFourEt"
