@@ -28,8 +28,10 @@
     <color name="white_gray">#AFAFAF</color>
 
     <color name="view_color">#663F72AF</color>
+    <color name="view_color_line">#B4B4B4</color>
     <color name="pg_color">#3F72AF</color>
     <color name="no_color">#00FFFFFF</color>
+    <color name="text_color_gray">#7C7D7E</color>
 
     <color name="green_verified">#0C9200</color>
     <color name="brown">#484848</color>

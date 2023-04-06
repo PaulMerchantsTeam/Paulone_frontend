@@ -157,6 +157,11 @@
     <string name="curr_mpin">Current M-Pin</string>
     <string name="new_mpin">New M-Pin</string>
     <string name="pay_now_and_win_">Pay now and win exciting offers and gold points!!</string>
+    <string name="prepaid_card_">Prepaid card</string>
+    <string name="preferred_modes">Preferred Modes</string>
+    <string name="amount_to_be_paid">Amount to be paid</string>
+    <string name="add_new_upi"><u> Add New Upi </u></string>
+    <string name="upi">UPI</string>
 
 
 </resources>
