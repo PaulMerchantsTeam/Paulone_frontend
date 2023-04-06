@@ -47,9 +47,9 @@
     <color name="view_line">#D7D7D7</color>
     <color name="view_line_dark">#555555</color>
     <color name="text_dark_color">#202020</color>
-<color name="edit_text_border_clr">#A4A4A4</color>
+    <color name="edit_text_border_clr">#A4A4A4</color>
 
     <color name="bg_blue_dif">#2B5588</color>
     <color name="green_verified_card">#0FB800</color>
-
+    <color name="hide_card_num">#7C7D7E</color>
 </resources>

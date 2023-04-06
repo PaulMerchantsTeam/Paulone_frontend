@@ -1,6 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/splash_screen_two">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/checkOutParent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <include
+            android:id="@+id/headerCheckOutQuickPay"
+            layout="@layout/header_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/quickPay"
+            layout="@layout/otp_fill_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/headerCheckOutQuickPay" />
+
+        <View
+            android:id="@+id/view5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/view_line"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/quickPay" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout9"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/screen_start_margin"
+            android:paddingEnd="@dimen/screen_start_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view5">
+
+
+            <TextView
+                android:id="@+id/upcomDTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Due interest payment"
+                android:textColor="@color/splash_screen_one"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/goldLoanNumTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:drawableStart="@drawable/gold_loan_with_border"
+                android:drawablePadding="8dp"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:gravity="center_vertical"
+                android:text="Gold Loan - xxxx4857"
+                android:textColor="@color/splash_screen_three"
+                android:textSize="11sp"
+                app:layout_constraintStart_toStartOf="@+id/upcomDTv"
+                app:layout_constraintTop_toBottomOf="@+id/upcomDTv" />
+
+
+            <TextView
+                android:id="@+id/prefPyModeTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Preferred Payment Mode"
+                android:textColor="@color/splash_screen_one"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="@+id/goldLoanNumTv"
+                app:layout_constraintStart_toStartOf="@+id/goldLoanNumTv"
+                app:layout_constraintTop_toBottomOf="@+id/goldLoanNumTv" />
+
+            <TextView
+                android:id="@+id/dueIntPerMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawablePadding="8dp"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:gravity="center_vertical"
+                android:text="Due Interest as per monthly basis"
+                android:textColor="@color/splash_screen_three"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/prefPyModeTv"
+                app:layout_constraintTop_toBottomOf="@+id/prefPyModeTv" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/change_underln"
+                android:textColor="@color/blue_light"
+                app:layout_constraintBottom_toBottomOf="@+id/prefPyModeTv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/prefPyModeTv" />
+
+            <TextView
+                android:id="@+id/checkBalanceTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/check_bal_under"
+                android:textColor="@color/blue_light"
+                app:layout_constraintBottom_toBottomOf="@+id/dueIntPerMonth"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/dueIntPerMonth" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/confirmBtn"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/color_prim_one_40"
+            android:drawableEnd="@drawable/ic_arrow_yellow"
+            android:enabled="false"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/confirm"
+            android:textColor="@color/yellow_main"
+            android:textSize="12sp"
+            android:visibility="visible"
+            app:cornerRadius="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout9"
+            app:layout_constraintVertical_bias="0.70" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loadingParent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="60dp"
+            app:layout_constraintBottom_toTopOf="@+id/materialTextView12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/double_loader" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/materialTextView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:gravity="center"
+            android:text="Confirming payment.\nThis may take up sometime!"
+            android:textColor="@color/splash_screen_three"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

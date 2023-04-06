@@ -162,6 +162,17 @@
     <string name="amount_to_be_paid">Amount to be paid</string>
     <string name="add_new_upi"><u> Add New Upi </u></string>
     <string name="upi">UPI</string>
+    <string name="check_bal">Check Balance</string>
+    <string name="check_bal_under"><u>Check Balance</u></string>
+    <string name="payment_confirmed">PAYMENT CONFIRMED!!</string>
+    <string name="view_loan_state">View Loans statement</string>
+    <string name="download_receipt"><u>Download receipt</u></string>
+    <string name="prepaid_cards">PREPAID CARDS</string>
+    <string name="wallet">WALLET</string>
+    <string name="add_new_card"><u>Add new card</u></string>
+
+
+
 
 
 </resources>

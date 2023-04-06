@@ -32,7 +32,6 @@
         app:layout_constraintVertical_bias="0.0"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/mint_lotte_reward"
-        app:lottie_url="REPLACE_JSON_URL" />
+        app:lottie_rawRes="@raw/mint_lotte_reward" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
