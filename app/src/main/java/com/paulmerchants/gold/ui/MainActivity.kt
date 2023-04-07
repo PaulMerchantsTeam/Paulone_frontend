@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.appcompat.widget.ViewUtils
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
@@ -12,6 +13,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.databinding.ActivityMainBinding
+import com.paulmerchants.gold.databinding.HeaderLayoutBinding
+import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +34,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        AppUtility.changeStatusBarWithReqdColor(this, R.color.splash_screen_two)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.battery_main_nav_graph) as NavHostFragment
         navController = navHostFragment.navController
@@ -84,6 +89,23 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                 }
             }
         }
+    }
+
+    fun showQuickPayDialog() {
+
+    }
+
+    fun changeHeader(hBinding: HeaderLayoutBinding, title: String, endIcon: Int) {
+        hBinding.apply {
+            titlePageTv.text = title
+            if (endIcon != 0) {
+                endIconIv.setImageResource(endIcon)
+                endIconIv.show()
+            } else {
+                endIconIv.hide()
+            }
+        }
+
     }
 
 

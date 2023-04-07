@@ -122,17 +122,17 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/credit_card" />
 
-<!--    <com.airbnb.lottie.LottieAnimationView-->
-<!--        android:id="@+id/animationViewCeleb"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/constraintLayout8"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/constraintLayout8"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/textView11"-->
-<!--        app:layout_constraintVertical_bias="1.0"-->
-<!--        app:lottie_autoPlay="true"-->
-<!--        app:lottie_loop="true"-->
-<!--        app:lottie_rawRes="@raw/celeb_confetti" />-->
+    <!--    <com.airbnb.lottie.LottieAnimationView-->
+    <!--        android:id="@+id/animationViewCeleb"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/constraintLayout8"-->
+    <!--        app:layout_constraintEnd_toEndOf="@+id/constraintLayout8"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/textView11"-->
+    <!--        app:layout_constraintVertical_bias="1.0"-->
+    <!--        app:lottie_autoPlay="true"-->
+    <!--        app:lottie_loop="true"-->
+    <!--        app:lottie_rawRes="@raw/celeb_confetti" />-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout8"
@@ -141,7 +141,7 @@
         android:layout_marginStart="31dp"
         android:layout_marginEnd="31dp"
         android:background="@drawable/yellow_half_8"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout7"
+        app:layout_constraintBottom_toTopOf="@+id/quixPayParentBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -158,7 +158,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout7"
+        android:id="@+id/quixPayParentBtn"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@color/splash_screen_one"

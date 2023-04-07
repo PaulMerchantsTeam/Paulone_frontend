@@ -56,11 +56,27 @@
     <fragment
         android:id="@+id/billsFragment"
         android:name="com.paulmerchants.gold.ui.others.BillsFragment"
-        android:label="BillsFragment" />
+        android:label="BillsFragment"
+        tools:layout="@layout/bill_n_more_screen_fragment" />
 
     <fragment
         android:id="@+id/profileFrag"
         android:name="com.paulmerchants.gold.ui.others.ProfileFrag"
         android:label="ProfileFrag"
         tools:layout="@layout/profile_layout" />
+    <dialog
+        android:id="@+id/quickPayDialog"
+        android:name="com.paulmerchants.gold.ui.btmsheetDg.QuickPayDialog"
+        android:label="QuickPayDialog"
+        tools:layout="@layout/quick_pay_popup" />
+    <fragment
+        android:id="@+id/quickPayMainFrag"
+        android:name="com.paulmerchants.gold.ui.others.QuickPayMainFrag"
+        android:label="QuickPayMainFrag"
+        tools:layout="@layout/check_out_window_fr_payment" />
+    <fragment
+        android:id="@+id/confirmPaymentDueFrag"
+        android:name="com.paulmerchants.gold.ui.others.ConfirmPaymentDueFrag"
+        android:label="ConfirmPaymentDueFrag"
+        tools:layout="@layout/payment_confirmed_qk_py" />
 </navigation>

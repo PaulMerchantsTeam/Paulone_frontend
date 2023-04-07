@@ -9,7 +9,7 @@ import com.paulmerchants.gold.adapterviewholders.UpcomingLoansViewHolder
 import com.paulmerchants.gold.databinding.ItemUpcomingDueLoanBinding
 import com.paulmerchants.gold.model.DueLoans
 
-class UpcomingLoanAdapter :
+class UpcomingLoanAdapter(private val onPayDueClicked: (DueLoans) -> Unit) :
     ListAdapter<DueLoans, UpcomingLoansViewHolder>(DIFF_CALLBACK) {
 
 
@@ -18,7 +18,7 @@ class UpcomingLoanAdapter :
     )
 
     override fun onBindViewHolder(holder: UpcomingLoansViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onPayDueClicked)
     }
 
     companion object {

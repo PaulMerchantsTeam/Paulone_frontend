@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.ui.bottom
 
+import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -16,9 +17,11 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.HomeSweetBillsAdapter
 import com.paulmerchants.gold.adapter.UpcomingLoanAdapter
 import com.paulmerchants.gold.common.BaseFragment
+import com.paulmerchants.gold.common.Constants.DUE_LOAN_DATA
 import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.DueLoans
+import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -28,8 +31,10 @@ import kotlinx.coroutines.delay
 @AndroidEntryPoint
 class HomeScreenFrag :
     BaseFragment<DummyHomeScreenFragmentBinding>(DummyHomeScreenFragmentBinding::inflate) {
-    private val upcomingLoanAdapter = UpcomingLoanAdapter()
-    lateinit var navController:NavController
+    private val upcomingLoanAdapter = UpcomingLoanAdapter(::onPayDueClicked)
+
+
+    lateinit var navController: NavController
 
     //    private val homeSweetBillsAdapter = HomeSweetBillsAdapter()
     private val TAG = "HomeScreenFrag"
@@ -47,6 +52,16 @@ class HomeScreenFrag :
         startAnimationOnIcon()
         setUiOnHomeSweetHomeBills()
         handleRechargeAndBillUi()
+    }
+
+    private fun onPayDueClicked(dueLoans: DueLoans) {
+        val bundle = Bundle().apply {
+            putParcelable(DUE_LOAN_DATA, dueLoans)
+        }
+        findNavController().navigate(
+            R.id.quickPayDialog,
+            bundle
+        )
     }
 
     private fun setProfileUi() {
@@ -168,6 +183,4 @@ class HomeScreenFrag :
     private fun setUiOnHomeSweetHomeBills() {
         binding.allPaymnetActionParent.homeSweetHomBillsRv.setUiOnHomeSweetHomeBills(requireContext())
     }
-
-
 }

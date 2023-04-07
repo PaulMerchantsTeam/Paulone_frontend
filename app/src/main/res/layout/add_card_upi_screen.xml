@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/include3"
+        layout="@layout/header_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/addACardDescParent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include3">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/materialTextView14"
+            style="@style/text_11_medium_blue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="42dp"
+            android:layout_marginEnd="42dp"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/please_add_a_debit_crre"
+            app:layout_constraintBottom_toTopOf="@+id/addACardBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/addACardBtn"
+            style="@style/text_12_bold_yellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rec_one_blue_btn"
+            android:paddingHorizontal="41dp"
+            android:paddingVertical="@dimen/ten_dp"
+            android:text="@string/add_a_card"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/materialTextView14"
+            app:layout_constraintStart_toStartOf="@+id/materialTextView14"
+            app:layout_constraintTop_toBottomOf="@+id/materialTextView14" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardDetailsParent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingHorizontal="@dimen/screen_start_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include3">
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/nameAsLableTv"
+            style="@style/text_11_bold_sk_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name_as_per_card"
+            android:textColor="@color/lable_color_et"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/nameAsPerCrdTv"
+            app:layout_constraintStart_toStartOf="@+id/nameAsPerCrdTv" />
+
+        <EditText
+            android:id="@+id/nameAsPerCrdTv"
+            style="@style/text_11_bold_sk_blue"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="62dp"
+            android:background="@drawable/edit_text_rect_8"
+            android:hint="@string/name_as_per_card"
+            android:paddingStart="6dp"
+            android:textColor="@color/splash_screen_one"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/cardNumLableTv"
+            style="@style/text_11_bold_sk_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/card_num"
+            android:textColor="@color/lable_color_et"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/cardNumTv"
+            app:layout_constraintStart_toStartOf="@+id/cardNumTv" />
+
+        <EditText
+            android:id="@+id/cardNumTv"
+            style="@style/text_11_bold_sk_blue"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="62dp"
+            android:background="@drawable/edit_text_rect_8"
+            android:hint="@string/card_num"
+            android:paddingStart="6dp"
+            android:textColor="@color/splash_screen_one"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameAsPerCrdTv" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/expLableTv"
+            style="@style/text_11_bold_sk_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/expdatehint"
+            android:textColor="@color/lable_color_et"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/expDateTv"
+            app:layout_constraintStart_toStartOf="@+id/expDateTv" />
+
+        <EditText
+            android:id="@+id/expDateTv"
+            style="@style/text_11_bold_sk_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginTop="62dp"
+            android:background="@drawable/edit_text_rect_8"
+            android:hint="@string/expdatehint"
+            android:paddingStart="6dp"
+            android:paddingEnd="27dp"
+            android:textColor="@color/splash_screen_one"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardNumTv" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/cvvLableTv"
+            style="@style/text_11_bold_sk_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cvv"
+            android:textColor="@color/lable_color_et"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/cvvTv"
+            app:layout_constraintStart_toStartOf="@+id/cvvTv" />
+
+        <EditText
+            android:id="@+id/cvvTv"
+            style="@style/text_11_bold_sk_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginTop="62dp"
+            android:background="@drawable/edit_text_rect_8"
+            android:hint="@string/cvv"
+            android:paddingStart="6dp"
+            android:paddingEnd="53dp"
+            android:textColor="@color/splash_screen_one"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardNumTv" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/byAddingDescTv"
+            style="@style/text_11_medium_blue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/by_adding_a_card"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/expDateTv" />
+
+        <TextView
+            android:id="@+id/saveCardBtn"
+            style="@style/text_12_bold_yellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rec_one_blue_btn"
+            android:paddingHorizontal="41dp"
+            android:paddingVertical="@dimen/ten_dp"
+            android:text="@string/save_card"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/byAddingDescTv"
+            app:layout_constraintVertical_bias="0.57" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

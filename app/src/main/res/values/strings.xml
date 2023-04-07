@@ -171,9 +171,15 @@
     <string name="prepaid_cards">PREPAID CARDS</string>
     <string name="wallet">WALLET</string>
     <string name="add_new_card"><u>Add new card</u></string>
-
-
-
+    <string name="checkout">CHECKOUT</string>
+    <string name="please_add_a_debit_crre">Please add a Debit/Credit card to your account to see it here and make changes whenever you want</string>
+    <string name="add_a_card">Add a card</string>
+    <string name="name_as_per_card">Name as per card</string>
+    <string name="card_num">Card Number</string>
+    <string name="expdatehint">Expiry Date (MM/YY)</string>
+    <string name="cvv">CVV</string>
+    <string name="by_adding_a_card">"By adding this card, you agree to allow Paul Gold to use it for future payments "</string>
+    <string name="save_card">Save Card</string>
 
 
 
