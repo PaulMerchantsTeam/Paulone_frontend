@@ -162,6 +162,7 @@
     <string name="amount_to_be_paid">Amount to be paid</string>
     <string name="add_new_upi"><u> Add New Upi </u></string>
     <string name="upi">UPI</string>
+
     <string name="check_bal">Check Balance</string>
     <string name="check_bal_under"><u>Check Balance</u></string>
     <string name="payment_confirmed">PAYMENT CONFIRMED!!</string>
@@ -172,6 +173,31 @@
     <string name="add_new_card"><u>Add new card</u></string>
 
 
+
+
+
+
+    <string name="mode_of_payment">Mode of Payment</string>
+
+    <string name="it_may_take_upto_24_hours_to_reflect_the_payment_in_billers_portal">It may take upto 24 hours to reflect the payment in billers portal.</string>
+    <string name="transaction_id">Transaction ID</string>
+    <string name="transaction_date_time"><![CDATA[Transaction Date & Time]]></string>
+    <string name="customer_name">Customer Name</string>
+    <string name="biller_name">Biller Name</string>
+    <string name="bbps_transaction_id">BBPS Transaction ID</string>
+    <string name="approval_number">Approval Number</string>
+    <string name="amount_paid">Amount Paid</string>
+
+    <string name="need_help_call_us">Need Help? Call us!</string>
+    <string name="go_to_home">Go to home</string>
+    <string name="add_upi_id_here">Add UPI ID here</string>
+    <string name="save_this_upi_id_for_future_use">Save this UPI id for future use</string>
+    <string name="verify_">Verify</string>
+    <string name="pleas_payment">Please open the application connected with the UPI and make the payment</string>
+    <string name="add_card">Add Card</string>
+    <string name="by_adding_this">By adding this card, you agree to save it with Rupay for seamless future payments</string>
+    <string name="secure_your_card_with_rupay">Secure your card with Rupay</string>
+    <string name="pleas_google_pay_app">Please open your Google Pay app and make the payment.</string>
 
 
 

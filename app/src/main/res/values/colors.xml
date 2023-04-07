@@ -10,6 +10,9 @@
 
     <color name="open_loans">#DBE2EF</color>
     <color name="blue_light">#2C9AEA</color>
+    <color name="text_light_gray">#848484</color>
+    <color name="text_red">#E10D0D</color>
+
 
     <!--    color of splash-->
     <color name="splash_screen_one">#150750</color>
