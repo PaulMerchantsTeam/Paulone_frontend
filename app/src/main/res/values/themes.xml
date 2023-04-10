@@ -67,7 +67,11 @@
         <item name="android:textColor">@color/splash_screen_one</item>
         <item name="android:fontFamily">@font/poppins_semi_bold</item>
     </style>
-
+    <style name="text_16_regular_blue">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/splash_screen_one</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
     <style name="text_12_bold_blue">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/splash_screen_one</item>

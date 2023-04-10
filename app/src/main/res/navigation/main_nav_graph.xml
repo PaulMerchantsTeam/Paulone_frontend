@@ -53,11 +53,27 @@
         android:name="com.paulmerchants.gold.ui.others.PcFrag"
         android:label="PcFrag"
         tools:layout="@layout/prepaid_screen_frag" />
+<!--    <fragment-->
+<!--        android:id="@+id/billsFragment"-->
+<!--        android:name="com.paulmerchants.gold.ui.others.BillsFragment"-->
+<!--        android:label="BillsFragment"-->
+<!--        tools:layout="@layout/bill_n_more_screen_fragment" />-->
     <fragment
         android:id="@+id/billsFragment"
         android:name="com.paulmerchants.gold.ui.others.BillsFragment"
         android:label="BillsFragment"
-        tools:layout="@layout/bill_n_more_screen_fragment" />
+        tools:layout="@layout/layout_loan_emi" />
+    <fragment
+        android:id="@+id/transactionDetailFrag"
+        android:name="com.paulmerchants.gold.ui.others.TransactionDetailFrag"
+        android:label="TransactionDetailFrag"
+        tools:layout="@layout/transaction_detail" />
+    <fragment
+        android:id="@+id/complaintRegister"
+        android:name="com.paulmerchants.gold.ui.others.ComplaintRegister"
+        android:label="ComplaintRegister"
+        tools:layout="@layout/register_complaint" />
+
 
     <fragment
         android:id="@+id/profileFrag"

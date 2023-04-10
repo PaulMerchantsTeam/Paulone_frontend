@@ -33,14 +33,13 @@ class MenuScreenFrag :
     private var myView: CustomViews? = null
     private val menuServiceAdapter = MenuServicesAdapter()
     private val transacDoneAdapter = TransacDoneAdapter()
-
     private val typeServicesAdapter = TypeServiceAdapter(::onTypeServiceClicked)
-
     override fun DummyMenuScreenFragmentBinding.initialize() {
 
     }
 
     override fun onStart() {
+
         super.onStart()
         setTypeServiceUi()
         setServicesUi()
@@ -50,11 +49,17 @@ class MenuScreenFrag :
     }
 
     private fun navigateToAnotherScreen() {
-        binding.prepaidMenuCard.setOnClickListener {
-            findNavController().navigate(R.id.pcFrag)
-        }
+//        binding.prepaidMenuCard.setOnClickListener {
+//            findNavController().navigate(R.id.pcFrag)
+//        }
         binding.viewProfileVBtn.setOnClickListener {
             findNavController().navigate(R.id.profileFrag)
+        }
+        binding.prepaidMenuCard.setOnClickListener {
+            findNavController().navigate(R.id.complaintRegister   )
+        }
+        binding.neddSuppMenuCard.setOnClickListener {
+            findNavController().navigate(R.id.transactionDetailFrag)
         }
     }
 

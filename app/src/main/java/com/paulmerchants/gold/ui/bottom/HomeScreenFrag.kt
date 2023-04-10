@@ -13,11 +13,14 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.paulmerchants.gold.BbpsType
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.HomeSweetBillsAdapter
 import com.paulmerchants.gold.adapter.UpcomingLoanAdapter
 import com.paulmerchants.gold.common.BaseFragment
+import com.paulmerchants.gold.common.Constants.BBPS_TYPE
 import com.paulmerchants.gold.common.Constants.DUE_LOAN_DATA
+
 import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.DueLoans
@@ -131,10 +134,59 @@ class HomeScreenFrag :
                 backToNormalAction.hide()
             }
 
-            binding.allPaymnetActionParent.homeLoanParent.setOnClickListener {
-                navController.navigate(R.id.billsFragment)
-            }
+
         }
+
+        binding.allPaymnetActionParent.homeLoanParent.setOnClickListener {
+            navigationBills(BbpsType.HomeLoan.type)
+        }
+
+        binding.allPaymnetActionParent.personalLoanParent.setOnClickListener {
+            navigationBills(BbpsType.PersonalLoan.type)
+        }
+        binding.allPaymnetActionParent.creditCardParent.setOnClickListener {
+            navigationBills(BbpsType.CreditCard.type)
+        }
+        binding.allPaymnetActionParent.dthServiceActionParent.setOnClickListener {
+            navigationBills(BbpsType.DthService.type)
+        }
+        binding.allPaymnetActionParent.dthServiceActionParent2.setOnClickListener {
+            navigationBills(BbpsType.DthService.type)
+        }
+        binding.allPaymnetActionParent.electricityParent.setOnClickListener {
+            navigationBills(BbpsType.Electricity.type)
+        }
+        binding.allPaymnetActionParent.boradBandParent.setOnClickListener {
+            navigationBills(BbpsType.Broadband.type)
+        }
+        binding.allPaymnetActionParent.MobileParent.setOnClickListener {
+            navigationBills(BbpsType.Mobile.type)
+        }
+        binding.allPaymnetActionParent.mobileParent2.setOnClickListener {
+            navigationBills(BbpsType.MobileRecharge.type)
+        }
+        binding.allPaymnetActionParent.mobPostPaidParent.setOnClickListener {
+            navigationBills(BbpsType.MobilePostpaid.type)
+        }
+        binding.allPaymnetActionParent.ottParent.setOnClickListener {
+            navigationBills(BbpsType.OttWorld.type)
+        }
+        binding.allPaymnetActionParent.insuranceParent.setOnClickListener {
+            navigationBills(BbpsType.Insurance.type)
+        }
+        binding.allPaymnetActionParent.muncipalTaxParent.setOnClickListener {
+            navigationBills(BbpsType.MunicipalTax.type)
+        }
+        binding.allPaymnetActionParent.fastTagParent.setOnClickListener {
+            navigationBills(BbpsType.FastTag.type)
+        }
+        binding.allPaymnetActionParent.challanTraffitParent.setOnClickListener {
+            navigationBills(BbpsType.Challan.type)
+        }
+        binding.allPaymnetActionParent.metroCardParent.setOnClickListener {
+            navigationBills(BbpsType.MetroCard.type)
+        }
+
     }
 
     private fun animateHintEditText() {
@@ -159,6 +211,15 @@ class HomeScreenFrag :
         }
 
     }
+
+    fun navigationBills(type:Int){
+        val bundleHomeLoan = Bundle().apply {
+            putInt(BBPS_TYPE, type)
+        }
+            findNavController().navigate(R.id.billsFragment,bundleHomeLoan)
+
+        }
+
 
     private fun startAnimationOnIcon() {
         binding.allPaymnetActionParent.apply {

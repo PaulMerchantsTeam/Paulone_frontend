@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/splash_screen_two">
+
+    <ImageView
+        android:id="@+id/crossIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/cross"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/operatorTv"
+        style="@style/text_16_semi_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:text="Operator"
+        android:textColor="@color/text_light_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/crossIv" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/operatorTypeTv"
+        style="@style/text_16_semi_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Prepaid Bill"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/crossIv" />
+
+    <View
+        android:id="@+id/view_hor_oper"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/operatorTypeTv"
+        android:layout_marginTop="4dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@color/view_color_line"
+        />
+
+
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/operatorNameTv"
+        style="@style/text_16_semi_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:text="Operator Name"
+        android:textColor="@color/text_light_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_hor_oper" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/operNameTv"
+        style="@style/text_16_semi_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Airtel"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_hor_oper" />
+
+    <View
+        android:id="@+id/view_hor_name"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/operNameTv"
+        android:layout_marginTop="4dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@color/view_color_line"
+        />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/transDateTv"
+        style="@style/text_16_semi_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:text="Transaction Date"
+        android:textColor="@color/text_light_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_hor_name" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/transdateFillTv"
+        style="@style/text_16_semi_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:text="09/03/2023"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_hor_name" />
+
+    <View
+        android:id="@+id/view_hor_trans"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/transdateFillTv"
+        android:layout_marginTop="4dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@color/view_color_line"
+        />
+
+
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/transAmountTv"
+        style="@style/text_16_semi_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:text="Transaction Amount"
+        android:textColor="@color/text_light_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_hor_trans" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/transAmountFillTv"
+        style="@style/text_16_semi_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:text="INR 650"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_hor_trans" />
+
+    <View
+        android:id="@+id/view_hor_amount"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/transAmountFillTv"
+        android:layout_marginTop="4dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@color/view_color_line"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/statusTv"
+        style="@style/text_16_semi_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:text="Status"
+        android:textColor="@color/text_light_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_hor_amount" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/statusFillTv"
+        style="@style/text_16_semi_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Success"
+        android:textColor="@color/green_success"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_hor_amount" />
+
+
+        />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
+class   MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
     lateinit var navOption: NavOptions
     lateinit var navOptionTop: NavOptions

@@ -21,6 +21,7 @@
 
     <color name="color_prim_one_40">#66150750</color>
     <color name="text_color">#151515</color>
+    <color name="text_color_light_gray">#6B6B6B</color>
 
     <!--    bg_color-->
     <color name="bg_screen_color">#F9F7F7</color>
@@ -37,6 +38,7 @@
     <color name="text_color_gray">#7C7D7E</color>
 
     <color name="green_verified">#0C9200</color>
+    <color name="green_success">#2BA00E</color>
     <color name="brown">#484848</color>
     <color name="red">#E20000</color>
     <color name="due_4days_red">#E20000</color>
