@@ -14,6 +14,7 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.databinding.ActivityMainBinding
 import com.paulmerchants.gold.databinding.HeaderLayoutBinding
+import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
@@ -93,6 +94,10 @@ class   MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
     fun showQuickPayDialog() {
 
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     fun changeHeader(hBinding: HeaderLayoutBinding, title: String, endIcon: Int) {

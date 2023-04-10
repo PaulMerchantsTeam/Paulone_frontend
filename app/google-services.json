@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "517998691088",
+    "project_id": "paul-gold",
+    "storage_bucket": "paul-gold.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:517998691088:android:e57bff3f2b98e732175b95",
+        "android_client_info": {
+          "package_name": "com.paulmerchants.gold"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "517998691088-m6om88pp10e0kcbn5om3kvsvo8g86o1l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGLEsDLy1WTZ_GG4Z1xMkMdXTN28jAgZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "517998691088-m6om88pp10e0kcbn5om3kvsvo8g86o1l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

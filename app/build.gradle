@@ -5,7 +5,10 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
-
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+    id 'com.google.firebase.firebase-perf'
+    id 'com.google.firebase.appdistribution'
 }
 
 android {
@@ -20,12 +23,13 @@ android {
         minSdk 23
         targetSdk 33
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0_gold"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+
         release {
             minifyEnabled true
             shrinkResources = true
@@ -36,6 +40,18 @@ android {
             matchingFallbacks = ['release']
             debuggable false
         }
+//        debug {
+//            firebaseAppDistribution {
+//                releaseNotes "adding distribution type"
+//                testers = "dev.prithvi.19@gmail.com, swatibj08@gmail.com"
+//            }
+//        }
+//        release {
+//            firebaseAppDistribution {
+//                releaseNotes "adding distribution type"
+//                testers = "dev.prithvi.19@gmail.com, swatibj08@gmail.com"
+//            }
+//        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -47,6 +63,13 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-analytics-ktx:20.1.2'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.3.6'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.2.0'
+    implementation 'com.google.firebase:firebase-perf-ktx:20.3.1'
+    implementation 'com.google.firebase:firebase-config:21.0.2'
+    implementation 'com.google.firebase:firebase-messaging:23.0.3'
     def lifecycle_version = "2.4.0"
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -81,6 +104,10 @@ dependencies {
     //lotte
     def lottieVersion = "3.4.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    //gson converter
+    implementation 'com.google.code.gson:gson:2.8.8'
+
 
 
 }

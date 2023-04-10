@@ -130,7 +130,7 @@ fun View.shoViewWithAnim() {
     visibility = View.VISIBLE
     alpha = 0.0f
     this.animate()
-        .translationY(this.height.toFloat())
+        .translationY(0F)
         .alpha(1.0f)
         .setListener(null)
 }

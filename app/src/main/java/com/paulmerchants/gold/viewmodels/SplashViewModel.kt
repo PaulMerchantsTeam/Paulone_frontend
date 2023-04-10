@@ -16,7 +16,7 @@ class SplashViewModel @Inject constructor() : ViewModel() {
     var counter = 0
 
     fun setValue() {
-        counter += 1
+        if (counter >= 3) return else counter += 1
     }
 
 }

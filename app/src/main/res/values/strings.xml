@@ -176,7 +176,6 @@
     <string name="save_card">Save Card</string>
 
 
-
     <string name="mode_of_payment">Mode of Payment</string>
 
     <string name="it_may_take_upto_24_hours_to_reflect_the_payment_in_billers_portal">It may take upto 24 hours to reflect the payment in billers portal.</string>
@@ -198,6 +197,7 @@
     <string name="by_adding_this">By adding this card, you agree to save it with Rupay for seamless future payments</string>
     <string name="secure_your_card_with_rupay">Secure your card with Rupay</string>
     <string name="pleas_google_pay_app">Please open your Google Pay app and make the payment.</string>
+
     <string name="select_complaint_type">Select Complaint Type</string>
     <string name="transaction_reference_id">Transaction Reference ID</string>
     <string name="description">Description</string>
@@ -233,10 +233,8 @@
     <string name="fastag_recharge"> Fastag Recharge</string>
     <string name="metro_card_recharge"> Metro Card Recharge</string>
 
-
-
-
-
+    <string name="send_again"><u>Send again</u></string>
+    <string name="prceed">PROCEED</string>
 
 
 </resources>

@@ -1,7 +1,15 @@
 package com.paulmerchants.gold.common
 
+import com.paulmerchants.gold.BuildConfig
+
 object Constants {
     const val DUE_LOAN_DATA = "DUE_LOAN_DATA"
     const val BBPS_TYPE = "BBPS_TYPE"
+
+    const val SHARED_PREF_FILE = "${BuildConfig.VERSION_NAME}_${BuildConfig.VERSION_CODE}_app"
+
+
+    //Page_visit_boolean
+    const val SPLASH_SCRN_VISITED = "SPLASH_SCRN_VISITED"
 
 }

@@ -71,6 +71,12 @@ class PhoenNumVerifiactionFragment :
                 }
             }
 
+            binding.pleaseOtpTv.setOnClickListener {
+                //change Num
+                //show Num Input Ui, hide otp layout
+                isMobileEntered = false
+                hideAndShowNumInputView()
+            }
         }
 
         binding.etPhoenNum.addTextChangedListener(object : TextWatcher {
@@ -103,8 +109,22 @@ class PhoenNumVerifiactionFragment :
         })
     }
 
+    private fun hideAndShowNumInputView() {
+        (activity as MainActivity).mViewModel.timer?.cancel()
+        (activity as MainActivity).mViewModel.countNum.postValue(0L)
+        binding.fillOtpParent.hide()
+        binding.enterPhoneNumMain.shoViewWithAnim()
+        binding.apply {
+            proceedAuthBtn.apply {
+                disableButton(requireContext())
+                text = getString(R.string.prceed)
+            }
+        }
+    }
+
     private fun hideAndShowSignUpScreen() {
         (activity as MainActivity).mViewModel.timer?.cancel()
+        (activity as MainActivity).mViewModel.countNum.postValue(0L)
         binding.fillOtpParent.hideView()
         binding.signUpParentMain.root.show()
         customizeText()
@@ -143,6 +163,7 @@ class PhoenNumVerifiactionFragment :
             binding.signUpParentMain.alreadyHaveAccTv
         )
     }
+
 
     private fun hideAndShowProgressView(isSignedUp: Boolean) {
         if (!isSignedUp) {
@@ -230,7 +251,16 @@ class PhoenNumVerifiactionFragment :
                     count = "0$it"
                 }
                 Log.d("TAG", "hideAndShowOtpView: $it") //Didn’t receive? 00:30
-                diffColorText("Didn’t receive?", "00:$count", binding.didnotReceiveTv)
+                if (it == 0L) {
+                    binding.didnotReceiveTv.setTColor(
+                        "${getString(R.string.send_again)}",
+                        requireContext(),
+                        R.color.splash_screen_one
+                    )
+                } else {
+                    diffColorText("Didn’t receive?", "00:$count", binding.didnotReceiveTv)
+                }
+
             }
         })
     }
@@ -262,7 +292,6 @@ class PhoenNumVerifiactionFragment :
         binding.otpThreeEt.setOnKeyListener(GenericKeyEvent(binding.otpThreeEt, binding.otpTwoEt))
         binding.otpFourEt.setOnKeyListener(GenericKeyEvent(binding.otpFourEt, binding.otpThreeEt))
     }
-
 
     private fun callMpinNextFocus() {
         //GenericTextWatcher here works only for moving to next EditText when a number is entered
@@ -330,8 +359,6 @@ class PhoenNumVerifiactionFragment :
             }
             return false
         }
-
-
     }
 
     inner class GenericTextWatcher internal constructor(

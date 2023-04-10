@@ -88,13 +88,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
-            android:lineSpacingExtra="5dp"
             android:text="@string/str_91"
             android:textColor="@color/splash_screen_three"
-            android:textSize="24sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/etPhoenNum"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/etPhoenNum" />
+            app:layout_constraintTop_toTopOf="@+id/etPhoenNum"
+            app:layout_constraintVertical_bias="0.5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

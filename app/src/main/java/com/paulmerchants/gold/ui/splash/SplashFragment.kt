@@ -10,7 +10,9 @@ import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.animations.AppAnimation
 import com.paulmerchants.gold.common.BaseFragment
+import com.paulmerchants.gold.common.Constants.SPLASH_SCRN_VISITED
 import com.paulmerchants.gold.databinding.SplashFragmentBinding
+import com.paulmerchants.gold.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hideViewGrp
 import com.paulmerchants.gold.utility.show
@@ -27,7 +29,16 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
 
     override fun SplashFragmentBinding.initialize() {
         AppUtility.changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
-        binding.mainSplash.show()
+        if (AppSharedPref.getBooleanValue(SPLASH_SCRN_VISITED)) {
+            findNavController().popBackStack(R.id.splashFragment, true)
+            findNavController().navigate(
+                R.id.phoenNumVerifiactionFragment,
+                null,
+                (activity as MainActivity).navOption
+            )
+        } else {
+            binding.mainSplash.show()
+        }
     }
 
     override fun onStart() {
@@ -41,8 +52,10 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
     }
 
     private fun setIntroForNextCounter(counter: Int) {
+        AppUtility.changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
         Log.d(TAG, "setIntroForNextCounter: $counter")
         if (counter == 3) {
+            AppSharedPref.putBoolean(SPLASH_SCRN_VISITED, true)
             findNavController().navigate(
                 R.id.phoenNumVerifiactionFragment,
                 null,
@@ -105,16 +118,16 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
 
     private suspend fun animateOne() {
         AppAnimation.scaler(binding.imageView)
-        delay(500)
+        delay(1000)
         animateSecondScreen(R.color.splash_screen_three, R.color.white)
-        delay(500)
+        delay(1000)
         animateSecondScreen(R.color.splash_screen_two, R.color.splash_screen_one)
-        delay(500)
+        delay(1000)
         showFirstPageIntro()
     }
 
     private fun showFirstPageIntro() {
-        AppUtility.changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_one)
+        AppUtility.changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
         binding.apply {
             mainSplash.hideViewGrp()
             introMainPage.show()
@@ -137,7 +150,11 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                     )
                 )
             }
-
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
     }
 }
