@@ -8,7 +8,10 @@
     <include
         android:id="@+id/header_loan_confirmed"
         layout="@layout/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +27,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/paymetConfirmTv"
-        style="@style/text_16_semi_bold_blue"
+        style="@style/text_16_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -35,7 +38,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/timeTakeTv"
-        style="@style/text_12_semi_bold_sky"
+        style="@style/text_12_poppins_medium_sky"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
@@ -78,7 +81,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/transIdTv"
-                style="@style/text_11_medium_blue"
+                style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -99,7 +102,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/accountNoTv"
-                style="@style/text_11_medium_blue"
+                style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -120,7 +123,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/customerNameTv"
-                style="@style/text_11_medium_blue"
+                style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -141,7 +144,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/transDteAndTimeTv"
-                style="@style/text_11_medium_blue"
+                style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -162,7 +165,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/modeOfPaymentTv"
-                style="@style/text_11_medium_blue"
+                style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -183,7 +186,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/billNameTv"
-                style="@style/text_11_medium_blue"
+                style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -204,7 +207,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/billNumberTv"
-                style="@style/text_11_medium_blue"
+                style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -225,7 +228,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/trabnsIdTv"
-                style="@style/text_11_medium_blue"
+                style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -246,7 +249,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/approvalNumberTv"
-                style="@style/text_11_medium_blue"
+                style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -267,7 +270,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/customerConFeesTv"
-                style="@style/text_11_medium_blue"
+                style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -289,7 +292,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/amountPaidTv"
-                style="@style/text_11_medium_blue"
+                style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -303,7 +306,7 @@
     </com.google.android.material.card.MaterialCardView>
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/downLoadReceiptTv"
-        style="@style/text_12_semi_bold_sky"
+        style="@style/text_11_bold_sk_blue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"

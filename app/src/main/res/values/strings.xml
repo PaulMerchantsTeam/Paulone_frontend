@@ -11,6 +11,7 @@
     <string name="register_all_the_detail">Register all the details here and we make sure you don’t miss out on any payments.</string>
     <string name="we_dont_just_ask">We don’t just ask for money. Claim amazing rewards by being a punctual customer </string>
     <string name="proceed">Proceed</string>
+    <string name="proceed_to_pay">Proceed to Pay</string>
     <string name="welocome_to_paul_gold">Welcome to Paul Gold,\n we are happy to serve you!!</string>
     <string name="please_enter_phone">Please enter your phone number</string>
     <string name="str_91">+91</string>
@@ -160,6 +161,7 @@
     <string name="check_bal">Check Balance</string>
     <string name="check_bal_under"><u>Check Balance</u></string>
     <string name="payment_confirmed">PAYMENT CONFIRMED!!</string>
+    <string name="confirm_payment">Confirm Payment</string>
     <string name="view_loan_state">View Loans statement</string>
     <string name="download_receipt"><u>Download receipt</u></string>
     <string name="prepaid_cards">PREPAID CARDS</string>
@@ -199,6 +201,9 @@
     <string name="pleas_google_pay_app">Please open your Google Pay app and make the payment.</string>
 
     <string name="select_complaint_type">Select Complaint Type</string>
+    <string name="select_state">Select state </string>
+    <string name="select_board">Select board </string>
+    <string name="enter_your_account_number">Enter your account number </string>
     <string name="transaction_reference_id">Transaction Reference ID</string>
     <string name="description">Description</string>
     <string name="submit">Submit</string>

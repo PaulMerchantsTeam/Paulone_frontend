@@ -50,10 +50,47 @@ private fun showHeaderDetails(text:Int,image:Int){
             BbpsType.GoldLoan.type -> {}
             BbpsType.HomeLoan.type -> {
                showHeaderDetails(R.string.loan_emi,R.drawable.loan_person)
+                binding.proceedBtn.setOnClickListener {
+                   binding.loanDetailsEnterParent.hide()
+                   binding.loanProccedDetailParent.show()
+                    binding.proceedBtn.setText(R.string.proceed_to_pay)
+                    binding.proceedBtn.setOnClickListener {
+                        findNavController().navigate(R.id.proceedToPay)
+                    }
+                    binding.headerLoan.backIv.setOnClickListener {
+//                        showHeaderDetails(R.string.loan_emi,R.drawable.loan_person)
+
+                        binding.loanDetailsEnterParent.show()
+                        binding.loanProccedDetailParent.hide()
+                        binding.proceedBtn.setText(R.string.proceed)
+
+                    }
+
+
+
+                }
             }
             BbpsType.PersonalLoan.type -> {
                 showHeaderDetails(R.string.loan_personal,R.drawable.loan_person)
+                binding.proceedBtn.setOnClickListener {
+                    binding.loanDetailsEnterParent.hide()
+                    binding.loanProccedDetailParent.show()
+                    binding.proceedBtn.setText(R.string.proceed_to_pay)
+                    binding.proceedBtn.setOnClickListener {
+                        findNavController().navigate(R.id.proceedToPay)
+                    }
+                    binding.headerLoan.backIv.setOnClickListener {
+//                        showHeaderDetails(R.string.loan_emi,R.drawable.loan_person)
 
+                        binding.loanDetailsEnterParent.show()
+                        binding.loanProccedDetailParent.hide()
+                        binding.proceedBtn.setText(R.string.proceed)
+
+                    }
+
+
+
+                }
             }
             BbpsType.CreditCard.type -> {
                 showHeaderDetails(R.string.credit_card_bill,R.drawable.ic_credit_card)
@@ -66,6 +103,8 @@ private fun showHeaderDetails(text:Int,image:Int){
                 binding.mobileNoTv.setText(R.string.enter_your_credit_card_number)
                 binding.emiPaidTv.setText(R.string.amount_to_be_paid)
                 binding.proceedBtn.setOnClickListener {
+                    findNavController().navigate(R.id.proceedToPay)
+
 
                 }
 
@@ -89,6 +128,19 @@ private fun showHeaderDetails(text:Int,image:Int){
             }
             BbpsType.Electricity.type -> {
                 showHeaderDetails(R.string.electricity_bill,R.drawable.elec_bill)
+                binding.apply {
+                    bankTv.setText(R.string.select_state)
+                    loanTypeTv.setText(R.string.select_board)
+                    loanAcntNoTv.setText(R.string.enter_your_account_number)
+                    mobileNoTv.hide()
+                    mobileNoEt.hide()
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
+                    viewHor.show()
+                    recentTransTv.show()
+                    recentTransElecRv.show()
+                }
+
 
             }
             BbpsType.Broadband.type -> {

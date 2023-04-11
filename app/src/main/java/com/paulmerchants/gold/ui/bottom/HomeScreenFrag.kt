@@ -132,6 +132,7 @@ class HomeScreenFrag :
                 billsNRechargerParent.show()
                 forMoreParentAllAction.hide()
                 backToNormalAction.hide()
+
             }
 
 

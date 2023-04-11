@@ -107,6 +107,11 @@
         <item name="android:textColor">@color/splash_screen_three</item>
         <item name="android:fontFamily">@font/poppins_semi_bold</item>
     </style>
+    <style name="text_12_poppins_medium_sky">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/splash_screen_three</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
 
     <style name="text_10_medium_sky">
         <item name="android:textSize">10sp</item>
@@ -117,6 +122,11 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/splash_screen_three</item>
         <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+    <style name="text_14_bold_sky">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/splash_screen_three</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
     </style>
 
     <style name="text_11_medium_blue">
@@ -136,6 +146,7 @@
         <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/splash_screen_one</item>
         <item name="android:fontFamily">@font/poppins_semi_bold</item>
+        <item name="android:textCursorDrawable">@color/splash_screen_three</item>
     </style>
 
 

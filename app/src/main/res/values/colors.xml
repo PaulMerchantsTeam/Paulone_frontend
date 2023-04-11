@@ -12,6 +12,7 @@
     <color name="blue_light">#2C9AEA</color>
     <color name="text_light_gray">#848484</color>
     <color name="text_red">#E10D0D</color>
+    <color name="text_gray">#5C5C5C</color>
 
 
     <!--    color of splash-->

@@ -64,6 +64,16 @@
         android:label="BillsFragment"
         tools:layout="@layout/layout_loan_emi" />
     <fragment
+        android:id="@+id/proceedToPay"
+        android:name="com.paulmerchants.gold.ui.others.ProceedToPay"
+        android:label="ProceedToPay"
+        tools:layout="@layout/layout_loan_emi_proceed_to_pay" />
+    <fragment
+        android:id="@+id/paymentConfirmed"
+        android:name="com.paulmerchants.gold.ui.others.PaymentConfirmed"
+        android:label="ConfirmedPayment"
+        tools:layout="@layout/loan_emi_payment_confirmed" />
+    <fragment
         android:id="@+id/transactionDetailFrag"
         android:name="com.paulmerchants.gold.ui.others.TransactionDetailFrag"
         android:label="TransactionDetailFrag"
