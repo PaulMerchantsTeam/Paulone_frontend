@@ -1,19 +1,36 @@
 package com.paulmerchants.gold.ui.others
 
+import androidx.navigation.fragment.findNavController
+import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.ProfileLayoutBinding
 import com.paulmerchants.gold.databinding.QuickPayPopupBinding
+import com.paulmerchants.gold.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ProfileFrag : BaseFragment<QuickPayPopupBinding>(QuickPayPopupBinding::inflate) {
+class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inflate) {
 
-    override fun QuickPayPopupBinding.initialize() {
+    override fun ProfileLayoutBinding.initialize() {
 
     }
 
     override fun onStart() {
         super.onStart()
+        handlesClicks()
+    }
+
+    private fun handlesClicks() {
+        binding.backIv.setOnClickListener {
+            findNavController().navigateUp()
+        }
+        binding.editProfileBtn.setOnClickListener {
+            findNavController().navigate(
+                R.id.editProfileScreenFrag,
+                null,
+                (activity as MainActivity).navOption
+            )
+        }
     }
 
 

@@ -9,12 +9,28 @@
         android:id="@+id/splashFragment"
         android:name="com.paulmerchants.gold.ui.splash.SplashFragment"
         android:label="SplashFragment"
-        tools:layout="@layout/splash_fragment" />
+        tools:layout="@layout/splash_fragment">
+        <action
+            android:id="@+id/action_splashFragment_to_phoenNumVerifiactionFragment"
+            app:destination="@id/phoenNumVerifiactionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/phoenNumVerifiactionFragment"
         android:name="com.paulmerchants.gold.ui.auth.PhoenNumVerifiactionFragment"
         android:label="PhoenNumVerifiactionFragment"
-        tools:layout="@layout/phone_auth_fragment" />
+        tools:layout="@layout/phone_auth_fragment">
+        <action
+            android:id="@+id/action_phoenNumVerifiactionFragment_to_homeScreenFrag"
+            app:destination="@id/homeScreenFrag"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/mainScreenFrag"
@@ -53,11 +69,11 @@
         android:name="com.paulmerchants.gold.ui.others.PcFrag"
         android:label="PcFrag"
         tools:layout="@layout/prepaid_screen_frag" />
-<!--    <fragment-->
-<!--        android:id="@+id/billsFragment"-->
-<!--        android:name="com.paulmerchants.gold.ui.others.BillsFragment"-->
-<!--        android:label="BillsFragment"-->
-<!--        tools:layout="@layout/bill_n_more_screen_fragment" />-->
+    <!--    <fragment-->
+    <!--        android:id="@+id/billsFragment"-->
+    <!--        android:name="com.paulmerchants.gold.ui.others.BillsFragment"-->
+    <!--        android:label="BillsFragment"-->
+    <!--        tools:layout="@layout/bill_n_more_screen_fragment" />-->
     <fragment
         android:id="@+id/billsFragment"
         android:name="com.paulmerchants.gold.ui.others.BillsFragment"
@@ -105,4 +121,9 @@
         android:name="com.paulmerchants.gold.ui.others.ConfirmPaymentDueFrag"
         android:label="ConfirmPaymentDueFrag"
         tools:layout="@layout/payment_confirmed_qk_py" />
+    <fragment
+        android:id="@+id/editProfileScreenFrag"
+        android:name="com.paulmerchants.gold.ui.others.EditProfileScreenFrag"
+        android:label="EditProfileScreenFrag"
+        tools:layout="@layout/edit_profile_layout" />
 </navigation>

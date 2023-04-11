@@ -11,5 +11,7 @@ object Constants {
 
     //Page_visit_boolean
     const val SPLASH_SCRN_VISITED = "SPLASH_SCRN_VISITED"
+    const val LOGIN_DONE = "LOGIN_DONE"
+    const val SIGNUP_DONE = "SIGNUP_DONE"
 
 }

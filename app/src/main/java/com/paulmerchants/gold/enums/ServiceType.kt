@@ -1,4 +1,4 @@
-package com.paulmerchants.gold.prefrences
+package com.paulmerchants.gold.enums
 
 enum class ServiceType(val type:Int) {
     SERVICES(0),

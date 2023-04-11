@@ -14,8 +14,10 @@ class GoldLoanScreenFrag :
 
     override fun GoldLoanScreenFragmentBinding.initialize() {
         binding.headerBillMore.apply {
+            backIv.hide()
             titlePageTv.text = getString(R.string.loan_overview)
             subTitle.hide()
+
         }
     }
 

@@ -179,10 +179,64 @@
                 layout="@layout/other_actions"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/loanOverViewParent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/allPaymnetActionParent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/yrCardTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="@dimen/twenty_four"
+                    android:fontFamily="@font/poppins_bold"
+                    android:lineSpacingExtra="5dp"
+                    android:text="@string/your_cards"
+                    android:textColor="@color/splash_screen_three"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/yrCardTV2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="@dimen/screen_end_margin"
+                    android:fontFamily="@font/poppins_regular"
+                    android:lineSpacingExtra="5dp"
+                    android:text="@string/you_wont_lose_them_from_here"
+                    android:textColor="@color/splash_screen_three"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/yrCardTv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/yrCardTv"
+                    app:layout_constraintTop_toTopOf="@+id/yrCardTv" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/prepaidCardRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/yrCardTv"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/your_cards_layout" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.paulmerchants.gold
+package com.paulmerchants.gold.enums
 
 enum class BbpsType(val type: Int) {
     GoldLoan(1),
@@ -25,5 +25,4 @@ enum class BbpsType(val type: Int) {
     Challan(22),
     MetroCard(23),
     Mobile(24)
-
 }

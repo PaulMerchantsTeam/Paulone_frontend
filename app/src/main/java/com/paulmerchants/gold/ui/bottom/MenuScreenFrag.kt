@@ -1,11 +1,5 @@
 package com.paulmerchants.gold.ui.bottom
 
-import android.content.Context
-import android.graphics.*
-import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MenuServicesAdapter
@@ -14,17 +8,13 @@ import com.paulmerchants.gold.adapter.TypeServiceAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.customviews.CustomViews
 import com.paulmerchants.gold.databinding.DummyMenuScreenFragmentBinding
-import com.paulmerchants.gold.databinding.MainScreenFragmentBinding
-import com.paulmerchants.gold.databinding.MenuScreenFragmentBinding
 import com.paulmerchants.gold.model.MenuServices
 import com.paulmerchants.gold.model.TransDoneModel
 import com.paulmerchants.gold.model.TypeService
-import com.paulmerchants.gold.prefrences.ServiceType
+import com.paulmerchants.gold.enums.ServiceType
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
-import com.paulmerchants.gold.utility.showVg
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.pow
 
 @AndroidEntryPoint
 class MenuScreenFrag :

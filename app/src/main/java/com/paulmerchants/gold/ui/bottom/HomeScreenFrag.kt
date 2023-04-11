@@ -4,30 +4,24 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.paulmerchants.gold.BbpsType
+import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.R
-import com.paulmerchants.gold.adapter.HomeSweetBillsAdapter
+import com.paulmerchants.gold.adapter.PrePaidCardAdapter
 import com.paulmerchants.gold.adapter.UpcomingLoanAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants.BBPS_TYPE
 import com.paulmerchants.gold.common.Constants.DUE_LOAN_DATA
 
 import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
-import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.DueLoans
+import com.paulmerchants.gold.model.PrepaidCardModel
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 
 
@@ -35,6 +29,7 @@ import kotlinx.coroutines.delay
 class HomeScreenFrag :
     BaseFragment<DummyHomeScreenFragmentBinding>(DummyHomeScreenFragmentBinding::inflate) {
     private val upcomingLoanAdapter = UpcomingLoanAdapter(::onPayDueClicked)
+    private val prePaidCardAdapter = PrePaidCardAdapter()
 
 
     lateinit var navController: NavController
@@ -55,6 +50,7 @@ class HomeScreenFrag :
         startAnimationOnIcon()
         setUiOnHomeSweetHomeBills()
         handleRechargeAndBillUi()
+        setPrepaidCardUi()
     }
 
     private fun onPayDueClicked(dueLoans: DueLoans) {
@@ -65,6 +61,14 @@ class HomeScreenFrag :
             R.id.quickPayDialog,
             bundle
         )
+    }
+
+    private fun setPrepaidCardUi() {
+        val prepaidCard1 = PrepaidCardModel(1, 4, "Prithvi Kumar")
+        val prepaidCard2 = PrepaidCardModel(2, 4, "Swati")
+        val prepaidCard3 = PrepaidCardModel(3, 4, "Arjun S Narayanan")
+        prePaidCardAdapter.submitList(listOf(prepaidCard1, prepaidCard2, prepaidCard3))
+        binding.prepaidCardRv.adapter = prePaidCardAdapter
     }
 
     private fun setProfileUi() {
@@ -110,7 +114,17 @@ class HomeScreenFrag :
                 }
             })
         }
+        profileHandle()
+    }
 
+    private fun profileHandle() {
+        binding.searchProfileParent.profileIv.setOnClickListener {
+            findNavController().navigate(
+                R.id.profileFrag,
+                null,
+                (activity as MainActivity).navOption
+            )
+        }
     }
 
     private fun handleRechargeAndBillUi() {
@@ -213,13 +227,12 @@ class HomeScreenFrag :
 
     }
 
-    fun navigationBills(type:Int){
+    private fun navigationBills(type: Int) {
         val bundleHomeLoan = Bundle().apply {
             putInt(BBPS_TYPE, type)
         }
-            findNavController().navigate(R.id.billsFragment,bundleHomeLoan)
-
-        }
+        findNavController().navigate(R.id.billsFragment, bundleHomeLoan)
+    }
 
 
     private fun startAnimationOnIcon() {
@@ -245,4 +258,6 @@ class HomeScreenFrag :
     private fun setUiOnHomeSweetHomeBills() {
         binding.allPaymnetActionParent.homeSweetHomBillsRv.setUiOnHomeSweetHomeBills(requireContext())
     }
+
+
 }

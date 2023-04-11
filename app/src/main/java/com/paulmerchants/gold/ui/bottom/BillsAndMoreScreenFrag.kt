@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class BillsAndMoreScreenFrag :
     BaseFragment<BillNMoreScreenFragmentBinding>(BillNMoreScreenFragmentBinding::inflate) {
-lateinit var navController:NavController
+    lateinit var navController: NavController
     override fun BillNMoreScreenFragmentBinding.initialize() {
         navController = findNavController()
         binding.headerBillMore.apply {
@@ -34,10 +34,7 @@ lateinit var navController:NavController
 
     override fun onStart() {
         super.onStart()
-        binding.headerBillMore.backIv.setOnClickListener {
-
-        }
-
+        binding.headerBillMore.backIv.hide()
         setUiOnHomeSweetHomeBills()
     }
 

@@ -9,25 +9,26 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="@dimen/screen_start_margin"
-        android:layout_marginTop="39dp"
         android:src="@drawable/back_button"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/titlePageTv"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/titlePageTv" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/titlePageTv"
         style="@style/text_16_bold"
+        android:layout_marginTop="39dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/loan_overview"
         android:textAlignment="center"
         android:textColor="@color/splash_screen_three"
-        app:layout_constraintBottom_toBottomOf="@+id/backIv"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/backIv"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/subTitle"

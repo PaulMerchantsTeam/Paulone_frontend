@@ -20,6 +20,6 @@
         android:title="@string/locate_us" />
     <item
         android:id="@+id/menuScreenFrag"
-        android:icon="@drawable/menu_bottom_up"
+        android:icon="@drawable/menu_both_icon"
         android:title="@string/menu" />
 </menu>

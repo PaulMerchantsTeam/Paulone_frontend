@@ -1,33 +1,69 @@
 package com.paulmerchants.gold.ui.auth
 
+import android.app.Activity
+import android.app.Instrumentation.ActivityResult
+import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
+import com.paulmerchants.gold.common.Constants.SIGNUP_DONE
 import com.paulmerchants.gold.databinding.PhoneAuthFragmentBinding
+import com.paulmerchants.gold.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.*
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.diffColorText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class PhoenNumVerifiactionFragment :
     BaseFragment<PhoneAuthFragmentBinding>(PhoneAuthFragmentBinding::inflate) {
+    private var signInRequest: BeginSignInRequest? = null
+    private var isResendEnabled: Boolean = false
     private var isMobileEntered: Boolean = false
     private var isOtpVerified: Boolean = false
+
+
+    companion object {
+        const val REQ_CODE = 123
+        const val REQ_ONE_TAP = 2
+    }
+
+    @Inject
+    lateinit var auth: FirebaseAuth
+    lateinit var mGoogleClient: GoogleSignInClient
+
+//    val onSignInResult =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: androidx.activity.result.ActivityResult ->
+//            when (result.resultCode) {
+//                REQ_ONE_TAP -> {
+//                    try {
+//
+//                    }catch (e:ApiException){}
+//
+//                }
+//            }
+//
+//        }
 
     override fun PhoneAuthFragmentBinding.initialize() {
         changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
@@ -107,7 +143,20 @@ class PhoenNumVerifiactionFragment :
             }
 
         })
+        binding.didnotReceiveTv.setOnClickListener {
+            if (!isResendEnabled) {
+                return@setOnClickListener
+            } else {
+                //TODO code for resend OTP Option
+            }
+        }
+
+        binding.signUpParentMain.alreadyHaveAccTv.setOnClickListener {
+            //TODO: LoginScreen
+        }
+
     }
+
 
     private fun hideAndShowNumInputView() {
         (activity as MainActivity).mViewModel.timer?.cancel()
@@ -143,7 +192,27 @@ class PhoenNumVerifiactionFragment :
         }
         binding.signUpParentMain.googleSignInTv.setOnClickListener {
             //flow_remaining...
+            googleSignUpScreen()
+
         }
+    }
+
+    private fun signInWithSaveCredential() {
+        signInRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    // Your server's client ID, not your Android client ID.
+//                    .setServerClientId(getString(R.string.your_web_client_id))
+                    // Only show accounts previously used to sign in.
+                    .setFilterByAuthorizedAccounts(true)
+                    .build()
+            )
+            .build()
+    }
+
+
+    private fun googleSignUpScreen() {
 
     }
 
@@ -197,7 +266,6 @@ class PhoenNumVerifiactionFragment :
                     )
                 }
                 binding.mainPgCons.cirStreakTimePg.endProgress(requireContext())
-
                 delay(1000)
                 hideAndShowSignUpDoneScreen()
             }
@@ -222,9 +290,13 @@ class PhoenNumVerifiactionFragment :
         )
 
         binding.createMpinAndSuccessMain.root.show()
+        AppSharedPref.putBoolean(SIGNUP_DONE, true)
         lifecycleScope.launchWhenCreated {
             delay(2000)
-            findNavController().navigate(R.id.homeScreenFrag)
+            findNavController().popBackStack(R.id.phoenNumVerifiactionFragment, true)
+            findNavController().navigate(
+                R.id.homeScreenFrag
+            )
         }
     }
 
@@ -252,6 +324,7 @@ class PhoenNumVerifiactionFragment :
                 }
                 Log.d("TAG", "hideAndShowOtpView: $it") //Didn’t receive? 00:30
                 if (it == 0L) {
+                    isResendEnabled = true
                     binding.didnotReceiveTv.setTColor(
                         "${getString(R.string.send_again)}",
                         requireContext(),

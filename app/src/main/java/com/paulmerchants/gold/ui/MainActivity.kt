@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class   MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
+class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
     lateinit var navOption: NavOptions
     lateinit var navOptionTop: NavOptions
@@ -64,33 +64,33 @@ class   MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             }
         }
 
-        binding.bottomNavigationView.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.homeScreenFrag -> {
-                    navController.navigate(R.id.homeScreenFrag, null, navOption)
-                    true
-                }
-                R.id.goldLoanScreenFrag -> {
-                    navController.navigate(R.id.goldLoanScreenFrag)
-                    true
-                }
-                R.id.billsAndMoreScreenFrag -> {
-                    navController.navigate(R.id.billsAndMoreScreenFrag, null, navOptionTop)
-                    true
-                }
-                R.id.locateUsFrag -> {
-                    navController.navigate(R.id.locateUsFrag, null, navOption)
-                    true
-                }
-                R.id.menuScreenFrag -> {
-                    navController.navigate(R.id.menuScreenFrag, null, navOptionTop)
-                    true
-                }
-                else -> {
-                    false
-                }
-            }
-        }
+        /* binding.bottomNavigationView.setOnItemSelectedListener {
+             when (it.itemId) {
+                 R.id.homeScreenFrag -> {
+                     navController.navigate(R.id.homeScreenFrag, null, navOption)
+                     true
+                 }
+                 R.id.goldLoanScreenFrag -> {
+                     navController.navigate(R.id.goldLoanScreenFrag)
+                     true
+                 }
+                 R.id.billsAndMoreScreenFrag -> {
+                     navController.navigate(R.id.billsAndMoreScreenFrag, null, navOptionTop)
+                     true
+                 }
+                 R.id.locateUsFrag -> {
+                     navController.navigate(R.id.locateUsFrag, null, navOption)
+                     true
+                 }
+                 R.id.menuScreenFrag -> {
+                     navController.navigate(R.id.menuScreenFrag, null, navOptionTop)
+                     true
+                 }
+                 else -> {
+                     false
+                 }
+             }
+         }*/
     }
 
     fun showQuickPayDialog() {
