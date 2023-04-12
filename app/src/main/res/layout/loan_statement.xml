@@ -1,0 +1,752 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/splash_screen_two">
+
+    <include
+        android:id="@+id/headerScrn"
+        layout="@layout/header_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerScrn">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:paddingBottom="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/monthParentSpin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/rec_three_4_empty"
+                app:layout_constraintEnd_toStartOf="@+id/yearParentSpinner"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Spinner
+                    android:id="@+id/monthSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:entries="@array/month"
+                    android:paddingStart="@dimen/ten_dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/yearParentSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/rec_three_4_empty"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Spinner
+                    android:id="@+id/yrSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:entries="@array/year"
+                    android:paddingStart="@dimen/ten_dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/rec_sky_loan_blue_solid_8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/monthParentSpin">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/materialTextView16"
+                    style="@style/text_14_bold_sky"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    android:text="PML Gold Loan"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/line_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    android:layerType="software"
+                    android:src="@drawable/line_20"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/materialTextView16" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/loanNumTv"
+                    style="@style/text_11_bold_sk_blue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="Loan Number - 0012365215"
+                    app:layout_constraintBottom_toBottomOf="@+id/goldLTv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/goldLTv" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/goldLTv"
+                    style="@style/text_12_semi_bold_sky"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="13dp"
+                    android:text="Gold Loan"
+                    app:layout_constraintEnd_toStartOf="@+id/loanNumTv"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line_up" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/addressTv"
+                    style="@style/text_16_regular_blue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Paul Merchants\n Sec 22, Udyog\n path, Chandigarh."
+                    android:textColor="@color/black"
+                    android:textSize="9sp"
+                    app:layout_constraintStart_toStartOf="@+id/goldLTv"
+                    app:layout_constraintTop_toBottomOf="@+id/goldLTv" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/totalAmDueDateTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="Total amount due 27th Apr "
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/loanNumTv"
+                    app:layout_constraintTop_toTopOf="@+id/addressTv" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/amountNumTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="INR 1,000"
+                    android:textColor="@color/red_amount"
+                    android:textSize="13sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/totalAmDueDateTv"
+                    app:layout_constraintTop_toBottomOf="@+id/totalAmDueDateTv" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lateFeeWarnTv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="After 7th Jan, an INR 200 late fee will be charged"
+                    android:textSize="5sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/amountNumTv"
+                    app:layout_constraintTop_toBottomOf="@+id/amountNumTv" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/parentCurrPayment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lateFeeWarnTv">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/currPayDetailsTv"
+                        style="@style/text_12_bold_yellow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_sky_loan_blue_solid_5"
+                        android:paddingVertical="9dp"
+                        android:paddingStart="10dp"
+                        android:text="Current Payment Details "
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/accInfoParent"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/currPayDetailsTv">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/materialTextView18"
+                            style="@style/text_12_bold_yellow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/bg_sky_loan_blue_solid_5"
+                            android:fontFamily="@font/poppins_regular"
+                            android:paddingVertical="1dp"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="20dp"
+                            android:text="Account Informations"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/materialTextView19"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_sky_loan_blue_solid_5"
+                            android:fontFamily="@font/poppins_regular"
+                            android:paddingVertical="1dp"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="50dp"
+                            android:text="Payment Overview"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/materialTextView18"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/materialTextView18" />
+
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/prncpalTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Principal"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/materialTextView19" />
+
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/prncpalAmountTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="xxx"
+                            app:layout_constraintBottom_toBottomOf="@+id/prncpalTv"
+                            app:layout_constraintEnd_toEndOf="@+id/materialTextView19"
+                            app:layout_constraintTop_toTopOf="@+id/prncpalTv" />
+
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/intTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Interest"
+                            app:layout_constraintStart_toStartOf="@+id/prncpalTv"
+                            app:layout_constraintTop_toBottomOf="@+id/prncpalTv" />
+
+                        <View
+                            android:id="@+id/view7"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/black"
+                            app:layout_constraintEnd_toEndOf="@+id/intNumTv"
+                            app:layout_constraintStart_toStartOf="@+id/intTv"
+                            app:layout_constraintTop_toBottomOf="@+id/intTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/intNumTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="xxxx"
+                            app:layout_constraintBottom_toBottomOf="@+id/intTv"
+                            app:layout_constraintEnd_toEndOf="@+id/prncpalAmountTv"
+                            app:layout_constraintTop_toTopOf="@+id/intTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/regMonthTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Regular Monthly Payment"
+                            app:layout_constraintStart_toStartOf="@+id/prncpalTv"
+                            app:layout_constraintTop_toBottomOf="@+id/view7" />
+
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/regMonthNumTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="xxxx"
+                            app:layout_constraintBottom_toBottomOf="@+id/regMonthTv"
+                            app:layout_constraintEnd_toEndOf="@+id/prncpalAmountTv"
+                            app:layout_constraintTop_toTopOf="@+id/regMonthTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/feesTV"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Fees"
+                            app:layout_constraintStart_toStartOf="@+id/prncpalTv"
+                            app:layout_constraintTop_toBottomOf="@+id/regMonthTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/fessNumTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="xxxx"
+                            app:layout_constraintBottom_toBottomOf="@+id/feesTV"
+                            app:layout_constraintEnd_toEndOf="@+id/prncpalAmountTv"
+                            app:layout_constraintTop_toTopOf="@+id/feesTV" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/fineTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Fine"
+                            app:layout_constraintStart_toStartOf="@+id/prncpalTv"
+                            app:layout_constraintTop_toBottomOf="@+id/feesTV" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/fineNumTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="xxxx"
+                            app:layout_constraintBottom_toBottomOf="@+id/fineTv"
+                            app:layout_constraintEnd_toEndOf="@+id/prncpalAmountTv"
+                            app:layout_constraintTop_toTopOf="@+id/fineTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/ovrdTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Overdue Payments"
+                            app:layout_constraintStart_toStartOf="@+id/prncpalTv"
+                            app:layout_constraintTop_toBottomOf="@+id/fineTv" />
+
+                        <View
+                            android:id="@+id/view8"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/black"
+                            app:layout_constraintEnd_toEndOf="@+id/intNumTv"
+                            app:layout_constraintStart_toStartOf="@+id/intTv"
+                            app:layout_constraintTop_toBottomOf="@+id/ovrdTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/ovrdNumTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="xxxx"
+                            app:layout_constraintBottom_toBottomOf="@+id/ovrdTv"
+                            app:layout_constraintEnd_toEndOf="@+id/prncpalAmountTv"
+                            app:layout_constraintTop_toTopOf="@+id/ovrdTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/totalDTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Total Due (Date)"
+                            app:layout_constraintStart_toStartOf="@+id/prncpalTv"
+                            app:layout_constraintTop_toBottomOf="@+id/view8" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/totalDueNumTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="xxxx"
+                            app:layout_constraintBottom_toBottomOf="@+id/totalDTv"
+                            app:layout_constraintEnd_toEndOf="@+id/prncpalAmountTv"
+                            app:layout_constraintTop_toTopOf="@+id/totalDTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/statDateTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Statement date"
+                            app:layout_constraintStart_toStartOf="@+id/materialTextView18"
+                            app:layout_constraintTop_toBottomOf="@+id/materialTextView18" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/statDateNumTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="xxxx"
+                            app:layout_constraintBottom_toBottomOf="@+id/statDateTv"
+                            app:layout_constraintEnd_toEndOf="@+id/accInfoParent"
+                            app:layout_constraintTop_toTopOf="@+id/statDateTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/loanStatusTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Loan status"
+                            app:layout_constraintStart_toStartOf="@+id/statDateTv"
+                            app:layout_constraintTop_toBottomOf="@+id/statDateTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/loanStatusNumTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="xxxx"
+                            app:layout_constraintBottom_toBottomOf="@+id/loanStatusTv"
+                            app:layout_constraintEnd_toEndOf="@+id/statDateNumTv"
+                            app:layout_constraintTop_toTopOf="@+id/loanStatusTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/remPrincipalTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+
+                            android:text="Remaining principal"
+                            app:layout_constraintStart_toStartOf="@+id/loanStatusTv"
+                            app:layout_constraintTop_toBottomOf="@+id/loanStatusTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/remPrincipalNumTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="xxxx"
+                            app:layout_constraintBottom_toBottomOf="@+id/remPrincipalTv"
+                            app:layout_constraintEnd_toEndOf="@+id/accInfoParent"
+                            app:layout_constraintTop_toTopOf="@+id/remPrincipalTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/intRateTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Interest rate"
+
+                            app:layout_constraintStart_toStartOf="@+id/remPrincipalTv"
+                            app:layout_constraintTop_toBottomOf="@+id/remPrincipalTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/intRateNumTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="xxxx"
+                            app:layout_constraintBottom_toBottomOf="@+id/intRateTv"
+                            app:layout_constraintEnd_toEndOf="@+id/accInfoParent"
+                            app:layout_constraintTop_toTopOf="@+id/intRateTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/matdateTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Maturity date"
+
+                            app:layout_constraintStart_toStartOf="@+id/intRateTv"
+                            app:layout_constraintTop_toBottomOf="@+id/intRateTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/matdateNumTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="xxxx"
+                            app:layout_constraintBottom_toBottomOf="@+id/matdateTv"
+                            app:layout_constraintEnd_toEndOf="@+id/accInfoParent"
+                            app:layout_constraintTop_toTopOf="@+id/matdateTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/pclPaidTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Principal paid YTD"
+                            app:layout_constraintStart_toStartOf="@+id/matdateTv"
+                            app:layout_constraintTop_toBottomOf="@+id/matdateTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/pclPaidNumTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="xxxx"
+                            app:layout_constraintBottom_toBottomOf="@+id/pclPaidTv"
+                            app:layout_constraintEnd_toEndOf="@+id/accInfoParent"
+                            app:layout_constraintTop_toTopOf="@+id/pclPaidTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/intPaidTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Interest paid YTD"
+                            app:layout_constraintStart_toStartOf="@+id/pclPaidTv"
+                            app:layout_constraintTop_toBottomOf="@+id/pclPaidTv" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/intPaidNumTv"
+                            style="@style/text_8_light_black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:text="xxxx"
+                            app:layout_constraintBottom_toBottomOf="@+id/intPaidTv"
+                            app:layout_constraintEnd_toEndOf="@+id/accInfoParent"
+                            app:layout_constraintTop_toTopOf="@+id/intPaidTv" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/loanStateDateLargeTv"
+                        style="@style/text_12_bold_yellow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/bg_sky_loan_blue_solid_5"
+                        android:paddingVertical="9dp"
+                        android:paddingStart="10dp"
+                        android:text="Last Statement (27th Jan - 27th Mar, 2023)"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/accInfoParent" />
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/titleDateTransTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_sky_loan_blue_solid_5"
+                        android:paddingVertical="2dp"
+                        android:paddingStart="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/loanStateDateLargeTv">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/materialTextView24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="Date"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/view9"
+                            android:layout_width="1dp"
+                            android:layout_height="15dp"
+                            android:background="@color/black"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/materialTextView25"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/materialTextView24"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/materialTextView25"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="Transaction"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/view9"
+                            app:layout_constraintEnd_toStartOf="@+id/view10"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/view9"
+                            app:layout_constraintTop_toTopOf="@+id/view9" />
+
+
+                        <View
+                            android:id="@+id/view10"
+                            android:layout_width="1dp"
+                            android:layout_height="15dp"
+                            android:background="@color/black"
+                            app:layout_constraintBottom_toBottomOf="@+id/materialTextView25"
+                            app:layout_constraintEnd_toStartOf="@+id/materialTextView26"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/materialTextView25"
+                            app:layout_constraintTop_toTopOf="@+id/materialTextView25" />
+
+                        <View
+                            android:id="@+id/view11"
+                            android:layout_width="1dp"
+                            android:layout_height="15dp"
+                            android:background="@color/black"
+                            app:layout_constraintBottom_toBottomOf="@+id/materialTextView26"
+                            app:layout_constraintEnd_toStartOf="@+id/materialTextView27"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/materialTextView26"
+                            app:layout_constraintTop_toTopOf="@+id/materialTextView26" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/materialTextView26"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="Charge"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/view10"
+                            app:layout_constraintEnd_toStartOf="@+id/view11"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/view10"
+                            app:layout_constraintTop_toTopOf="@+id/view10" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/materialTextView27"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="Payment"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/view11"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/view11" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/titleDateTransTv"
+                        tools:listitem="@layout/item_last_statement" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/lineDownIv"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="40dp"
+                    android:layerType="software"
+                    android:src="@drawable/line_20"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/parentCurrPayment" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/donwloadPdfBtn"
+                style="@style/text_12_bold_yellow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/rec_one_blue_btn"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="8dp"
+                android:text="@string/download_pdf"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/gotToHomeBtn"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout7" />
+
+            <TextView
+                android:id="@+id/gotToHomeBtn"
+                style="@style/text_12_bold_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rec_back_btn"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="@dimen/ten_dp"
+                android:text="@string/go_to_home"
+                app:layout_constraintBottom_toBottomOf="@+id/donwloadPdfBtn"
+                app:layout_constraintEnd_toStartOf="@+id/donwloadPdfBtn"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/donwloadPdfBtn" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

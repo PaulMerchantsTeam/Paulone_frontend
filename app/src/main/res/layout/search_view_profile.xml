@@ -19,26 +19,26 @@
             android:id="@+id/profileIv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:background="?actionBarItemBackground"
             android:clickable="true"
-            android:background="?android:attr/selectableItemBackground"
+            android:focusable="true"
+            android:padding="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/circle_profile_black"
-            android:focusable="true" />
+            app:srcCompat="@drawable/circle_profile_black" />
 
         <ImageView
             android:id="@+id/notImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:clickable="true"
             android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="@+id/profileIv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/profileIv"
-            app:srcCompat="@drawable/bell_notification"
-            android:focusable="true" />
+            app:srcCompat="@drawable/bell_notification" />
 
         <ImageView
             android:id="@+id/notRedDot"
@@ -76,22 +76,22 @@
             android:background="@drawable/rec_search_"
             android:drawableStart="@drawable/search"
             android:drawablePadding="14dp"
-            android:maxLines="1"
             android:fontFamily="@font/poppins_semi_bold"
-            android:textColor="@color/splash_screen_one"
-            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-            android:textSize="16sp"
-            android:imeOptions="actionSearch"
             android:hint="@string/search_for_loans"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
             android:paddingStart="@dimen/ten_dp"
             android:paddingEnd="@dimen/ten_dp"
+            android:textColor="@color/splash_screen_one"
             android:textColorHint="@color/brown"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="16sp"
             app:autoShowKeyboard="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profileIv"
             app:queryHint="@string/search"
-            app:searchIcon="@drawable/search"/>
+            app:searchIcon="@drawable/search" />
         <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
 
         <com.google.android.material.textview.MaterialTextView
