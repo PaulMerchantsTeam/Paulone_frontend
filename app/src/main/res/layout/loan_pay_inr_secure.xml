@@ -7,6 +7,13 @@
     android:id="@+id/loan_pay_secure"
     android:background="@color/splash_screen_two">
 
+    <include
+        android:id="@+id/header_credit"
+        layout="@layout/header_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/rupayIv"
         android:layout_width="wrap_content"
@@ -15,7 +22,8 @@
         app:layout_constraintEnd_toEndOf="parent"
       android:layout_marginTop="64dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/header_credit"
+        />
 
     <ImageView
         android:id="@+id/verticalArrowIv"
@@ -83,11 +91,38 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="46dp"
-        android:layout_marginTop="6dp"
-        android:text="@string/by_adding_this"
+        android:text="@string/please_note_payment_with_rupay"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NameOnCardEt"/>
+        app:layout_constraintTop_toBottomOf="@+id/NameOnCardEt" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/proceedToPayParent"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/pg_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/proceedToPayBtn"
+            style="@style/text_12_semi_bold_sky"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/splash_screen_one"
+            android:paddingStart="90dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="90dp"
+            android:paddingBottom="20dp"
+            android:text="@string/pay_inr_2_secure"
+            android:textColor="@color/yellow_main"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

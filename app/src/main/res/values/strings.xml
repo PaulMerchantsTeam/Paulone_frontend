@@ -205,6 +205,9 @@
     <string name="select_board">Select board </string>
     <string name="select_your_board">Select your board </string>
 
+    <string name="select_ott_platform">Select OTT Platform </string>
+    <string name="enter_register_mail_number">Enter Registered Mail ID/Phone Number</string>
+
     <string name="select_gas_provider">Select your Gas Provider </string>
     <string name="your_mobile_number">Your Mobile Number </string>
     <string name="customer_id">Customer ID </string>
@@ -219,6 +222,19 @@
     <string name="select_city">Select City </string>
     <string name="select_apartment">Select Apartment </string>
     <string name="utility_type">Utility Type </string>
+
+    <string name="select_metro">Select your Metro </string>
+    <string name="select_fast_tag_bank">Select FASTag issuing bank </string>
+
+    <string name="select_your_gas_provider">Select your gas Provider </string>
+
+
+    <string name="select_landlord_bank">Select Landlord\'s bank </string>
+    <string name="bank_account_number">Bank Account Number </string>
+    <string name="ifsc_code">IFSC Code </string>
+    <string name="account_holder_name">Account Holder\'s Name </string>
+    <string name="rent_amount">Rent Amount </string>
+    <string name="dth_note">Please Note, while recharging your DTH make sure your Set up box is on. That will help in instant activation.</string>
 
     <string name="select_insurer">Select your Insurer </string>
     <string name="your_policy_number">Your Policy Number </string>
@@ -235,6 +251,8 @@
     <string name="complaint_desc">Your complaint ID is CC102457454 assigned to CC Avenue. To track your registered complaint you can use the Complaint ID.</string>
     <string name="complaint_registered_successfully">Complaint registered successfully</string>
     <string name="or">or</string>
+    <string name="prepaid">Prepaid</string>
+    <string name="postpaid">Postpaid</string>
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="your_phone_number">Your phone Number</string>
@@ -262,12 +280,18 @@
     <string name="fastag_recharge"> Fastag Recharge</string>
     <string name="metro_card_recharge"> Metro Card Recharge</string>
     <string name="municipal_tax_bill">Municipal Tex</string>
+    <string name="challan_bill">Challan </string>
 
     <string name="send_again"><u>Send OTP again</u></string>
     <string name="prceed">PROCEED</string>
+
     <string name="welcome_back_nwe_missed_you_d">Welcome back,\nwe missed you :D</string>
     <string name="loan_Statment">LOAN STATEMENT</string>
     <string name="download_pdf">Download PDF</string>
+
+    <string name="please_note_payment_with_rupay">Please note, the above payment is for safety purpose and will be refunded back to your same account.</string>
+    <string name="pay_inr_2_secure"><![CDATA[Pay INR 2 & Secure]]></string>
+
 
     <string-array name="month">
         <item>January</item>

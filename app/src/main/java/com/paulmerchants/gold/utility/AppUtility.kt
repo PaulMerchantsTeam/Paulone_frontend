@@ -11,7 +11,6 @@ import androidx.core.text.HtmlCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
-import com.paulmerchants.gold.BbpsType
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.model.ActionItem

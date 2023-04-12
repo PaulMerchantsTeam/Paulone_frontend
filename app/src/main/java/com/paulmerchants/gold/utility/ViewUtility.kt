@@ -17,9 +17,9 @@ import androidx.transition.Fade
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.google.android.material.progressindicator.CircularProgressIndicator
-import com.paulmerchants.gold.BbpsType
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.HomeSweetBillsAdapter
+import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.model.ActionItem
 import kotlinx.coroutines.NonDisposableHandle.parent
 

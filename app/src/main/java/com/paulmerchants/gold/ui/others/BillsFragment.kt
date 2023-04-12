@@ -108,17 +108,34 @@ private fun showHeaderDetails(text:Int,image:Int){
             }
             BbpsType.DthService.type -> {
                 showHeaderDetails(R.string.dth_recharge,R.drawable.dth_bill)
+                binding.apply {
+                    bankTv.setText(R.string.select_operator)
+                    loanAcntNoTv.setText(R.string.customer_id)
+                    loanTypeTv.hide()
+                    typeOfLOandParent.hide()
+                    mobileNoTv.hide()
+                    mobileNoEt.hide()
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
+                    dthNoteTv.show()
+
+                }
 
             }
-            BbpsType.MobileRecharge.type -> {
-                showHeaderDetails(R.string.mobile_recharge_bill,R.drawable.mobile_icon_anim)
 
-            }
-            BbpsType.MobilePostpaid.type -> {
-                showHeaderDetails(R.string.postpaid_bill,R.drawable.mob_post_paid)
-            }
             BbpsType.OttWorld.type -> {
                 showHeaderDetails(R.string.ott_subscription,R.drawable.ott_main)
+                binding.apply {
+                    bankTv.setText(R.string.select_ott_platform)
+                    loanAcntNoTv.setText(R.string.enter_register_mail_number)
+                    mobileNoTv.hide()
+                    mobileNoEt.hide()
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
+                    loanTypeTv.hide()
+                    typeOfLOandParent.hide()
+
+                }
 
             }
             BbpsType.Electricity.type -> {
@@ -171,7 +188,16 @@ private fun showHeaderDetails(text:Int,image:Int){
             }
             BbpsType.GasCylinder.type -> {
                 showHeaderDetails(R.string.book_a_cylinder,R.drawable.cylinder_gas)
+                binding.apply {
+                    loanTypeTv.hide()
+                    typeOfLOandParent.hide()
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
+                    bankTv.setText(R.string.select_your_gas_provider)
+                    loanAcntNoTv.setText(R.string.your_mobile_number)
+                    mobileNoTv.setText(R.string.amount_to_be_paid)
 
+                }
 
 
             }
@@ -197,7 +223,7 @@ private fun showHeaderDetails(text:Int,image:Int){
                 binding.apply {
                     loanTypeTv.hide()
                     typeOfLOandParent.hide()
-                    bankTv.setText(R.string.gas_pipeline_bill)
+                    bankTv.setText(R.string.select_your_gas_provider)
                     loanAcntNoTv.setText(R.string.your_mobile_number)
                     mobileNoTv.setText(R.string.customer_id)
                     emiPaidTv.setText(R.string.amount_to_paid)
@@ -207,7 +233,18 @@ private fun showHeaderDetails(text:Int,image:Int){
             }
             BbpsType.HomeRent.type -> {
                 showHeaderDetails(R.string.home_rent_bill,R.drawable.home_rent)
+                binding.apply {
+                    loanTypeTv.hide()
+                    typeOfLOandParent.hide()
+                    rentAmntTv.show()
+                    rentAmntEt.show()
+                    bankTv.setText(R.string.select_landlord_bank)
+                    loanAcntNoTv.setText(R.string.bank_account_number)
+                    mobileNoTv.setText(R.string.ifsc_code)
+                    emiPaidTv.setText(R.string.account_holder_name)
 
+
+                }
             }
             BbpsType.WaterBill.type -> {
                 showHeaderDetails(R.string.water_bill,R.drawable.tap)
@@ -240,6 +277,19 @@ private fun showHeaderDetails(text:Int,image:Int){
             }
             BbpsType.CableTvBill.type -> {
                 showHeaderDetails(R.string.cable_tv_bill,R.drawable.cable_tv)
+                binding.apply {
+                    loanTypeTv.hide()
+                    typeOfLOandParent.hide()
+
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
+
+                    bankTv.setText(R.string.select_operator)
+                    loanAcntNoTv.setText(R.string.your_account_number)
+                    mobileNoTv.setText(R.string.amount_to_paid)
+
+
+                }
 
             }
             BbpsType.Insurance.type -> {
@@ -261,22 +311,59 @@ private fun showHeaderDetails(text:Int,image:Int){
                 showHeaderDetails(R.string.municipal_tax_bill,R.drawable.municiapl_tax)
 
             }
-            BbpsType.FastTag.type -> {
-                showHeaderDetails(R.string.fastag_recharge,R.drawable.fastag_action)
-
-            }
             BbpsType.Challan.type -> {
-                showHeaderDetails(R.string.dth_recharge,R.drawable.traffic_challan)
-
-            }
-            BbpsType.MetroCard.type -> {
-                showHeaderDetails(R.string.metro_card_recharge,R.drawable.metro_card)
+                showHeaderDetails(R.string.challan_bill,R.drawable.traffic_challan)
 
             }
             BbpsType.Mobile.type -> {
                 showHeaderDetails(R.string.mobile_recharge_bill,R.drawable.mobile_layer_2 )
+                binding.apply {
+                    mobileRechargeTv.show()
+                }
+
+
 
             }
+            BbpsType.MobileRecharge.type -> {
+                showHeaderDetails(R.string.mobile_recharge_bill,R.drawable.mobile_icon_anim)
+
+            }
+            BbpsType.MobilePostpaid.type -> {
+                showHeaderDetails(R.string.postpaid_bill,R.drawable.mob_post_paid)
+            }
+            BbpsType.FastTag.type -> {
+                showHeaderDetails(R.string.fastag_recharge,R.drawable.fastag_action)
+                binding.apply {
+                    bankTv.setText(R.string.select_fast_tag_bank)
+                    loanTypeTv.hide()
+                    typeOfLOandParent.hide()
+                    mobileNoTv.hide()
+                    mobileNoEt.hide()
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
+                    loanAcntNoTv.hide()
+                    enterLoanEt.hide()
+
+                }
+            }
+
+            BbpsType.MetroCard.type -> {
+                showHeaderDetails(R.string.metro_card_recharge,R.drawable.metro_card)
+                binding.apply {
+                  bankTv.setText(R.string.select_metro)
+                    loanTypeTv.hide()
+                    typeOfLOandParent.hide()
+                    mobileNoTv.hide()
+                    mobileNoEt.hide()
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
+                    loanAcntNoTv.hide()
+                    enterLoanEt.hide()
+
+                }
+
+            }
+
         }
     }
 }

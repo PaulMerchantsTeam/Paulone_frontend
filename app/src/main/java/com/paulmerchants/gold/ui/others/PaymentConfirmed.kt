@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.ui.others
 
+import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.LayoutLoanEmiProceedToPayBinding
@@ -22,6 +23,10 @@ class PaymentConfirmed :
             headerLoanConfirmed.backIv.hide()
             headerLoanConfirmed.endIconIv.show()
             headerLoanConfirmed.endIconIv.setImageResource(R.drawable.bbps_small)
+            gotoHomeBtn.setOnClickListener {
+//                findNavController().navigate(R.id.homeScreenFrag)
+0            }
+
         }
     }
 }

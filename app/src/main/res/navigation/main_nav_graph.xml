@@ -85,6 +85,11 @@
         android:label="ProceedToPay"
         tools:layout="@layout/layout_loan_emi_proceed_to_pay" />
     <fragment
+        android:id="@+id/addCardFrag"
+        android:name="com.paulmerchants.gold.ui.others.AddCardFrag"
+        android:label="AddCardFrag"
+        tools:layout="@layout/loan_pay_inr_secure" />
+    <fragment
         android:id="@+id/paymentConfirmed"
         android:name="com.paulmerchants.gold.ui.others.PaymentConfirmed"
         android:label="ConfirmedPayment"
