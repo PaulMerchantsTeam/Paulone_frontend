@@ -6,7 +6,9 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.BillNMoreScreenFragmentBinding
 import com.paulmerchants.gold.databinding.MainScreenFragmentBinding
+import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.ui.others.BillsFragment
+import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.setUiOnHomeSweetHomeBills
 import com.paulmerchants.gold.utility.show
@@ -39,7 +41,10 @@ class BillsAndMoreScreenFrag :
     }
 
     private fun setUiOnHomeSweetHomeBills() {
-        binding.billSRechargeMain.homeSweetHomBillsRv.setUiOnHomeSweetHomeBills(requireContext())
+        binding.billSRechargeMain.homeSweetHomBillsRv.setUiOnHomeSweetHomeBills(requireContext(), ::onBillClicked)
+    }
+    private fun onBillClicked(actionItem: ActionItem){
+        AppUtility.onBillClicked(actionItem,findNavController())
     }
 
 }

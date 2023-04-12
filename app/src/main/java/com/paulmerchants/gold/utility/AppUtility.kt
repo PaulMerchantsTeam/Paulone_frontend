@@ -2,12 +2,19 @@ package com.paulmerchants.gold.utility
 
 import android.app.Activity
 import android.content.res.Configuration
+import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
+import com.paulmerchants.gold.BbpsType
 import com.paulmerchants.gold.R
+import com.paulmerchants.gold.common.Constants
+import com.paulmerchants.gold.model.ActionItem
 
 object AppUtility {
     fun changeStatusBarWithReqdColor(activity: Activity, colorId: Int) {
@@ -42,4 +49,15 @@ object AppUtility {
             "<font color=#3F72AF>$first</font> <font color=#150750>$second</font>"
         tv.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
-}
+
+    fun onBillClicked(actionItem: ActionItem,navController: NavController) {
+        val bundleHomeLoan = Bundle().apply {
+            putInt(Constants.BBPS_TYPE, actionItem.itemId)
+        }
+        navController.navigate(R.id.billsFragment, bundleHomeLoan)
+    }
+
+    }
+
+
+

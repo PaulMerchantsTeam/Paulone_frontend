@@ -57,8 +57,6 @@ private fun showHeaderDetails(text:Int,image:Int){
                         findNavController().navigate(R.id.proceedToPay)
                     }
                     binding.headerLoan.backIv.setOnClickListener {
-//                        showHeaderDetails(R.string.loan_emi,R.drawable.loan_person)
-
                         binding.loanDetailsEnterParent.show()
                         binding.loanProccedDetailParent.hide()
                         binding.proceedBtn.setText(R.string.proceed)
@@ -79,8 +77,6 @@ private fun showHeaderDetails(text:Int,image:Int){
                         findNavController().navigate(R.id.proceedToPay)
                     }
                     binding.headerLoan.backIv.setOnClickListener {
-//                        showHeaderDetails(R.string.loan_emi,R.drawable.loan_person)
-
                         binding.loanDetailsEnterParent.show()
                         binding.loanProccedDetailParent.hide()
                         binding.proceedBtn.setText(R.string.proceed)
@@ -144,22 +140,69 @@ private fun showHeaderDetails(text:Int,image:Int){
             }
             BbpsType.Broadband.type -> {
                 showHeaderDetails(R.string.broadBand_bill,R.drawable.broadband_bill)
+                binding.apply {
+                    bankTv.setText(R.string.select_operator)
+                    loanTypeTv.setText(R.string.your_number_with_std)
+                    loanAcntNoTv.setText(R.string.amount_to_be_paid)
+                    mobileNoTv.hide()
+                    mobileNoEt.hide()
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
+
+                }
+
 
             }
             BbpsType.Education.type -> {
                 showHeaderDetails(R.string.education_fees_bill,R.drawable.education_loan)
+                binding.apply {
+                    institutionAreaTv.show()
+                    institutionAreaParent.show()
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
+                    bankTv.setText(R.string .select_institute_location)
+                    loanTypeTv.setText(R.string.select_institute)
+                    institutionAreaTv.setText(R.string.select_institute_area)
+                    loanAcntNoTv.setText(R.string.enter_enrolment_number)
+                    mobileNoTv.setText(R.string.enter_date_birth)
+                }
+
 
             }
             BbpsType.GasCylinder.type -> {
                 showHeaderDetails(R.string.book_a_cylinder,R.drawable.cylinder_gas)
 
+
+
             }
             BbpsType.Apartment.type -> {
                 showHeaderDetails(R.string.apartment_bill,R.drawable.apartment_group)
+                binding.apply {
+                    institutionAreaTv.show()
+                    institutionAreaParent.show()
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
+                    mobileNoTv.hide()
+                    mobileNoEt.hide()
+                    bankTv.setText(R.string .select_city)
+                    loanTypeTv.setText(R.string.select_apartment)
+                    institutionAreaTv.setText(R.string.utility_type)
+                    loanAcntNoTv.setText(R.string.enter_your_mobile_number)
+
+                }
 
             }
             BbpsType.GasPipeLine.type -> {
                 showHeaderDetails(R.string.gas_pipeline_bill,R.drawable.gas_pipe_l_1)
+                binding.apply {
+                    loanTypeTv.hide()
+                    typeOfLOandParent.hide()
+                    bankTv.setText(R.string.gas_pipeline_bill)
+                    loanAcntNoTv.setText(R.string.your_mobile_number)
+                    mobileNoTv.setText(R.string.customer_id)
+                    emiPaidTv.setText(R.string.amount_to_paid)
+
+                }
 
             }
             BbpsType.HomeRent.type -> {
@@ -168,11 +211,32 @@ private fun showHeaderDetails(text:Int,image:Int){
             }
             BbpsType.WaterBill.type -> {
                 showHeaderDetails(R.string.water_bill,R.drawable.tap)
+                binding.apply {
+                    bankTv.setText(R.string.select_board)
+                    loanAcntNoTv.setText(R.string.your_account_number)
+                    loanTypeTv.hide()
+                    typeOfLOandParent.hide()
+                    mobileNoTv.hide()
+                    mobileNoEt.hide()
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
+
+                }
 
             }
             BbpsType.LandLineBill.type -> {
                 showHeaderDetails(R.string.landline_bill,R.drawable.landline_action)
+                binding.apply {
+                    bankTv.setText(R.string.select_operator)
+                    loanAcntNoTv.setText(R.string.your_number_with_std)
+                    loanTypeTv.hide()
+                    typeOfLOandParent.hide()
+                    mobileNoTv.hide()
+                    mobileNoEt.hide()
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
 
+                }
             }
             BbpsType.CableTvBill.type -> {
                 showHeaderDetails(R.string.cable_tv_bill,R.drawable.cable_tv)
@@ -181,9 +245,20 @@ private fun showHeaderDetails(text:Int,image:Int){
             BbpsType.Insurance.type -> {
                 showHeaderDetails(R.string.insurance_premium,R.drawable.insurance_icon_anim)
 
+                binding.apply {
+                    bankTv.setText(R.string.select_insurer)
+                    loanAcntNoTv.setText(R.string.your_policy_number)
+                    loanTypeTv.hide()
+                    typeOfLOandParent.hide()
+                    mobileNoTv.hide()
+                    mobileNoEt.hide()
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
+
+                }
             }
             BbpsType.MunicipalTax.type -> {
-                showHeaderDetails(R.string.dth_recharge,R.drawable.municiapl_tax)
+                showHeaderDetails(R.string.municipal_tax_bill,R.drawable.municiapl_tax)
 
             }
             BbpsType.FastTag.type -> {

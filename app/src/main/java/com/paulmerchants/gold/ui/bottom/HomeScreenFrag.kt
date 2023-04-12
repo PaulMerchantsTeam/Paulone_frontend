@@ -17,6 +17,7 @@ import com.paulmerchants.gold.common.Constants.BBPS_TYPE
 import com.paulmerchants.gold.common.Constants.DUE_LOAN_DATA
 
 import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
+import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.DueLoans
 import com.paulmerchants.gold.model.PrepaidCardModel
 import com.paulmerchants.gold.ui.MainActivity
@@ -153,53 +154,68 @@ class HomeScreenFrag :
         }
 
         binding.allPaymnetActionParent.homeLoanParent.setOnClickListener {
-            navigationBills(BbpsType.HomeLoan.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.HomeLoan.type), findNavController())
         }
 
         binding.allPaymnetActionParent.personalLoanParent.setOnClickListener {
-            navigationBills(BbpsType.PersonalLoan.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.PersonalLoan.type), findNavController())
+
         }
         binding.allPaymnetActionParent.creditCardParent.setOnClickListener {
-            navigationBills(BbpsType.CreditCard.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.CreditCard.type), findNavController())
+
         }
         binding.allPaymnetActionParent.dthServiceActionParent.setOnClickListener {
-            navigationBills(BbpsType.DthService.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.DthService.type), findNavController())
+
         }
         binding.allPaymnetActionParent.dthServiceActionParent2.setOnClickListener {
-            navigationBills(BbpsType.DthService.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.DthService.type), findNavController())
+
         }
         binding.allPaymnetActionParent.electricityParent.setOnClickListener {
-            navigationBills(BbpsType.Electricity.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.Electricity.type), findNavController())
+
         }
         binding.allPaymnetActionParent.boradBandParent.setOnClickListener {
-            navigationBills(BbpsType.Broadband.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.Broadband.type), findNavController())
+
         }
         binding.allPaymnetActionParent.MobileParent.setOnClickListener {
-            navigationBills(BbpsType.Mobile.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.Mobile.type), findNavController())
+
         }
         binding.allPaymnetActionParent.mobileParent2.setOnClickListener {
-            navigationBills(BbpsType.MobileRecharge.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.MobileRecharge.type), findNavController())
+
         }
         binding.allPaymnetActionParent.mobPostPaidParent.setOnClickListener {
-            navigationBills(BbpsType.MobilePostpaid.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.MobilePostpaid.type), findNavController())
+
         }
         binding.allPaymnetActionParent.ottParent.setOnClickListener {
-            navigationBills(BbpsType.OttWorld.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.OttWorld.type), findNavController())
+
         }
         binding.allPaymnetActionParent.insuranceParent.setOnClickListener {
-            navigationBills(BbpsType.Insurance.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.Insurance.type), findNavController())
+
         }
         binding.allPaymnetActionParent.muncipalTaxParent.setOnClickListener {
-            navigationBills(BbpsType.MunicipalTax.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.MunicipalTax.type), findNavController())
+
         }
         binding.allPaymnetActionParent.fastTagParent.setOnClickListener {
-            navigationBills(BbpsType.FastTag.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.FastTag.type), findNavController())
+
         }
         binding.allPaymnetActionParent.challanTraffitParent.setOnClickListener {
-            navigationBills(BbpsType.Challan.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.Challan.type), findNavController())
+
         }
         binding.allPaymnetActionParent.metroCardParent.setOnClickListener {
-            navigationBills(BbpsType.MetroCard.type)
+            AppUtility.onBillClicked(ActionItem(BbpsType.MetroCard.type), findNavController())
+
         }
 
     }
@@ -227,13 +243,6 @@ class HomeScreenFrag :
 
     }
 
-    private fun navigationBills(type: Int) {
-        val bundleHomeLoan = Bundle().apply {
-            putInt(BBPS_TYPE, type)
-        }
-        findNavController().navigate(R.id.billsFragment, bundleHomeLoan)
-    }
-
 
     private fun startAnimationOnIcon() {
         binding.allPaymnetActionParent.apply {
@@ -256,7 +265,15 @@ class HomeScreenFrag :
     }
 
     private fun setUiOnHomeSweetHomeBills() {
-        binding.allPaymnetActionParent.homeSweetHomBillsRv.setUiOnHomeSweetHomeBills(requireContext())
+        binding.allPaymnetActionParent.homeSweetHomBillsRv.setUiOnHomeSweetHomeBills(
+            requireContext(),
+            ::onBillClicked
+        )
+    }
+
+
+    private fun onBillClicked(actionItem: ActionItem) {
+        AppUtility.onBillClicked(actionItem, findNavController())
     }
 
 

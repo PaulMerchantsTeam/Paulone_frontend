@@ -113,6 +113,43 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/institutionAreaTv"
+                    style="@style/text_11_semi_bold_blue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/type_of_loan"
+                    android:visibility="gone"
+                    android:textColor="@color/pg_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/typeOfLOandParent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/institutionAreaParent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"
+                    android:background="@drawable/edit_text_rect"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/institutionAreaTv">
+
+                    <Spinner
+                        android:id="@+id/institutionAreaSpiner"
+                        style="@style/text_11_semi_bold_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:spinnerMode="dropdown"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/loanAcntNoTv"
@@ -123,7 +160,7 @@
                     android:text="@string/enter_your_loan_account_number"
                     android:textColor="@color/pg_color"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/typeOfLOandParent" />
+                    app:layout_constraintTop_toBottomOf="@+id/institutionAreaParent" />
 
                 <EditText
                     android:id="@+id/enterLoanEt"

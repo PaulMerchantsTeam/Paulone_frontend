@@ -203,6 +203,30 @@
     <string name="select_complaint_type">Select Complaint Type</string>
     <string name="select_state">Select state </string>
     <string name="select_board">Select board </string>
+    <string name="select_your_board">Select your board </string>
+
+    <string name="select_gas_provider">Select your Gas Provider </string>
+    <string name="your_mobile_number">Your Mobile Number </string>
+    <string name="customer_id">Customer ID </string>
+    <string name="amount_to_paid">Amount to paid</string>
+
+    <string name="select_institute_location">Select your Institution Location </string>
+    <string name="select_institute_area">Select your Institution Area </string>
+    <string name="select_institute">Select  Institution </string>
+    <string name="enter_enrolment_number">Enter Enrolment/ registration Number </string>
+    <string name="enter_date_birth">Enter Date of Birth(DD-MM-YYYY)</string>
+
+    <string name="select_city">Select City </string>
+    <string name="select_apartment">Select Apartment </string>
+    <string name="utility_type">Utility Type </string>
+
+    <string name="select_insurer">Select your Insurer </string>
+    <string name="your_policy_number">Your Policy Number </string>
+    <string name="select_operator">Select your Operator </string>
+    <string name="your_number_with_std">Your number with STD </string>
+
+
+
     <string name="enter_your_account_number">Enter your account number </string>
     <string name="transaction_reference_id">Transaction Reference ID</string>
     <string name="description">Description</string>
@@ -237,6 +261,7 @@
     <string name="ott_subscription"> OTT Subscription</string>
     <string name="fastag_recharge"> Fastag Recharge</string>
     <string name="metro_card_recharge"> Metro Card Recharge</string>
+    <string name="municipal_tax_bill">Municipal Tex</string>
 
     <string name="send_again"><u>Send OTP again</u></string>
     <string name="prceed">PROCEED</string>

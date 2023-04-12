@@ -9,7 +9,7 @@ import com.paulmerchants.gold.adapterviewholders.HomeBillsViewHolder
 import com.paulmerchants.gold.databinding.ItemActionBillBinding
 import com.paulmerchants.gold.model.ActionItem
 
-class HomeSweetBillsAdapter :
+class HomeSweetBillsAdapter(private val onBillClicked :(ActionItem) -> Unit) :
     ListAdapter<ActionItem, HomeBillsViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = HomeBillsViewHolder(
@@ -17,7 +17,7 @@ class HomeSweetBillsAdapter :
     )
 
     override fun onBindViewHolder(holder: HomeBillsViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position),onBillClicked)
     }
 
     companion object {

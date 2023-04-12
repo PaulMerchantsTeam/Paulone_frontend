@@ -17,6 +17,7 @@ import androidx.transition.Fade
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.paulmerchants.gold.BbpsType
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.HomeSweetBillsAdapter
 import com.paulmerchants.gold.model.ActionItem
@@ -32,24 +33,24 @@ fun ImageView.startCustomAnimation(drawable: Int) {
     }
 }
 
-fun RecyclerView.setUiOnHomeSweetHomeBills(context: Context) {
-    val homeSweetBillsAdapter = HomeSweetBillsAdapter()
-    val actionItem1 = ActionItem(1, R.drawable.elec_bill, context.getString(R.string.electricity))
+fun RecyclerView.setUiOnHomeSweetHomeBills(context: Context, onBillClicked :(ActionItem) -> Unit) {
+    val homeSweetBillsAdapter = HomeSweetBillsAdapter(onBillClicked)
+    val actionItem1 = ActionItem(BbpsType.Electricity.type, R.drawable.elec_bill, context.getString(R.string.electricity))
     val actionItem2 =
-        ActionItem(2, R.drawable.broadband_bill, context.getString(R.string.broadband))
+        ActionItem(BbpsType.Broadband.type, R.drawable.broadband_bill, context.getString(R.string.broadband))
     val actionItem3 =
-        ActionItem(3, R.drawable.education_loan, context.getString(R.string.education))
+        ActionItem(BbpsType.Education.type, R.drawable.education_loan, context.getString(R.string.education))
     val actionItem4 =
-        ActionItem(4, R.drawable.cylinder_gas, context.getString(R.string.gas_cylinder))
+        ActionItem(BbpsType.GasCylinder.type, R.drawable.cylinder_gas, context.getString(R.string.gas_cylinder))
     val actionItem5 =
-        ActionItem(5, R.drawable.apartment_group, context.getString(R.string.apartment))
+        ActionItem(BbpsType.Apartment.type, R.drawable.apartment_group, context.getString(R.string.apartment))
     val actionItem6 =
-        ActionItem(6, R.drawable.pipeline_gas, context.getString(R.string.gas_pipline))
-    val actionItem7 = ActionItem(7, R.drawable.home_rent, context.getString(R.string.homerent))
-    val actionItem8 = ActionItem(8, R.drawable.tap, context.getString(R.string.water))
+        ActionItem(BbpsType.GasPipeLine.type, R.drawable.pipeline_gas, context.getString(R.string.gas_pipline))
+    val actionItem7 = ActionItem(BbpsType.HomeRent.type, R.drawable.home_rent, context.getString(R.string.homerent))
+    val actionItem8 = ActionItem(BbpsType.WaterBill.type, R.drawable.tap, context.getString(R.string.water))
     val actionItem9 =
-        ActionItem(9, R.drawable.landline_action, context.getString(R.string.landline))
-    val actionItem10 = ActionItem(10, R.drawable.cable_tv, context.getString(R.string.cabletv))
+        ActionItem(BbpsType.LandLineBill.type, R.drawable.landline_action, context.getString(R.string.landline))
+    val actionItem10 = ActionItem(BbpsType.CableTvBill.type, R.drawable.cable_tv, context.getString(R.string.cabletv))
     val list = listOf(
         actionItem1,
         actionItem2,
