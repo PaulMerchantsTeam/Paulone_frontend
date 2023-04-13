@@ -26,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
     lateinit var navOption: NavOptions
+    lateinit var navOptionLeft: NavOptions
     lateinit var navOptionTop: NavOptions
     lateinit var navController: NavController
 
@@ -42,6 +43,9 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         navController = navHostFragment.navController
         navOption = NavOptions.Builder().setEnterAnim(R.anim.slide_in_right)
             .setExitAnim(R.anim.slide_out_left).setPopEnterAnim(R.anim.slide_in_left)
+            .setPopExitAnim(R.anim.slide_out_right).build()
+        navOptionLeft = NavOptions.Builder().setEnterAnim(R.anim.slide_in_left)
+            .setExitAnim(R.anim.slide_in_right).setPopEnterAnim(R.anim.slide_in_left)
             .setPopExitAnim(R.anim.slide_out_right).build()
         navOptionTop = NavOptions.Builder().setEnterAnim(R.anim.slide_in_bottom)
             .setExitAnim(R.anim.slide_out_bottom).setPopEnterAnim(R.anim.slide_in_left)

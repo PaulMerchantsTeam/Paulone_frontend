@@ -6,6 +6,7 @@ import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.ProfileLayoutBinding
 import com.paulmerchants.gold.databinding.QuickPayPopupBinding
 import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.utility.setServicesUi
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,6 +19,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
     override fun onStart() {
         super.onStart()
         handlesClicks()
+        settingUi()
     }
 
     private fun handlesClicks() {
@@ -33,5 +35,8 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
         }
     }
 
+    private fun settingUi() {
+        binding.profileSettingsRv.setServicesUi(requireContext())
+    }
 
 }

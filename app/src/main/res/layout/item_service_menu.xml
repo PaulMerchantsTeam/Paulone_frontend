@@ -20,6 +20,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/serviceOne"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
@@ -58,6 +59,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/serviceTwo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/serviceTwo"
+        app:srcCompat="@drawable/arrow_right_black" />
+
+    <ImageView
+        android:id="@+id/headerNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/titleServiceTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/titleServiceTv"
         app:srcCompat="@drawable/arrow_right_black" />
 
     <ImageView

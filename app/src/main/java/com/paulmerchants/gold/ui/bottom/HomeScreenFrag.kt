@@ -121,9 +121,9 @@ class HomeScreenFrag :
     private fun profileHandle() {
         binding.searchProfileParent.profileIv.setOnClickListener {
             findNavController().navigate(
-                R.id.mainScreenFrag,
+                R.id.profileFrag,
                 null,
-                (activity as MainActivity).navOption
+                (activity as MainActivity).navOptionLeft
             )
         }
     }

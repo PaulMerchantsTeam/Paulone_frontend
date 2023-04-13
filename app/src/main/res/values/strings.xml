@@ -291,6 +291,15 @@
 
     <string name="please_note_payment_with_rupay">Please note, the above payment is for safety purpose and will be refunded back to your same account.</string>
     <string name="pay_inr_2_secure"><![CDATA[Pay INR 2 & Secure]]></string>
+    <string name="privac_settings">Privacy Settings</string>
+    <string name="check_ye_spent">Check where you spent</string>
+    <string name="app_Setting">App Settings</string>
+    <string name="yr_pref">Your Preferences</string>
+    <string name="anything_fr_us">Anything for us?</string>
+    <string name="give_us_fdbck">Give us Feedback</string>
+    <string name="raise_a_complaint">Raise a complaint</string>
+    <string name="log_out">Logout</string>
+    <string name="chag_yr_pin">Change your pin</string>
 
 
     <string-array name="month">

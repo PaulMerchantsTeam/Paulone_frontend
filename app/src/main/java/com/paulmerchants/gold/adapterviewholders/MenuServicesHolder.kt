@@ -1,6 +1,8 @@
 package com.paulmerchants.gold.adapterviewholders
 
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.paulmerchants.gold.R
 import com.paulmerchants.gold.databinding.ItemServiceMenuBinding
 import com.paulmerchants.gold.model.MenuServices
 import com.paulmerchants.gold.utility.hide
@@ -10,6 +12,23 @@ class MenuServicesHolder(private val binding: ItemServiceMenuBinding) :
     ViewHolder(binding.root) {
 
     fun bind(actionItem: MenuServices) {
+        if (actionItem.serviceId >= 100) {
+            binding.titleServiceTv.setTextColor(
+                ContextCompat.getColor(
+                    binding.root.context,
+                    R.color.splash_screen_three
+                )
+            )
+        }
+        if (actionItem.optOne == "" && actionItem.optTwo == "") {
+            binding.apply {
+                headerNext.show()
+                view3.hide()
+                option1Next.hide()
+                serviceOne.hide()
+                option2Next.hide()
+            }
+        }
         binding.apply {
             binding.apply {
                 if (actionItem.titleName == "") {
