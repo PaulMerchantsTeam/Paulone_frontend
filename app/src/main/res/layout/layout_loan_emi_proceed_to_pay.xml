@@ -166,6 +166,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detailParent" />
+            <include
+                android:id="@+id/otpFill"
+                layout="@layout/otp_fill_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/openApplicationTv"
@@ -506,6 +516,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/enterUpiEt" />
 
                         <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/verifyUpiBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"

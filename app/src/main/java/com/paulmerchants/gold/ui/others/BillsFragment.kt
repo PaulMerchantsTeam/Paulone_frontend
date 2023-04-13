@@ -2,6 +2,7 @@ package com.paulmerchants.gold.ui.others
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.R
@@ -47,6 +48,16 @@ private fun showHeaderDetails(text:Int,image:Int){
         when (bbpsActionValue) {
 
             BbpsType.GoldLoan.type -> {}
+            BbpsType.MunicipalTax.type -> {
+                Toast.makeText(requireContext(), "Coming Soon", Toast.LENGTH_SHORT).show()
+
+            }
+            BbpsType.Challan.type -> {
+
+                Toast.makeText(requireContext(), "Coming Soon", Toast.LENGTH_SHORT).show()
+            }
+
+
             BbpsType.HomeLoan.type -> {
                showHeaderDetails(R.string.loan_emi,R.drawable.loan_person)
                 binding.proceedBtn.setOnClickListener {
@@ -307,18 +318,26 @@ private fun showHeaderDetails(text:Int,image:Int){
 
                 }
             }
-            BbpsType.MunicipalTax.type -> {
-                showHeaderDetails(R.string.municipal_tax_bill,R.drawable.municiapl_tax)
 
-            }
-            BbpsType.Challan.type -> {
-                showHeaderDetails(R.string.challan_bill,R.drawable.traffic_challan)
-
-            }
             BbpsType.Mobile.type -> {
                 showHeaderDetails(R.string.mobile_recharge_bill,R.drawable.mobile_layer_2 )
                 binding.apply {
+                    loanTypeTv.hide()
+                    typeOfLOandParent.hide()
+                    viewHorPost.hide()
+
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
                     mobileRechargeTv.show()
+                    enterMobTv.show()
+                    enterMobEt.show()
+                    bankTv.setText(R.string.select_operator)
+                    loanAcntNoTv.setText(R.string.enter_state)
+                    mobileNoTv.setText(R.string.amount_to_be_paid)
+
+
+
+
                 }
 
 
@@ -326,10 +345,40 @@ private fun showHeaderDetails(text:Int,image:Int){
             }
             BbpsType.MobileRecharge.type -> {
                 showHeaderDetails(R.string.mobile_recharge_bill,R.drawable.mobile_icon_anim)
+                binding.apply {
+                    loanTypeTv.hide()
+                    typeOfLOandParent.hide()
+                    viewHorPost.hide()
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
+                    mobileRechargeTv.show()
+                    enterMobTv.show()
+                    enterMobEt.show()
+                    bankTv.setText(R.string.select_operator)
+                    loanAcntNoTv.setText(R.string.enter_state)
+                    mobileNoTv.setText(R.string.amount_to_be_paid)
+
+
+
+
+                }
 
             }
             BbpsType.MobilePostpaid.type -> {
                 showHeaderDetails(R.string.postpaid_bill,R.drawable.mob_post_paid)
+                binding.apply {
+                    loanTypeTv.hide()
+                    viewHorPre.hide()
+                    typeOfLOandParent.hide()
+                    emiPaidTv.hide()
+                    emiPaidEt.hide()
+                    mobileRechargeTv.show()
+                    mobileNoTv.hide()
+                    mobileNoEt.hide()
+                    bankTv.setText(R.string.select_operator)
+                    loanAcntNoTv.setText(R.string.customer_number)
+
+                }
             }
             BbpsType.FastTag.type -> {
                 showHeaderDetails(R.string.fastag_recharge,R.drawable.fastag_action)

@@ -211,6 +211,7 @@
     <string name="select_gas_provider">Select your Gas Provider </string>
     <string name="your_mobile_number">Your Mobile Number </string>
     <string name="customer_id">Customer ID </string>
+    <string name="customer_number">Customer Number </string>
     <string name="amount_to_paid">Amount to paid</string>
 
     <string name="select_institute_location">Select your Institution Location </string>
@@ -239,6 +240,7 @@
     <string name="select_insurer">Select your Insurer </string>
     <string name="your_policy_number">Your Policy Number </string>
     <string name="select_operator">Select your Operator </string>
+    <string name="enter_state">Enter your State </string>
     <string name="your_number_with_std">Your number with STD </string>
 
 
@@ -281,10 +283,8 @@
     <string name="metro_card_recharge"> Metro Card Recharge</string>
     <string name="municipal_tax_bill">Municipal Tex</string>
     <string name="challan_bill">Challan </string>
-
     <string name="send_again"><u>Send OTP again</u></string>
     <string name="prceed">PROCEED</string>
-
     <string name="welcome_back_nwe_missed_you_d">Welcome back,\nwe missed you :D</string>
     <string name="loan_Statment">LOAN STATEMENT</string>
     <string name="download_pdf">Download PDF</string>

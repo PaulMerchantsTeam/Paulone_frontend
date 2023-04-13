@@ -135,6 +135,15 @@ fun View.shoViewWithAnim() {
         .setListener(null)
 }
 
+fun View.showViewWithAnimDur300() {
+    visibility = View.VISIBLE
+    alpha = 0.0f
+    this.animate()
+        .translationY(0F)
+        .alpha(1.0f)
+        .setDuration(300)
+        .setListener(null)
+}
 fun TextView.setTColor(str: String, context: Context, colorId: Int) {
     text = str
     setTextColor(ContextCompat.getColor(context, colorId))
