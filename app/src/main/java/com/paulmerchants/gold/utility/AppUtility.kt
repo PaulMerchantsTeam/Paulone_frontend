@@ -9,8 +9,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import androidx.navigation.fragment.findNavController
+
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.model.ActionItem
@@ -49,14 +48,14 @@ object AppUtility {
         tv.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 
-    fun onBillClicked(actionItem: ActionItem,navController: NavController) {
+    fun onBillClicked(actionItem: ActionItem, navController: NavController) {
         val bundleHomeLoan = Bundle().apply {
             putInt(Constants.BBPS_TYPE, actionItem.itemId)
         }
         navController.navigate(R.id.billsFragment, bundleHomeLoan)
     }
 
-    }
+}
 
 
 

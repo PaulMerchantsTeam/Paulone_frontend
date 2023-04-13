@@ -17,6 +17,7 @@ import com.paulmerchants.gold.R
 
 class CustomViews(context: Context, val activity: LinearLayout) : View(context) {
 
+
     private var mSweepAngle: Float = 0f
     private var mStartAngle: Float = 0f
     private var outerPaint = Paint()
