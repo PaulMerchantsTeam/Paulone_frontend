@@ -5,6 +5,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
+import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.LayoutLoanEmiProceedToPayBinding
 import com.paulmerchants.gold.databinding.LoanEmiPaymentConfirmedBinding
 import com.paulmerchants.gold.utility.hide
@@ -17,7 +18,9 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class PaymentConfirmed :
     BaseFragment<LoanEmiPaymentConfirmedBinding>(LoanEmiPaymentConfirmedBinding::inflate) {
+    var headerValue :String? = null
     override fun LoanEmiPaymentConfirmedBinding.initialize() {
+        headerValue = arguments?.getString(Constants.BBPS_HEADER, "")
 
     }
 
@@ -26,6 +29,7 @@ class PaymentConfirmed :
         binding.apply {
             headerLoanConfirmed.backIv.hide()
             headerLoanConfirmed.endIconIv.show()
+            headerLoanConfirmed.titlePageTv.setText(headerValue.toString())
             headerLoanConfirmed.endIconIv.setImageResource(R.drawable.bbps_small)
             gotoHomeBtn.setOnClickListener {
       }

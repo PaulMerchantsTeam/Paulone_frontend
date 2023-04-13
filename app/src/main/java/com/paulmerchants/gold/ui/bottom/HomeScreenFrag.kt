@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -202,7 +203,8 @@ class HomeScreenFrag :
 
         }
         binding.allPaymnetActionParent.muncipalTaxParent.setOnClickListener {
-            AppUtility.onBillClicked(ActionItem(BbpsType.MunicipalTax.type), findNavController())
+            Toast.makeText(requireContext(), "Coming Soon", Toast.LENGTH_SHORT).show()
+//            AppUtility.onBillClicked(ActionItem(BbpsType.MunicipalTax.type), findNavController())
 
         }
         binding.allPaymnetActionParent.fastTagParent.setOnClickListener {
@@ -210,7 +212,8 @@ class HomeScreenFrag :
 
         }
         binding.allPaymnetActionParent.challanTraffitParent.setOnClickListener {
-            AppUtility.onBillClicked(ActionItem(BbpsType.Challan.type), findNavController())
+            Toast.makeText(requireContext(), "Coming Soon", Toast.LENGTH_SHORT).show()
+//            AppUtility.onBillClicked(ActionItem(BbpsType.Challan.type), findNavController())
 
         }
         binding.allPaymnetActionParent.metroCardParent.setOnClickListener {

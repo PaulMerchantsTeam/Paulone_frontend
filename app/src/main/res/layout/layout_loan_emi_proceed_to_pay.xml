@@ -194,6 +194,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/view" />
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/timeCountTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -260,7 +261,7 @@
 
                     <com.google.android.material.textview.MaterialTextView
 
-                        android:id="@+id/materialTextView13"
+                        android:id="@+id/prePaidCardTv"
                         style="@style/text_11_semi_bold_black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -273,7 +274,7 @@
 
                     <com.google.android.material.textview.MaterialTextView
 
-                        android:id="@+id/materialTextView12"
+                        android:id="@+id/prePayNumberTv"
                         style="@style/text_11_semi_bold_black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -283,10 +284,11 @@
                         android:textColor="@color/text_color_gray"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/view_ver"
-                        app:layout_constraintTop_toBottomOf="@+id/materialTextView13" />
+                        app:layout_constraintTop_toBottomOf="@+id/prePaidCardTv" />
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/prePaidcardSelectParent"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginEnd="20dp"
@@ -299,6 +301,7 @@
                         >
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/selectPrecard"
                             android:layout_width="12dp"
                             android:layout_height="12dp"
                             android:background="@color/splash_screen_one"
@@ -349,14 +352,44 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
+                        android:visibility="visible"
                         android:text="@string/add_new_upi"
                         android:textColor="@color/blue_light"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@+id/view_ver_bhm"
+                        app:layout_constraintStart_toEndOf="@+id/view_ver_bhm"
+                        app:layout_constraintTop_toTopOf="@+id/view_ver_bhm" />
+                    <com.google.android.material.textview.MaterialTextView
+
+                        android:id="@+id/upiCardTv"
+                        style="@style/text_11_semi_bold_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="abcd1234@oksbi"
+                        android:visibility="gone"
+                        android:textColor="@color/pg_color"
                         app:layout_constraintStart_toEndOf="@+id/view_ver_bhm"
                         app:layout_constraintTop_toTopOf="parent" />
+                    <com.google.android.material.textview.MaterialTextView
+
+                        android:id="@+id/upiNumTv"
+                        style="@style/text_11_semi_bold_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="gone"
+                        android:text="xxxxxxxx2345"
+                        android:textColor="@color/text_color_gray"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/view_ver_bhm"
+                        app:layout_constraintTop_toBottomOf="@+id/upiCardTv" />
+
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/selectUpiIdParent"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginEnd="20dp"
@@ -370,9 +403,10 @@
                         >
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/selectUpi"
                             android:layout_width="12dp"
                             android:layout_height="12dp"
-                            android:background="@color/splash_screen_one"
+                            android:background="@color/splash_screen_two"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

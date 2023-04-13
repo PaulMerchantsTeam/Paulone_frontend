@@ -1,11 +1,13 @@
 package com.paulmerchants.gold.ui.bottom
 
+import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.BillNMoreScreenFragmentBinding
 import com.paulmerchants.gold.databinding.MainScreenFragmentBinding
+import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.ui.others.BillsFragment
 import com.paulmerchants.gold.utility.AppUtility
@@ -38,6 +40,46 @@ class BillsAndMoreScreenFrag :
         super.onStart()
         binding.headerBillMore.backIv.hide()
         setUiOnHomeSweetHomeBills()
+        binding.apply {
+            billSRechargeMain.dthServiceActionParent2.setOnClickListener {
+                AppUtility.onBillClicked(ActionItem(BbpsType.DthService.type), findNavController())
+
+            }
+            billSRechargeMain.mobileParent2.setOnClickListener {
+                AppUtility.onBillClicked(ActionItem(BbpsType.MobileRecharge.type), findNavController())
+
+            }
+            billSRechargeMain.mobPostPaidParent.setOnClickListener {
+                AppUtility.onBillClicked(ActionItem(BbpsType.MobilePostpaid.type), findNavController())
+
+            }
+            billSRechargeMain.ottParent.setOnClickListener {
+                AppUtility.onBillClicked(ActionItem(BbpsType.OttWorld.type), findNavController())
+
+            }
+            billSRechargeMain.insuranceParent.setOnClickListener {
+                AppUtility.onBillClicked(ActionItem(BbpsType.Insurance.type), findNavController())
+
+            }
+            billSRechargeMain.muncipalTaxParent.setOnClickListener {
+                Toast.makeText(requireContext(), "Coming Soon", Toast.LENGTH_SHORT).show()
+
+            }
+            billSRechargeMain.fastTagParent.setOnClickListener {
+                AppUtility.onBillClicked(ActionItem(BbpsType.FastTag.type), findNavController())
+
+            }
+            billSRechargeMain.challanTraffitParent.setOnClickListener {
+                Toast.makeText(requireContext(), "Coming Soon", Toast.LENGTH_SHORT).show()
+
+            }
+            billSRechargeMain.metroCardIv.setOnClickListener {
+                AppUtility.onBillClicked(ActionItem(BbpsType.MetroCard.type), findNavController())
+
+            }
+
+        }
+
     }
 
     private fun setUiOnHomeSweetHomeBills() {

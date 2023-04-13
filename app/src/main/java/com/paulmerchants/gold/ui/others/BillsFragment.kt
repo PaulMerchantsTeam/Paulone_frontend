@@ -3,12 +3,15 @@ package com.paulmerchants.gold.ui.others
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
+import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.common.Constants.BBPS_TYPE
 import com.paulmerchants.gold.databinding.LayoutLoanEmiBinding
+import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,21 +44,22 @@ private fun showHeaderDetails(text:Int,image:Int){
         findNavController().navigateUp()
     }
 }
+    private fun onNavigateProceedToPay(header:String) {
+        val bundleBbpsHeader = Bundle().apply {
+            putString(Constants.BBPS_HEADER,header)
+        }
+        findNavController().navigate(R.id.proceedToPay, bundleBbpsHeader)
+    }
     override fun onResume() {
         super.onResume()
         Log.d("TAGValue", "onResume: $bbpsActionValue ")
 
+
         when (bbpsActionValue) {
 
             BbpsType.GoldLoan.type -> {}
-            BbpsType.MunicipalTax.type -> {
-                Toast.makeText(requireContext(), "Coming Soon", Toast.LENGTH_SHORT).show()
-
-            }
-            BbpsType.Challan.type -> {
-
-                Toast.makeText(requireContext(), "Coming Soon", Toast.LENGTH_SHORT).show()
-            }
+            BbpsType.MunicipalTax.type -> {}
+            BbpsType.Challan.type -> {}
 
 
             BbpsType.HomeLoan.type -> {
@@ -65,7 +69,8 @@ private fun showHeaderDetails(text:Int,image:Int){
                    binding.loanProccedDetailParent.show()
                     binding.proceedBtn.setText(R.string.proceed_to_pay)
                     binding.proceedBtn.setOnClickListener {
-                        findNavController().navigate(R.id.proceedToPay)
+                        onNavigateProceedToPay(resources.getString(R.string.loan_emi))
+
                     }
                     binding.headerLoan.backIv.setOnClickListener {
                         binding.loanDetailsEnterParent.show()
@@ -85,7 +90,7 @@ private fun showHeaderDetails(text:Int,image:Int){
                     binding.loanProccedDetailParent.show()
                     binding.proceedBtn.setText(R.string.proceed_to_pay)
                     binding.proceedBtn.setOnClickListener {
-                        findNavController().navigate(R.id.proceedToPay)
+                        onNavigateProceedToPay(resources.getString(R.string.loan_personal))
                     }
                     binding.headerLoan.backIv.setOnClickListener {
                         binding.loanDetailsEnterParent.show()
@@ -109,11 +114,8 @@ private fun showHeaderDetails(text:Int,image:Int){
                 binding.mobileNoTv.setText(R.string.enter_your_credit_card_number)
                 binding.emiPaidTv.setText(R.string.amount_to_be_paid)
                 binding.proceedBtn.setOnClickListener {
-                    findNavController().navigate(R.id.proceedToPay)
-
-
+                    onNavigateProceedToPay(resources.getString(R.string.credit_card_bill))
                 }
-
 
 
             }
@@ -129,6 +131,9 @@ private fun showHeaderDetails(text:Int,image:Int){
                     emiPaidTv.hide()
                     emiPaidEt.hide()
                     dthNoteTv.show()
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.dth_recharge))
+                    }
 
                 }
 
@@ -145,6 +150,9 @@ private fun showHeaderDetails(text:Int,image:Int){
                     emiPaidEt.hide()
                     loanTypeTv.hide()
                     typeOfLOandParent.hide()
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.ott_subscription))
+                    }
 
                 }
 
@@ -162,6 +170,9 @@ private fun showHeaderDetails(text:Int,image:Int){
                     viewHor.show()
                     recentTransTv.show()
                     recentTransElecRv.show()
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.electricity_bill))
+                    }
                 }
 
 
@@ -176,6 +187,9 @@ private fun showHeaderDetails(text:Int,image:Int){
                     mobileNoEt.hide()
                     emiPaidTv.hide()
                     emiPaidEt.hide()
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.broadBand_bill))
+                    }
 
                 }
 
@@ -193,6 +207,9 @@ private fun showHeaderDetails(text:Int,image:Int){
                     institutionAreaTv.setText(R.string.select_institute_area)
                     loanAcntNoTv.setText(R.string.enter_enrolment_number)
                     mobileNoTv.setText(R.string.enter_date_birth)
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.education_fees_bill))
+                    }
                 }
 
 
@@ -207,7 +224,9 @@ private fun showHeaderDetails(text:Int,image:Int){
                     bankTv.setText(R.string.select_your_gas_provider)
                     loanAcntNoTv.setText(R.string.your_mobile_number)
                     mobileNoTv.setText(R.string.amount_to_be_paid)
-
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.book_a_cylinder))
+                    }
                 }
 
 
@@ -225,7 +244,9 @@ private fun showHeaderDetails(text:Int,image:Int){
                     loanTypeTv.setText(R.string.select_apartment)
                     institutionAreaTv.setText(R.string.utility_type)
                     loanAcntNoTv.setText(R.string.enter_your_mobile_number)
-
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.apartment_bill))
+                    }
                 }
 
             }
@@ -238,7 +259,9 @@ private fun showHeaderDetails(text:Int,image:Int){
                     loanAcntNoTv.setText(R.string.your_mobile_number)
                     mobileNoTv.setText(R.string.customer_id)
                     emiPaidTv.setText(R.string.amount_to_paid)
-
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.gas_pipeline_bill))
+                    }
                 }
 
             }
@@ -254,7 +277,9 @@ private fun showHeaderDetails(text:Int,image:Int){
                     mobileNoTv.setText(R.string.ifsc_code)
                     emiPaidTv.setText(R.string.account_holder_name)
 
-
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.home_rent_bill))
+                    }
                 }
             }
             BbpsType.WaterBill.type -> {
@@ -268,7 +293,9 @@ private fun showHeaderDetails(text:Int,image:Int){
                     mobileNoEt.hide()
                     emiPaidTv.hide()
                     emiPaidEt.hide()
-
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.water_bill))
+                    }
                 }
 
             }
@@ -283,7 +310,9 @@ private fun showHeaderDetails(text:Int,image:Int){
                     mobileNoEt.hide()
                     emiPaidTv.hide()
                     emiPaidEt.hide()
-
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.landline_bill))
+                    }
                 }
             }
             BbpsType.CableTvBill.type -> {
@@ -298,14 +327,15 @@ private fun showHeaderDetails(text:Int,image:Int){
                     bankTv.setText(R.string.select_operator)
                     loanAcntNoTv.setText(R.string.your_account_number)
                     mobileNoTv.setText(R.string.amount_to_paid)
-
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.cable_tv_bill))
+                    }
 
                 }
 
             }
             BbpsType.Insurance.type -> {
                 showHeaderDetails(R.string.insurance_premium,R.drawable.insurance_icon_anim)
-
                 binding.apply {
                     bankTv.setText(R.string.select_insurer)
                     loanAcntNoTv.setText(R.string.your_policy_number)
@@ -315,7 +345,9 @@ private fun showHeaderDetails(text:Int,image:Int){
                     mobileNoEt.hide()
                     emiPaidTv.hide()
                     emiPaidEt.hide()
-
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.insurance_premium))
+                    }
                 }
             }
 
@@ -325,7 +357,6 @@ private fun showHeaderDetails(text:Int,image:Int){
                     loanTypeTv.hide()
                     typeOfLOandParent.hide()
                     viewHorPost.hide()
-
                     emiPaidTv.hide()
                     emiPaidEt.hide()
                     mobileRechargeTv.show()
@@ -334,7 +365,41 @@ private fun showHeaderDetails(text:Int,image:Int){
                     bankTv.setText(R.string.select_operator)
                     loanAcntNoTv.setText(R.string.enter_state)
                     mobileNoTv.setText(R.string.amount_to_be_paid)
-
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.mobile_recharge_bill))
+                    }
+                    prepaidTv.setOnClickListener{
+                        viewHorPre.show()
+                        viewHorPost.hide()
+                        loanTypeTv.hide()
+                        typeOfLOandParent.hide()
+                        viewHorPost.hide()
+                        mobileNoTv.show()
+                        mobileNoEt.show()
+                        emiPaidTv.hide()
+                        emiPaidEt.hide()
+                        mobileRechargeTv.show()
+                        enterMobTv.show()
+                        enterMobEt.show()
+                        bankTv.setText(R.string.select_operator)
+                        loanAcntNoTv.setText(R.string.enter_state)
+                        mobileNoTv.setText(R.string.amount_to_be_paid)
+                    }
+                    postpaidTv.setOnClickListener{
+                        loanTypeTv.hide()
+                        viewHorPre.hide()
+                        enterMobTv.hide()
+                        enterMobEt.hide()
+                        viewHorPost.show()
+                        typeOfLOandParent.hide()
+                        emiPaidTv.hide()
+                        emiPaidEt.hide()
+                        mobileRechargeTv.show()
+                        mobileNoTv.hide()
+                        mobileNoEt.hide()
+                        bankTv.setText(R.string.select_operator)
+                        loanAcntNoTv.setText(R.string.customer_number)
+                    }
 
 
 
@@ -357,7 +422,41 @@ private fun showHeaderDetails(text:Int,image:Int){
                     bankTv.setText(R.string.select_operator)
                     loanAcntNoTv.setText(R.string.enter_state)
                     mobileNoTv.setText(R.string.amount_to_be_paid)
-
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.mobile_recharge_bill))
+                    }
+                    prepaidTv.setOnClickListener{
+                        viewHorPre.show()
+                        viewHorPost.hide()
+                        loanTypeTv.hide()
+                        typeOfLOandParent.hide()
+                        viewHorPost.hide()
+                        emiPaidTv.hide()
+                        mobileNoTv.show()
+                        mobileNoEt.show()
+                        emiPaidEt.hide()
+                        mobileRechargeTv.show()
+                        enterMobTv.show()
+                        enterMobEt.show()
+                        bankTv.setText(R.string.select_operator)
+                        loanAcntNoTv.setText(R.string.enter_state)
+                        mobileNoTv.setText(R.string.amount_to_be_paid)
+                    }
+                    postpaidTv.setOnClickListener{
+                        loanTypeTv.hide()
+                        viewHorPre.hide()
+                        viewHorPost.show()
+                        typeOfLOandParent.hide()
+                        enterMobTv.hide()
+                        enterMobEt.hide()
+                        emiPaidTv.hide()
+                        emiPaidEt.hide()
+                        mobileRechargeTv.show()
+                        mobileNoTv.hide()
+                        mobileNoEt.hide()
+                        bankTv.setText(R.string.select_operator)
+                        loanAcntNoTv.setText(R.string.customer_number)
+                    }
 
 
 
@@ -377,7 +476,41 @@ private fun showHeaderDetails(text:Int,image:Int){
                     mobileNoEt.hide()
                     bankTv.setText(R.string.select_operator)
                     loanAcntNoTv.setText(R.string.customer_number)
-
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.postpaid_bill))
+                    }
+                    prepaidTv.setOnClickListener{
+                        viewHorPre.show()
+                        viewHorPost.hide()
+                        loanTypeTv.hide()
+                        mobileNoTv.show()
+                        mobileNoEt.show()
+                        typeOfLOandParent.hide()
+                        viewHorPost.hide()
+                        emiPaidTv.hide()
+                        emiPaidEt.hide()
+                        mobileRechargeTv.show()
+                        enterMobTv.show()
+                        enterMobEt.show()
+                        bankTv.setText(R.string.select_operator)
+                        loanAcntNoTv.setText(R.string.enter_state)
+                        mobileNoTv.setText(R.string.amount_to_be_paid)
+                    }
+                    postpaidTv.setOnClickListener{
+                        loanTypeTv.hide()
+                        viewHorPre.hide()
+                        viewHorPost.show()
+                        typeOfLOandParent.hide()
+                        emiPaidTv.hide()
+                        emiPaidEt.hide()
+                        enterMobTv.hide()
+                        enterMobEt.hide()
+                        mobileRechargeTv.show()
+                        mobileNoTv.hide()
+                        mobileNoEt.hide()
+                        bankTv.setText(R.string.select_operator)
+                        loanAcntNoTv.setText(R.string.customer_number)
+                    }
                 }
             }
             BbpsType.FastTag.type -> {
@@ -392,7 +525,9 @@ private fun showHeaderDetails(text:Int,image:Int){
                     emiPaidEt.hide()
                     loanAcntNoTv.hide()
                     enterLoanEt.hide()
-
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.fastag_recharge))
+                    }
                 }
             }
 
@@ -408,7 +543,9 @@ private fun showHeaderDetails(text:Int,image:Int){
                     emiPaidEt.hide()
                     loanAcntNoTv.hide()
                     enterLoanEt.hide()
-
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.metro_card_recharge))
+                    }
                 }
 
             }
