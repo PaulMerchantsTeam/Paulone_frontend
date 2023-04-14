@@ -11,6 +11,7 @@
         android:id="@+id/titleServiceTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
         android:fontFamily="@font/poppins_bold"
         android:text="Gold Loans"
         android:textColor="@color/black"
@@ -20,13 +21,15 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/serviceOne"
+        android:layout_width="0dp"
 
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
+        android:drawableEnd="@drawable/arrow_right_black"
         android:fontFamily="@font/poppins_regular"
         android:text="Loans Overview"
         android:textColor="@color/text_dark_color"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleServiceTv" />
 
@@ -42,24 +45,28 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/serviceTwo"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:drawableEnd="@drawable/arrow_right_black"
         android:fontFamily="@font/poppins_regular"
         android:text="Loans Renewal"
         android:textColor="@color/text_dark_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view3" />
 
-    <ImageView
-        android:id="@+id/option2Next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/serviceTwo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/serviceTwo"
-        app:srcCompat="@drawable/arrow_right_black" />
+    <!--    <ImageView-->
+    <!--        android:id="@+id/option2Next"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:padding="10dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/serviceTwo"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/serviceTwo"-->
+    <!--        app:srcCompat="@drawable/arrow_right_black" />-->
 
     <ImageView
         android:id="@+id/headerNext"
@@ -72,13 +79,13 @@
         app:layout_constraintTop_toTopOf="@+id/titleServiceTv"
         app:srcCompat="@drawable/arrow_right_black" />
 
-    <ImageView
-        android:id="@+id/option1Next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/serviceOne"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/serviceOne"
-        app:srcCompat="@drawable/arrow_right_black" />
+    <!--    <ImageView-->
+    <!--        android:id="@+id/option1Next"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:padding="10dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/serviceOne"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/serviceOne"-->
+    <!--        app:srcCompat="@drawable/arrow_right_black" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

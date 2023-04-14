@@ -4,6 +4,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.databinding.ItemServiceMenuBinding
+import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.MenuServices
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
@@ -11,7 +12,7 @@ import com.paulmerchants.gold.utility.show
 class MenuServicesHolder(private val binding: ItemServiceMenuBinding) :
     ViewHolder(binding.root) {
 
-    fun bind(actionItem: MenuServices) {
+    fun bind(actionItem: MenuServices, onMenuServiceClicked: (MenuServices) -> Unit) {
         if (actionItem.serviceId >= 100) {
             binding.titleServiceTv.setTextColor(
                 ContextCompat.getColor(
@@ -24,9 +25,9 @@ class MenuServicesHolder(private val binding: ItemServiceMenuBinding) :
             binding.apply {
                 headerNext.show()
                 view3.hide()
-                option1Next.hide()
+//                option1Next.hide()
                 serviceOne.hide()
-                option2Next.hide()
+//                option2Next.hide()
             }
         }
         binding.apply {
@@ -40,13 +41,25 @@ class MenuServicesHolder(private val binding: ItemServiceMenuBinding) :
                 serviceOne.text = actionItem.optOne
                 if (actionItem.optTwo == "") {
                     serviceTwo.hide()
-                    option2Next.hide()
+//                    option2Next.hide()
                 } else {
                     serviceTwo.show()
-                    option2Next.show()
+//                    option2Next.show()
                     serviceTwo.text = actionItem.optTwo
                 }
             }
+        }
+
+        binding.serviceOne.setOnClickListener {
+            onMenuServiceClicked(actionItem)
+        }
+
+        binding.serviceOne.setOnClickListener {
+            onMenuServiceClicked(actionItem)
+        }
+
+        binding.titleServiceTv.setOnClickListener {
+            onMenuServiceClicked(actionItem)
         }
     }
 }

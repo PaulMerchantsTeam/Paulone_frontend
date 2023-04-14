@@ -7,6 +7,7 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.ProfileLayoutBinding
 import com.paulmerchants.gold.databinding.QuickPayPopupBinding
+import com.paulmerchants.gold.model.MenuServices
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.setServicesUi
@@ -47,7 +48,11 @@ binding.toolbar.hide()
     }
 
     private fun settingUi() {
-        binding.profileSettingsRv.setServicesUi(requireContext())
+        binding.profileSettingsRv.setServicesUi(requireContext(),::onMenuServiceClicked )
+    }
+
+    private fun onMenuServiceClicked(menuServices: MenuServices) {
+
     }
 
 }

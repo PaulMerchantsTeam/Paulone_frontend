@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.ui.bottom
 
+import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MenuServicesAdapter
@@ -12,6 +13,7 @@ import com.paulmerchants.gold.model.MenuServices
 import com.paulmerchants.gold.model.TransDoneModel
 import com.paulmerchants.gold.model.TypeService
 import com.paulmerchants.gold.enums.ServiceType
+import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +23,17 @@ class MenuScreenFrag :
     BaseFragment<DummyMenuScreenFragmentBinding>(DummyMenuScreenFragmentBinding::inflate) {
 
     private var myView: CustomViews? = null
-    private val menuServiceAdapter = MenuServicesAdapter()
+    private val menuServiceAdapter = MenuServicesAdapter(::onMenuServiceClicked)
+
+    private fun onMenuServiceClicked(menuServices: MenuServices) {
+        Log.d("TAG", "onMenuServiceClicked: /////${menuServices.serviceId}")
+        if (menuServices.serviceId == 5) {
+            findNavController().navigate(R.id.creditScoreScreenFrag)
+        } else {
+            Log.d("TAG", "onMenuServiceClicked: [=false")
+        }
+    }
+
     private val transacDoneAdapter = TransacDoneAdapter()
     private val typeServicesAdapter = TypeServiceAdapter(::onTypeServiceClicked)
     override fun DummyMenuScreenFragmentBinding.initialize() {
@@ -46,7 +58,7 @@ class MenuScreenFrag :
             findNavController().navigate(R.id.profileFrag)
         }
         binding.prepaidMenuCard.setOnClickListener {
-            findNavController().navigate(R.id.complaintRegister   )
+            findNavController().navigate(R.id.complaintRegister)
         }
         binding.neddSuppMenuCard.setOnClickListener {
             findNavController().navigate(R.id.transactionDetailFrag)

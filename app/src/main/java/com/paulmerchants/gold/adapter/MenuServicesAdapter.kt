@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.paulmerchants.gold.adapterviewholders.MenuServicesHolder
 import com.paulmerchants.gold.databinding.ItemServiceMenuBinding
+import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.MenuServices
 
-class MenuServicesAdapter :
+class MenuServicesAdapter(private val onMenuServiceClicked: (MenuServices) -> Unit) :
     ListAdapter<MenuServices, MenuServicesHolder>(DIFF_CALLBACK) {
 
 
@@ -18,7 +19,7 @@ class MenuServicesAdapter :
     )
 
     override fun onBindViewHolder(holder: MenuServicesHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onMenuServiceClicked)
     }
 
     companion object {

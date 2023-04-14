@@ -262,8 +262,8 @@ fun RecyclerView.setGoldLoanOverView() {
 
 }
 
-fun RecyclerView.setServicesUi(context: Context) {
-    val menuServiceAdapter = MenuServicesAdapter()
+fun RecyclerView.setServicesUi(context: Context, onMenuServiceClicked: (MenuServices) -> Unit) {
+    val menuServiceAdapter = MenuServicesAdapter(onMenuServiceClicked)
     val service1 = MenuServices(
         100,
         context.getString(R.string.privac_settings),
@@ -375,6 +375,7 @@ fun View.showViewWithAnimDur300() {
         .setDuration(300)
         .setListener(null)
 }
+
 fun TextView.setTColor(str: String, context: Context, colorId: Int) {
     text = str
     setTextColor(ContextCompat.getColor(context, colorId))

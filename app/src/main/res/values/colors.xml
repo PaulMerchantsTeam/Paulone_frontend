@@ -14,7 +14,11 @@
     <color name="text_red">#E10D0D</color>
     <color name="text_gray">#5C5C5C</color>
 
+
     <color name="red_amount">#A90000</color>
+
+    <color name="text_gray_2">#8C8C8C</color>
+
     <!--    color of splash-->
     <color name="splash_screen_one">#150750</color>
     <color name="splash_screen_two">#F9F7F7</color>

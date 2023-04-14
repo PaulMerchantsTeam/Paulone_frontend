@@ -102,6 +102,7 @@
     <string name="other_emi_pay">Others EMI payments</string>
     <string name="others">Others</string>
     <string name="credit_score">Credit Score</string>
+    <string name="credit_score_caps">CREDIT SCORE</string>
     <string name="one_place_for_everything">(One place for everything)</string>
     <string name="pay_bill_point_desc">*Pay bills and more to win \nPaul Points and get exciting offers.</string>
     <string name="search_yr_transac">Search your transactions</string>
@@ -244,7 +245,6 @@
     <string name="your_number_with_std">Your number with STD </string>
 
 
-
     <string name="enter_your_account_number">Enter your account number </string>
     <string name="transaction_reference_id">Transaction Reference ID</string>
     <string name="description">Description</string>
@@ -300,6 +300,10 @@
     <string name="raise_a_complaint">Raise a complaint</string>
     <string name="log_out">Logout</string>
     <string name="chag_yr_pin">Change your pin</string>
+    <string name="view_score">View Scores</string>
+    <string name="by_continue"><![CDATA[By continuing, I authorize Paul merchants to send this information to CIRF via a private and secured service to fetch my credit report & agree to both of their terms and conditions.]]></string>
+    <string name="i_authorise">"I authorize use of credit reports by Paul Merchants to offer personalized credit products from partner banks on Paul Gold. (Optional) "</string>
+    <string name="continue_one">Continue</string>
 
 
     <string-array name="month">

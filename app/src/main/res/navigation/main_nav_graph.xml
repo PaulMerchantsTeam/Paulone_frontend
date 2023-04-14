@@ -131,4 +131,9 @@
         android:name="com.paulmerchants.gold.ui.others.EditProfileScreenFrag"
         android:label="EditProfileScreenFrag"
         tools:layout="@layout/edit_profile_layout" />
+    <fragment
+        android:id="@+id/creditScoreScreenFrag"
+        android:name="com.paulmerchants.gold.ui.others.CreditScoreScreenFrag"
+        android:label="CreditScoreScreenFrag"
+        tools:layout="@layout/credit_score_screen" />
 </navigation>

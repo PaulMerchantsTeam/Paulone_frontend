@@ -1,14 +1,13 @@
-package com.paulmerchants.gold.ui
+package com.paulmerchants.gold.ui.others
 
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.CreditScoreScreenBinding
-import com.paulmerchants.gold.utility.hide
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MainScreenFrag : BaseFragment<CreditScoreScreenBinding>(CreditScoreScreenBinding::inflate) {
+class CreditScoreScreenFrag : BaseFragment<CreditScoreScreenBinding>(CreditScoreScreenBinding::inflate) {
 
     override fun CreditScoreScreenBinding.initialize() {
 
