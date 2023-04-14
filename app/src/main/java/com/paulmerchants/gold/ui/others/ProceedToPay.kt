@@ -43,6 +43,9 @@ class ProceedToPay :
             headerLoan.backIv.setOnClickListener {
                 findNavController().navigateUp()
             }
+            addNewUpiTv.setOnClickListener {
+                findNavController().navigate(R.id.)
+            }
            val headerBundle  =  Bundle().apply {
                putString(Constants.BBPS_HEADER,bbpsHeaderVale)
            }
@@ -77,7 +80,6 @@ class ProceedToPay :
                         arrowDowmBhmIv.setImageResource(R.drawable.arrow_down_black)
                         bhmUpiParent.setBackgroundResource(R.drawable.card_sky_rect_6)
                         }
-
 
 
 //                    upiMethodParent.startAnimation(

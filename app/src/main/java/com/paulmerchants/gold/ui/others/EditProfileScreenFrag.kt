@@ -1,10 +1,15 @@
 package com.paulmerchants.gold.ui.others
 
+import android.view.animation.AnimationUtils
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.EditProfileLayoutBinding
 import com.paulmerchants.gold.utility.showCustomDialogOTPVerify
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EditProfileScreenFrag :
@@ -27,7 +32,12 @@ class EditProfileScreenFrag :
             findNavController().navigateUp()
         }
         binding.confirmBtn.setOnClickListener {
-            findNavController().navigateUp()
+            binding.userImageIv.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.slide_zoom_in))
+            lifecycleScope.launch {
+                delay(300)
+                findNavController().navigateUp()
+
+            }
         }
     }
 

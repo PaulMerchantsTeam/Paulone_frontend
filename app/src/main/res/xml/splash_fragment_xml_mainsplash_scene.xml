@@ -21,6 +21,26 @@
             android:layout_marginBottom="0dp"
             motion:layout_constraintStart_toStartOf="parent"
             android:id="@+id/imageView2" />
+        <Constraint
+            android:id="@+id/imageView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="190dp"
+            android:layout_height="58dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:transitionEasing="cubic(0.2,0.2,0.98,0.04)"
+            motion:layout_editor_absoluteY="333dp" />
+        <Constraint
+            android:id="@+id/imageView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="190dp"
+            android:layout_height="58dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:transitionEasing="cubic(0.68,0.01,0.98,0.04)"
+            motion:layout_editor_absoluteY="333dp" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">

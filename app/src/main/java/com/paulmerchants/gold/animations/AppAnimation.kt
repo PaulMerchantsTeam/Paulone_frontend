@@ -54,13 +54,13 @@ object AppAnimation {
 
 
     fun scaler(iv: ImageView) {
-        val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1.5f)
-        val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.5f)
+        val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1.2f)
+        val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.2f)
         val animator = ObjectAnimator.ofPropertyValuesHolder(
             iv, scaleX, scaleY
         )
-        animator.repeatCount = 1
-        animator.repeatMode = ObjectAnimator.REVERSE
+        animator.repeatCount = 0
+//        animator.repeatMode = ObjectAnimator.REVERSE
 //        animator.disableViewDuringAnimation(scaleButton)
         animator.start()
     }
