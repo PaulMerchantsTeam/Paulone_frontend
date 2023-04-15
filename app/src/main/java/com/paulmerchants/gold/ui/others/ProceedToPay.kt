@@ -44,7 +44,7 @@ class ProceedToPay :
                 findNavController().navigateUp()
             }
             addNewUpiTv.setOnClickListener {
-                findNavController().navigate(R.id.)
+//                findNavController().navigate(R.id.)
             }
            val headerBundle  =  Bundle().apply {
                putString(Constants.BBPS_HEADER,bbpsHeaderVale)

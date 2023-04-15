@@ -156,6 +156,7 @@ class HomeScreenFrag :
         }
 
         binding.allPaymnetActionParent.homeLoanParent.setOnClickListener {
+//            Toast.makeText(requireContext(), "clicked Home", Toast.LENGTH_SHORT).show()
             AppUtility.onBillClicked(ActionItem(BbpsType.HomeLoan.type), findNavController())
         }
 

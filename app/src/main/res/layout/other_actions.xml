@@ -609,6 +609,7 @@
                         app:layout_constraintStart_toStartOf="@+id/homeSweetHomeTv"
                         app:layout_constraintTop_toBottomOf="@+id/homeSweetHomeTv"
                         tools:itemCount="2"
+                        android:overScrollMode="never"
                         tools:listitem="@layout/item_action_bill" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
