@@ -22,7 +22,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="-120dp"
         android:background="@drawable/card_top_radius_19"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -56,10 +56,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/materialTextView17" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/billTimelyLimitedTv"
+            style="@style/text_12_poppins_medium_sky"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="35dp"
+            android:text=" . Check your credit utilization"
+            android:textColor="@color/splash_screen_three"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialTextView20" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAllAboutCreditScore"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +88,7 @@
         android:layout_marginTop="43dp"
         android:background="@drawable/credit_score_outline"
         android:paddingHorizontal="14dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -159,6 +171,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/headerScrn"
         app:layout_constraintVertical_bias="0.0">
 

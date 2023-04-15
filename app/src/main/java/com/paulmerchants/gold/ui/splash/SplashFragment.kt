@@ -56,6 +56,14 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         binding.nextBtn.setOnClickListener {
             setIntroForNextCounter(splashViewModel.counter)
         }
+        val  abc =    """
+Hey this is a
+example of multiple Line
+string by swatiiii...
+
+"""
+        Log.d("TAGabc", "onStart: $abc")
+        print(abc)
     }
 
     private fun setIntroForNextCounter(counter: Int) {
