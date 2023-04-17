@@ -8,7 +8,5 @@ import dagger.hilt.android.AndroidEntryPoint
 class MenuScreenFrag : BaseFragment<MainScreenFragmentBinding>(MainScreenFragmentBinding::inflate) {
 
     override fun MainScreenFragmentBinding.initialize() {
-
     }
-
 }

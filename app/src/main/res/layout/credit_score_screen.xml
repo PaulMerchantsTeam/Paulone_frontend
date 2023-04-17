@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mainCreditScoreParent"
     android:background="@color/open_loans">
 
     <include
@@ -31,7 +32,7 @@
         app:layout_constraintVertical_bias="1.0">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/materialTextView17"
+            android:id="@+id/checkCreditTv"
             style="@style/text_16_bold_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +44,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/materialTextView20"
+            android:id="@+id/aboutCreditScore"
             style="@style/text_16_bold_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,29 +55,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialTextView17" />
+            app:layout_constraintTop_toBottomOf="@+id/checkCreditTv" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/billTimelyLimitedTv"
             style="@style/text_12_poppins_medium_sky"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginStart="20dp"
             android:layout_marginTop="35dp"
             android:text=" . Check your credit utilization"
             android:textColor="@color/splash_screen_three"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialTextView20" />
+            app:layout_constraintTop_toBottomOf="@+id/aboutCreditScore" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAllAboutCreditScore"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialTextView20"
+            app:layout_constraintTop_toBottomOf="@+id/aboutCreditScore"
             tools:itemCount="4"
             tools:listitem="@layout/item_all_about_credit_score" />
 
@@ -156,7 +158,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="Update your scores"
+            android:text="@string/update_your_scores"
             android:textColor="@color/text_gray_2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -165,6 +167,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/basicDetailsParent"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:paddingHorizontal="20dp"
@@ -174,7 +177,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/headerScrn"
-        app:layout_constraintVertical_bias="0.0">
+      >
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/kindGiveTv"
@@ -289,6 +292,97 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iAuthoriseCheckBox"
             app:layout_constraintVertical_bias="0.55" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardViewParent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/creditScoreParent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/splash_screen_two"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout10" >
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            app:cardCornerRadius="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/creditActivityTv"
+                    style="@style/text_16_semi_bold_blue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:text="@string/your_credit_activity"
+                    android:textColor="@color/pg_color"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/asVariousCreditTv"
+                    style="@style/text_12_poppins_medium_sky"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="45dp"
+                    android:text="@string/as_of_the_various_credit_sources"
+                    android:textColor="@color/pg_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/creditActivityTv" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:overScrollMode="never"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/asVariousCreditTv"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/layout_credit_score_rv" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/goodScoreTv"
+            style="@style/text_16_semi_bold_blue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/how_to_keep_a_good_score"
+            android:textColor="@color/pg_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/keepGoodScoreAdviceTv"
+            style="@style/text_12_poppins_medium_sky"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/pay_your_bills_on_time"
+            android:textColor="@color/pg_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/goodScoreTv" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

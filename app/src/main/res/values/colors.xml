@@ -23,6 +23,7 @@
     <color name="splash_screen_one">#150750</color>
     <color name="splash_screen_two">#F9F7F7</color>
     <color name="splash_screen_three">#3F72AF</color>
+    <color name="color_green">#00C0AD</color>
 
     <color name="color_prim_one_40">#66150750</color>
     <color name="text_color">#151515</color>

@@ -233,6 +233,7 @@ class MenuScreenFrag :
         )
         val service5 =
             MenuServices(5, getString(R.string.others), getString(R.string.credit_score), "")
+
         val listService = listOf(service1, service2, service3, service4, service5)
         menuServiceAdapter.submitList(listService)
         binding.servicesRv.adapter = menuServiceAdapter

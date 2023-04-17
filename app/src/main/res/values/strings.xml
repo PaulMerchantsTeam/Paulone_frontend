@@ -86,6 +86,7 @@
     <string name="view_under_line"><u>View</u></string>
     <string name="view">View</string>
     <string name="loan_overview">LOAN OVERVIEW</string>
+    <string name="overview">OverView:</string>
     <string name="search_for_specific_loans">Search for the specific loans</string>
     <string name="you_have_taken_up_4_act">You have taken up 4 active loans. And they total upto INR 3,00,000</string>
     <string name="open_loans">Open Loans</string>
@@ -189,6 +190,10 @@
     <string name="bbps_transaction_id">BBPS Transaction ID</string>
     <string name="approval_number">Approval Number</string>
     <string name="amount_paid">Amount Paid</string>
+
+    <string name="timely_bill_paid">Timely bills paid \n Limit kept in mind while spending \n Timely updated with new credit applications</string>
+    <string name="limit_spending">Limit kept in mind while spending</string>
+    <string name="updated_credit_paid">Timely updated with new credit applications</string>
 
     <string name="need_help_call_us">Need Help? Call us!</string>
     <string name="go_to_home">Go to Home</string>
@@ -304,6 +309,14 @@
     <string name="by_continue"><![CDATA[By continuing, I authorize Paul merchants to send this information to CIRF via a private and secured service to fetch my credit report & agree to both of their terms and conditions.]]></string>
     <string name="i_authorise">"I authorize use of credit reports by Paul Merchants to offer personalized credit products from partner banks on Paul Gold. (Optional) "</string>
     <string name="continue_one">Continue</string>
+    <string name="your_credit_activity">Your Credit Activity</string>
+    <string name="as_of_the_various_credit_sources">as of the various credit sources</string>
+    <string name="how_to_keep_a_good_score">How to keep a good score</string>
+    <string name="pay_your_bills_on_time">. Pay your bills on time</string>
+    <string name="paul_merchants">Paul Merchants</string>
+    <string name="update_your_scores">Update your scores</string>
+    <string name="gold_n_loans">GOLD \nLOANS</string>
+    <string name="we_serve_you_with_the_best_gold_loans">We serve you with the best gold loans</string>
 
 
     <string-array name="month">

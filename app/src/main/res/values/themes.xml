@@ -89,8 +89,13 @@
         <item name="android:fontFamily">@font/poppins_bold</item>
     </style>
 
-    <style name="text_12_bold_yellow">
+    <style name="text_12_bold_orange">
         <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/yellow_main</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+    <style name="text_21_bold_yellow">
+        <item name="android:textSize">21sp</item>
         <item name="android:textColor">@color/yellow_main</item>
         <item name="android:fontFamily">@font/poppins_bold</item>
     </style>
