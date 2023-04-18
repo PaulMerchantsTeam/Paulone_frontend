@@ -9,8 +9,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/rec_frch_blue_solid">
-
+        android:background="@drawable/new_user_card_grad">
+<!--        rec_frch_blue_solid-->
 
         <TextView
             android:id="@+id/youHaveTotalLoanTv"
@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginTop="17dp"
+            android:visibility="gone"
             android:text="You are having 4 active loans totalling upto"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,12 +27,13 @@
 
         <TextView
             android:id="@+id/totalLoanAmountTv"
-            style="@style/text_24_regular_blue"
+            style="@style/text_21_bold_yellow"
+            android:textColor="@color/splash_screen_one"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginTop="10dp"
-            android:text="INR 3,00,000"
+            android:text="We serve you with the best gold loans"
             app:layout_constraintEnd_toStartOf="@+id/imageView6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/youHaveTotalLoanTv" />
@@ -56,6 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
+            android:visibility="gone"
             android:background="@drawable/rec_yellow_empty_btn"
             android:padding="@dimen/ten_dp"
             android:text="Renew Loans"

@@ -14,12 +14,14 @@ import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.PrePaidCardAdapter
 import com.paulmerchants.gold.adapter.UpcomingLoanAdapter
+import com.paulmerchants.gold.adapter.UpcomingLoanNewuserAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants.DUE_LOAN_DATA
 
 import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.DueLoans
+import com.paulmerchants.gold.model.OurServices
 import com.paulmerchants.gold.model.PrepaidCardModel
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.*
@@ -31,6 +33,7 @@ import kotlinx.coroutines.delay
 class HomeScreenFrag :
     BaseFragment<DummyHomeScreenFragmentBinding>(DummyHomeScreenFragmentBinding::inflate) {
     private val upcomingLoanAdapter = UpcomingLoanAdapter(::onPayDueClicked)
+    private val upcomingNewUserAdapter = UpcomingLoanNewuserAdapter()
     private val prePaidCardAdapter = PrePaidCardAdapter()
 
 
@@ -43,7 +46,8 @@ class HomeScreenFrag :
     private var isStartAnim = MutableLiveData<Boolean>()
     override fun DummyHomeScreenFragmentBinding.initialize() {
         navController = findNavController()
-        setUpComingDueLoans()
+        setUpComingOurServices()
+//        setUpComingDueLoans()
     }
 
     override fun onStart() {
@@ -274,7 +278,16 @@ class HomeScreenFrag :
             mobileIv.startCustomAnimation(R.drawable.mobile_icon_anim)
         }
     }
+private fun setUpComingOurServices(){
+    val ourServices1 = OurServices(R.drawable.gold_loan_hand,getString(R.string.gold_n_loans),R.color.yellow_main)
+    val ourServices2= OurServices(R.drawable.gold_loan_hand,getString(R.string.gold_n_loans),R.color.yellow_main)
+    val ourServices3 = OurServices(R.drawable.gold_loan_hand,getString(R.string.gold_n_loans),R.color.yellow_main)
+    val ourServices4 = OurServices(R.drawable.gold_loan_hand,getString(R.string.gold_n_loans),R.color.yellow_main)
+    val serviceList = listOf(ourServices1,ourServices2,ourServices3,ourServices4)
+    upcomingNewUserAdapter.submitList(serviceList)
+    binding.rvUpcomingDueLoans.adapter = upcomingNewUserAdapter
 
+}
     private fun setUpComingDueLoans() {
         val dueLoans1 = DueLoans(1, 4, 6000)
         val dueLoans2 = DueLoans(2, 4, 6000)

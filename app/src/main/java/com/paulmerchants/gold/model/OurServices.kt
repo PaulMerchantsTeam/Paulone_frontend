@@ -7,5 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class OurServices(
     val serviceImage: Int,
     val serviceName : String,
+    val color : Int,
 
 ) : Parcelable
