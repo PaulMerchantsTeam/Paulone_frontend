@@ -15,7 +15,6 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.PrePaidCardAdapter
 import com.paulmerchants.gold.adapter.UpcomingLoanAdapter
 import com.paulmerchants.gold.common.BaseFragment
-import com.paulmerchants.gold.common.Constants.BBPS_TYPE
 import com.paulmerchants.gold.common.Constants.DUE_LOAN_DATA
 
 import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
@@ -87,19 +86,25 @@ class HomeScreenFrag :
         binding.searchProfileParent.apply {
             searchView.setOnClickListener {
                 isStartAnim.postValue(false)
+                binding.searchProfileParent.searchView.clearAnimation()
             }
 
             searchView.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     isStartAnim.postValue(false)
+                    binding.searchProfileParent.searchView.clearAnimation()
+
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     isStartAnim.postValue(false)
+                    binding.searchProfileParent.searchView.clearAnimation()
                     p0?.let { char ->
                         Log.d("TAG", "onTextChanged: text = $char")
                         if (char.isNotEmpty()) {
                             isStartAnim.postValue(false)
+                            binding.searchProfileParent.searchView.clearAnimation()
+
 //                            searchView.setCompoundDrawablesWithIntrinsicBounds(
 //                                0,
 //                                0,
@@ -108,6 +113,8 @@ class HomeScreenFrag :
 //                            )
                         } else {
                             isStartAnim.postValue(false)
+                            binding.searchProfileParent.searchView.clearAnimation()
+
                         }
                     }
                 }
@@ -140,9 +147,10 @@ class HomeScreenFrag :
          *
          */
         binding.allPaymnetActionParent.moreParent.setOnClickListener {
-            binding.allPaymnetActionParent.billsNRechargerParent.hide()
-            binding.allPaymnetActionParent.forMoreParentAllAction.show()
-            binding.allPaymnetActionParent.backToNormalAction.show()
+                binding.allPaymnetActionParent.billsNRechargerParent.hide()
+                binding.allPaymnetActionParent.forMoreParentAllAction.show()
+                binding.allPaymnetActionParent.backToNormalAction.show()
+
         }
         binding.allPaymnetActionParent.backToNormalAction.setOnClickListener {
             binding.allPaymnetActionParent.apply {
@@ -156,7 +164,6 @@ class HomeScreenFrag :
         }
 
         binding.allPaymnetActionParent.homeLoanParent.setOnClickListener {
-//            Toast.makeText(requireContext(), "clicked Home", Toast.LENGTH_SHORT).show()
             AppUtility.onBillClicked(ActionItem(BbpsType.HomeLoan.type), findNavController())
         }
 
@@ -235,15 +242,24 @@ class HomeScreenFrag :
             )
         lifecycleScope.launchWhenResumed {
             delay(2000)
+            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_up))
+            delay(2000)
             binding.searchProfileParent.searchView.hint = strList[0]
+            delay(2000)
+            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_up))
             delay(2000)
             binding.searchProfileParent.searchView.hint = strList[1]
             delay(2000)
+            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_up))
+            delay(2000)
             binding.searchProfileParent.searchView.hint = strList[2]
             delay(2000)
+            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_up))
+            delay(2000)
             binding.searchProfileParent.searchView.hint = strList[3]
-            delay(5000)
-            isStartAnim.postValue(false)
+            delay(500)
+            isStartAnim.postValue(true)
+
         }
 
     }

@@ -172,6 +172,16 @@
         <item name="android:textColor">@color/text_color</item>
         <item name="android:fontFamily">@font/poppins_semi_bold</item>
     </style>
+    <style name="text_18_bold_sk_blue">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/splash_screen_three</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+    <style name="text_18_semi_bold_sk_blue">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/splash_screen_three</item>
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+    </style>
 
     <!--    <style name="button_overlay">-->
     <!--        <item name="colorOnSurface">@color/color_prim_one_40</item>-->

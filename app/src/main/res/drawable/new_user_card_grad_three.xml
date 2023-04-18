@@ -8,10 +8,8 @@
 
     <gradient
         android:angle="90"
-        android:endColor="@color/color_green"
+        android:endColor="@color/splash_screen_three"
+        android:centerColor="@color/color_green"
         android:startColor="@color/splash_screen_three"
         android:type= "linear" />
 </shape>
-<!--//linear-->
-<!--//sweep-->
-<!--//radial-->
