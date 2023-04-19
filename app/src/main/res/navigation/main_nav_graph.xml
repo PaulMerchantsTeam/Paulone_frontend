@@ -90,6 +90,16 @@
         android:label="AddCardFrag"
         tools:layout="@layout/loan_pay_inr_secure" />
     <fragment
+        android:id="@+id/addUpiCard"
+        android:name="com.paulmerchants.gold.ui.others.AddUpiCard"
+        android:label="AddUpiCard"
+        tools:layout="@layout/add_card_upi_screen" />
+    <fragment
+        android:id="@+id/paymentModesFrag"
+        android:name="com.paulmerchants.gold.ui.others.PaymentModesFrag"
+        android:label="PaymentModesFrag"
+        tools:layout="@layout/payment_modes" />
+    <fragment
         android:id="@+id/paymentConfirmed"
         android:name="com.paulmerchants.gold.ui.others.PaymentConfirmed"
         android:label="ConfirmedPayment"
@@ -136,4 +146,9 @@
         android:name="com.paulmerchants.gold.ui.others.CreditScoreScreenFrag"
         android:label="CreditScoreScreenFrag"
         tools:layout="@layout/credit_score_screen" />
+    <fragment
+        android:id="@+id/applyLoanForNewUser"
+        android:name="com.paulmerchants.gold.ui.others.ApplyLoanForNewUser"
+        android:label="ApplyLoanForNewUser"
+        tools:layout="@layout/applying_for_loan_layout" />
 </navigation>

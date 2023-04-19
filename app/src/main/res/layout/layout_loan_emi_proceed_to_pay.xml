@@ -166,6 +166,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detailParent" />
+
             <include
                 android:id="@+id/otpFill"
                 layout="@layout/otp_fill_layout"
@@ -352,12 +353,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:visibility="visible"
                         android:text="@string/add_new_upi"
                         android:textColor="@color/blue_light"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@+id/view_ver_bhm"
                         app:layout_constraintStart_toEndOf="@+id/view_ver_bhm"
                         app:layout_constraintTop_toTopOf="@+id/view_ver_bhm" />
+
                     <com.google.android.material.textview.MaterialTextView
 
                         android:id="@+id/upiCardTv"
@@ -367,10 +369,11 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:text="abcd1234@oksbi"
-                        android:visibility="gone"
                         android:textColor="@color/pg_color"
+                        android:visibility="gone"
                         app:layout_constraintStart_toEndOf="@+id/view_ver_bhm"
                         app:layout_constraintTop_toTopOf="parent" />
+
                     <com.google.android.material.textview.MaterialTextView
 
                         android:id="@+id/upiNumTv"
@@ -379,13 +382,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginBottom="10dp"
-                        android:visibility="gone"
                         android:text="xxxxxxxx2345"
                         android:textColor="@color/text_color_gray"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/view_ver_bhm"
                         app:layout_constraintTop_toBottomOf="@+id/upiCardTv" />
-
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -523,15 +525,15 @@
 
                         <EditText
                             android:id="@+id/enterUpiEt"
+                            style="@style/text_14_bold_sky"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:layout_margin="10dp"
                             android:background="@drawable/edit_text_rect"
                             android:hint="Enter here"
-                            android:textCursorDrawable="@color/splash_screen_one"
-                            style="@style/text_14_bold_sky"
-                            android:textColor="@color/splash_screen_one"
                             android:paddingHorizontal="6dp"
+                            android:textColor="@color/splash_screen_one"
+                            android:textCursorDrawable="@color/splash_screen_one"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/addUpiTv" />
@@ -839,8 +841,8 @@
                         android:id="@+id/arrowDownCreditIv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
                         android:padding="10dp"
                         android:src="@drawable/arrow_down_black"
                         app:layout_constraintBottom_toTopOf="@+id/creditCardParent"
@@ -877,10 +879,10 @@
                             <!--this is the actual edit text which takes the input-->
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/enterNameOnCardEt"
+                                style="@style/text_14_medium_sky"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/splash_screen_one"
-                                style="@style/text_14_medium_sky" />
+                                android:textColor="@color/splash_screen_one" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -901,10 +903,10 @@
                             <!--this is the actual edit text which takes the input-->
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/enterCardNumEt"
+                                style="@style/text_14_medium_sky"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/splash_screen_one"
-                                style="@style/text_14_medium_sky" />
+                                android:textColor="@color/splash_screen_one" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -946,11 +948,11 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/enterCvvEt"
 
-                                android:hint="   "
+                                style="@style/text_14_medium_sky"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/splash_screen_one"
-                                style="@style/text_14_medium_sky" />
+                                android:hint="   "
+                                android:textColor="@color/splash_screen_one" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -1022,7 +1024,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

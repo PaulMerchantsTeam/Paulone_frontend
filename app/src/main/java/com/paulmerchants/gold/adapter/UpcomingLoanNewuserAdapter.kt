@@ -14,7 +14,8 @@ ListAdapter<OurServices, UpComingNewUserViewHolder>(DIFF_CALLBACK)  {
     )
 
     override fun onBindViewHolder(holder: UpComingNewUserViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position),position)
+
 
     }
     companion object {

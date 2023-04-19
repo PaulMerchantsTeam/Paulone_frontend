@@ -54,7 +54,7 @@ class MenuServicesHolder(private val binding: ItemServiceMenuBinding) :
             onMenuServiceClicked(actionItem)
         }
 
-        binding.serviceOne.setOnClickListener {
+        binding.serviceTwo.setOnClickListener {
             onMenuServiceClicked(actionItem)
         }
 

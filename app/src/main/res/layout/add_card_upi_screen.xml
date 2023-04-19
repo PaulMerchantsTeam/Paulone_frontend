@@ -45,6 +45,7 @@
             android:paddingHorizontal="41dp"
             android:paddingVertical="@dimen/ten_dp"
             android:text="@string/add_a_card"
+            android:textColor="@color/yellow_main"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/materialTextView14"
             app:layout_constraintStart_toStartOf="@+id/materialTextView14"
@@ -188,10 +189,12 @@
             android:background="@drawable/rec_one_blue_btn"
             android:paddingHorizontal="41dp"
             android:paddingVertical="@dimen/ten_dp"
+            android:textColor="@color/yellow_main"
             android:text="@string/save_card"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/byAddingDescTv" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

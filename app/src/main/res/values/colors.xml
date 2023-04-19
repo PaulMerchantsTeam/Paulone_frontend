@@ -33,6 +33,9 @@
     <color name="bg_screen_color">#F9F7F7</color>
 
     <color name="yellow_main">#F8B814</color>
+    <color name="green_main">#6BA232</color>
+    <color name="sky_blue_main">#009AC0</color>
+    <color name="orange_main">#FFA03A</color>
 
     <color name="lable_color_et">#8E8E8E</color>
     <color name="white_gray">#AFAFAF</color>

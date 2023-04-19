@@ -27,11 +27,27 @@ class MenuScreenFrag :
 
     private fun onMenuServiceClicked(menuServices: MenuServices) {
         Log.d("TAG", "onMenuServiceClicked: /////${menuServices.serviceId}")
-        if (menuServices.serviceId == 5) {
-            findNavController().navigate(R.id.creditScoreScreenFrag)
-        } else {
-            Log.d("TAG", "onMenuServiceClicked: [=false")
+        when (menuServices.serviceId) {
+            1 -> {
+                findNavController().navigate(R.id.goldLoanScreenFrag)
+            }
+            2 -> {
+                findNavController().navigate(R.id.billsAndMoreScreenFrag)
+            }
+            3 -> {
+                findNavController().navigate(R.id.billsFragment)
+            }
+            4 -> {
+                findNavController().navigate(R.id.pcFrag)
+            }
+            5 -> {
+                findNavController().navigate(R.id.transactionDetailFrag)
+            }
+            else -> {
+                Log.d("TAG", "onMenuServiceClicked: [=false")
+            }
         }
+
     }
 
     private val transacDoneAdapter = TransacDoneAdapter()

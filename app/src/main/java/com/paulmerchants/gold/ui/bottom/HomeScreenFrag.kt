@@ -57,6 +57,8 @@ class HomeScreenFrag :
         setUiOnHomeSweetHomeBills()
         handleRechargeAndBillUi()
         setPrepaidCardUi()
+        setLoanOverView()
+        setAddCardView()
     }
 
     private fun onPayDueClicked(dueLoans: DueLoans) {
@@ -280,9 +282,9 @@ class HomeScreenFrag :
     }
 private fun setUpComingOurServices(){
     val ourServices1 = OurServices(R.drawable.gold_loan_hand,getString(R.string.gold_n_loans),R.color.yellow_main)
-    val ourServices2= OurServices(R.drawable.gold_loan_hand,getString(R.string.gold_n_loans),R.color.yellow_main)
-    val ourServices3 = OurServices(R.drawable.gold_loan_hand,getString(R.string.gold_n_loans),R.color.yellow_main)
-    val ourServices4 = OurServices(R.drawable.gold_loan_hand,getString(R.string.gold_n_loans),R.color.yellow_main)
+    val ourServices2= OurServices(R.drawable.hand_prepaid_card,getString(R.string.prepaid_n_cards),R.color.green_main)
+    val ourServices3 = OurServices(R.drawable.hand_invoice,getString(R.string.bills_n_payment),R.color.sky_blue_main)
+    val ourServices4 = OurServices(R.drawable.hand_digital_gold,getString(R.string.digital_n_gold),R.color.orange_main)
     val serviceList = listOf(ourServices1,ourServices2,ourServices3,ourServices4)
     upcomingNewUserAdapter.submitList(serviceList)
     binding.rvUpcomingDueLoans.adapter = upcomingNewUserAdapter
@@ -304,7 +306,22 @@ private fun setUpComingOurServices(){
             ::onBillClicked
         )
     }
+    private fun setLoanOverView(){
+        binding.apply {
+            loanOverViewCardParent.viewLoanBtn.text = getString(R.string.apply_now)
+            loanOverViewCardParent.viewLoanBtn.setOnClickListener {
+                findNavController().navigate(R.id.applyLoanForNewUser)
+            }
+        }
+    }
+private  fun setAddCardView(){
+    binding.apply {
+        addCardBtn.setOnClickListener {
+            findNavController().navigate(R.id.addUpiCard)
 
+        }
+    }
+}
 
     private fun onBillClicked(actionItem: ActionItem) {
         AppUtility.onBillClicked(actionItem, findNavController())
