@@ -48,10 +48,13 @@ binding.toolbar.hide()
     }
 
     private fun settingUi() {
-        binding.profileSettingsRv.setServicesUi(requireContext(),::onMenuServiceClicked )
+        binding.profileSettingsRv.setServicesUi(requireContext(),::onMenuServiceClicked, ::onMenuServiceClickedTwo )
     }
 
     private fun onMenuServiceClicked(menuServices: MenuServices) {
+
+    }
+    private fun onMenuServiceClickedTwo(menuServices: MenuServices) {
 
     }
 

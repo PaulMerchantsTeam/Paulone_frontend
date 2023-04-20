@@ -37,12 +37,9 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 R.id.homeScreenFrag,
                 null,
                 (activity as MainActivity).navOption
-            )
-        } else if (AppSharedPref.getBooleanValue(SPLASH_SCRN_VISITED)) {
+            ) } else if (AppSharedPref.getBooleanValue(SPLASH_SCRN_VISITED)) {
             findNavController().popBackStack(R.id.splashFragment, true)
-            findNavController().navigate(
-                R.id.phoenNumVerifiactionFragment,
-            )
+            findNavController().navigate(R.id.phoenNumVerifiactionFragment)
         } else {
             binding.mainSplash.show()
         }
@@ -56,14 +53,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         binding.nextBtn.setOnClickListener {
             setIntroForNextCounter(splashViewModel.counter)
         }
-        val  abc =    """
-Hey this is a
-example of multiple Line
-string by swatiiii...
 
-"""
-        Log.d("TAGabc", "onStart: $abc")
-        print(abc)
     }
 
     private fun setIntroForNextCounter(counter: Int) {
@@ -102,7 +92,7 @@ string by swatiiii...
                             requireContext(), R.anim.slide_rotate
                         ))
                     lifecycleScope.launch {
-                        delay(1000)
+                        delay(900)
                         headingTv.text = getString(R.string.your_payment_checklist)
                         descPageTv.text = getString(R.string.register_all_the_detail)
                         headingTvSupport.text = getString(R.string.sorted)
@@ -137,7 +127,7 @@ string by swatiiii...
                             requireContext(), R.anim.slide_rotate
                         ))
                     lifecycleScope.launch {
-                        delay(1000)
+                        delay(900)
                         headingTv.text = getString(R.string.payment_is_equal)
                         descPageTv.text = getString(R.string.we_dont_just_ask)
                         headingTvSupport.text = getString(R.string.rewards)

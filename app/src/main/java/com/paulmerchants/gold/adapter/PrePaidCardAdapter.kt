@@ -12,7 +12,7 @@ import com.paulmerchants.gold.model.PrepaidCardModel
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.invisible
 
-class PrePaidCardAdapter :
+class PrePaidCardAdapter(private val onPayDueClicked: (PrepaidCardModel) -> Unit) :
     ListAdapter<PrepaidCardModel, PrePaidCardAdapter.PrepaidCardVIewHolder>(DIFF_CALLBACK) {
 
 
@@ -21,7 +21,7 @@ class PrePaidCardAdapter :
     )
 
     override fun onBindViewHolder(holder: PrepaidCardVIewHolder, position: Int) {
-        holder.bind(getItem(position), position)
+        holder.bind(getItem(position), position,onPayDueClicked)
     }
 
     companion object {
@@ -44,9 +44,12 @@ class PrePaidCardAdapter :
     inner class PrepaidCardVIewHolder(private val binding: YourCardsLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(dueLoans: PrepaidCardModel, position: Int) {
+        fun bind(dueLoans: PrepaidCardModel, position: Int,clicked: (PrepaidCardModel) -> Unit) {
             binding.apply {
                 cardHolderName.text = dueLoans.name
+                viewLoanBtn.setOnClickListener {
+                    clicked(dueLoans)
+                }
             }
         }
     }

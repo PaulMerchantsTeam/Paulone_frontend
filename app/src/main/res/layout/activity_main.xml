@@ -24,7 +24,7 @@
         android:layout_height="64dp"
         android:textDirection="rtl"
         android:visibility="visible"
-        app:itemIconSize="@dimen/twenty_four"
+        app:itemIconSize="29dp"
         app:itemPaddingBottom="10dp"
         app:itemPaddingTop="10dp"
         app:itemRippleColor="@color/white_gray"

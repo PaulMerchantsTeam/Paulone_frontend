@@ -23,7 +23,7 @@
             android:clickable="true"
             android:focusable="true"
             android:padding="10dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/circle_profile_black" />
@@ -36,7 +36,7 @@
             android:clickable="true"
             android:focusable="true"
             android:padding="10dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/profileIv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/profileIv"
@@ -49,6 +49,7 @@
             android:padding="10dp"
             android:text="@string/login_sign_up"
             style="@style/text_10_medium_sky"
+            android:visibility="gone"
             android:textColor="@color/splash_screen_one"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -60,7 +61,7 @@
             android:layout_height="@dimen/ten_dp"
             android:background="@drawable/circle_red_"
             android:padding="10dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/notImage"
             app:layout_constraintEnd_toEndOf="@+id/notImage"
             app:layout_constraintHorizontal_bias="0.61"
@@ -75,6 +76,7 @@
             android:fontFamily="@font/poppins_medium"
             android:gravity="center_vertical"
             android:text="P"
+            android:visibility="visible"
             android:textColor="@color/splash_screen_one"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@+id/profileIv"
@@ -88,10 +90,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rec_search_"
             android:padding="10dp"
-            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginSignUpBtn">
+            app:layout_constraintTop_toBottomOf="@+id/profileIv">
 
             <ImageView
                 android:id="@+id/searchIv"
@@ -107,20 +108,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:fontFamily="@font/poppins_semi_bold"
                 android:hint="@string/search_for_loans"
                 android:imeOptions="actionSearch"
                 android:maxLines="1"
+                style="@style/text_12_regular_white"
                 android:paddingStart="14dp"
                 android:textColor="@color/splash_screen_one"
                 android:textColorHint="@color/brown"
                 android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/searchIv"
-                app:layout_constraintTop_toTopOf="parent"
-                  />
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -162,7 +161,7 @@
             android:lineSpacingExtra="5dp"
             android:text="Hey Prithvi"
             android:textColor="@color/splash_screen_three"
-            android:textSize="18sp"
+            style="@style/text_16_bold_blue"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout11" />
@@ -176,7 +175,7 @@
             android:lineSpacingExtra="5dp"
             android:text="This is your space"
             android:textColor="@color/splash_screen_three"
-            android:textSize="14sp"
+            style="@style/text_11_medium_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userName" />

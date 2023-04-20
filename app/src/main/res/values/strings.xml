@@ -43,11 +43,11 @@
     <string name="conf_the_mpin">Confirm new M-Pin</string>
     <string name="confirm">Confirm</string>
     <string name="finally_done_sighup">And we are finally done, welcome home user. We are glad to have you with us.</string>
-    <string name="bills_amp_more"><![CDATA[BILLS & MORE]]></string>
-    <string name="gold_loan">GOLD LOAN</string>
-    <string name="home">HOME</string>
-    <string name="locate_us">LOCATE US</string>
-    <string name="menu">MENU</string>
+    <string name="bills_amp_more"><font size="8"><![CDATA[BILLS & MORE]]></font></string>
+    <string name="gold_loan"><font size="8">GOLD LOAN</font></string>
+    <string name="home"><font size="8">HOME</font></string>
+    <string name="locate_us"><font size="8">LOCATE US</font></string>
+    <string name="menu"><font size="8">MENU</font></string>
     <string name="search_for_loans">Search for “Loans”</string>
     <string name="be_a_loyal_payer_">(Be a loyal payer and keep no dues)</string>
     <string name="dth_services">DTH SERVICES</string>

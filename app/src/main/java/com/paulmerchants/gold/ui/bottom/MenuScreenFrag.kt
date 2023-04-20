@@ -23,7 +23,44 @@ class MenuScreenFrag :
     BaseFragment<DummyMenuScreenFragmentBinding>(DummyMenuScreenFragmentBinding::inflate) {
 
     private var myView: CustomViews? = null
-    private val menuServiceAdapter = MenuServicesAdapter(::onMenuServiceClicked)
+    private val menuServiceAdapter = MenuServicesAdapter(::onMenuServiceClicked,::onMenuServiceClicedTwo)
+
+    private fun onMenuServiceClicedTwo(menuServices: MenuServices) {
+        Log.d("TAG", "onMenuServiceClicked: /////${menuServices.serviceId}")
+        when (menuServices.serviceId) {
+            1 -> {
+            }
+            2 -> {
+                findNavController().navigate(R.id.billsAndMoreScreenFrag)
+            }
+            3 -> {
+                findNavController().navigate(R.id.billsFragment)
+            }
+            4 -> {findNavController().navigate(R.id.pcFrag)
+                }
+            5 -> {
+            }
+            6 -> {
+            }
+            7 -> {
+            }
+            8 -> {
+            }
+            9 -> {
+            }
+            10 -> {
+            }
+            11-> {
+            }
+            12 -> {
+            }
+            13 -> {
+            }
+            else -> {
+                Log.d("TAG", "onMenuServiceClicked: [=false")
+            }
+        }
+    }
 
     private fun onMenuServiceClicked(menuServices: MenuServices) {
         Log.d("TAG", "onMenuServiceClicked: /////${menuServices.serviceId}")
@@ -43,6 +80,22 @@ class MenuScreenFrag :
             5 -> {
                 findNavController().navigate(R.id.transactionDetailFrag)
             }
+            6 -> {
+            }
+            7 -> {
+        }
+            8 -> {
+            }
+            9 -> {
+            }
+            10 -> {
+            }
+            11-> {
+            }
+            12 -> {
+            }
+            13 -> {
+            }
             else -> {
                 Log.d("TAG", "onMenuServiceClicked: [=false")
             }
@@ -57,7 +110,6 @@ class MenuScreenFrag :
     }
 
     override fun onStart() {
-
         super.onStart()
         setTypeServiceUi()
         setServicesUi()
@@ -124,32 +176,32 @@ class MenuScreenFrag :
         binding.transacSearchView.hide()
         binding.servicesRv.show()
         val service1 = MenuServices(
-            1,
+            6,
             getString(R.string.history),
             getString(R.string.view_trans),
             ""
         )
         val service2 = MenuServices(
-            2,
+            7,
             getString(R.string.bank_acc),
             getString(R.string.upi_setting),
             getString(R.string.card_setting)
         )
         val service3 = MenuServices(
-            3,
+            8,
             getString(R.string.acc_sett),
             getString(R.string.man_yr_Account),
             getString(R.string.add_or_mange_add)
         )
         val service4 = MenuServices(
-            4,
+            9,
             getString(R.string.all_abt_us),
             getString(R.string.wht_we_r),
             ""
         )
         val service5 =
             MenuServices(
-                5,
+                10,
                 "",
                 getString(R.string.our_priv_policy),
                 ""
@@ -157,21 +209,21 @@ class MenuScreenFrag :
 
         val service6 =
             MenuServices(
-                6,
+                11,
                 "",
                 getString(R.string.we_beleive_in_sec),
                 ""
             )
         val service7 =
             MenuServices(
-                7,
+                12,
                 "",
                 getString(R.string.termNCondn),
                 ""
             )
         val service8 =
             MenuServices(
-                8,
+                13,
                 "",
                 getString(R.string.faqs),
                 ""

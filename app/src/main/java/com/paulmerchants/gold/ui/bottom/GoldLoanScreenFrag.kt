@@ -20,10 +20,27 @@ class GoldLoanScreenFrag :
             subTitle.hide()
         }
         setUiForGoldLoan()
+        setClickListener()
     }
 
     private fun setUiForGoldLoan() {
         binding.goldLoanParentMain.rvLoanOverViewMain.setGoldLoanOverView()
+    }
+
+    private fun setClickListener(){
+        binding.apply {
+            goldLoanParentMain.openLoanTv.setOnClickListener {
+                goldLoanParentMain.openLoanTv.setBackgroundResource(R.drawable.rec_sky_loan_blue_solid)
+                goldLoanParentMain.closedLoanTv.setBackgroundColor(resources.getColor(R.color.splash_screen_two))
+
+            }
+            goldLoanParentMain.closedLoanTv.setOnClickListener {
+                goldLoanParentMain.closedLoanTv.setBackgroundResource(R.drawable.rec_sky_loan_blue_solid)
+                goldLoanParentMain.openLoanTv.setBackgroundColor(resources.getColor(R.color.splash_screen_two))
+
+            }
+        }
+
     }
 
 }

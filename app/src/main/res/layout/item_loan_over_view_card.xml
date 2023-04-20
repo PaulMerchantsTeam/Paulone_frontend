@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="14dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/new_user_card_grad">
-<!--        rec_frch_blue_solid-->
+        android:background="@drawable/rec_frch_blue_solid">
 
         <TextView
             android:id="@+id/youHaveTotalLoanTv"
@@ -19,7 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginTop="17dp"
-            android:visibility="gone"
+            android:visibility="visible"
+            android:textSize="11sp"
             android:text="You are having 4 active loans totalling upto"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,17 +27,17 @@
 
         <TextView
             android:id="@+id/totalLoanAmountTv"
-            style="@style/text_21_bold_yellow"
+            style="@style/text_24_regular_blue"
             android:textColor="@color/splash_screen_one"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
-            android:layout_marginTop="10dp"
-            android:text="We serve you with the best gold loans"
+            android:layout_marginTop="8dp"
+            android:text="INR 3,00,000"
             app:layout_constraintEnd_toStartOf="@+id/imageView6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/youHaveTotalLoanTv" />
-
+<!--        We serve you with the best gold loans-->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/viewLoanBtn"
             style="@style/text_12_bold_blue"
@@ -58,7 +58,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:visibility="gone"
+            android:visibility="visible"
+            android:textColor="@color/yellow_main"
             android:background="@drawable/rec_yellow_empty_btn"
             android:padding="@dimen/ten_dp"
             android:text="Renew Loans"

@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -203,7 +204,11 @@ fun RecyclerView.setUiOnLastTransaction() {
 }
 
 fun RecyclerView.setGoldLoanOverView() {
-    val lastStatemnetAdapter = GoldLoanOverViewAdapter()
+    fun clicked(actionItem: ActionItem) {
+    findNavController().navigate(R.id.pmlGoldLoan)
+    }
+
+    val lastStatemnetAdapter = GoldLoanOverViewAdapter(::clicked)
     val actionItem1 = ActionItem(
         BbpsType.Electricity.type,
         0, "231212121"
@@ -262,8 +267,10 @@ fun RecyclerView.setGoldLoanOverView() {
 
 }
 
-fun RecyclerView.setServicesUi(context: Context, onMenuServiceClicked: (MenuServices) -> Unit) {
-    val menuServiceAdapter = MenuServicesAdapter(onMenuServiceClicked)
+
+
+fun RecyclerView.setServicesUi(context: Context, onMenuServiceClicked: (MenuServices) -> Unit,onMenuServiceClickedTwo: (MenuServices) -> Unit) {
+    val menuServiceAdapter = MenuServicesAdapter(onMenuServiceClicked, onMenuServiceClickedTwo)
     val service1 = MenuServices(
         100,
         context.getString(R.string.privac_settings),

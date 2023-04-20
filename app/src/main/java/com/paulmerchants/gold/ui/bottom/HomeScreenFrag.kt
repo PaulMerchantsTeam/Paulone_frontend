@@ -34,7 +34,9 @@ class HomeScreenFrag :
     BaseFragment<DummyHomeScreenFragmentBinding>(DummyHomeScreenFragmentBinding::inflate) {
     private val upcomingLoanAdapter = UpcomingLoanAdapter(::onPayDueClicked)
     private val upcomingNewUserAdapter = UpcomingLoanNewuserAdapter()
-    private val prePaidCardAdapter = PrePaidCardAdapter()
+    private val prePaidCardAdapter = PrePaidCardAdapter(::onClicked)
+
+
 
 
     lateinit var navController: NavController
@@ -46,8 +48,8 @@ class HomeScreenFrag :
     private var isStartAnim = MutableLiveData<Boolean>()
     override fun DummyHomeScreenFragmentBinding.initialize() {
         navController = findNavController()
-        setUpComingOurServices()
-//        setUpComingDueLoans()
+//        setUpComingOurServices()
+        setUpComingDueLoans()
     }
 
     override fun onStart() {
@@ -69,6 +71,9 @@ class HomeScreenFrag :
             R.id.quickPayDialog,
             bundle
         )
+    }
+    private fun onClicked(prepaidCardModel: PrepaidCardModel) {
+        findNavController().navigate(R.id.pcFrag)
     }
 
     private fun setPrepaidCardUi() {
@@ -238,31 +243,50 @@ class HomeScreenFrag :
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.searchProfileParent.searchView.show()
+    }
+    override fun onPause() {
+        super.onPause()
+
+        isStartAnim.postValue(false)
+        binding.searchProfileParent.searchView.clearAnimation()
+
+    }
+
     private fun animateHintEditText() {
         val strList = listOf(
             getString(R.string.search_fr_bills),
             getString(R.string.search_fr_credit),
             getString(R.string.search_fr_upcoming_dues),
             getString(R.string.search_for_loans),
-
             )
         lifecycleScope.launchWhenResumed {
-            delay(2000)
-            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_up))
-            delay(2000)
+            delay(500)
             binding.searchProfileParent.searchView.hint = strList[0]
-            delay(2000)
-            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_up))
-            delay(2000)
+            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_mid))
+            delay(1000)
+            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_mid_to_up))
+            delay(500)
             binding.searchProfileParent.searchView.hint = strList[1]
-            delay(2000)
-            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_up))
-            delay(2000)
+            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_mid))
+            delay(1000)
+            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_mid_to_up))
+            delay(500)
             binding.searchProfileParent.searchView.hint = strList[2]
-            delay(2000)
-            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_up))
-            delay(2000)
+            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_mid))
+            delay(1000)
+            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_mid_to_up))
+
+
+            delay(500)
             binding.searchProfileParent.searchView.hint = strList[3]
+            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_mid))
+            delay(1000)
+            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_mid_to_up))
+
+
             delay(500)
             isStartAnim.postValue(true)
 
@@ -308,10 +332,18 @@ private fun setUpComingOurServices(){
     }
     private fun setLoanOverView(){
         binding.apply {
-            loanOverViewCardParent.viewLoanBtn.text = getString(R.string.apply_now)
+//            loanOverViewCardParent.cardParent.setBackgroundColor(R.drawable.new_user_card_grad)
+
+//            loanOverViewCardParent.viewLoanBtn.text = getString(R.string.apply_now)
+//            loanOverViewCardParent.viewLoanBtn.setOnClickListener {
+//                findNavController().navigate(R.id.applyLoanForNewUser)
+//            }
             loanOverViewCardParent.viewLoanBtn.setOnClickListener {
-                findNavController().navigate(R.id.applyLoanForNewUser)
+                                findNavController().navigate(R.id.goldLoanScreenFrag)
+
             }
+            loanOverViewCardParent.renewLoansTv.show()
+            loanOverViewCardParent.youHaveTotalLoanTv.show()
         }
     }
 private  fun setAddCardView(){

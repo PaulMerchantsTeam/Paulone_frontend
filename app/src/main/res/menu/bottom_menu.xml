@@ -5,7 +5,8 @@
     <item
         android:id="@+id/billsAndMoreScreenFrag"
         android:icon="@drawable/bills_an_more"
-        android:title="@string/bills_amp_more" />
+        android:title="@string/bills_amp_more"
+        />
     <item
         android:id="@+id/goldLoanScreenFrag"
         android:icon="@drawable/gold_both_icon"
