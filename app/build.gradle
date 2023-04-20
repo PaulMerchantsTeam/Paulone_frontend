@@ -72,6 +72,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:21.0.2'
     implementation 'com.google.firebase:firebase-messaging:23.0.3'
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
+    implementation 'com.google.firebase:firebase-config-ktx:21.0.2'
 
     def lifecycle_version = "2.4.0"
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -113,7 +114,17 @@ dependencies {
 
     //maps
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.maps.android:android-maps-utils:2.2.0'
+    // [END_EXCLUDE]
 
+    // Maps SDK for Android KTX Library
+    implementation 'com.google.maps.android:maps-ktx:3.3.0'
 
+    // Maps SDK for Android Utility Library KTX Library
+    implementation 'com.google.maps.android:maps-utils-ktx:3.0.0'
+
+    implementation 'com.google.android.libraries.places:places:3.1.0'
+
+//    implementation 'com.google.android.gms:play-services-places:20.0.0'
 
 }

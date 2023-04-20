@@ -59,7 +59,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                 destination.id == R.id.homeScreenFrag ||
                 destination.id == R.id.goldLoanScreenFrag ||
                 destination.id == R.id.billsAndMoreScreenFrag ||
-                destination.id == R.id.locateUsFrag ||
+//                destination.id == R.id.locateUsFrag ||
                 destination.id == R.id.menuScreenFrag
             ) {
                 binding.bottomNavigationView.show()

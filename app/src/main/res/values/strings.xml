@@ -321,6 +321,7 @@
     <string name="bills_n_payment">BILLS \nPAYMENT</string>
     <string name="digital_n_gold">DIGITAL \nGOLD</string>
     <string name="we_serve_you_with_the_best_gold_loans">We serve you with the best gold loans</string>
+
     <string name="track_your_cards_like_never_before">Track your card \n like never before.</string>
     <string name="add_now">Add now</string>
     <string name="apply_now">Apply Now</string>
@@ -328,6 +329,14 @@
     <string name="i_hereby_give_consent_to_the_paul_merchants_ltd_executive_to_call_me_in_the_above_given_number">I hereby give consent to the Paul Merchants Ltd executive to call me in the above given number.</string>
     <string name="thanks_for_showing_intere">Thanks for showing interest in Gold Loan Arjun. You have taken one step towards secured future.</string>
 
+    <string name="your_pin_code">Your pincode</string>
+    <string name="locate_us_near_u">LOCATE US NEAR YOU</string>
+    <string name="pick_place">Chhose a place</string>
+
+
+    <string name="default_info_title">Default Location</string>
+    <string name="default_info_snippet">No places found, because location permission is disabled.</string>
+    <string name="select_yr_city">Select your city</string>
 
     <string-array name="month">
         <item>January</item>

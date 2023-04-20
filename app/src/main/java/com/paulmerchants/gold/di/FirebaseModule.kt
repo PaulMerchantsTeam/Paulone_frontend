@@ -5,6 +5,8 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,5 +25,11 @@ class FirebaseModule {
     fun provideAuth(): FirebaseAuth {
         return Firebase.auth
     }
+
+    @Provides
+    fun provideRemoteConfig():FirebaseRemoteConfig{
+        return Firebase.remoteConfig
+    }
+
 
 }

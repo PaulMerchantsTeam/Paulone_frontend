@@ -1,0 +1,113 @@
+<defaultMap>
+    <entry>
+        <key>tests</key>
+        <value><![CDATA[[
+  {
+    "name": "Paul Merchants ,Hyderabad",
+    "lat": 17.4068034,
+    "lng": 78.4783127,
+    "address": "Paul Merchants, 5 & 6 Upper Ground Floor, Liberty Plaza, Himayath Nagar, Hyderabad – 500029"
+  },
+  {
+    "name": "Paul Merchants ,Zirakpur",
+    "lat": 30.737825,
+    "lng": 76.775396,
+    "address": "Paul Merchants, Sco No 3-4, Ground Floor, Shree Balaji, Complex, Patiala Raod, Zirakpur-140606"
+  },
+  {
+    "name": "Paul Merchants ,RUPNAGAR",
+    "lat": 30.9623249,
+    "lng": 76.5198098,
+    "address": "SCO 24 BEANT SINGH AMAN NAGAR RUPNAGAR"
+  },
+  {
+    "name": "Paul Merchants ,Chandigarh",
+    "lat": 30.7381626,
+    "lng": 76.7756600,
+    "address": "Paul Merchants, Chandigarh - Corporate Branch Sco 829-830 , Sec-22 A , Chandigarh"
+  },
+  {
+    "name": "Paul Merchants ",
+    "lat": 30.7403437,
+    "lng": 7486243939,
+    "address": "Chandigarh - Sector 37 Ground floor,SCO-376, Sector 37/D, Chandigarh- 160036"
+  },
+  {
+    "name": "Paul Merchants ",
+    "lat": 30.70708020,
+    "lng": 76.72540613,
+    "address": "Booth No 17 Phase Vii Mohali"
+  },
+  {
+    "name": "Paul Merchants ",
+    "lat": 30.73813495,
+    "lng": 76.77579950,
+    "address": "Sco 829-830,Sec-22 A,Chandigarh"
+  },
+  {
+    "name": "Paul Merchants ",
+    "lat": 28.47717370,
+    "lng": 77.04680885,
+    "address": "Shop No. B-119, Super Mart 1 , Dlf City, Phase – Iv, Gurgaon, Haryana -122002"
+  },
+  {
+    "name": "Paul Merchants ",
+    "lat": 28.572197243530685,
+    "lng": 77.32519081106153,
+    "address": "Unit No. F3/22, 3Rd Floor, Plot No D6 , Wave Silver Tower , Sector 18 , Noida ( Up ) – 201301"
+  },
+  {
+    "name": "Paul Merchants ",
+    "lat": 28.631906568199764,
+    "lng": 77.22798511106379,
+    "address": "Lgf 136 & Lgf 125 , World Trade Center, Babar Road , Connaught Place, New Delhi – 110001"
+  },
+  {
+    "name": "Paul Merchants ",
+    "lat": 21.176457506723594,
+    "lng": 72.81836043594294,
+    "address": "Shop No – 318, Upper Ground Floor, Turning Point Complex, Near Majura Fire Station, Ghod Dod Road, Surat – 395007"
+  },
+  {
+    "name": "Paul Merchants ",
+    "lat": 22.310554970346182,
+    "lng": 73.16714101877295,
+    "address": "G 20 / P, The Emperor , Fatehgunj Main Road , Vadodara Gujarat 390002"
+  },
+   {
+    "name": "Paul Merchants ",
+    "lat": 22.2924376,
+    "lng": 70.7814321,
+    "address": "Shop No.U 32 , Neptune Tower , Opp Jalaram Petrol Pump , Kalwad Road , Rajkot 360001"
+  },
+  {
+    "name": "Paul Merchants ",
+    "lat": 22.9952410,
+    "lng": 72.6081917,
+    "address": "Shop No. 5, Ground Floor ,Pramukh Palace, Jai Hind Cross Roads, Maninagar, Ahemdabad 380008"
+  },
+  {
+    "name": "Paul Merchants ",
+    "lat": 23.0129181,
+    "lng": 72.5247893,
+    "address": "7, Krishna Tower, Opposite Sachin Tower, Anand Nagar, 100 Ft. Ring Road , Ahmedabad – 380014"
+  },
+  {
+    "name": "Paul Merchants ",
+    "lat": 23.0391093,
+    "lng": 72.5677731,
+    "address": "Gf 1, Mansuri House, Opp Behra-Munga School, Ashram Road,Ahmedabad – 380009"
+  },
+  {
+    "name": "Paul Merchants ",
+    "lat": 29.984507,
+    "lng": 76.586192,
+    "address": "Opp Bus Stand, Near Chabbra Sweet House, Abmala Road, Pehowa – Haryana – 136128"
+  }
+]
+]
+            ]
+        ]]></value>
+
+    </entry>
+</defaultMap>

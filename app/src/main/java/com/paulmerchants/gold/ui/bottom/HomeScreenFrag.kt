@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.ui.bottom
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -24,6 +25,7 @@ import com.paulmerchants.gold.model.DueLoans
 import com.paulmerchants.gold.model.OurServices
 import com.paulmerchants.gold.model.PrepaidCardModel
 import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.ui.MapActivity
 import com.paulmerchants.gold.utility.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -140,11 +142,12 @@ class HomeScreenFrag :
 
     private fun profileHandle() {
         binding.searchProfileParent.profileIv.setOnClickListener {
-            findNavController().navigate(
-                R.id.profileFrag,
-                null,
-                (activity as MainActivity).navOptionLeft
-            )
+//            findNavController().navigate(
+//                R.id.profileFrag,
+//                null,
+//                (activity as MainActivity).navOptionLeft
+//            )
+            startActivity(Intent(requireContext(), MapActivity::class.java))
         }
     }
 
