@@ -22,7 +22,9 @@ data class Place(
     val lat: Double,
     val lng: Double,
     val address: String,
+    val city: String
 ) : ClusterItem {
+
     override fun getPosition(): LatLng =
         LatLng(lat, lng)
 

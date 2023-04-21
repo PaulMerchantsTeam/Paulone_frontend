@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -43,6 +44,8 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
     GoogleMap.OnMarkerClickListener {
     private val mapLocationAdapter = MapLocationAdapter(::OnLocationClicked)
 
+    private var listOfLocation: List<com.paulmerchants.gold.place.Place>? = null
+
     private fun OnLocationClicked(place: com.paulmerchants.gold.place.Place) {
         val pm22 = LatLng(place.lat, place.lng)
         Log.d(TAG, "addMarkers: $pm22")
@@ -53,12 +56,8 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         )
         map?.resetMinMaxZoomPreference()
         map?.moveCamera(CameraUpdateFactory.newLatLng(pm22))
-
     }
 
-    //    private val places: List<com.paulmerchants.gold.place.Place> by lazy {
-//        PlacesReader(this).read()
-//    }
     var addressList: List<Address>? = null
     private var map: GoogleMap? = null
     private var cameraPosition: CameraPosition? = null
@@ -93,8 +92,10 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         mViewModel.placesLive.observe(this) {
             it?.let {
                 Log.d(TAG, "onCreate: .....${it.size}")
+                listOfLocation = it
+                mapLocationAdapter.submitList(listOfLocation)
+                mapLocationAdapter.notifyDataSetChanged()
                 addMarkers(it)
-                setupLocationsTile(it)
             }
         }
         binding.headerMap.apply {
@@ -171,18 +172,29 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                var filterCh: List<com.paulmerchants.gold.place.Place>? = arrayListOf()
                 if (p0 != null) {
-                    if (p0 == "ch" || p0 == "chan" || p0 == "chandigarh" || p0 == "Chandigarh") {
-
+                    Log.d(TAG, "onTextChanged: ........$p0")
+                    when (p0) {
+                        "ch", "chan", "chandigarh", "Chandigarh" -> {
+                            filterCh = listOfLocation?.filter {
+                                it.city == "ch"
+                            }
+                            Log.d(TAG, "onTextChanged: -----$filterCh")
+                        }
+                        else -> {
+                            filterCh = listOfLocation
+                        }
                     }
+                    listOfLocation = filterCh
+                    setupLocationsTile()
+                    mapLocationAdapter.notifyDataSetChanged()
                 }
-
             }
 
             override fun afterTextChanged(p0: Editable?) {
 
             }
-
         })
 
     }
@@ -206,16 +218,8 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
     }
 
-// [END maps_current_place_on_create]
 
-    /**
-     * Saves the state of the map when the activity is paused.
-     */
-    /**
-     * Saves the state of the map when the activity is paused.
-     */
-
-// [START maps_current_place_on_save_instance_state]
+    // [START maps_current_place_on_save_instance_state]
     override fun onSaveInstanceState(outState: Bundle) {
         map?.let { map ->
             outState.putParcelable(KEY_CAMERA_POSITION, map.cameraPosition)
@@ -265,18 +269,9 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
     }
 */
-// [END maps_current_place_on_options_item_selected]
 
-    /**
-     * Manipulates the map when it's available.
-     * This callback is triggered when the map is ready to be used.
-     */
-    /**
-     * Manipulates the map when it's available.
-     * This callback is triggered when the map is ready to be used.
-     */
 
-// [START maps_current_place_on_map_ready]
+    // [START maps_current_place_on_map_ready]
     override fun onMapReady(map: GoogleMap) {
         this.map = map
         val pm22 = LatLng(
@@ -318,6 +313,8 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         map.moveCamera(CameraUpdateFactory.newLatLng(pm22))
         mViewModel.loadData()
 
+        setupLocationsTile()
+
 
         // [START_EXCLUDE]
         // [START map_current_place_set_info_window_adapter]
@@ -354,49 +351,15 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         // Get the current location of the device and set the position of the map.
         getDeviceLocation()
         map.setOnMarkerClickListener(this)
+        showCurrentPlace()
     }
 
-    private fun setupLocationsTile(list: List<com.paulmerchants.gold.place.Place>) {
-
-//        val listLocation = listOf(
-//            com.paulmerchants.gold.place.Place(
-//                "Paul Merchants,\n Sec22, Chandigarh",
-//                pm22.latitude,
-//                pm22.longitude,
-//                "3km"
-//            ),
-//            com.paulmerchants.gold.place.Place(
-//                "Royal Ratan Tower,\n U G-1, 7, Mahatma Gandhi Rd, Indore, Madhya Pradesh 452001",
-//                pmMp.latitude,
-//                pmMp.longitude,
-//                "3km"
-//            ),
-//            com.paulmerchants.gold.place.Place(
-//                "Liberty Plaza,\n 5&6 Upper Ground Floor, Himayatnagar, Hyderabad, Telangana 500029",
-//                pmKarnatka.latitude,
-//                pmKarnatka.longitude,
-//                "3km"
-//            ),
-//            com.paulmerchants.gold.place.Place(
-//                "70, 4th Block,\n 2nd Floor 27th Cross, 9th Main Rd, Jayanagara, Bengaluru, Karnataka 560041",
-//                pmTelangana.latitude,
-//                pmTelangana.longitude,
-//                "3km"
-//            )
-//        )
-        mapLocationAdapter.submitList(list)
+    private fun setupLocationsTile() {
+        mapLocationAdapter.submitList(listOfLocation)
         binding.rvPmLocation.adapter = mapLocationAdapter
     }
-// [END maps_current_place_on_map_ready]
 
-    /**
-     * Gets the current location of the device, and positions the map's camera.
-     */
-    /**
-     * Gets the current location of the device, and positions the map's camera.
-     */
-
-// [START maps_current_place_get_device_location]
+    // [START maps_current_place_get_device_location]
     @SuppressLint("MissingPermission")
     private fun getDeviceLocation() {
         /*
@@ -632,16 +595,8 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
             .setItems(likelyPlaceNames, listener)
             .show()
     }
-// [END maps_current_place_open_places_dialog]
 
-    /**
-     * Updates the map's UI settings based on whether the user has granted location permission.
-     */
-    /**
-     * Updates the map's UI settings based on whether the user has granted location permission.
-     */
 
-// [START maps_current_place_update_location_ui]0
     @SuppressLint("MissingPermission")
     private fun updateLocationUI() {
         if (map == null) {

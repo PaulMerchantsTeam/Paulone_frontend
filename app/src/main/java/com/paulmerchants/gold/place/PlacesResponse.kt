@@ -30,4 +30,5 @@ fun PlaceResponse.toPlace(): Place = Place(
     lat = lat,
     address = address,
     lng = Lng,
+    city = "chandigarh"
 )

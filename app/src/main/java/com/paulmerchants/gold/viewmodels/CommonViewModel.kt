@@ -16,7 +16,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CommonViewModel @Inject constructor() : ViewModel() {
-    private var remoteDataList: MutableList<Place>? = null
+    private var remoteDataList: List<Place>? = null
+    private var listOfLocation: List<com.paulmerchants.gold.place.Place>? = null
+
     var timer: CountDownTimer? = null
     val countNum = MutableLiveData<Long>()
 
@@ -46,7 +48,7 @@ class CommonViewModel @Inject constructor() : ViewModel() {
         timer?.start()
     }
 
-    fun loadData() {
+    fun loadData(region: String) {
         remoteConfig.fetchAndActivate().addOnCompleteListener { it ->
             if (it.isSuccessful) {
                 val updated = it.result
@@ -56,7 +58,16 @@ class CommonViewModel @Inject constructor() : ViewModel() {
                 val gson = Gson()
                 remoteDataList =
                     gson.fromJson(data, Array<Place>::class.java).toMutableList()
-                placesLive.postValue(remoteDataList)
+                listOfLocation =remoteDataList
+                when (region) {
+                    "ch", "chan", "chandigarh", "Chandigarh" -> {
+                        val ch = listOfLocation?.filter {
+                            it.city =="ch"
+                        }
+                        placesLive.postValue(ch as MutableList<Place>?)
+                    }
+                }
+//                placesLive.postValue(remoteDataList)
                 Log.d("datalist", remoteDataList.toString())
             } else {
                 Log.d("loadData", "Else:")
