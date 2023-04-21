@@ -2,10 +2,16 @@ package com.paulmerchants.gold.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
+import android.location.Geocoder
 import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,7 +23,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -37,14 +43,16 @@ import com.paulmerchants.gold.adapter.MapLocationAdapter
 import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.databinding.ActivityMapBinding
 import com.paulmerchants.gold.place.BitmapHelper
+import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.viewmodels.CommonViewModel
+import kotlinx.coroutines.delay
+import java.util.*
 
 
 class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener {
+    private var cityName: String = ""
     private val mapLocationAdapter = MapLocationAdapter(::OnLocationClicked)
-
-    private var listOfLocation: List<com.paulmerchants.gold.place.Place>? = null
 
     private fun OnLocationClicked(place: com.paulmerchants.gold.place.Place) {
         val pm22 = LatLng(place.lat, place.lng)
@@ -56,6 +64,10 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         )
         map?.resetMinMaxZoomPreference()
         map?.moveCamera(CameraUpdateFactory.newLatLng(pm22))
+        val geoUri =
+            "geo:${place.lat},${place.lng}?z=15&q=${place.lat},${place.lng}(Paul Merchants)"
+        val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
+        startActivity(mapIntent)
     }
 
     var addressList: List<Address>? = null
@@ -92,9 +104,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         mViewModel.placesLive.observe(this) {
             it?.let {
                 Log.d(TAG, "onCreate: .....${it.size}")
-                listOfLocation = it
-                mapLocationAdapter.submitList(listOfLocation)
-                mapLocationAdapter.notifyDataSetChanged()
+                setupLocationsTile(it)
                 addMarkers(it)
             }
         }
@@ -126,8 +136,6 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
             LatLng(8.4, 68.7),
             LatLng(37.6, 97.25)
         ) // Set the bounds to India
-
-
         val requestFind = FindAutocompletePredictionsRequest.builder()
             .setQuery("Paul Merchants") // Set the query to Paul Merchants
             .setCountry("IN") // Limit the results to India
@@ -172,23 +180,10 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                var filterCh: List<com.paulmerchants.gold.place.Place>? = arrayListOf()
+
                 if (p0 != null) {
                     Log.d(TAG, "onTextChanged: ........$p0")
-                    when (p0) {
-                        "ch", "chan", "chandigarh", "Chandigarh" -> {
-                            filterCh = listOfLocation?.filter {
-                                it.city == "ch"
-                            }
-                            Log.d(TAG, "onTextChanged: -----$filterCh")
-                        }
-                        else -> {
-                            filterCh = listOfLocation
-                        }
-                    }
-                    listOfLocation = filterCh
-                    setupLocationsTile()
-                    mapLocationAdapter.notifyDataSetChanged()
+                    mViewModel.filterLocation(p0.toString())
                 }
             }
 
@@ -196,7 +191,6 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
             }
         })
-
     }
 
     private val goldIcon: BitmapDescriptor by lazy {
@@ -311,10 +305,6 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 //        addMarkers(map)
         // [START_EXCLUDE silent]
         map.moveCamera(CameraUpdateFactory.newLatLng(pm22))
-        mViewModel.loadData()
-
-        setupLocationsTile()
-
 
         // [START_EXCLUDE]
         // [START map_current_place_set_info_window_adapter]
@@ -352,10 +342,11 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         getDeviceLocation()
         map.setOnMarkerClickListener(this)
         showCurrentPlace()
+
     }
 
-    private fun setupLocationsTile() {
-        mapLocationAdapter.submitList(listOfLocation)
+    private fun setupLocationsTile(place: List<com.paulmerchants.gold.place.Place>) {
+        mapLocationAdapter.submitList(place)
         binding.rvPmLocation.adapter = mapLocationAdapter
     }
 
@@ -413,6 +404,47 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
      */
 
 // [START maps_current_place_location_permission]
+
+    override fun onResume() {
+        super.onResume()
+        getLocationPermission()
+        if (locationPermissionGranted) {
+            try {
+                getCityName()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+
+    @SuppressLint("MissingPermission")
+    fun getCityName() {
+        var count = 1
+        val geocoder = Geocoder(this, Locale.getDefault())
+        val locationManager =
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        locationManager.requestLocationUpdates(
+            LocationManager.GPS_PROVIDER,
+            0,
+            0f
+        ) { location ->
+            val addresses =
+                geocoder.getFromLocation(location.latitude, location.longitude, 1)
+            if (addresses != null && addresses.isNotEmpty()) {
+                cityName = addresses[0]?.locality.toString()
+                Log.d("CityName", "$cityName")
+                if (count == 1) {
+                    mViewModel.filterLocation(cityName)
+                    count++
+                } else {
+                    return@requestLocationUpdates
+                }
+            }
+        }
+    }
+
     private fun getLocationPermission() {
         /*
          * Request location permission, so that we can get the location of the
@@ -425,6 +457,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
             == PackageManager.PERMISSION_GRANTED
         ) {
             locationPermissionGranted = true
+
         } else {
 
             requestPermissions(
@@ -433,6 +466,8 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
             )
         }
     }
+
+
 // [END maps_current_place_location_permission]
 
     /**

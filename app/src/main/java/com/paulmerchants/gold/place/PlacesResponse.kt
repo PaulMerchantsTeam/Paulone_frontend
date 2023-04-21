@@ -14,8 +14,6 @@
 
 package com.paulmerchants.gold.place
 
-import com.google.android.gms.maps.model.LatLng
-
 data class PlaceResponse(
     val lat: Double,
     val Lng: Double,
