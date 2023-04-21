@@ -13,7 +13,7 @@
         style="@style/text_16_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="47dp"
+        android:layout_marginTop="@dimen/_47sdp"
         android:text="@string/payment_confirmed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
         style="@style/text_11_bold_sk_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="@dimen/_34sdp"
         android:text="Payment Receipt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pay_conf_title" />
@@ -34,20 +34,20 @@
         android:id="@+id/materialCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        app:cardCornerRadius="8dp"
+        android:layout_marginTop="@dimen/_3sdp"
+        app:cardCornerRadius="@dimen/_8sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/payRcpt"
         app:strokeColor="#DBE2EF"
-        app:strokeWidth="1dp">
+        app:strokeWidth="@dimen/_1sdp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/splash_screen_two"
             android:paddingHorizontal="@dimen/ten_dp"
-            android:paddingVertical="12dp">
+            android:paddingVertical="@dimen/_12sdp">
 
             <TextView
                 android:id="@+id/detailsTv"
@@ -63,7 +63,7 @@
                 style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:text="Interest Payment"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detailsTv" />
@@ -73,7 +73,7 @@
                 style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:text="Amount paid"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/intPayYTv" />
@@ -83,7 +83,7 @@
                 style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:text="Payment Mode"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/amountPaidTv" />
@@ -93,7 +93,7 @@
                 style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:text="Date"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/payModeTv" />
@@ -103,7 +103,7 @@
                 style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:text="Time"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dateTv" />
@@ -181,7 +181,7 @@
         style="@style/text_11_bold_sk_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:text="@string/download_receipt"
         android:textColor="@color/blue_light"
         app:layout_constraintEnd_toEndOf="@+id/materialCardView"
@@ -192,11 +192,12 @@
         style="@style/text_12_bold_yellow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="@dimen/_28sdp"
         android:background="@drawable/rec_one_blue_btn"
-        android:paddingHorizontal="8dp"
+        android:paddingHorizontal="@dimen/_8sdp"
         android:paddingVertical="@dimen/ten_dp"
         android:text="@string/view_loan_state"
+        android:textColor="@color/yellow_main"
         app:layout_constraintEnd_toStartOf="@+id/goToHomeBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -208,7 +209,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/rec_back_btn"
-        android:paddingHorizontal="40dp"
+        android:paddingHorizontal="@dimen/_40sdp"
         android:paddingVertical="@dimen/ten_dp"
         android:text="Go to home"
         app:layout_constraintBottom_toBottomOf="@+id/viewLoanStatementBtn"
@@ -221,11 +222,11 @@
     <View
         android:id="@+id/view6"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="35dp"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginTop="@dimen/_35sdp"
         android:background="@color/view_line"
         app:layout_constraintTop_toBottomOf="@+id/viewLoanStatementBtn"
-        tools:layout_editor_absoluteX="20dp" />
+        tools:layout_editor_absoluteX="@dimen/_17sdp" />
 
 
     <TextView
@@ -233,7 +234,7 @@
         style="@style/text_12_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="@dimen/_14sdp"
         android:text="Need support?"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view6" />
@@ -243,7 +244,7 @@
         style="@style/text_12_semi_bold_sky"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:text="Call us at 1800xxxxxxx"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/needSprtTv" />
@@ -253,20 +254,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/card_sky_14"
-        android:paddingVertical="16dp"
+        android:paddingVertical="@dimen/_16sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/callUs"
-        tools:layout_editor_absoluteX="20dp">
+        tools:layout_editor_absoluteX="@dimen/_17sdp">
 
         <TextView
             android:id="@+id/textView26"
             style="@style/text_11_bold_sk_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_16sdp"
             android:gravity="center"
-            android:lineSpacingExtra="10dp"
+            android:lineSpacingExtra="@dimen/_8sdp"
             android:text="Next payment date\n22/03/2023"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

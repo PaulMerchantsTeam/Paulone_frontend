@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_8sdp"
     android:background="@drawable/rec_sky_loan_blue_solid"
-    android:paddingStart="@dimen/_10sdp"
-    android:paddingTop="@dimen/_10sdp"
+    android:paddingStart="@dimen/_8sdp"
+    android:paddingTop="@dimen/_8sdp"
     android:paddingEnd="@dimen/_15sdp"
-    android:paddingBottom="@dimen/_10sdp">
+    android:paddingBottom="@dimen/_8sdp">
 
 
     <TextView
@@ -95,7 +95,7 @@
         style="@style/text_10_semi_bold_sky_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:text="Interest Due Date "
         app:layout_constraintBottom_toTopOf="@+id/intDueDateTv"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +115,7 @@
         style="@style/text_10_semi_bold_sky_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:text="Interest \nDue Amount"
         app:layout_constraintBottom_toTopOf="@+id/intDueAmountTv"
         app:layout_constraintStart_toStartOf="@+id/outStandValueTv"

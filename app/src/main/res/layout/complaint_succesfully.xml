@@ -35,7 +35,7 @@
         style="@style/text_12_semi_bold_sky"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_17sdp"
         android:layout_marginHorizontal="@dimen/_30sdp"
         android:text="@string/complaint_desc"
         android:textAlignment="center"

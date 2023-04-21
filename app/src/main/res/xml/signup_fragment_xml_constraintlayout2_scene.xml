@@ -15,7 +15,7 @@
         <Constraint
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/_50sdp"
             android:visibility="visible"
             motion:layout_constraintTop_toBottomOf="@+id/termsCb"
             motion:layout_constraintStart_toStartOf="parent"
@@ -28,7 +28,7 @@
         <Constraint
             motion:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/_50sdp"
             android:visibility="visible"
             motion:layout_constraintTop_toBottomOf="@+id/termsCb"
             motion:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintTop_toBottomOf="@+id/googleSignInTv"
             motion:layout_constraintStart_toStartOf="@+id/googleSignInTv"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="@dimen/_21sdp"
             android:id="@+id/alreadyHaveAccTv"
             android:layout_marginBottom="16dp" />
     </ConstraintSet>

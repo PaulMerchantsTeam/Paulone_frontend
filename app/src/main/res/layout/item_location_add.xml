@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/_200sdp"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/_20sdp"
+    android:layout_marginStart="@dimen/_17sdp"
     android:background="@drawable/rec_map_loc_43"
-    android:paddingVertical="@dimen/_10sdp"
-    android:paddingStart="@dimen/_10sdp">
+    android:paddingVertical="@dimen/_8sdp"
+    android:paddingStart="@dimen/_8sdp">
 
     <ImageView
         android:id="@+id/locIv"
@@ -22,7 +22,7 @@
         android:id="@+id/addressLocTv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_36sdp"
         android:fontFamily="@font/poppins_medium"
         android:lineSpacingExtra="@dimen/_5sdp"

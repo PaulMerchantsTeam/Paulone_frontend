@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/rupay"
         app:layout_constraintEnd_toEndOf="parent"
-      android:layout_marginTop="64dp"
+      android:layout_marginTop="@dimen/_64sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_credit"
         />
@@ -29,7 +29,7 @@
         android:id="@+id/verticalArrowIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:src="@drawable/vector_vertical_down_arrow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,9 +40,9 @@
         style="@style/text_11_medium_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:text="xxxx xxxx xxxx 0909"
-        android:textSize="12sp"
+        android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/verticalArrowIv" />
@@ -53,12 +53,12 @@
         style="@style/text_16_semi_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="@dimen/_17sdp"
+        android:layout_marginTop="@dimen/_48sdp"
         android:text="@string/secure_your_card_with_rupay"
         android:textColor="@color/pg_color"
 
-        android:textSize="12sp"
+        android:textSize="@dimen/_12ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialTextView14" />
 
@@ -68,9 +68,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="CVV"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="@dimen/_17sdp"
+        android:layout_marginEnd="@dimen/_17sdp"
+        android:layout_marginTop="@dimen/_17sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialTextView15">
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:text="xxx"
             android:textColor="@color/splash_screen_one"
-            android:textSize="12sp" />
+            android:textSize="@dimen/_12ssp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textview.MaterialTextView
@@ -90,9 +90,9 @@
         style="@style/text_11_medium_blue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="46dp"
+        android:layout_marginStart="@dimen/_17sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_46sdp"
         android:text="@string/please_note_payment_with_rupay"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -101,7 +101,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/proceedToPayParent"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="@dimen/_100sdp"
         android:background="@color/pg_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -113,10 +113,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/splash_screen_one"
-            android:paddingStart="90dp"
-            android:paddingTop="20dp"
-            android:paddingEnd="90dp"
-            android:paddingBottom="20dp"
+            android:paddingStart="@dimen/_90sdp"
+            android:paddingTop="@dimen/_17sdp"
+            android:paddingEnd="@dimen/_90sdp"
+            android:paddingBottom="@dimen/_17sdp"
             android:text="@string/pay_inr_2_secure"
             android:textColor="@color/yellow_main"
             app:layout_constraintBottom_toBottomOf="parent"

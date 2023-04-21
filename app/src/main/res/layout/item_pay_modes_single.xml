@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/_4sdp"
-    android:layout_marginEnd="@dimen/_20sdp"
+    android:layout_marginEnd="@dimen/_17sdp"
     android:background="@drawable/pay_modes_back"
     android:paddingHorizontal="@dimen/_22sdp"
     android:paddingVertical="@dimen/_11sdp">

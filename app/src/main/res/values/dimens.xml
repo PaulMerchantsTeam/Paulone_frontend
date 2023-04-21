@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <dimen name="screen_start_margin">20dp</dimen>
-    <dimen name="screen_end_margin">20dp</dimen>
+    <dimen name="screen_start_margin">@dimen/_17sdp</dimen>
+    <dimen name="screen_end_margin">@dimen/_17sdp</dimen>
     <dimen name="twenty_four">24dp</dimen>
 
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>
-    <dimen name="ten_dp">10dp</dimen>
+    <dimen name="ten_dp">@dimen/_8sdp</dimen>
     <dimen name="frtn_dp">14dp</dimen>
-    <dimen name="twnty_dp">20dp</dimen>
+    <dimen name="twnty_dp">@dimen/_17sdp</dimen>
     <dimen name="card_margin_23">23dp</dimen>
 
 </resources>

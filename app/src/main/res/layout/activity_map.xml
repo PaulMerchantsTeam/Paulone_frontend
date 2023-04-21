@@ -19,8 +19,8 @@
         android:id="@+id/constraintLayout11"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/_20sdp"
-        android:paddingVertical="@dimen/_20sdp"
+        android:paddingHorizontal="@dimen/_14sdp"
+        android:paddingVertical="@dimen/_14sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headerMap">
@@ -28,9 +28,9 @@
         <!-- <androidx.constraintlayout.widget.ConstraintLayout
              android:id="@+id/cityParent"
              android:layout_width="wrap_content"
-             android:layout_height="40dp"
+             android:layout_height="@dimen/_40sdp"
              android:background="@drawable/rec_search_"
-             android:paddingHorizontal="15dp"
+             android:paddingHorizontal="@dimen/_15sdp"
              app:layout_constraintBottom_toBottomOf="@+id/pincodeParent"
              app:layout_constraintEnd_toStartOf="@+id/pincodeParent"
              app:layout_constraintHorizontal_bias="0.5"
@@ -41,8 +41,8 @@
                  android:id="@+id/citySelect"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:layout_marginTop="8dp"
-                 android:layout_marginBottom="8dp"
+                 android:layout_marginTop="@dimen/_8sdp"
+                 android:layout_marginBottom="@dimen/_8sdp"
                  android:entries="@array/month"
                  app:layout_constraintBottom_toBottomOf="parent"
                  app:layout_constraintEnd_toEndOf="parent"
@@ -54,10 +54,10 @@
         <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
         <!--            android:id="@+id/pincodeParent"-->
         <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="40dp"-->
-        <!--            android:layout_marginHorizontal="20dp"-->
+        <!--            android:layout_height="@dimen/_40sdp"-->
+        <!--            android:layout_marginHorizontal="@dimen/_17sdp"-->
         <!--            android:background="@drawable/rec_search_"-->
-        <!--            android:paddingHorizontal="15dp"-->
+        <!--            android:paddingHorizontal="@dimen/_15sdp"-->
         <!--            app:layout_constraintEnd_toEndOf="parent"-->
         <!--            app:layout_constraintHorizontal_bias="0.5"-->
         <!--            app:layout_constraintStart_toStartOf="parent"-->
@@ -66,20 +66,20 @@
         <EditText
             android:id="@+id/searchCity"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
+            android:layout_height="@dimen/_42sdp"
             android:background="@drawable/rec_search_"
             android:drawableStart="@drawable/search"
-            android:drawablePadding="@dimen/_14sdp"
+            android:drawablePadding="@dimen/_12sdp"
             android:fontFamily="@font/poppins_semi_bold"
             android:hint="@string/select_yr_city"
             android:imeOptions="actionSearch"
             android:maxLines="1"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_10sdp"
+            android:paddingStart="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_8sdp"
             android:textColor="@color/splash_screen_one"
             android:textColorHint="@color/brown"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_14ssp"
             app:autoShowKeyboard="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -118,7 +118,7 @@
         <!--            android:layout_gravity="bottom|end"-->
         <!--            android:layout_marginEnd="30dp"-->
         <!--            android:layout_marginBottom="35dp"-->
-        <!--            android:padding="10dp"-->
+        <!--            android:padding="@dimen/_8sdp"-->
         <!--            android:src="@drawable/locate_yourself"-->
         <!--            app:layout_constraintBottom_toBottomOf="parent"-->
         <!--            app:layout_constraintEnd_toEndOf="parent" />-->
@@ -127,7 +127,7 @@
             android:id="@+id/rvPmLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_100sdp"
+            android:layout_marginBottom="@dimen/_84sdp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"

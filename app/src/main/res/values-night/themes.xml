@@ -106,26 +106,26 @@
     </style>
 
     <style name="text_11_medium_blue">
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">@dimen/_10ssp</item>
         <item name="android:textColor">@color/splash_screen_one</item>
         <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
 
     <style name="text_11_bold_sk_blue">
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">@dimen/_10ssp</item>
         <item name="android:textColor">@color/splash_screen_three</item>
         <item name="android:fontFamily">@font/poppins_bold</item>
     </style>
 
     <style name="text_11_semi_bold_blue">
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">@dimen/_10ssp</item>
         <item name="android:textColor">@color/splash_screen_one</item>
         <item name="android:fontFamily">@font/poppins_semi_bold</item>
     </style>
 
 
     <style name="text_11_semi_bold_black">
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">@dimen/_10ssp</item>
         <item name="android:textColor">@color/text_color</item>
         <item name="android:fontFamily">@font/poppins_semi_bold</item>
     </style>

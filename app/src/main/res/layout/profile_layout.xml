@@ -23,7 +23,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
+                android:layout_height="@dimen/_65sdp"
                 android:background="@color/splash_screen_three"
                 app:layout_collapseMode="parallax"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar" />
@@ -31,7 +31,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/backProfileIv"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="@dimen/_250sdp"
                 android:background="@drawable/profile_tony"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -40,10 +40,10 @@
 
                 <ImageView
                     android:id="@+id/backIv"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="39dp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_17sdp"
+                    android:layout_marginTop="@dimen/_39sdp"
                     android:src="@drawable/back_arrow_white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -68,10 +68,10 @@
 
     <ImageView
         android:id="@+id/fab"
-        android:layout_width="54dp"
-        android:layout_height="54dp"
+        android:layout_width="@dimen/_54sdp"
+        android:layout_height="@dimen/_54sdp"
         android:background="@drawable/circle_profile_blue_white"
-        android:padding="10dp"
+        android:padding="@dimen/_8sdp"
         app:layout_anchor="@id/appBarLayout"
         app:layout_anchorGravity="center|bottom"
         app:srcCompat="@drawable/camera" />
@@ -94,14 +94,14 @@
                 android:id="@+id/parenntProfleCard"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="54dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="@dimen/_17sdp"
+                android:layout_marginTop="@dimen/_54sdp"
+                android:layout_marginEnd="@dimen/_17sdp"
                 android:background="@drawable/rec_three_btn_7_empty"
-                android:paddingStart="17dp"
-                android:paddingTop="11dp"
-                android:paddingEnd="17dp"
-                android:paddingBottom="11dp"
+                android:paddingStart="@dimen/_17sdp"
+                android:paddingTop="@dimen/_11sdp"
+                android:paddingEnd="@dimen/_17sdp"
+                android:paddingBottom="@dimen/_11sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -121,7 +121,7 @@
                     style="@style/text_16_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="@dimen/_4sdp"
                     android:text="Prithvi Kumar"
                     android:textColor="@color/splash_screen_one"
                     app:layout_constraintStart_toStartOf="@+id/prsnalInfoTv"
@@ -133,7 +133,7 @@
                     style="@style/text_10_semi_bold_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:text="kprithvi26@gmail.com"
                     app:layout_constraintStart_toStartOf="@+id/nameUserTv"
                     app:layout_constraintTop_toBottomOf="@+id/nameUserTv" />
@@ -144,7 +144,7 @@
                     style="@style/text_10_semi_bold_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:text="8968666401"
                     app:layout_constraintStart_toStartOf="@+id/emailUserIv"
                     app:layout_constraintTop_toBottomOf="@+id/emailUserIv" />
@@ -154,7 +154,7 @@
                     style="@style/text_10_medium_sky"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="@dimen/_12sdp"
                     android:text="Member since Feb, 2023"
                     app:layout_constraintStart_toStartOf="@+id/userNumTv"
                     app:layout_constraintTop_toBottomOf="@+id/userNumTv" />
@@ -165,10 +165,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rec_one_yellow_btn_9"
-                    android:paddingStart="18dp"
-                    android:paddingTop="10dp"
-                    android:paddingEnd="18dp"
-                    android:paddingBottom="10dp"
+                    android:paddingStart="@dimen/_18sdp"
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_18sdp"
+                    android:paddingBottom="@dimen/_8sdp"
                     android:text="@string/edit_profile"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />

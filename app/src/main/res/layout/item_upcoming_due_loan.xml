@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/_5sdp"
-    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_8sdp"
     app:cardCornerRadius="@dimen/_14sdp"
     app:strokeColor="@color/splash_screen_one"
     app:strokeWidth="@dimen/_1sdp">
@@ -14,13 +14,13 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@color/splash_screen_two"
-        android:paddingEnd="@dimen/_10sdp">
+        android:paddingEnd="@dimen/_8sdp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ovrDueParentArrow"
             android:layout_width="0dp"
             android:layout_height="@dimen/_30sdp"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:background="@drawable/rectangle_due_red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -81,8 +81,8 @@
             android:layout_marginBottom="@dimen/_14sdp"
             android:background="@drawable/rec_one_blue_btn"
             android:drawableEnd="@drawable/ic_arrow_yellow"
-            android:drawablePadding="@dimen/_10sdp"
-            android:padding="@dimen/_10sdp"
+            android:drawablePadding="@dimen/_8sdp"
+            android:padding="@dimen/_8sdp"
             android:fontFamily="@font/poppins_semi_bold"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/_18sdp"

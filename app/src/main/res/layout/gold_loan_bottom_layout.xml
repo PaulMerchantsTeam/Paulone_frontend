@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="@dimen/_20sdp"
-    android:paddingEnd="@dimen/_20sdp">
+    android:paddingStart="@dimen/_17sdp"
+    android:paddingEnd="@dimen/_17sdp">
 
     <TextView
         android:id="@+id/lonOverDesc"
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_28sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
         android:paddingStart="@dimen/_17sdp"
         android:paddingTop="@dimen/_7sdp"
         android:paddingEnd="@dimen/_17sdp"
@@ -42,7 +42,7 @@
         style="@style/text_10_semi_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_8sdp"
         android:background="@drawable/rec_sky_loan_blue_solid"
         android:paddingStart="@dimen/_17sdp"
         android:paddingTop="@dimen/_7sdp"
@@ -67,8 +67,8 @@
         android:hint="@string/search_for_specific_loans"
         android:imeOptions="actionSearch"
         android:maxLines="1"
-        android:paddingStart="@dimen/_10sdp"
-        android:paddingEnd="@dimen/_10sdp"
+        android:paddingStart="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_8sdp"
         android:textColor="@color/splash_screen_one"
         android:textColorHint="@color/brown"
         android:textCursorDrawable="@drawable/custom_edit_text_cursor"

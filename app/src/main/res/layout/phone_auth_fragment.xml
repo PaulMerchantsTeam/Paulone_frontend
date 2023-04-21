@@ -11,15 +11,15 @@
         android:id="@+id/titleWelcomTv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginTop="@dimen/_100sdp"
+        android:layout_marginEnd="@dimen/_80sdp"
         android:fontFamily="@font/poppins_bold"
-        android:lineSpacingExtra="5dp"
+        android:lineSpacingExtra="@dimen/_5sdp"
         android:paddingStart="@dimen/screen_start_margin"
         android:paddingEnd="@dimen/screen_end_margin"
         android:text="@string/welocome_to_paul_gold"
         android:textColor="@color/splash_screen_three"
-        android:textSize="18sp"
+        android:textSize="@dimen/_18ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +29,7 @@
         android:id="@+id/enterPhoneNumMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
+        android:layout_marginTop="@dimen/_116sdp"
         android:paddingStart="@dimen/screen_start_margin"
         android:paddingEnd="@dimen/screen_end_margin"
         android:visibility="visible"
@@ -44,10 +44,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
-            android:lineSpacingExtra="5dp"
+            android:lineSpacingExtra="@dimen/_5sdp"
             android:text="@string/please_enter_phone"
             android:textColor="@color/splash_screen_three"
-            android:textSize="16sp"
+            android:textSize="@dimen/_16ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -56,26 +56,26 @@
             android:id="@+id/etPhoenNum"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/_16sdp"
             android:backgroundTint="@color/view_color"
             android:fontFamily="@font/poppins_semi_bold"
             android:inputType="number"
             android:maxLength="10"
             android:textColor="@color/splash_screen_one"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-            android:textSize="16sp"
+            android:textSize="@dimen/_16ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/etTv"
             app:layout_constraintTop_toBottomOf="@+id/pleaseTv" />
 
         <!--    <View-->
-        <!--        android:layout_width="2dp"-->
+        <!--        android:layout_width="@dimen/_2sdp"-->
         <!--        android:layout_height="0dp"-->
-        <!--        android:layout_marginStart="2dp"-->
-        <!--        android:layout_marginTop="3dp"-->
-        <!--        android:layout_marginEnd="5dp"-->
-        <!--        android:layout_marginBottom="3dp"-->
+        <!--        android:layout_marginStart="@dimen/_2sdp"-->
+        <!--        android:layout_marginTop="@dimen/_3sdp"-->
+        <!--        android:layout_marginEnd="@dimen/_5sdp"-->
+        <!--        android:layout_marginBottom="@dimen/_3sdp"-->
         <!--        android:background="@color/view_color"-->
         <!--        android:orientation="vertical"-->
         <!--        app:layout_constraintBottom_toBottomOf="@+id/etPhoenNum"-->
@@ -90,7 +90,7 @@
             android:fontFamily="@font/poppins_bold"
             android:text="@string/str_91"
             android:textColor="@color/splash_screen_three"
-            android:textSize="16sp"
+            android:textSize="@dimen/_16ssp"
             app:layout_constraintBottom_toBottomOf="@+id/etPhoenNum"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/etPhoenNum"
@@ -102,7 +102,7 @@
         android:id="@+id/fillOtpParent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="98dp"
+        android:layout_marginTop="@dimen/_98sdp"
         android:paddingStart="@dimen/screen_start_margin"
         android:paddingEnd="@dimen/screen_end_margin"
         android:visibility="gone"
@@ -115,18 +115,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
-            android:lineSpacingExtra="5dp"
+            android:lineSpacingExtra="@dimen/_5sdp"
             android:textColor="@color/splash_screen_three"
-            android:textSize="16sp"
+            android:textSize="@dimen/_16ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/otpOneEt"
-            android:layout_width="65dp"
+            android:layout_width="@dimen/_65sdp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="@dimen/_44sdp"
             android:backgroundTint="@color/view_color"
             android:fontFamily="@font/poppins_bold"
             android:gravity="center"
@@ -134,7 +134,7 @@
             android:maxLength="1"
             android:textColor="@color/splash_screen_one"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-            android:textSize="16sp"
+            android:textSize="@dimen/_16ssp"
             app:layout_constraintEnd_toStartOf="@+id/otpTwoEt"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -142,7 +142,7 @@
 
         <EditText
             android:id="@+id/otpTwoEt"
-            android:layout_width="65dp"
+            android:layout_width="@dimen/_65sdp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/view_color"
             android:fontFamily="@font/poppins_bold"
@@ -151,7 +151,7 @@
             android:maxLength="1"
             android:textColor="@color/splash_screen_one"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-            android:textSize="16sp"
+            android:textSize="@dimen/_16ssp"
             app:layout_constraintBottom_toBottomOf="@+id/otpOneEt"
             app:layout_constraintEnd_toStartOf="@+id/otpThreeEt"
             app:layout_constraintHorizontal_bias="0.5"
@@ -161,7 +161,7 @@
 
         <EditText
             android:id="@+id/otpThreeEt"
-            android:layout_width="65dp"
+            android:layout_width="@dimen/_65sdp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/view_color"
             android:fontFamily="@font/poppins_bold"
@@ -170,7 +170,7 @@
             android:maxLength="1"
             android:textColor="@color/splash_screen_one"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-            android:textSize="16sp"
+            android:textSize="@dimen/_16ssp"
             app:layout_constraintBottom_toBottomOf="@+id/otpTwoEt"
             app:layout_constraintEnd_toStartOf="@+id/otpFourEt"
             app:layout_constraintHorizontal_bias="0.5"
@@ -181,7 +181,7 @@
 
         <EditText
             android:id="@+id/otpFourEt"
-            android:layout_width="65dp"
+            android:layout_width="@dimen/_65sdp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/view_color"
             android:fontFamily="@font/poppins_bold"
@@ -190,7 +190,7 @@
             android:maxLength="1"
             android:textColor="@color/splash_screen_one"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-            android:textSize="16sp"
+            android:textSize="@dimen/_16ssp"
             app:layout_constraintBottom_toBottomOf="@+id/otpThreeEt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -204,11 +204,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:fontFamily="@font/poppins_medium"
-            android:lineSpacingExtra="5dp"
-            android:paddingStart="23dp"
+            android:lineSpacingExtra="@dimen/_5sdp"
+            android:paddingStart="@dimen/_23sdp"
             android:text="Didn’t receive? 00:30"
             android:textColor="@color/view_color"
-            android:textSize="14sp"
+            android:textSize="@dimen/_11ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -219,16 +219,16 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/proceedAuthBtn"
-        android:layout_width="130dp"
+        android:layout_width="@dimen/_130sdp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/color_prim_one_40"
         android:enabled="false"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/proceed"
         android:textColor="@color/yellow_main"
-        android:textSize="12sp"
+        android:textSize="@dimen/_12ssp"
         android:visibility="visible"
-        app:cornerRadius="2dp"
+        app:cornerRadius="@dimen/_2sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

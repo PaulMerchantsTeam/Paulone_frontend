@@ -14,7 +14,7 @@
             android:id="@+id/finallySignUpDoneTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="180dp"
+            android:layout_marginTop="@dimen/_180sdp"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +32,7 @@
             android:id="@+id/finallySignUpDoneTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="@dimen/_100sdp"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
