@@ -345,6 +345,8 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
     }
 
+
+
     private fun setupLocationsTile(place: List<com.paulmerchants.gold.place.Place>) {
         mapLocationAdapter.submitList(place)
         binding.rvPmLocation.adapter = mapLocationAdapter
