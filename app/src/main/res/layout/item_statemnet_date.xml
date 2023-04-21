@@ -9,28 +9,30 @@
         android:id="@+id/dateTY"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
+        android:layout_marginStart="@dimen/_7sdp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/payRecvdTv"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.436" />
 
     <TextView
         android:id="@+id/payRecvdTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="@dimen/_56sdp"
         android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/dateTY"
-        tools:layout_editor_absoluteY="344dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/chargTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="@dimen/_100sdp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/payRecvdTv"
         app:layout_constraintEnd_toStartOf="@+id/paymentyTv"
@@ -42,7 +44,7 @@
         android:id="@+id/paymentyTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="13dp"
+        android:layout_marginEnd="@dimen/_13sdp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/chargTv"
         app:layout_constraintEnd_toEndOf="parent"

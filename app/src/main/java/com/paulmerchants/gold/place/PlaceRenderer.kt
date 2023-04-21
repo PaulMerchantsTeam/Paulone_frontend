@@ -55,7 +55,7 @@ class PlaceRenderer(
      */
     override fun onBeforeClusterItemRendered(item: Place, markerOptions: MarkerOptions) {
         markerOptions.title(item.name)
-            .position(LatLng(item.lat, item.Lng))
+            .position(LatLng(item.lat, item.lng))
             .icon(bicycleIcon)
     }
 

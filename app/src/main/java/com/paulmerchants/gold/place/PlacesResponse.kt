@@ -28,6 +28,6 @@ data class PlaceResponse(
 fun PlaceResponse.toPlace(): Place = Place(
     name = name,
     lat = lat,
-    Lng = Lng,
-    address = address
+    address = address,
+    lng = Lng,
 )

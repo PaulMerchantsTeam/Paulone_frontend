@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="32dp"
-    android:layout_marginTop="14dp"
+    android:layout_marginStart="@dimen/_32sdp"
+    android:layout_marginTop="@dimen/_14sdp"
     android:id="@+id/parentTransService"
-    android:layout_marginEnd="32dp"
+    android:layout_marginEnd="@dimen/_32sdp"
     android:background="@color/splash_screen_two">
 
     <ImageView
@@ -23,12 +23,12 @@
         android:id="@+id/transacTitalTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:fontFamily="@font/poppins_bold"
         android:text="PML Gold Loan"
         android:textColor="@color/black"
-        android:textSize="11sp"
+        android:textSize="@dimen/_11ssp"
         app:layout_constraintStart_toEndOf="@+id/transacIv"
         app:layout_constraintTop_toTopOf="@+id/transacIv" />
 
@@ -50,7 +50,7 @@
         android:fontFamily="@font/poppins_bold"
         android:text="Rs 3500 "
         android:textColor="@color/black"
-        android:textSize="11sp"
+        android:textSize="@dimen/_11ssp"
         app:layout_constraintBottom_toTopOf="@+id/transacDateAndTimeTv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
