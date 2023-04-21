@@ -249,14 +249,25 @@ class HomeScreenFrag :
     override fun onResume() {
         super.onResume()
         binding.searchProfileParent.searchView.show()
+        isStartAnim.postValue(true)
+
+        binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_mid).apply {
+            this.start()
+        })
     }
     override fun onPause() {
         super.onPause()
 
         isStartAnim.postValue(false)
         binding.searchProfileParent.searchView.clearAnimation()
+        binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_mid).apply {
+           this.cancel()
+        })
+
 
     }
+
+
 
     private fun animateHintEditText() {
         val strList = listOf(
@@ -292,6 +303,7 @@ class HomeScreenFrag :
 
             delay(500)
             isStartAnim.postValue(true)
+
 
         }
 
