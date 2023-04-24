@@ -6,6 +6,7 @@ import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.widget.ViewUtils
+import com.paulmerchants.gold.MainNavGraphDirections
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
@@ -52,7 +53,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             .setPopExitAnim(R.anim.slide_out_right).build()
         binding.bottomNavigationView.itemIconTintList = null
         binding.bottomNavigationView.setupWithNavController(navController)
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             Log.d("TAG", "onCreate:${destination.displayName} ")
             if (
                 destination.id == R.id.mainScreenFrag ||
@@ -68,33 +69,39 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             }
         }
 
-        /* binding.bottomNavigationView.setOnItemSelectedListener {
-             when (it.itemId) {
-                 R.id.homeScreenFrag -> {
-                     navController.navigate(R.id.homeScreenFrag, null, navOption)
-                     true
-                 }
-                 R.id.goldLoanScreenFrag -> {
-                     navController.navigate(R.id.goldLoanScreenFrag)
-                     true
-                 }
-                 R.id.billsAndMoreScreenFrag -> {
-                     navController.navigate(R.id.billsAndMoreScreenFrag, null, navOptionTop)
-                     true
-                 }
-                 R.id.locateUsFrag -> {
-                     navController.navigate(R.id.locateUsFrag, null, navOption)
-                     true
-                 }
-                 R.id.menuScreenFrag -> {
-                     navController.navigate(R.id.menuScreenFrag, null, navOptionTop)
-                     true
-                 }
-                 else -> {
-                     false
-                 }
-             }
-         }*/
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.homeScreenFrag -> {
+                    navController.navigate(R.id.homeScreenFrag)
+                    true
+                }
+                R.id.goldLoanScreenFrag -> {
+                    navController.navigate(MainNavGraphDirections.actionToGoldLoan())
+                    true
+                }
+                R.id.billsAndMoreScreenFrag -> {
+                    navController.navigate(
+                        MainNavGraphDirections.actionToBillsAndMore(),
+                        navOptionTop
+                    )
+                    true
+                }
+                R.id.locateUsFrag -> {
+                    navController.navigate(MainNavGraphDirections.actionToLocateUs())
+                    true
+                }
+                R.id.menuScreenFrag -> {
+                    navController.navigate(
+                        MainNavGraphDirections.actionToMenuScreen(),
+                        navOptionTop
+                    )
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
     }
 
     fun showQuickPayDialog() {

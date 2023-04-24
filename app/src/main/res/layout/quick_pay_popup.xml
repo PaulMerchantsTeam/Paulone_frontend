@@ -107,6 +107,85 @@
         app:layout_constraintTop_toTopOf="@+id/prepaidCard" />
 
 
+    <View
+        android:id="@+id/view3"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@color/view_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prepaidCard" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/prefPAyAMountParent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_13sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3">
+
+        <TextView
+            android:id="@+id/prefPayAmountTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Preferred Payment Amount"
+            android:textColor="@color/splash_screen_one"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/radioGrp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/prefPayAmountTv">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                style="@style/text_11_semi_bold_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/splash_screen_one"
+                android:text="Pay INR 6,000 fully"
+                android:textColor="@color/splash_screen_three"
+                app:useMaterialThemeColors="false" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                style="@style/text_11_semi_bold_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/splash_screen_one"
+                android:buttonTint="@color/splash_screen_one"
+                android:text="Pay minimum - "
+                android:textColor="@color/splash_screen_three"
+                app:useMaterialThemeColors="false" />
+
+        </RadioGroup>
+
+        <EditText
+            style="@style/text_11_semi_bold_blue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="150dp"
+            android:backgroundTint="@color/black"
+            android:hint="(INR XXXX)"
+            android:inputType="number"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/radioGrp"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationViewCard"
         android:layout_width="@dimen/_150sdp"
@@ -116,7 +195,7 @@
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout8"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout8"
-        app:layout_constraintTop_toBottomOf="@+id/prepaidCard"
+        app:layout_constraintTop_toBottomOf="@+id/prefPAyAMountParent"
         app:layout_constraintVertical_bias="1.0"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"

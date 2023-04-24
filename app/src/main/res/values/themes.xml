@@ -147,29 +147,129 @@
         <item name="android:textColor">#ffffff</item>
         <item name="android:fontFamily">@font/poppins_bold</item>
     </style>
+
     <style name="text_16_semi_bold_blue">
         <item name="android:textSize">@dimen/_12ssp</item>
         <item name="android:textColor">@color/splash_screen_one</item>
         <item name="android:fontFamily">@font/poppins_semi_bold</item>
     </style>
+
     <style name="text_16_regular_blue">
         <item name="android:textSize">@dimen/_12ssp</item>
         <item name="android:textColor">@color/splash_screen_one</item>
         <item name="android:fontFamily">@font/poppins_regular</item>
     </style>
+<<<<<<< HEAD
 
 
+=======
+
+    <style name="text_12_bold_blue">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/splash_screen_one</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="text_12_bold_orange">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/yellow_main</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="text_21_bold_yellow">
+        <item name="android:textSize">21sp</item>
+        <item name="android:textColor">@color/yellow_main</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="text_8_semi_bold_blue">
+        <item name="android:textSize">8sp</item>
+        <item name="android:textColor">@color/splash_screen_one</item>
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+    </style>
+
+    <style name="text_10_semi_bold_blue">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/splash_screen_one</item>
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+    </style>
+
+    <style name="text_10_semi_bold_sky_blue">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/splash_screen_three</item>
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+    </style>
+
+    <style name="text_12_semi_bold_sky">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/splash_screen_three</item>
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+    </style>
+
+    <style name="text_12_poppins_medium_sky">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/splash_screen_three</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="text_10_medium_sky">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/splash_screen_three</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="text_14_medium_sky">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/splash_screen_three</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="text_14_bold_sky">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/splash_screen_three</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="text_11_medium_blue">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/splash_screen_one</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+
+
+    <style name="text_11_bold_sk_blue">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/splash_screen_three</item>
+        <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="text_11_semi_bold_blue">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/splash_screen_one</item>
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+        <item name="android:textCursorDrawable">@color/splash_screen_three</item>
+    </style>
+
+    <style name="text_11_semi_bold_black">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+    </style>
+
+>>>>>>> da556ca (_quick_pay_popup)
     <style name="text_18_bold_sk_blue">
         <item name="android:textSize">@dimen/_13ssp</item>
         <item name="android:textColor">@color/splash_screen_three</item>
         <item name="android:fontFamily">@font/poppins_bold</item>
     </style>
+
     <style name="text_18_semi_bold_sk_blue">
         <item name="android:textSize">@dimen/_13ssp</item>
         <item name="android:textColor">@color/splash_screen_three</item>
         <item name="android:fontFamily">@font/poppins_semi_bold</item>
     </style>
 
+<<<<<<< HEAD
     <style name="text_21_bold_yellow">
         <item name="android:textSize">@dimen/_15ssp</item>
         <item name="android:textColor">@color/yellow_main</item>
@@ -182,6 +282,18 @@
     </style>
 
 
+=======
+    <style name="MaterialAlertDialogStyle" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">
+            @style/RoundedCornerShapeAppearanceOverlay.MaterialAlertDialog
+        </item>
+    </style>
+
+    <style name="RoundedCornerShapeAppearanceOverlay.MaterialAlertDialog" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+>>>>>>> da556ca (_quick_pay_popup)
     <!--    <style name="button_overlay">-->
     <!--        <item name="colorOnSurface">@color/color_prim_one_40</item>-->
     <!--    </style>-->
