@@ -9,9 +9,9 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
-        app:cardCornerRadius="@dimen/_14sdp"
+        android:layout_marginStart="@dimen/_6sdp"
+        android:layout_marginEnd="@dimen/_6sdp"
+        app:cardCornerRadius="@dimen/_11sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,6 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="@dimen/_10sdp"
             android:background="@drawable/rec_frch_blue_solid">
 
             <com.google.android.material.textview.MaterialTextView
@@ -27,12 +28,9 @@
                 style="@style/text_16_bold_white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:layout_marginEnd="@dimen/_190sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:text="@string/prepaid_card"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,8 +38,8 @@
                 android:id="@+id/materialTextView5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:fontFamily="@font/poppins_bold"
                 android:text="X X X X  X X X X  X X X X  4536"
                 android:textColor="@color/white"
@@ -65,8 +63,8 @@
                 android:id="@+id/cardHolderName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Prithvi Kumar"
                 android:textColor="@color/white"
@@ -81,7 +79,7 @@
                 android:id="@+id/cardExpiryDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_100sdp"
+                android:layout_marginEnd="@dimen/_75sdp"
                 android:fontFamily="@font/poppins_bold"
                 android:text="EXP: 12/2025"
                 android:textColor="@color/white"
@@ -96,9 +94,9 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/balnceTv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_height="18dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Balance:"
                 android:textColor="@color/white"
@@ -111,15 +109,13 @@
                 android:id="@+id/balanceAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_14sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/poppins_bold"
                 android:text="INR XX,XXX"
                 android:textColor="@color/splash_screen_one"
                 android:textSize="@dimen/_10ssp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/balnceTv" />
 
 

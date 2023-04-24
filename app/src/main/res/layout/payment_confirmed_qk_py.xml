@@ -13,7 +13,7 @@
         style="@style/text_16_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_47sdp"
+        android:layout_marginTop="@dimen/_35sdp"
         android:text="@string/payment_confirmed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
         style="@style/text_11_bold_sk_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_34sdp"
+        android:layout_marginTop="@dimen/_26sdp"
         android:text="Payment Receipt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pay_conf_title" />
@@ -47,7 +47,7 @@
             android:layout_height="match_parent"
             android:background="@color/splash_screen_two"
             android:paddingHorizontal="@dimen/ten_dp"
-            android:paddingVertical="@dimen/_12sdp">
+            android:paddingVertical="@dimen/_9sdp">
 
             <TextView
                 android:id="@+id/detailsTv"
@@ -192,7 +192,7 @@
         style="@style/text_12_bold_yellow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_28sdp"
+        android:layout_marginTop="@dimen/_21sdp"
         android:background="@drawable/rec_one_blue_btn"
         android:paddingHorizontal="@dimen/_8sdp"
         android:paddingVertical="@dimen/ten_dp"
@@ -223,10 +223,10 @@
         android:id="@+id/view6"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"
-        android:layout_marginTop="@dimen/_35sdp"
+        android:layout_marginTop="@dimen/_27sdp"
         android:background="@color/view_line"
         app:layout_constraintTop_toBottomOf="@+id/viewLoanStatementBtn"
-        tools:layout_editor_absoluteX="@dimen/_17sdp" />
+        tools:layout_editor_absoluteX="@dimen/_13sdp" />
 
 
     <TextView
@@ -234,7 +234,7 @@
         style="@style/text_12_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_12sdp"
         android:text="Need support?"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view6" />
@@ -244,7 +244,7 @@
         style="@style/text_12_semi_bold_sky"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:text="Call us at 1800xxxxxxx"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/needSprtTv" />
@@ -254,7 +254,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/card_sky_14"
-        android:paddingVertical="@dimen/_16sdp"
+        android:paddingVertical="@dimen/_12sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/callUs"
         tools:layout_editor_absoluteX="@dimen/_17sdp">
@@ -264,8 +264,8 @@
             style="@style/text_11_bold_sk_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:layout_marginBottom="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_12sdp"
             android:gravity="center"
             android:lineSpacingExtra="@dimen/_8sdp"
             android:text="Next payment date\n22/03/2023"

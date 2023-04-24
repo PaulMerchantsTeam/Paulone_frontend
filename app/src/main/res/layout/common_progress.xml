@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/splash_screen_two"
-    android:padding="@dimen/_17sdp"
+    android:padding="@dimen/screen_end_margin"
     android:visibility="visible">
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -18,7 +18,7 @@
         android:scaleY="-1"
         android:textAlignment="center"
         app:indicatorColor="@color/splash_screen_three"
-        app:indicatorSize="@dimen/_150sdp"
+        app:indicatorSize="@dimen/_108sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,11 +33,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
-        android:lineSpacingExtra="@dimen/_5sdp"
+        android:lineSpacingExtra="@dimen/_3sdp"
         android:text="Verifying"
         android:textAlignment="center"
         android:textColor="@color/yellow_main"
-        android:textSize="@dimen/_16ssp"
+        android:textSize="@dimen/_12ssp"
         app:layout_constraintBottom_toBottomOf="@+id/cirStreakTimePg"
         app:layout_constraintEnd_toEndOf="@+id/cirStreakTimePg"
         app:layout_constraintStart_toStartOf="@+id/cirStreakTimePg"

@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/splash_screen_two"
-    android:paddingTop="@dimen/_32sdp"
-    android:paddingBottom="@dimen/_32sdp">
+    android:paddingTop="@dimen/_24sdp"
+    android:paddingBottom="@dimen/_24sdp">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/materialTextView10"
@@ -22,7 +22,7 @@
         android:id="@+id/parentCodeVerify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_23sdp"
+        android:layout_marginTop="@dimen/_17sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialTextView10">
@@ -30,7 +30,7 @@
 
         <EditText
             android:id="@+id/codeCardsOneEt"
-            android:layout_width="@dimen/_65sdp"
+            android:layout_width="@dimen/_50sdp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/view_color"
             android:fontFamily="@font/poppins_bold"
@@ -39,14 +39,14 @@
             android:maxLength="1"
             android:textColor="@color/splash_screen_one"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toStartOf="@+id/codeCardsTwoEt"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/codeCardsTwoEt"
-            android:layout_width="@dimen/_65sdp"
+            android:layout_width="@dimen/_50sdp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/view_color"
             android:fontFamily="@font/poppins_bold"
@@ -55,7 +55,7 @@
             android:maxLength="1"
             android:textColor="@color/splash_screen_one"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="@+id/codeCardsOneEt"
             app:layout_constraintEnd_toStartOf="@+id/codeCardsThreeEt"
             app:layout_constraintHorizontal_bias="0.5"
@@ -65,7 +65,7 @@
 
         <EditText
             android:id="@+id/codeCardsThreeEt"
-            android:layout_width="@dimen/_65sdp"
+            android:layout_width="@dimen/_50sdp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/view_color"
             android:fontFamily="@font/poppins_bold"
@@ -74,7 +74,7 @@
             android:maxLength="1"
             android:textColor="@color/splash_screen_one"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="@+id/codeCardsTwoEt"
             app:layout_constraintEnd_toStartOf="@+id/codeCardsFourEt"
             app:layout_constraintHorizontal_bias="0.5"
@@ -83,7 +83,7 @@
 
         <EditText
             android:id="@+id/codeCardsFourEt"
-            android:layout_width="@dimen/_65sdp"
+            android:layout_width="@dimen/_50sdp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/view_color"
             android:fontFamily="@font/poppins_bold"
@@ -92,7 +92,7 @@
             android:maxLength="1"
             android:textColor="@color/splash_screen_one"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="@+id/codeCardsThreeEt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

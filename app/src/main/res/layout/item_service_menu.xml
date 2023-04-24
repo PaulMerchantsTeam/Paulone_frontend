@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_17sdp">
+    android:layout_margin="@dimen/screen_start_margin">
 
 
     <com.google.android.material.textview.MaterialTextView
@@ -15,16 +15,15 @@
         android:fontFamily="@font/poppins_bold"
         android:text="Gold Loans"
         android:textColor="@color/black"
-        android:textSize="@dimen/_11ssp"
+        android:textSize="@dimen/_10ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/serviceOne"
         android:layout_width="0dp"
-
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_11sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:drawableEnd="@drawable/arrow_right_black"
         android:fontFamily="@font/poppins_regular"
         android:text="Loans Overview"
@@ -37,7 +36,7 @@
         android:id="@+id/view3"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"
-        android:layout_marginTop="@dimen/_11sdp"
+        android:layout_marginTop="@dimen/_9sdp"
         android:background="@color/view_line_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +46,7 @@
         android:id="@+id/serviceTwo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_11sdp"
+        android:layout_marginTop="@dimen/_9sdp"
         android:background="?android:attr/selectableItemBackground"
         android:drawableEnd="@drawable/arrow_right_black"
         android:fontFamily="@font/poppins_regular"
@@ -72,7 +71,7 @@
         android:id="@+id/headerNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_8sdp"
+        android:padding="@dimen/_6sdp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/titleServiceTv"
         app:layout_constraintEnd_toEndOf="parent"

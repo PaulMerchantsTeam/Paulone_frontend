@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="@dimen/ten_dp"
-
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -23,7 +22,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_65sdp"
+                android:layout_height="@dimen/_50sdp"
                 android:background="@color/splash_screen_three"
                 app:layout_collapseMode="parallax"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar" />
@@ -31,7 +30,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/backProfileIv"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_250sdp"
+                android:layout_height="@dimen/_192sdp"
                 android:background="@drawable/profile_tony"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -40,10 +39,10 @@
 
                 <ImageView
                     android:id="@+id/backIv"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_marginStart="@dimen/_17sdp"
-                    android:layout_marginTop="@dimen/_39sdp"
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:layout_marginStart="@dimen/screen_end_margin"
+                    android:layout_marginTop="@dimen/_30sdp"
                     android:src="@drawable/back_arrow_white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -68,8 +67,8 @@
 
     <ImageView
         android:id="@+id/fab"
-        android:layout_width="@dimen/_54sdp"
-        android:layout_height="@dimen/_54sdp"
+        android:layout_width="@dimen/_42sdp"
+        android:layout_height="@dimen/_42sdp"
         android:background="@drawable/circle_profile_blue_white"
         android:padding="@dimen/_8sdp"
         app:layout_anchor="@id/appBarLayout"
@@ -94,14 +93,14 @@
                 android:id="@+id/parenntProfleCard"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/_17sdp"
-                android:layout_marginTop="@dimen/_54sdp"
-                android:layout_marginEnd="@dimen/_17sdp"
+                android:layout_marginStart="@dimen/screen_end_margin"
+                android:layout_marginTop="@dimen/_42sdp"
+                android:layout_marginEnd="@dimen/screen_end_margin"
                 android:background="@drawable/rec_three_btn_7_empty"
-                android:paddingStart="@dimen/_17sdp"
-                android:paddingTop="@dimen/_11sdp"
-                android:paddingEnd="@dimen/_17sdp"
-                android:paddingBottom="@dimen/_11sdp"
+                android:paddingStart="@dimen/screen_end_margin"
+                android:paddingTop="@dimen/_9sdp"
+                android:paddingEnd="@dimen/screen_end_margin"
+                android:paddingBottom="@dimen/_9sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -154,7 +153,7 @@
                     style="@style/text_10_medium_sky"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:text="Member since Feb, 2023"
                     app:layout_constraintStart_toStartOf="@+id/userNumTv"
                     app:layout_constraintTop_toBottomOf="@+id/userNumTv" />
@@ -165,9 +164,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rec_one_yellow_btn_9"
-                    android:paddingStart="@dimen/_18sdp"
+                    android:paddingStart="@dimen/screen_end_margin"
                     android:paddingTop="@dimen/_8sdp"
-                    android:paddingEnd="@dimen/_18sdp"
+                    android:paddingEnd="@dimen/screen_end_margin"
                     android:paddingBottom="@dimen/_8sdp"
                     android:text="@string/edit_profile"
                     app:layout_constraintBottom_toBottomOf="parent"

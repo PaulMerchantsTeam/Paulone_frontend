@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/_4sdp"
-    android:layout_marginEnd="@dimen/_17sdp"
+    android:layout_marginEnd="@dimen/screen_start_margin"
     android:background="@drawable/pay_modes_back"
-    android:paddingHorizontal="@dimen/_22sdp"
-    android:paddingVertical="@dimen/_11sdp">
+    android:paddingHorizontal="@dimen/_16sdp"
+    android:paddingVertical="@dimen/_10sdp">
 
 
     <ImageView
@@ -22,11 +22,11 @@
     <TextView
         android:id="@+id/prepdCardTv"
         style="@style/text_10_medium_sky"
-        android:layout_width="@dimen/_73sdp"
-        android:layout_height="@dimen/_21sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_13sdp"
         android:text="Prepaid card"
-        android:textSize="@dimen/_11ssp"
+        android:textSize="@dimen/_10ssp"
         app:layout_constraintBottom_toTopOf="@+id/cardPcNumTv"
         app:layout_constraintStart_toEndOf="@+id/payImageOptTv"
         app:layout_constraintTop_toTopOf="parent" />

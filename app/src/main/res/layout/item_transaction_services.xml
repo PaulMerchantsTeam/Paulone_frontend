@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/_32sdp"
-    android:layout_marginTop="@dimen/_14sdp"
+    android:layout_marginStart="@dimen/_24sdp"
+    android:layout_marginTop="@dimen/_10sdp"
     android:id="@+id/parentTransService"
-    android:layout_marginEnd="@dimen/_32sdp"
+    android:layout_marginEnd="@dimen/_24sdp"
     android:background="@color/splash_screen_two">
 
     <ImageView
@@ -28,7 +28,7 @@
         android:fontFamily="@font/poppins_bold"
         android:text="PML Gold Loan"
         android:textColor="@color/black"
-        android:textSize="@dimen/_11ssp"
+        android:textSize="@dimen/_9ssp"
         app:layout_constraintStart_toEndOf="@+id/transacIv"
         app:layout_constraintTop_toTopOf="@+id/transacIv" />
 

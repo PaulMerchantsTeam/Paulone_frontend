@@ -6,10 +6,10 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/_8sdp"
     android:id="@+id/serviceMenuParent"
-    android:layout_marginEnd="@dimen/_15sdp"
-    android:paddingStart="@dimen/_17sdp"
+    android:layout_marginEnd="@dimen/_11sdp"
+    android:paddingStart="@dimen/screen_start_margin"
     android:paddingTop="@dimen/_5sdp"
-    android:paddingEnd="@dimen/_17sdp"
+    android:paddingEnd="@dimen/screen_start_margin"
     android:paddingBottom="@dimen/_5sdp">
 
     <com.google.android.material.textview.MaterialTextView
