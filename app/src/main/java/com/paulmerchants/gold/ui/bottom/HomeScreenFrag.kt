@@ -317,6 +317,9 @@ class HomeScreenFrag :
             elecIv.startCustomAnimation(R.drawable.elec_icon_anim)
             boradBandIv.startCustomAnimation(R.drawable.broadband_icon_anim)
             mobileIv.startCustomAnimation(R.drawable.mobile_icon_anim)
+            mobPostIv.startCustomAnimation(R.drawable.postpaid_icon_anim)
+            ottIv.startCustomAnimation(R.drawable.ott_icon_anim)
+
         }
     }
 private fun setUpComingOurServices(){

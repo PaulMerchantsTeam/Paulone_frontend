@@ -72,7 +72,7 @@
         android:textColor="@color/splash_screen_one"
         android:textColorHint="@color/brown"
         android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-        android:textSize="@dimen/_9ssp"
+        android:textSize="@dimen/_10ssp"
         app:autoShowKeyboard="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

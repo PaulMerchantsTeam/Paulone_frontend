@@ -57,10 +57,10 @@
         android:layout_marginTop="@dimen/_12sdp"
         android:layout_marginBottom="@dimen/_4sdp"
         android:background="@drawable/rec_one_blue_btn"
-        android:paddingStart="@dimen/_17sdp"
-        android:paddingTop="@dimen/_9sdp"
-        android:paddingEnd="@dimen/_17sdp"
-        android:paddingBottom="@dimen/_9sdp"
+        android:paddingStart="@dimen/_12sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_12sdp"
+        android:paddingBottom="@dimen/_8sdp"
         android:text="@string/loan_closed"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -74,21 +74,22 @@
         style="@style/text_10_semi_bold_sky_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Outstanding Loan Balance"
+        android:text="Final Due Paid"
         app:layout_constraintBottom_toTopOf="@+id/outStandValueTv"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/outStandValueTv"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/outStandValueTv"
         style="@style/text_12_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="INR 1,20,000"
+        android:text=" 27/04/2023 (₹6000)"
+        android:layout_marginEnd="@dimen/_21sdp"
         app:layout_constraintBottom_toTopOf="@+id/intDueAmountTitleTv"
-        app:layout_constraintStart_toStartOf="@+id/outStaTitleTv"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/outStaTitleTv" />
-
 
     <TextView
         android:id="@+id/intDueTitleTv"
@@ -97,6 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
         android:text="Interest Due Date "
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/intDueDateTv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loanNumTv" />
@@ -107,6 +109,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="24/02/2023"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/intDueTitleTv" />
 
@@ -116,6 +119,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
+        android:visibility="gone"
         android:text="Interest \nDue Amount"
         app:layout_constraintBottom_toTopOf="@+id/intDueAmountTv"
         app:layout_constraintStart_toStartOf="@+id/outStandValueTv"
@@ -128,6 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_12sdp"
         android:text="INR 6,000"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/loanClosedBtn"
         app:layout_constraintStart_toStartOf="@+id/intDueAmountTitleTv"
         app:layout_constraintTop_toBottomOf="@+id/intDueAmountTitleTv" />

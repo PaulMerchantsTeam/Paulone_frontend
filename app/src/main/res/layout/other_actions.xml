@@ -514,9 +514,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:src="@drawable/mob_post_paid"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/mob_post_paid" />
+                         />
 
                     <TextView
                         android:id="@+id/mobPostTv"

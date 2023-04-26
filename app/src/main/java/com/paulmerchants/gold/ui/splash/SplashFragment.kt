@@ -66,7 +66,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                         requireContext(), R.anim.slide_rotate
                     ))
                 lifecycleScope.launch {
-                    delay(900)
+                    delay(600)
                     AppSharedPref.putBoolean(SPLASH_SCRN_VISITED, true)
                     findNavController().navigate(
                         R.id.phoenNumVerifiactionFragment,
@@ -92,7 +92,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                             requireContext(), R.anim.slide_rotate
                         ))
                     lifecycleScope.launch {
-                        delay(900)
+                        delay(600)
                         headingTv.text = getString(R.string.your_payment_checklist)
                         descPageTv.text = getString(R.string.register_all_the_detail)
                         headingTvSupport.text = getString(R.string.sorted)
@@ -127,7 +127,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                             requireContext(), R.anim.slide_rotate
                         ))
                     lifecycleScope.launch {
-                        delay(900)
+                        delay(600)
                         headingTv.text = getString(R.string.payment_is_equal)
                         descPageTv.text = getString(R.string.we_dont_just_ask)
                         headingTvSupport.text = getString(R.string.rewards)

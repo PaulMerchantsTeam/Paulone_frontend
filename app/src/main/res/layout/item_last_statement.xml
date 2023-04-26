@@ -24,7 +24,7 @@
         android:id="@+id/paymentRcvdTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_39sdp"
+        android:layout_marginStart="@dimen/_38sdp"
         android:fontFamily="@font/poppins_regular"
         android:text="Payment received"
         android:textColor="@color/black"

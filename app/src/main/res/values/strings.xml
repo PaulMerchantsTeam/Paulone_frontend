@@ -338,6 +338,11 @@
     <string name="default_info_snippet">No places found, because location permission is disabled.</string>
     <string name="select_yr_city">Select your city</string>
     <string name="clear_all"><u>Clear All</u></string>
+    <string name="for_prepaid_card_ending_with_xxxx_2109">For prepaid card ending with xxxx 2109</string>
+    <string name="u20b9500">+ ₹500</string>
+    <string name="u20b91000">+ ₹1000</string>
+    <string name="u20b91500">+ ₹1500</string>
+    <string name="go_to_payment">Go to Payment</string>
 
     <string-array name="month">
         <item>January</item>
