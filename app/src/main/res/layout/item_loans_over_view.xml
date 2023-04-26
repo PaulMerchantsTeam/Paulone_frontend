@@ -6,10 +6,70 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/_8sdp"
     android:background="@drawable/rec_sky_loan_blue_solid"
-    android:paddingStart="@dimen/_8sdp"
     android:paddingTop="@dimen/_8sdp"
-    android:paddingEnd="@dimen/_15sdp"
     android:paddingBottom="@dimen/_8sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parentOpenLoan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_9sdp"
+        android:paddingEnd="@dimen/_21sdp"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/loanNumTv">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ovrDueParentArrow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_32sdp"
+            android:background="@drawable/rectangle_due_red"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/intDueAmountTitleTv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/overDueDaysTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:paddingVertical="@dimen/_6sdp"
+                android:text="Overdue by 4 days"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_8ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/intDueAmountTitleTv"
+            style="@style/text_10_semi_bold_sky_blue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Interest Due Amount"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/intDueAmountTv"
+            style="@style/text_12_bold_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="INR 6,000"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/intDueAmountTitleTv"
+            app:layout_constraintTop_toBottomOf="@+id/intDueAmountTitleTv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <TextView
@@ -17,6 +77,7 @@
         style="@style/text_10_semi_bold_sky_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
         android:text="Loan Number"
         app:layout_constraintBottom_toTopOf="@+id/loanNumTv"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +90,7 @@
         android:layout_height="wrap_content"
         android:text="231212121"
         app:layout_constraintBottom_toTopOf="@+id/intDueTitleTv"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/loanNumTitle"
         app:layout_constraintTop_toBottomOf="@+id/loanNumTitle" />
 
     <TextView
@@ -47,14 +108,15 @@
         app:layout_constraintEnd_toStartOf="@+id/loanClosedBtn"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="@+id/intDueDateTv" />
+        app:layout_constraintStart_toStartOf="@+id/loanNumTitle"
+        app:layout_constraintTop_toTopOf="@+id/loanClosedBtn" />
 
     <TextView
         android:id="@+id/loanClosedBtn"
         style="@style/text_10_semi_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_4sdp"
         android:background="@drawable/rec_one_blue_btn"
         android:paddingStart="@dimen/_12sdp"
@@ -64,18 +126,20 @@
         android:text="@string/loan_closed"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/intDueAmountTv"
-        app:layout_constraintTop_toBottomOf="@+id/intDueAmountTv"
-        app:layout_constraintVertical_bias="0.51" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/outStaTitleTv"
+        app:layout_constraintTop_toBottomOf="@+id/parentOpenLoan" />
 
 
     <TextView
         android:id="@+id/outStaTitleTv"
         style="@style/text_10_semi_bold_sky_blue"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Final Due Paid"
         app:layout_constraintBottom_toTopOf="@+id/outStandValueTv"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/outStandValueTv"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -85,9 +149,8 @@
         style="@style/text_12_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" 27/04/2023 (₹6000)"
         android:layout_marginEnd="@dimen/_21sdp"
-        app:layout_constraintBottom_toTopOf="@+id/intDueAmountTitleTv"
+        android:text=" 27/04/2023 (₹6000)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/outStaTitleTv" />
 
@@ -113,27 +176,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/intDueTitleTv" />
 
-    <TextView
-        android:id="@+id/intDueAmountTitleTv"
-        style="@style/text_10_semi_bold_sky_blue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:visibility="gone"
-        android:text="Interest \nDue Amount"
-        app:layout_constraintBottom_toTopOf="@+id/intDueAmountTv"
-        app:layout_constraintStart_toStartOf="@+id/outStandValueTv"
-        app:layout_constraintTop_toBottomOf="@+id/outStandValueTv" />
 
-    <TextView
-        android:id="@+id/intDueAmountTv"
-        style="@style/text_12_bold_blue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_12sdp"
-        android:text="INR 6,000"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/loanClosedBtn"
-        app:layout_constraintStart_toStartOf="@+id/intDueAmountTitleTv"
-        app:layout_constraintTop_toBottomOf="@+id/intDueAmountTitleTv" />
 </androidx.constraintlayout.widget.ConstraintLayout>

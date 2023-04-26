@@ -343,6 +343,7 @@
     <string name="u20b91000">+ ₹1000</string>
     <string name="u20b91500">+ ₹1500</string>
     <string name="go_to_payment">Go to Payment</string>
+    <string name="pay_now">PAY NOW</string>
 
     <string-array name="month">
         <item>January</item>

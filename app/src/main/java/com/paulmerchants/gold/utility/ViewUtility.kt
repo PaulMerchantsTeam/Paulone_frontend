@@ -246,33 +246,33 @@ fun RecyclerView.setUiOnLastTransaction() {
 
 }
 
-fun RecyclerView.setGoldLoanOverView() {
+fun RecyclerView.setGoldLoanOverView(type: Int) {
     fun clicked(actionItem: ActionItem) {
         findNavController().navigate(R.id.pmlGoldLoan)
     }
 
     val lastStatemnetAdapter = GoldLoanOverViewAdapter(::clicked)
     val actionItem1 = ActionItem(
-        BbpsType.Electricity.type,
+       type,
         0, "231212121"
     )
     val actionItem2 = ActionItem(
-        BbpsType.Electricity.type,
+        type,
         0, "231212121"
     )
 
     val actionItem3 = ActionItem(
-        BbpsType.Electricity.type,
+        type,
         0, "231212121"
     )
 
     val actionItem4 = ActionItem(
-        BbpsType.Electricity.type,
+        type,
         0, "231212121"
     )
 
     val actionItem5 = ActionItem(
-        BbpsType.Electricity.type,
+        type,
         0, "231212121"
     )
 
