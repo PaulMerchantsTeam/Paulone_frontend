@@ -19,15 +19,20 @@ class GoldLoanScreenFrag :
             titlePageTv.text = getString(R.string.loan_overview)
             subTitle.hide()
         }
-        setUiForGoldLoan()
+        setUiForClosedGoldLoans()
         setClickListener()
     }
 
-    private fun setUiForGoldLoan() {
+    private fun setUiForClosedGoldLoans() {
         binding.goldLoanParentMain.rvLoanOverViewMain.setGoldLoanOverView()
     }
 
-    private fun setClickListener(){
+    private fun setUiFoOpenGoldLoans() {
+        binding.goldLoanParentMain.rvLoanOverViewMain.setGoldLoanOverView()
+    }
+
+
+    private fun setClickListener() {
         binding.apply {
             goldLoanParentMain.openLoanTv.setOnClickListener {
                 goldLoanParentMain.openLoanTv.setBackgroundResource(R.drawable.rec_sky_loan_blue_solid)

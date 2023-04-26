@@ -28,15 +28,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.dialog.MaterialDialogs
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.paulmerchants.gold.R
-import com.paulmerchants.gold.adapter.GoldLoanOverViewAdapter
-import com.paulmerchants.gold.adapter.HomeSweetBillsAdapter
-import com.paulmerchants.gold.adapter.LastStatemnetAdapter
-import com.paulmerchants.gold.adapter.MenuServicesAdapter
+import com.paulmerchants.gold.adapter.*
 import com.paulmerchants.gold.databinding.OtpFillLayoutBinding
 import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
 import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.MenuServices
+import com.paulmerchants.gold.model.Notifications
 
 
 fun ImageView.startCustomAnimation(drawable: Int) {
@@ -123,6 +121,51 @@ fun RecyclerView.setUiOnHomeSweetHomeBills(context: Context, onBillClicked: (Act
     }
 }
 
+
+fun RecyclerView.setNotificationDummy() {
+    val notifAdapter = NotificationAdapter()
+    val notif1 =
+        Notifications("Welcome User,\nBefore we get started please complete your profile", 1)
+    val notif2 =
+        Notifications("Welcome User,\nBefore we get started please complete your profile", 2)
+    val notif3 =
+        Notifications("Welcome User,\nBefore we get started please complete your profile", 3)
+    val notif4 =
+        Notifications("Welcome User,\nBefore we get started please complete your profile", 4)
+    val notif5 =
+        Notifications("Welcome User,\nBefore we get started please complete your profile", 5)
+    val notif6 =
+        Notifications("Welcome User,\nBefore we get started please complete your profile", 6)
+    val notif7 =
+        Notifications("Welcome User,\nBefore we get started please complete your profile", 7)
+    val notif8 =
+        Notifications("Welcome User,\nBefore we get started please complete your profile", 8)
+    val notif9 =
+        Notifications("Welcome User,\nBefore we get started please complete your profile", 9)
+    val notif10 =
+        Notifications("Welcome User,\nBefore we get started please complete your profile", 10)
+    val notif11 =
+        Notifications("Welcome User,\nBefore we get started please complete your profile", 11)
+    val list = listOf(
+        notif1,
+        notif2,
+        notif3,
+        notif4,
+        notif5,
+        notif6,
+        notif7,
+        notif8,
+        notif9,
+        notif10,
+        notif11
+    )
+    notifAdapter.submitList(list)
+    this.apply {
+        adapter = notifAdapter
+    }
+}
+
+
 fun Fragment.showCustomDialogOTPVerify(context: Context, title: String = "") {
     val dialogBinding =
         OtpFillLayoutDialogBinding.inflate(this.layoutInflater)
@@ -205,7 +248,7 @@ fun RecyclerView.setUiOnLastTransaction() {
 
 fun RecyclerView.setGoldLoanOverView() {
     fun clicked(actionItem: ActionItem) {
-    findNavController().navigate(R.id.pmlGoldLoan)
+        findNavController().navigate(R.id.pmlGoldLoan)
     }
 
     val lastStatemnetAdapter = GoldLoanOverViewAdapter(::clicked)
@@ -268,8 +311,11 @@ fun RecyclerView.setGoldLoanOverView() {
 }
 
 
-
-fun RecyclerView.setServicesUi(context: Context, onMenuServiceClicked: (MenuServices) -> Unit,onMenuServiceClickedTwo: (MenuServices) -> Unit) {
+fun RecyclerView.setServicesUi(
+    context: Context,
+    onMenuServiceClicked: (MenuServices) -> Unit,
+    onMenuServiceClickedTwo: (MenuServices) -> Unit
+) {
     val menuServiceAdapter = MenuServicesAdapter(onMenuServiceClicked, onMenuServiceClickedTwo)
     val service1 = MenuServices(
         100,

@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.ui.bottom
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -11,6 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.paulmerchants.gold.MainNavGraphDirections
 import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.PrePaidCardAdapter
@@ -37,8 +39,6 @@ class HomeScreenFrag :
     private val upcomingLoanAdapter = UpcomingLoanAdapter(::onPayDueClicked)
     private val upcomingNewUserAdapter = UpcomingLoanNewuserAdapter()
     private val prePaidCardAdapter = PrePaidCardAdapter(::onClicked)
-
-
 
 
     lateinit var navController: NavController
@@ -74,6 +74,7 @@ class HomeScreenFrag :
             bundle
         )
     }
+
     private fun onClicked(prepaidCardModel: PrepaidCardModel) {
         findNavController().navigate(R.id.pcFrag)
     }
@@ -142,12 +143,12 @@ class HomeScreenFrag :
 
     private fun profileHandle() {
         binding.searchProfileParent.profileIv.setOnClickListener {
-//            findNavController().navigate(
-//                R.id.profileFrag,
-//                null,
-//                (activity as MainActivity).navOptionLeft
-//            )
-            startActivity(Intent(requireContext(), MapActivity::class.java))
+            findNavController().navigate(
+                R.id.profileFrag
+            )
+        }
+        binding.searchProfileParent.notImage.setOnClickListener {
+            findNavController().navigate(R.id.action_homeScreenFrag_to_notificationsScreenFrag)
         }
     }
 
@@ -161,9 +162,9 @@ class HomeScreenFrag :
          *
          */
         binding.allPaymnetActionParent.moreParent.setOnClickListener {
-                binding.allPaymnetActionParent.billsNRechargerParent.hide()
-                binding.allPaymnetActionParent.forMoreParentAllAction.show()
-                binding.allPaymnetActionParent.backToNormalAction.show()
+            binding.allPaymnetActionParent.billsNRechargerParent.hide()
+            binding.allPaymnetActionParent.forMoreParentAllAction.show()
+            binding.allPaymnetActionParent.backToNormalAction.show()
 
         }
         binding.allPaymnetActionParent.backToNormalAction.setOnClickListener {
@@ -251,22 +252,30 @@ class HomeScreenFrag :
         binding.searchProfileParent.searchView.show()
         isStartAnim.postValue(true)
 
-        binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_mid).apply {
-            this.start()
-        })
+        binding.searchProfileParent.searchView.startAnimation(
+            AnimationUtils.loadAnimation(
+                requireContext(),
+                R.anim.slide_down_to_mid
+            ).apply {
+                this.start()
+            })
     }
+
     override fun onPause() {
         super.onPause()
 
         isStartAnim.postValue(false)
         binding.searchProfileParent.searchView.clearAnimation()
-        binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_mid).apply {
-           this.cancel()
-        })
+        binding.searchProfileParent.searchView.startAnimation(
+            AnimationUtils.loadAnimation(
+                requireContext(),
+                R.anim.slide_down_to_mid
+            ).apply {
+                this.cancel()
+            })
 
 
     }
-
 
 
     private fun animateHintEditText() {
@@ -275,30 +284,70 @@ class HomeScreenFrag :
             getString(R.string.search_fr_credit),
             getString(R.string.search_fr_upcoming_dues),
             getString(R.string.search_for_loans),
-            )
+        )
         lifecycleScope.launchWhenResumed {
             delay(500)
             binding.searchProfileParent.searchView.hint = strList[0]
-            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_mid))
+            binding.searchProfileParent.searchView.startAnimation(
+                AnimationUtils.loadAnimation(
+                    requireContext(),
+                    R.anim.slide_down_to_mid
+                )
+            )
             delay(1000)
-            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_mid_to_up))
+            binding.searchProfileParent.searchView.startAnimation(
+                AnimationUtils.loadAnimation(
+                    requireContext(),
+                    R.anim.slide_mid_to_up
+                )
+            )
             delay(500)
             binding.searchProfileParent.searchView.hint = strList[1]
-            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_mid))
+            binding.searchProfileParent.searchView.startAnimation(
+                AnimationUtils.loadAnimation(
+                    requireContext(),
+                    R.anim.slide_down_to_mid
+                )
+            )
             delay(1000)
-            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_mid_to_up))
+            binding.searchProfileParent.searchView.startAnimation(
+                AnimationUtils.loadAnimation(
+                    requireContext(),
+                    R.anim.slide_mid_to_up
+                )
+            )
             delay(500)
             binding.searchProfileParent.searchView.hint = strList[2]
-            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_mid))
+            binding.searchProfileParent.searchView.startAnimation(
+                AnimationUtils.loadAnimation(
+                    requireContext(),
+                    R.anim.slide_down_to_mid
+                )
+            )
             delay(1000)
-            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_mid_to_up))
+            binding.searchProfileParent.searchView.startAnimation(
+                AnimationUtils.loadAnimation(
+                    requireContext(),
+                    R.anim.slide_mid_to_up
+                )
+            )
 
 
             delay(500)
             binding.searchProfileParent.searchView.hint = strList[3]
-            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_down_to_mid))
+            binding.searchProfileParent.searchView.startAnimation(
+                AnimationUtils.loadAnimation(
+                    requireContext(),
+                    R.anim.slide_down_to_mid
+                )
+            )
             delay(1000)
-            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_mid_to_up))
+            binding.searchProfileParent.searchView.startAnimation(
+                AnimationUtils.loadAnimation(
+                    requireContext(),
+                    R.anim.slide_mid_to_up
+                )
+            )
 
 
             delay(500)
@@ -322,16 +371,34 @@ class HomeScreenFrag :
 
         }
     }
-private fun setUpComingOurServices(){
-    val ourServices1 = OurServices(R.drawable.gold_loan_hand,getString(R.string.gold_n_loans),R.color.yellow_main)
-    val ourServices2= OurServices(R.drawable.hand_prepaid_card,getString(R.string.prepaid_n_cards),R.color.green_main)
-    val ourServices3 = OurServices(R.drawable.hand_invoice,getString(R.string.bills_n_payment),R.color.sky_blue_main)
-    val ourServices4 = OurServices(R.drawable.hand_digital_gold,getString(R.string.digital_n_gold),R.color.orange_main)
-    val serviceList = listOf(ourServices1,ourServices2,ourServices3,ourServices4)
-    upcomingNewUserAdapter.submitList(serviceList)
-    binding.rvUpcomingDueLoans.adapter = upcomingNewUserAdapter
 
-}
+    private fun setUpComingOurServices() {
+        val ourServices1 = OurServices(
+            R.drawable.gold_loan_hand,
+            getString(R.string.gold_n_loans),
+            R.color.yellow_main
+        )
+        val ourServices2 = OurServices(
+            R.drawable.hand_prepaid_card,
+            getString(R.string.prepaid_n_cards),
+            R.color.green_main
+        )
+        val ourServices3 = OurServices(
+            R.drawable.hand_invoice,
+            getString(R.string.bills_n_payment),
+            R.color.sky_blue_main
+        )
+        val ourServices4 = OurServices(
+            R.drawable.hand_digital_gold,
+            getString(R.string.digital_n_gold),
+            R.color.orange_main
+        )
+        val serviceList = listOf(ourServices1, ourServices2, ourServices3, ourServices4)
+        upcomingNewUserAdapter.submitList(serviceList)
+        binding.rvUpcomingDueLoans.adapter = upcomingNewUserAdapter
+
+    }
+
     private fun setUpComingDueLoans() {
         val dueLoans1 = DueLoans(1, 4, 6000)
         val dueLoans2 = DueLoans(2, 4, 6000)
@@ -348,7 +415,8 @@ private fun setUpComingOurServices(){
             ::onBillClicked
         )
     }
-    private fun setLoanOverView(){
+
+    private fun setLoanOverView() {
         binding.apply {
 //            loanOverViewCardParent.cardParent.setBackgroundColor(R.drawable.new_user_card_grad)
 
@@ -357,21 +425,22 @@ private fun setUpComingOurServices(){
 //                findNavController().navigate(R.id.applyLoanForNewUser)
 //            }
             loanOverViewCardParent.viewLoanBtn.setOnClickListener {
-                                findNavController().navigate(R.id.goldLoanScreenFrag)
+                findNavController().navigate(R.id.goldLoanScreenFrag)
 
             }
             loanOverViewCardParent.renewLoansTv.show()
             loanOverViewCardParent.youHaveTotalLoanTv.show()
         }
     }
-private  fun setAddCardView(){
-    binding.apply {
-        addCardBtn.setOnClickListener {
-            findNavController().navigate(R.id.addUpiCard)
 
+    private fun setAddCardView() {
+        binding.apply {
+            addCardBtn.setOnClickListener {
+                findNavController().navigate(R.id.addUpiCard)
+
+            }
         }
     }
-}
 
     private fun onBillClicked(actionItem: ActionItem) {
         AppUtility.onBillClicked(actionItem, findNavController())

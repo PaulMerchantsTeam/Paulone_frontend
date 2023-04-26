@@ -174,6 +174,8 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
     override fun onStart() {
         super.onStart()
+        AppUtility.changeStatusBarWithReqdColor(this, R.color.splash_screen_two)
+
         binding.searchCity.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 

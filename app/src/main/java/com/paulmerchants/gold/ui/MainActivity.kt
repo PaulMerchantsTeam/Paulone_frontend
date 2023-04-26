@@ -1,5 +1,7 @@
 package com.paulmerchants.gold.ui
 
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -46,8 +48,9 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             .setExitAnim(R.anim.slide_out_left).setPopEnterAnim(R.anim.slide_in_left)
             .setPopExitAnim(R.anim.slide_out_right).build()
         navOptionLeft = NavOptions.Builder().setEnterAnim(R.anim.slide_in_left)
-            .setExitAnim(R.anim.slide_in_right).setPopEnterAnim(R.anim.slide_in_left)
+            .setExitAnim(R.anim.slide_in_left).setPopEnterAnim(R.anim.slide_in_right)
             .setPopExitAnim(R.anim.slide_out_right).build()
+
         navOptionTop = NavOptions.Builder().setEnterAnim(R.anim.slide_in_bottom)
             .setExitAnim(R.anim.slide_out_bottom).setPopEnterAnim(R.anim.slide_in_left)
             .setPopExitAnim(R.anim.slide_out_right).build()
@@ -72,7 +75,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.homeScreenFrag -> {
-                    navController.navigate(R.id.homeScreenFrag)
+                    navController.navigate(R.id.homeScreenFrag, null, navOptionLeft)
                     true
                 }
                 R.id.goldLoanScreenFrag -> {
@@ -87,7 +90,11 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                     true
                 }
                 R.id.locateUsFrag -> {
-                    navController.navigate(MainNavGraphDirections.actionToLocateUs())
+//                    navController.navigate(MainNavGraphDirections.actionToLocateUs())
+                    startActivity(
+                        Intent(this, MapActivity::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    )
                     true
                 }
                 R.id.menuScreenFrag -> {
