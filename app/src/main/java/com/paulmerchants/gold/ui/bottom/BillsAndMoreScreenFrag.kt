@@ -10,10 +10,7 @@ import com.paulmerchants.gold.databinding.MainScreenFragmentBinding
 import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.ui.others.BillsFragment
-import com.paulmerchants.gold.utility.AppUtility
-import com.paulmerchants.gold.utility.hide
-import com.paulmerchants.gold.utility.setUiOnHomeSweetHomeBills
-import com.paulmerchants.gold.utility.show
+import com.paulmerchants.gold.utility.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,6 +37,7 @@ class BillsAndMoreScreenFrag :
         super.onStart()
         binding.headerBillMore.backIv.hide()
         setUiOnHomeSweetHomeBills()
+        startAnimationOnIcon()
         binding.apply {
             billSRechargeMain.dthServiceActionParent2.setOnClickListener {
                 AppUtility.onBillClicked(ActionItem(BbpsType.DthService.type), findNavController())
@@ -87,6 +85,26 @@ class BillsAndMoreScreenFrag :
     }
     private fun onBillClicked(actionItem: ActionItem){
         AppUtility.onBillClicked(actionItem,findNavController())
+    }
+
+    private fun startAnimationOnIcon() {
+        binding.billSRechargeMain.apply {
+            goldIv.startCustomAnimation(R.drawable.anim_gold_icon)
+            dthIV.startCustomAnimation(R.drawable.anim_dth_service_icon)
+            elecIv.startCustomAnimation(R.drawable.anim_elec_icon)
+            boradBandIv.startCustomAnimation(R.drawable.anim_broadband_icon)
+            mobileIv.startCustomAnimation(R.drawable.anim_mobile_icon)
+            mob2Iv.startCustomAnimation(R.drawable.anim_mobile_icon)
+            mobPostIv.startCustomAnimation(R.drawable.anim_post_paid_icon)
+            ottIv.startCustomAnimation(R.drawable.anim_ott_icon)
+            dthIV2.startCustomAnimation(R.drawable.anim_dth_service_icon)
+            isuranceIv.startCustomAnimation(R.drawable.anim_insurance_icon)
+            mucipalIv.startCustomAnimation(R.drawable.anim_munciple_tax)
+            fastIv.startCustomAnimation(R.drawable.anim_fastag_icon)
+            challanIv.startCustomAnimation(R.drawable.anim_challan_icon)
+            metroCardIv.startCustomAnimation(R.drawable.anim_metro_card)
+
+        }
     }
 
 }

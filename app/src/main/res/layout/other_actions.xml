@@ -285,7 +285,7 @@
                     android:id="@+id/elecIv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/elec_icon_anim"
+                    android:background="@drawable/anim_elec_icon"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -349,7 +349,7 @@
                     android:id="@+id/mobileIv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/mobile_icon_anim"
+                    android:background="@drawable/anim_mobile_icon"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -405,7 +405,7 @@
             android:id="@+id/forMoreParentAllAction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@+id/billsNRechargerParent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -453,7 +453,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/dth_bill" />
+                         />
 
                     <TextView
                         android:id="@+id/dthTv2"
@@ -482,7 +482,7 @@
                         android:id="@+id/mob2Iv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/mobile_bill"
+                        android:background="@drawable/anim_mobile_icon"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -514,7 +514,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:src="@drawable/mob_post_paid"
+
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                          />
@@ -549,7 +549,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ott_main" />
+                    />
 
                     <TextView
                         android:id="@+id/ottTv"
@@ -659,7 +659,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/insurance_action" />
+                        />
 
                     <TextView
                         android:id="@+id/inssTv"
@@ -686,13 +686,13 @@
                     app:layout_constraintTop_toBottomOf="@+id/finsecTv">
 
                     <ImageView
-                        android:id="@+id/mucipalTv"
+                        android:id="@+id/mucipalIv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/municiapl_tax" />
+                          />
 
                     <TextView
                         android:id="@+id/munciTv"
@@ -704,7 +704,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/mucipalTv" />
+                        app:layout_constraintTop_toBottomOf="@+id/mucipalIv" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -748,7 +748,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/fastag_action" />
+                         />
 
                     <TextView
                         android:id="@+id/fastTagTv"
@@ -781,7 +781,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/traffic_challan" />
+                         />
 
                     <TextView
                         android:id="@+id/challanTv"
@@ -812,7 +812,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/metro_card" />
+                         />
 
                     <TextView
                         android:id="@+id/metroCardTv"

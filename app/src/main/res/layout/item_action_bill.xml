@@ -10,14 +10,16 @@
 
     <ImageView
         android:id="@+id/iconIv"
-        android:layout_width="@dimen/_45sdp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:paddingTop="@dimen/_6sdp"
         app:layout_constraintBottom_toTopOf="@+id/itemTv"
         app:layout_constraintEnd_toEndOf="@+id/itemTv"
         app:layout_constraintStart_toStartOf="@+id/itemTv"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/apartment_group" />
+          />
 
     <TextView
         android:id="@+id/itemTv"

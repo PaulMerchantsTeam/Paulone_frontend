@@ -3,9 +3,9 @@
     android:oneshot="false">
 
     <item
-        android:drawable="@drawable/ic_traffic_l_1"
+        android:drawable="@drawable/elec_layer1"
         android:duration="800" />
     <item
-        android:drawable="@drawable/ic_traffic_l_2"
+        android:drawable="@drawable/elec_layer2"
         android:duration="800" />
 </animation-list>

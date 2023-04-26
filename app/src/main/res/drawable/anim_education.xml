@@ -3,9 +3,9 @@
     android:oneshot="false">
 
     <item
-        android:drawable="@drawable/metro_l_1"
+        android:drawable="@drawable/education_layer1"
         android:duration="800" />
     <item
-        android:drawable="@drawable/metro_l_2"
+        android:drawable="@drawable/education_layer2"
         android:duration="800" />
 </animation-list>

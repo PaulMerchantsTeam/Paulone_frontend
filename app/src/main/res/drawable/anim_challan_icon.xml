@@ -3,9 +3,10 @@
     android:oneshot="false">
 
     <item
-        android:drawable="@drawable/ins_laye_1"
+        android:drawable="@drawable/challan_layer1"
         android:duration="800" />
     <item
-        android:drawable="@drawable/ins_lay_2"
+        android:drawable="@drawable/challan_layer2"
         android:duration="800" />
+
 </animation-list>

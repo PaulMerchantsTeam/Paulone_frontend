@@ -3,9 +3,10 @@
     android:oneshot="false">
 
     <item
-        android:drawable="@drawable/icon_gold_black_anim"
+        android:drawable="@drawable/cable_tv_layer1"
         android:duration="800" />
     <item
-        android:drawable="@drawable/gold_star"
+        android:drawable="@drawable/cable_tv_layer2"
         android:duration="800" />
+
 </animation-list>

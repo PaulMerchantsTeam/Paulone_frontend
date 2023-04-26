@@ -3,9 +3,9 @@
     android:oneshot="false">
 
     <item
-        android:drawable="@drawable/elect_bill_layer_0"
+        android:drawable="@drawable/mob_post_layer1"
         android:duration="800" />
     <item
-        android:drawable="@drawable/elect_bill_layer_2"
+        android:drawable="@drawable/mob_post_layer2"
         android:duration="800" />
 </animation-list>

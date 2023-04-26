@@ -50,55 +50,56 @@ fun RecyclerView.setUiOnHomeSweetHomeBills(context: Context, onBillClicked: (Act
     val homeSweetBillsAdapter = HomeSweetBillsAdapter(onBillClicked)
     val actionItem1 = ActionItem(
         BbpsType.Electricity.type,
-        R.drawable.elec_bill,
+       R.drawable.anim_elec_icon,
         context.getString(R.string.electricity)
     )
     val actionItem2 =
         ActionItem(
             BbpsType.Broadband.type,
-            R.drawable.broadband_bill,
+            R.drawable.anim_broadband_icon,
             context.getString(R.string.broadband)
         )
     val actionItem3 =
         ActionItem(
             BbpsType.Education.type,
-            R.drawable.education_loan,
+
+            R.drawable.anim_education,
             context.getString(R.string.education)
         )
     val actionItem4 =
         ActionItem(
             BbpsType.GasCylinder.type,
-            R.drawable.cylinder_gas,
+            R.drawable.anim_cylinder_gas,
             context.getString(R.string.gas_cylinder)
         )
     val actionItem5 =
         ActionItem(
             BbpsType.Apartment.type,
-            R.drawable.apartment_group,
+            R.drawable.anim_apartment,
             context.getString(R.string.apartment)
         )
     val actionItem6 =
         ActionItem(
             BbpsType.GasPipeLine.type,
-            R.drawable.pipeline_gas,
+            R.drawable.anim_gas_pipe_line,
             context.getString(R.string.gas_pipline)
         )
     val actionItem7 = ActionItem(
         BbpsType.HomeRent.type,
-        R.drawable.home_rent,
+        R.drawable.anim_home_rent_icon,
         context.getString(R.string.homerent)
     )
     val actionItem8 =
-        ActionItem(BbpsType.WaterBill.type, R.drawable.tap, context.getString(R.string.water))
+        ActionItem(BbpsType.WaterBill.type, R.drawable.anim_water_icon, context.getString(R.string.water))
     val actionItem9 =
         ActionItem(
             BbpsType.LandLineBill.type,
-            R.drawable.landline_action,
+            R.drawable.anim_landline_icon,
             context.getString(R.string.landline)
         )
     val actionItem10 = ActionItem(
         BbpsType.CableTvBill.type,
-        R.drawable.cable_tv,
+        R.drawable.anim_cable_tv_icon,
         context.getString(R.string.cabletv)
     )
     val list = listOf(

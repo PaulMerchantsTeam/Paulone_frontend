@@ -3,9 +3,10 @@
     android:oneshot="false">
 
     <item
-        android:drawable="@drawable/mob_post_paid"
+        android:drawable="@drawable/metro_card"
         android:duration="800" />
     <item
-        android:drawable="@drawable/mob_post_layer2"
+        android:drawable="@drawable/metro_layer2"
         android:duration="800" />
+
 </animation-list>

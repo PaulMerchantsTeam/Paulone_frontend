@@ -26,7 +26,6 @@ import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.DueLoans
 import com.paulmerchants.gold.model.OurServices
 import com.paulmerchants.gold.model.PrepaidCardModel
-import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.MapActivity
 import com.paulmerchants.gold.utility.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -310,12 +309,7 @@ class HomeScreenFrag :
                 )
             )
             delay(1000)
-            binding.searchProfileParent.searchView.startAnimation(
-                AnimationUtils.loadAnimation(
-                    requireContext(),
-                    R.anim.slide_mid_to_up
-                )
-            )
+            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_mid_to_up))
             delay(500)
             binding.searchProfileParent.searchView.hint = strList[2]
             binding.searchProfileParent.searchView.startAnimation(
@@ -361,13 +355,20 @@ class HomeScreenFrag :
 
     private fun startAnimationOnIcon() {
         binding.allPaymnetActionParent.apply {
-            goldIv.startCustomAnimation(R.drawable.gold_icon_anim)
-            dthIV.startCustomAnimation(R.drawable.dth_service_icon_anim)
-            elecIv.startCustomAnimation(R.drawable.elec_icon_anim)
-            boradBandIv.startCustomAnimation(R.drawable.broadband_icon_anim)
-            mobileIv.startCustomAnimation(R.drawable.mobile_icon_anim)
-            mobPostIv.startCustomAnimation(R.drawable.postpaid_icon_anim)
-            ottIv.startCustomAnimation(R.drawable.ott_icon_anim)
+            goldIv.startCustomAnimation(R.drawable.anim_gold_icon)
+            dthIV.startCustomAnimation(R.drawable.anim_dth_service_icon)
+            elecIv.startCustomAnimation(R.drawable.anim_elec_icon)
+            boradBandIv.startCustomAnimation(R.drawable.anim_broadband_icon)
+            mobileIv.startCustomAnimation(R.drawable.anim_mobile_icon)
+            mob2Iv.startCustomAnimation(R.drawable.anim_mobile_icon)
+            mobPostIv.startCustomAnimation(R.drawable.anim_post_paid_icon)
+            ottIv.startCustomAnimation(R.drawable.anim_ott_icon)
+            dthIV2.startCustomAnimation(R.drawable.anim_dth_service_icon)
+            isuranceIv.startCustomAnimation(R.drawable.anim_insurance_icon)
+            mucipalIv.startCustomAnimation(R.drawable.anim_munciple_tax)
+            fastIv.startCustomAnimation(R.drawable.anim_fastag_icon)
+            challanIv.startCustomAnimation(R.drawable.anim_challan_icon)
+            metroCardIv.startCustomAnimation(R.drawable.anim_metro_card)
 
         }
     }

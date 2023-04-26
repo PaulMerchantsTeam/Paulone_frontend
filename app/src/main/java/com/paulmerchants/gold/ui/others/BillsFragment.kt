@@ -2,8 +2,6 @@ package com.paulmerchants.gold.ui.others
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.R
@@ -11,7 +9,6 @@ import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.common.Constants.BBPS_TYPE
 import com.paulmerchants.gold.databinding.LayoutLoanEmiBinding
-import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -158,7 +155,7 @@ private fun showHeaderDetails(text:Int,image:Int){
 
             }
             BbpsType.Electricity.type -> {
-                showHeaderDetails(R.string.electricity_bill,R.drawable.elec_bill)
+                showHeaderDetails(R.string.electricity_bill,R.drawable.elec_layer1)
                 binding.apply {
                     bankTv.setText(R.string.select_state)
                     loanTypeTv.setText(R.string.select_board)
@@ -196,7 +193,7 @@ private fun showHeaderDetails(text:Int,image:Int){
 
             }
             BbpsType.Education.type -> {
-                showHeaderDetails(R.string.education_fees_bill,R.drawable.education_loan)
+                showHeaderDetails(R.string.education_fees_bill,R.drawable.education_layer1)
                 binding.apply {
                     institutionAreaTv.show()
                     institutionAreaParent.show()
@@ -232,7 +229,7 @@ private fun showHeaderDetails(text:Int,image:Int){
 
             }
             BbpsType.Apartment.type -> {
-                showHeaderDetails(R.string.apartment_bill,R.drawable.apartment_group)
+                showHeaderDetails(R.string.apartment_bill,R.drawable.apartment_layer1)
                 binding.apply {
                     institutionAreaTv.show()
                     institutionAreaParent.show()
@@ -300,7 +297,7 @@ private fun showHeaderDetails(text:Int,image:Int){
 
             }
             BbpsType.LandLineBill.type -> {
-                showHeaderDetails(R.string.landline_bill,R.drawable.landline_action)
+                showHeaderDetails(R.string.landline_bill,R.drawable.landline_layer1)
                 binding.apply {
                     bankTv.setText(R.string.select_operator)
                     loanAcntNoTv.setText(R.string.your_number_with_std)
@@ -335,7 +332,7 @@ private fun showHeaderDetails(text:Int,image:Int){
 
             }
             BbpsType.Insurance.type -> {
-                showHeaderDetails(R.string.insurance_premium,R.drawable.insurance_icon_anim)
+                showHeaderDetails(R.string.insurance_premium,R.drawable.insurance_layer1)
                 binding.apply {
                     bankTv.setText(R.string.select_insurer)
                     loanAcntNoTv.setText(R.string.your_policy_number)
@@ -409,7 +406,7 @@ private fun showHeaderDetails(text:Int,image:Int){
 
             }
             BbpsType.MobileRecharge.type -> {
-                showHeaderDetails(R.string.mobile_recharge_bill,R.drawable.mobile_icon_anim)
+                showHeaderDetails(R.string.mobile_recharge_bill,R.drawable.anim_mobile_icon)
                 binding.apply {
                     loanTypeTv.hide()
                     typeOfLOandParent.hide()
@@ -464,7 +461,7 @@ private fun showHeaderDetails(text:Int,image:Int){
 
             }
             BbpsType.MobilePostpaid.type -> {
-                showHeaderDetails(R.string.postpaid_bill,R.drawable.mob_post_paid)
+                showHeaderDetails(R.string.postpaid_bill,R.drawable.mob_post_layer1)
                 binding.apply {
                     loanTypeTv.hide()
                     viewHorPre.hide()
@@ -514,7 +511,7 @@ private fun showHeaderDetails(text:Int,image:Int){
                 }
             }
             BbpsType.FastTag.type -> {
-                showHeaderDetails(R.string.fastag_recharge,R.drawable.fastag_action)
+                showHeaderDetails(R.string.fastag_recharge,R.drawable.fastag_layer1)
                 binding.apply {
                     bankTv.setText(R.string.select_fast_tag_bank)
                     loanTypeTv.hide()
