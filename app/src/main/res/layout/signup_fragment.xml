@@ -289,6 +289,7 @@
                         android:paddingTop="@dimen/_14sdp"
                         android:paddingEnd="@dimen/_53sdp"
                         android:paddingBottom="@dimen/_14sdp"
+                        android:visibility="gone"
                         android:text="@string/cont_with_google"
                         android:textAlignment="gravity"
                         android:textColor="@color/splash_screen_one"

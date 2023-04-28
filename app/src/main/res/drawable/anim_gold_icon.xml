@@ -4,7 +4,7 @@
 
     <item
         android:drawable="@drawable/gold_image_layer1"
-        android:duration="800" />
+        android:duration="500" />
 <!--    <item-->
 <!--        android:drawable="@drawable/gold_layer2"-->
 <!--        android:duration="400" />-->
@@ -13,5 +13,5 @@
 <!--        android:duration="400" />-->
     <item
         android:drawable="@drawable/gold_layer4"
-        android:duration="800" />
+        android:duration="500" />
 </animation-list>

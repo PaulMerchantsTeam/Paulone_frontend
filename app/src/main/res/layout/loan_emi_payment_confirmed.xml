@@ -340,6 +340,7 @@
             android:paddingHorizontal="@dimen/_30sdp"
             android:paddingVertical="@dimen/_6sdp"
             android:text="@string/go_to_home"
+            android:textColor="@color/yellow_main"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/needHelpBtn"
             app:layout_constraintStart_toStartOf="parent"
@@ -373,8 +374,8 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animationView"
-            android:layout_width="@dimen/_62sdp"
-            android:layout_height="@dimen/_62sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_46sdp"
             app:layout_constraintBottom_toTopOf="@+id/materialTextView12"
             app:layout_constraintEnd_toEndOf="parent"

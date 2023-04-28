@@ -16,6 +16,8 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.QuickPayPopupBinding
 import com.paulmerchants.gold.model.DueLoans
+import com.paulmerchants.gold.utility.hide
+import com.paulmerchants.gold.utility.show
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -70,6 +72,26 @@ class QuickPayDialog : BottomSheetDialogFragment() {
             dismiss()
             findNavController().navigate(R.id.quickPayMainFrag)
         }
+        onCLickRadio()
+    }
+
+    fun onCLickRadio(){
+        quickPayPopupBinding.fullPayRadio.setOnClickListener {
+
+            quickPayPopupBinding.customPayEt.hide()
+            quickPayPopupBinding.payingAMountText.text =  quickPayPopupBinding.fullPayRadio.text
+
+        }
+        quickPayPopupBinding.customPayRadio.setOnClickListener {
+            quickPayPopupBinding.customPayEt.show()
+            Log.d(TAG, "onCLickRadio: ${quickPayPopupBinding.customPayEt.text}")
+            Log.d(TAG, "onCLickRadio: ${quickPayPopupBinding.payingAMountText.text}")
+            quickPayPopupBinding.customPayEt.setOnClickListener {
+                quickPayPopupBinding.payingAMountText.text =
+                    "Pay INR ${quickPayPopupBinding.customPayEt.text}"
+            }
+        }
+
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

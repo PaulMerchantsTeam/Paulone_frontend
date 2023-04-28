@@ -86,6 +86,7 @@ private fun showHeaderDetails(text:Int,image:Int){
                     binding.loanDetailsEnterParent.hide()
                     binding.loanProccedDetailParent.show()
                     binding.proceedBtn.setText(R.string.proceed_to_pay)
+
                     binding.proceedBtn.setOnClickListener {
                         onNavigateProceedToPay(resources.getString(R.string.loan_personal))
                     }
@@ -110,9 +111,26 @@ private fun showHeaderDetails(text:Int,image:Int){
                 binding.enterLoanEt.hide()
                 binding.mobileNoTv.setText(R.string.enter_your_credit_card_number)
                 binding.emiPaidTv.setText(R.string.amount_to_be_paid)
+
                 binding.proceedBtn.setOnClickListener {
-                    onNavigateProceedToPay(resources.getString(R.string.credit_card_bill))
+                    binding.loanDetailsEnterParent.hide()
+                    binding.loanProccedDetailParent.show()
+                    binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                    binding.proceedBtn.setOnClickListener {
+                        onNavigateProceedToPay(resources.getString(R.string.credit_card_bill))
+                    }
+                    binding.headerLoan.backIv.setOnClickListener {
+                        binding.loanDetailsEnterParent.show()
+                        binding.loanProccedDetailParent.hide()
+                        binding.proceedBtn.setText(R.string.proceed)
+
+                    }
+
+
+
                 }
+
 
 
             }
@@ -129,8 +147,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     emiPaidEt.hide()
                     dthNoteTv.show()
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.dth_recharge))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.dth_recharge))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
 
                 }
 
@@ -148,8 +182,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     loanTypeTv.hide()
                     typeOfLOandParent.hide()
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.ott_subscription))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.ott_subscription))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
 
                 }
 
@@ -168,8 +218,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     recentTransTv.show()
                     recentTransElecRv.show()
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.electricity_bill))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.electricity_bill))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
                 }
 
 
@@ -185,8 +251,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     emiPaidTv.hide()
                     emiPaidEt.hide()
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.broadBand_bill))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.broadBand_bill))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
 
                 }
 
@@ -205,8 +287,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     loanAcntNoTv.setText(R.string.enter_enrolment_number)
                     mobileNoTv.setText(R.string.enter_date_birth)
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.education_fees_bill))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.education_fees_bill))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
                 }
 
 
@@ -222,8 +320,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     loanAcntNoTv.setText(R.string.your_mobile_number)
                     mobileNoTv.setText(R.string.amount_to_be_paid)
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.book_a_cylinder))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.book_a_cylinder))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
                 }
 
 
@@ -242,8 +356,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     institutionAreaTv.setText(R.string.utility_type)
                     loanAcntNoTv.setText(R.string.enter_your_mobile_number)
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.apartment_bill))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.apartment_bill))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
                 }
 
             }
@@ -257,8 +387,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     mobileNoTv.setText(R.string.customer_id)
                     emiPaidTv.setText(R.string.amount_to_paid)
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.gas_pipeline_bill))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.gas_pipeline_bill))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
                 }
 
             }
@@ -273,10 +419,25 @@ private fun showHeaderDetails(text:Int,image:Int){
                     loanAcntNoTv.setText(R.string.bank_account_number)
                     mobileNoTv.setText(R.string.ifsc_code)
                     emiPaidTv.setText(R.string.account_holder_name)
-
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.home_rent_bill))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.home_rent_bill))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
                 }
             }
             BbpsType.WaterBill.type -> {
@@ -291,8 +452,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     emiPaidTv.hide()
                     emiPaidEt.hide()
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.water_bill))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.water_bill))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
                 }
 
             }
@@ -308,8 +485,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     emiPaidTv.hide()
                     emiPaidEt.hide()
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.landline_bill))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.landline_bill))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
                 }
             }
             BbpsType.CableTvBill.type -> {
@@ -325,8 +518,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     loanAcntNoTv.setText(R.string.your_account_number)
                     mobileNoTv.setText(R.string.amount_to_paid)
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.cable_tv_bill))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.cable_tv_bill))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
 
                 }
 
@@ -343,8 +552,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     emiPaidTv.hide()
                     emiPaidEt.hide()
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.insurance_premium))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.insurance_premium))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
                 }
             }
 
@@ -363,8 +588,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     loanAcntNoTv.setText(R.string.enter_state)
                     mobileNoTv.setText(R.string.amount_to_be_paid)
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.mobile_recharge_bill))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.mobile_recharge_bill))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
                     prepaidTv.setOnClickListener{
                         viewHorPre.show()
                         viewHorPost.hide()
@@ -420,8 +661,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     loanAcntNoTv.setText(R.string.enter_state)
                     mobileNoTv.setText(R.string.amount_to_be_paid)
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.mobile_recharge_bill))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.mobile_recharge_bill))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
                     prepaidTv.setOnClickListener{
                         viewHorPre.show()
                         viewHorPost.hide()
@@ -474,8 +731,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     bankTv.setText(R.string.select_operator)
                     loanAcntNoTv.setText(R.string.customer_number)
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.postpaid_bill))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.postpaid_bill))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
                     prepaidTv.setOnClickListener{
                         viewHorPre.show()
                         viewHorPost.hide()
@@ -523,8 +796,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     loanAcntNoTv.hide()
                     enterLoanEt.hide()
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.fastag_recharge))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.fastag_recharge))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
                 }
             }
 
@@ -541,8 +830,24 @@ private fun showHeaderDetails(text:Int,image:Int){
                     loanAcntNoTv.hide()
                     enterLoanEt.hide()
                     binding.proceedBtn.setOnClickListener {
-                        onNavigateProceedToPay(resources.getString(R.string.metro_card_recharge))
+                        binding.loanDetailsEnterParent.hide()
+                        binding.loanProccedDetailParent.show()
+                        binding.proceedBtn.setText(R.string.proceed_to_pay)
+
+                        binding.proceedBtn.setOnClickListener {
+                            onNavigateProceedToPay(resources.getString(R.string.metro_card_recharge))
+                        }
+                        binding.headerLoan.backIv.setOnClickListener {
+                            binding.loanDetailsEnterParent.show()
+                            binding.loanProccedDetailParent.hide()
+                            binding.proceedBtn.setText(R.string.proceed)
+
+                        }
+
+
+
                     }
+
                 }
 
             }

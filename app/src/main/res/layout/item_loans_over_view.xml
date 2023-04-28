@@ -20,27 +20,25 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ovrDueParentArrow"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/_120sdp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_32sdp"
             android:background="@drawable/rectangle_due_red"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/intDueAmountTitleTv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/overDueDaysTv"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:fontFamily="@font/poppins_regular"
+
                 android:paddingVertical="@dimen/_6sdp"
                 android:text="Overdue by 4 days"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_8ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,12 +47,37 @@
         <TextView
             android:id="@+id/intDueAmountTitleTv"
             style="@style/text_10_semi_bold_sky_blue"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Interest Due Amount"
+            android:text="Interest \nDue Amount"
             android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/_20sdp"
+            app:layout_constraintEnd_toStartOf="@+id/clickPayParent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clickPayParent"
+            android:layout_width="@dimen/_17sdp"
+            android:layout_height="@dimen/_17sdp"
+            android:background="@drawable/rec_back_btn"
+            android:padding="@dimen/_2sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/selectPrecard"
+                android:layout_width="@dimen/_13sdp"
+                android:layout_height="@dimen/_13sdp"
+                android:background="@color/splash_screen_one"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <TextView
             android:id="@+id/intDueAmountTv"
@@ -64,8 +87,6 @@
             android:text="INR 6,000"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/intDueAmountTitleTv"
             app:layout_constraintTop_toBottomOf="@+id/intDueAmountTitleTv" />
 

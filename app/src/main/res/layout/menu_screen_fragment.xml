@@ -95,13 +95,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/shapeableImageView">
 
-            <ImageView
-                android:id="@+id/gpIv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/gold_point_half"
-                app:layout_constraintBottom_toTopOf="@+id/goldMenuParent"
-                app:layout_constraintStart_toStartOf="@+id/goldMenuParent" />
+
+<!--            <ImageView-->
+<!--                android:id="@+id/gpIv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/gold_point_half"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/goldMenuParent"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/goldMenuParent" />-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/goldMenuParent"
@@ -142,14 +143,22 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <ImageView
-                android:id="@+id/pcIv"
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationViewCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/gold_point_half"
                 app:layout_constraintBottom_toTopOf="@+id/prepaidMenuCard"
-                app:layout_constraintStart_toStartOf="@+id/prepaidMenuCard" />
+                app:layout_constraintStart_toStartOf="@+id/prepaidMenuCard"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/credit_card" />
+<!--            <ImageView-->
+<!--                android:id="@+id/pcIv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/gold_point_half"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/prepaidMenuCard"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/prepaidMenuCard" />-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/prepaidMenuCard"
@@ -190,13 +199,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <ImageView
-                android:id="@+id/callUsIv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/gold_point_half"
-                app:layout_constraintBottom_toTopOf="@+id/neddSuppMenuCard"
-                app:layout_constraintStart_toStartOf="@+id/neddSuppMenuCard" />
+<!--            <ImageView-->
+<!--                android:id="@+id/callUsIv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/gold_point_half"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/neddSuppMenuCard"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/neddSuppMenuCard" />-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/neddSuppMenuCard"

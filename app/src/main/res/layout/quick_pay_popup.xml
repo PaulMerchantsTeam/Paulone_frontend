@@ -151,6 +151,7 @@
             app:layout_constraintTop_toBottomOf="@id/prefPayAmountTv">
 
             <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/fullPayRadio"
                 style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -160,6 +161,7 @@
                 app:useMaterialThemeColors="false" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/customPayRadio"
                 style="@style/text_11_semi_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -172,13 +174,15 @@
         </RadioGroup>
 
         <EditText
+            android:id="@+id/customPayEt"
             style="@style/text_11_semi_bold_blue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="150dp"
+            android:layout_marginStart="@dimen/_115sdp"
             android:backgroundTint="@color/black"
             android:hint="(INR XXXX)"
             android:inputType="number"
+            android:visibility="gone"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/radioGrp"
@@ -190,7 +194,7 @@
         android:id="@+id/animationViewCard"
         android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_150sdp"
-        android:layout_marginBottom="-75dp"
+        android:layout_marginBottom="@dimen/_minus57sdp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout8"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout8"
         app:layout_constraintHorizontal_bias="0.0"
@@ -246,6 +250,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
+            android:id="@+id/payingAMountText"
             style="@style/text_16_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

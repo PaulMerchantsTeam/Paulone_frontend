@@ -188,13 +188,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/shapeableImageView">
 
-                <ImageView
-                    android:id="@+id/gpIv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/gold_point_half"
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationViewCoin"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginBottom="@dimen/_minus9sdp"
+                    android:layout_marginStart="@dimen/_minus4sdp"
+
                     app:layout_constraintBottom_toTopOf="@+id/goldMenuParent"
-                    app:layout_constraintStart_toStartOf="@+id/goldMenuParent" />
+                    app:layout_constraintStart_toStartOf="@+id/goldMenuParent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/gold_coin" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/goldMenuParent"
@@ -205,7 +210,8 @@
                     app:layout_constraintEnd_toStartOf="@+id/prepaidMenuCard"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/prepaidMenuCard">
+                    app:layout_constraintTop_toTopOf="@+id/prepaidMenuCard"
+                    app:layout_constraintVertical_bias="0.0">
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/gpTv"
@@ -236,13 +242,24 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <ImageView
-                    android:id="@+id/pcIv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/gold_point_half"
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationViewCard"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginBottom="@dimen/_minus12sdp"
+                    android:layout_marginStart="@dimen/_minus4sdp"
                     app:layout_constraintBottom_toTopOf="@+id/prepaidMenuCard"
-                    app:layout_constraintStart_toStartOf="@+id/prepaidMenuCard" />
+                    app:layout_constraintStart_toStartOf="@+id/prepaidMenuCard"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/credit_card" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/pcIv"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:src="@drawable/gold_point_half"-->
+<!--                    app:layout_constraintBottom_toTopOf="@+id/prepaidMenuCard"-->
+<!--                    app:layout_constraintStart_toStartOf="@+id/prepaidMenuCard" />-->
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/prepaidMenuCard"
@@ -283,14 +300,17 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <ImageView
-                    android:id="@+id/callUsIv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/gold_point_half"
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animationViewCall"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginBottom="@dimen/_minus12sdp"
+                    android:layout_marginStart="@dimen/_minus4sdp"
                     app:layout_constraintBottom_toTopOf="@+id/neddSuppMenuCard"
-                    app:layout_constraintStart_toStartOf="@+id/neddSuppMenuCard" />
-
+                    app:layout_constraintStart_toStartOf="@+id/neddSuppMenuCard"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/need_support" />
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/neddSuppMenuCard"
                     android:layout_width="wrap_content"
