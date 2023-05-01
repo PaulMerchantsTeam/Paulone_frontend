@@ -54,7 +54,7 @@
         android:layout_marginStart="@dimen/screen_start_margin"
         android:layout_marginTop="@dimen/screen_end_margin"
         android:layout_marginEnd="@dimen/screen_end_margin"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/complaintTypeParent">
@@ -170,7 +170,7 @@
 
     <TextView
 
-        android:id="@+id/proceedBtn"
+        android:id="@+id/getOtpBtn"
         style="@style/text_12_bold_yellow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -178,8 +178,9 @@
         android:background="@drawable/rec_one_blue_btn"
         android:paddingHorizontal="@dimen/_39sdp"
         android:paddingVertical="@dimen/_8sdp"
-        android:text="@string/proceed"
-        android:visibility="gone"
+        android:text="Get OTP"
+        android:textColor="@color/yellow_main"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mobileNumEt" />
@@ -194,6 +195,7 @@
         android:paddingHorizontal="@dimen/_39sdp"
         android:paddingVertical="@dimen/_8sdp"
         android:text="@string/submit"
+        android:visibility="gone"
         android:textColor="@color/yellow_main"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/trackComplaint"
@@ -209,9 +211,60 @@
         android:paddingHorizontal="@dimen/_8sdp"
         android:paddingVertical="@dimen/ten_dp"
         android:text="@string/track_your_complaint"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/submitBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/submitBtn"
         app:layout_constraintTop_toTopOf="@+id/submitBtn" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ComplaintSuccessFullyRegisterParent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/complaintSuccessFullyRegister"
+            style="@style/text_16_semi_bold_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_22sdp"
+            android:layout_marginTop="@dimen/_49sdp"
+            android:text="@string/complaint_registered_successfully"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/complaintSuccesIv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_31sdp"
+            android:src="@drawable/pay_confirm_tick_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/complaintSuccessFullyRegister" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/timeTakeTv"
+            style="@style/text_12_semi_bold_sky"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_22sdp"
+            android:layout_marginTop="@dimen/_17sdp"
+            android:text="@string/complaint_desc"
+            android:textAlignment="center"
+            android:textColor="@color/text_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/complaintSuccesIv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

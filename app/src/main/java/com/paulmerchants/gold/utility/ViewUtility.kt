@@ -251,8 +251,11 @@ fun RecyclerView.setGoldLoanOverView(type: Int) {
     fun clicked(actionItem: ActionItem) {
         findNavController().navigate(R.id.pmlGoldLoan)
     }
+    fun payNowClicked(actionItem: ActionItem){
+        findNavController().navigate(R.id.paymentModesFrag)
+    }
 
-    val lastStatemnetAdapter = GoldLoanOverViewAdapter(::clicked)
+    val lastStatemnetAdapter = GoldLoanOverViewAdapter(::clicked,::payNowClicked)
     val actionItem1 = ActionItem(
        type,
         0, "231212121"
@@ -315,9 +318,10 @@ fun RecyclerView.setGoldLoanOverView(type: Int) {
 fun RecyclerView.setServicesUi(
     context: Context,
     onMenuServiceClicked: (MenuServices) -> Unit,
-    onMenuServiceClickedTwo: (MenuServices) -> Unit
+    onMenuServiceClickedTwo: (MenuServices) -> Unit,
+    onMenuServiceClickedTitle: (MenuServices) -> Unit
 ) {
-    val menuServiceAdapter = MenuServicesAdapter(onMenuServiceClicked, onMenuServiceClickedTwo)
+    val menuServiceAdapter = MenuServicesAdapter(onMenuServiceClicked, onMenuServiceClickedTwo,onMenuServiceClickedTitle)
     val service1 = MenuServices(
         100,
         context.getString(R.string.privac_settings),

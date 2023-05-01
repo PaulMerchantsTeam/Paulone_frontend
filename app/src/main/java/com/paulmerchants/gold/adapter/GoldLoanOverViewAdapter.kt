@@ -13,7 +13,7 @@ import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 
-class GoldLoanOverViewAdapter(private val buttonClicked: (ActionItem) -> Unit) :
+class GoldLoanOverViewAdapter(private val buttonClicked: (ActionItem) -> Unit, private val pyNowButtonClicked: (ActionItem) -> Unit) :
     ListAdapter<ActionItem, GoldLoanOverViewAdapter.GoldLoanOverViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = GoldLoanOverViewHolder(
@@ -21,7 +21,7 @@ class GoldLoanOverViewAdapter(private val buttonClicked: (ActionItem) -> Unit) :
     )
 
     override fun onBindViewHolder(holder: GoldLoanOverViewHolder, position: Int) {
-        holder.bindLast(getItem(position), buttonClicked)
+        holder.bindLast(getItem(position), buttonClicked, pyNowButtonClicked)
     }
 
     companion object {
@@ -44,7 +44,7 @@ class GoldLoanOverViewAdapter(private val buttonClicked: (ActionItem) -> Unit) :
     inner class GoldLoanOverViewHolder(private val binding: ItemLoansOverViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindLast(actionItem: ActionItem, buttonClicked: (ActionItem) -> Unit) {
+        fun bindLast(actionItem: ActionItem, buttonClicked: (ActionItem) -> Unit,pyNowButtonClicked: (ActionItem) -> Unit) {
             binding.apply {
                 binding.apply {
                     binding.loanNumTv.text = actionItem.name
@@ -63,6 +63,10 @@ class GoldLoanOverViewAdapter(private val buttonClicked: (ActionItem) -> Unit) :
                                     R.color.yellow_main
                                 )
                             )
+
+                        }
+                        loanClosedBtn.setOnClickListener {
+                            pyNowButtonClicked(actionItem)
                         }
                     }
                 } else {

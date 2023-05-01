@@ -211,4 +211,9 @@
         android:name="com.paulmerchants.gold.ui.others.NotificationsScreenFrag"
         android:label="NotificationsScreenFrag"
         tools:layout="@layout/fragment_notiification" />
+    <fragment
+        android:id="@+id/raiseComplaintFrag"
+        android:name="com.paulmerchants.gold.ui.others.RaiseComplaint"
+        android:label="NotificationsScreenFrag"
+        tools:layout="@layout/register_complaint" />
 </navigation>

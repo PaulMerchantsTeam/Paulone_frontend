@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
+import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.common.Constants.SIGNUP_DONE
 import com.paulmerchants.gold.databinding.PhoneAuthFragmentBinding
 import com.paulmerchants.gold.sharedpref.AppSharedPref
@@ -41,6 +42,7 @@ class PhoenNumVerifiactionFragment :
     private var isResendEnabled: Boolean = false
     private var isMobileEntered: Boolean = false
     private var isOtpVerified: Boolean = false
+    private var pinValue: Int? = null
 
 
     companion object {
@@ -67,12 +69,31 @@ class PhoenNumVerifiactionFragment :
 
     override fun PhoneAuthFragmentBinding.initialize() {
         changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
+        pinValue = arguments?.getInt( "ProfileChangePin",0 )
+
     }
 
     override fun onStart() {
         super.onStart()
         //Welcome to Paul Gold,
         //we are happy to serve you!!
+        if (pinValue == 100){
+            binding.apply {
+                titleWelcomTv.hide()
+                pleaseTv.hide()
+                etTv.hide()
+                etPhoenNum.hide()
+                proceedAuthBtn.hide()
+                etPhoenNum.hide()
+                createMpinAndSuccessMain.root.show()
+                createMpinAndSuccessMain.setUpMPinParent.show()
+                createMpinAndSuccessMain.finalSIgnUpParent.hide()
+                hideAndShowOtpView()
+            }
+        }
+        else
+
+
         diffColorText(
             "Welcome to Paul Gold,\nwe are",
             "happy",

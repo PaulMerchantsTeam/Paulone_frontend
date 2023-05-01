@@ -12,7 +12,7 @@ import com.paulmerchants.gold.utility.show
 class MenuServicesHolder(private val binding: ItemServiceMenuBinding) :
     ViewHolder(binding.root) {
 
-    fun bind(actionItem: MenuServices, onMenuServiceClicked: (MenuServices) -> Unit,onMenuServiceClickedTwo: (MenuServices) -> Unit) {
+    fun bind(actionItem: MenuServices, onMenuServiceClicked: (MenuServices) -> Unit,onMenuServiceClickedTwo: (MenuServices) -> Unit,onMenuServiceTitleClicked: (MenuServices) -> Unit) {
         if (actionItem.serviceId >= 100) {
             binding.titleServiceTv.setTextColor(
                 ContextCompat.getColor(
@@ -59,7 +59,7 @@ class MenuServicesHolder(private val binding: ItemServiceMenuBinding) :
         }
 
         binding.titleServiceTv.setOnClickListener {
-//            onMenuServiceClicked(actionItem)
+            onMenuServiceTitleClicked(actionItem)
         }
     }
 }

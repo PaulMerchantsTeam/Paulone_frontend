@@ -24,6 +24,7 @@
             android:focusable="true"
             android:padding="@dimen/_8sdp"
             android:visibility="visible"
+            app:itemRippleColor="@color/white_gray"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/circle_profile_black" />
@@ -36,6 +37,7 @@
             android:clickable="true"
             android:focusable="true"
             android:padding="@dimen/_8sdp"
+            app:itemRippleColor="@color/white_gray"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/profileIv"
             app:layout_constraintEnd_toEndOf="parent"

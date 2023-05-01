@@ -6,10 +6,8 @@ import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.BillNMoreScreenFragmentBinding
-import com.paulmerchants.gold.databinding.MainScreenFragmentBinding
 import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.model.ActionItem
-import com.paulmerchants.gold.ui.others.BillsFragment
 import com.paulmerchants.gold.utility.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,7 +15,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class BillsAndMoreScreenFrag :
     BaseFragment<BillNMoreScreenFragmentBinding>(BillNMoreScreenFragmentBinding::inflate) {
     lateinit var navController: NavController
+    lateinit var otherValue: String
+
     override fun BillNMoreScreenFragmentBinding.initialize() {
+        otherValue = arguments?.getString("Other","").toString()
         navController = findNavController()
         binding.headerBillMore.apply {
             titlePageTv.text = getString(R.string.bills_amp_more)
@@ -77,6 +78,11 @@ class BillsAndMoreScreenFrag :
             }
 
         }
+       if(otherValue == "other"){
+           otherBills()
+       }
+
+
 
     }
 
@@ -103,6 +109,17 @@ class BillsAndMoreScreenFrag :
             fastIv.startCustomAnimation(R.drawable.anim_fastag_icon)
             challanIv.startCustomAnimation(R.drawable.anim_challan_icon)
             metroCardIv.startCustomAnimation(R.drawable.anim_metro_card)
+
+        }
+    }
+
+    private fun otherBills(){
+        binding.apply {
+           billSRechargeMain.otherEMisParent.show()
+            billSRechargeMain. billsNRechargerParent.hide()
+            billSRechargeMain. billsAndRechargeTv2.hide()
+            billSRechargeMain. billsAndRechargeTv.hide()
+            billSRechargeMain. forMoreParentAllAction.hide()
 
         }
     }

@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.ui.bottom
 
+import android.os.Bundle
 import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
@@ -7,6 +8,7 @@ import com.paulmerchants.gold.adapter.MenuServicesAdapter
 import com.paulmerchants.gold.adapter.TransacDoneAdapter
 import com.paulmerchants.gold.adapter.TypeServiceAdapter
 import com.paulmerchants.gold.common.BaseFragment
+import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.customviews.CustomViews
 import com.paulmerchants.gold.databinding.DummyMenuScreenFragmentBinding
 import com.paulmerchants.gold.model.MenuServices
@@ -23,15 +25,19 @@ class MenuScreenFrag :
     BaseFragment<DummyMenuScreenFragmentBinding>(DummyMenuScreenFragmentBinding::inflate) {
 
     private var myView: CustomViews? = null
-    private val menuServiceAdapter = MenuServicesAdapter(::onMenuServiceClicked,::onMenuServiceClicedTwo)
+    private val menuServiceAdapter = MenuServicesAdapter(::onMenuServiceClicked,::onMenuServiceClicedTwo,::onMenuServiceTitleClicked)
 
     private fun onMenuServiceClicedTwo(menuServices: MenuServices) {
         Log.d("TAG", "onMenuServiceClicked: /////${menuServices.serviceId}")
         when (menuServices.serviceId) {
             1 -> {
+                findNavController().navigate(R.id.applyLoanForNewUser)
             }
             2 -> {
-                findNavController().navigate(R.id.billsAndMoreScreenFrag)
+                val bundle = Bundle().apply {
+                    putString("Other","other")
+                }
+                findNavController().navigate(R.id.billsAndMoreScreenFrag,bundle)
             }
             3 -> {
                 findNavController().navigate(R.id.billsFragment)
@@ -72,13 +78,13 @@ class MenuScreenFrag :
                 findNavController().navigate(R.id.billsAndMoreScreenFrag)
             }
             3 -> {
-                findNavController().navigate(R.id.billsFragment)
+                findNavController().navigate(R.id.goldLoanScreenFrag)
             }
             4 -> {
                 findNavController().navigate(R.id.pcFrag)
             }
             5 -> {
-                findNavController().navigate(R.id.transactionDetailFrag)
+                findNavController().navigate(R.id.creditScoreScreenFrag)
             }
             6 -> {
             }
@@ -100,6 +106,10 @@ class MenuScreenFrag :
                 Log.d("TAG", "onMenuServiceClicked: [=false")
             }
         }
+
+    }
+
+    private fun onMenuServiceTitleClicked(menuServices: MenuServices){
 
     }
 
