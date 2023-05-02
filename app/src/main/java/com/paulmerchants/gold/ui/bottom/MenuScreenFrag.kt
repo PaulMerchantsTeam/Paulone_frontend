@@ -25,7 +25,9 @@ class MenuScreenFrag :
     BaseFragment<DummyMenuScreenFragmentBinding>(DummyMenuScreenFragmentBinding::inflate) {
 
     private var myView: CustomViews? = null
+
     private val menuServiceAdapter = MenuServicesAdapter(::onMenuServiceClicked,::onMenuServiceClicedTwo,::onMenuServiceTitleClicked)
+
 
     private fun onMenuServiceClicedTwo(menuServices: MenuServices) {
         Log.d("TAG", "onMenuServiceClicked: /////${menuServices.serviceId}")
@@ -42,8 +44,9 @@ class MenuScreenFrag :
             3 -> {
                 findNavController().navigate(R.id.billsFragment)
             }
-            4 -> {findNavController().navigate(R.id.pcFrag)
-                }
+            4 -> {
+                findNavController().navigate(R.id.pcFrag)
+            }
             5 -> {
             }
             6 -> {
@@ -56,7 +59,7 @@ class MenuScreenFrag :
             }
             10 -> {
             }
-            11-> {
+            11 -> {
             }
             12 -> {
             }
@@ -89,14 +92,14 @@ class MenuScreenFrag :
             6 -> {
             }
             7 -> {
-        }
+            }
             8 -> {
             }
             9 -> {
             }
             10 -> {
             }
-            11-> {
+            11 -> {
             }
             12 -> {
             }

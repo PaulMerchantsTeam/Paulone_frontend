@@ -93,13 +93,13 @@
         android:id="@+id/homeScreenFrag"
         android:name="com.paulmerchants.gold.ui.bottom.HomeScreenFrag"
         android:label="HomeScreenFrag"
-        tools:layout="@layout/home_screen_fragment" >
+        tools:layout="@layout/home_screen_fragment">
         <action
             android:id="@+id/action_homeScreenFrag_to_notificationsScreenFrag"
             app:destination="@id/notificationsScreenFrag"
-            app:launchSingleTop="true"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:launchSingleTop="true"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/homeScreenFrag" />
@@ -111,7 +111,7 @@
         tools:layout="@layout/menu_screen_fragment" />
     <fragment
         android:id="@+id/pcFrag"
-        android:name="com.paulmerchants.gold.ui.others.PcFrag"
+        android:name="com.paulmerchants.gold.ui.others.PrepaidCardMainFrag"
         android:label="PcFrag"
         tools:layout="@layout/prepaid_screen_frag" />
     <!--    <fragment-->

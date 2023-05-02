@@ -74,10 +74,10 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/upcomingTitleTv"
+                    style="@style/text_16_bold_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/screen_start_margin"
-                    style="@style/text_16_bold_blue"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:lineSpacingExtra="@dimen/_3sdp"
                     android:text="UPCOMING"
@@ -87,13 +87,13 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/upcomingTitleTv2"
+                    style="@style/text_12_regular_white"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_3sdp"
                     android:fontFamily="@font/poppins_regular"
                     android:lineSpacingExtra="@dimen/_3sdp"
                     android:text="(Your loyalty, our royalty)"
-                    style="@style/text_12_regular_white"
                     android:textColor="@color/splash_screen_three"
                     android:textSize="@dimen/_9ssp"
                     app:layout_constraintBottom_toBottomOf="@+id/upcomingTitleTv"
@@ -105,9 +105,8 @@
                     android:id="@+id/rvUpcomingDueLoans"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
                     android:orientation="horizontal"
-                    android:paddingStart="@dimen/screen_start_margin"
-                    android:paddingEnd="@dimen/screen_end_margin"
                     android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -127,11 +126,11 @@
                 android:id="@+id/loanOverViewParent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 android:layout_marginStart="@dimen/_17sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_17sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/parentDueLoan">
 
@@ -229,18 +228,19 @@
                     android:id="@+id/addCardViewParent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
                     android:layout_marginHorizontal="@dimen/screen_start_margin"
+                    android:layout_marginTop="@dimen/_12sdp"
                     app:cardCornerRadius="@dimen/_6sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/yrCardTV2" >
+                    app:layout_constraintTop_toBottomOf="@+id/yrCardTV2">
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:visibility="gone"
-                        android:background="@drawable/new_user_card_grad_three">
+                        android:background="@drawable/new_user_card_grad_three"
+                        android:visibility="gone">
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/materialTextView17"
@@ -265,12 +265,12 @@
                             android:id="@+id/addCardBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/rec_one_yellow_btn"
-                            android:padding="@dimen/_7sdp"
-                            android:text="@string/add_now"
                             android:layout_marginStart="@dimen/screen_start_margin"
                             android:layout_marginTop="@dimen/_23sdp"
                             android:layout_marginBottom="@dimen/_17sdp"
+                            android:background="@drawable/rec_one_yellow_btn"
+                            android:padding="@dimen/_7sdp"
+                            android:text="@string/add_now"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/materialTextView17" />
