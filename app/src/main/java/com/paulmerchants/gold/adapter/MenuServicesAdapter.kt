@@ -10,7 +10,11 @@ import com.paulmerchants.gold.databinding.ItemServiceMenuBinding
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.MenuServices
 
-class MenuServicesAdapter(private val onMenuServiceClicked: (MenuServices) -> Unit,private val onMenuServiceClickedTwo: (MenuServices) -> Unit,private val onMenuServiceTitleCLicked: (MenuServices) -> Unit) :
+class MenuServicesAdapter(
+    private val onMenuServiceClicked: (MenuServices) -> Unit,
+    private val onMenuServiceClickedTwo: (MenuServices) -> Unit,
+    private val onMenuServiceTitleCLicked: (MenuServices) -> Unit
+) :
     ListAdapter<MenuServices, MenuServicesHolder>(DIFF_CALLBACK) {
 
 
@@ -19,7 +23,12 @@ class MenuServicesAdapter(private val onMenuServiceClicked: (MenuServices) -> Un
     )
 
     override fun onBindViewHolder(holder: MenuServicesHolder, position: Int) {
-        holder.bind(getItem(position), onMenuServiceClicked,onMenuServiceClickedTwo,onMenuServiceTitleCLicked)
+        holder.bind(
+            getItem(position),
+            onMenuServiceClicked,
+            onMenuServiceClickedTwo,
+            onMenuServiceTitleCLicked
+        )
     }
 
     companion object {

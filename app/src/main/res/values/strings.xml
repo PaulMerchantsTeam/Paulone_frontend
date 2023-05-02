@@ -345,6 +345,12 @@
     <string name="go_to_payment">Go to Payment</string>
     <string name="pay_now">PAY NOW</string>
     <string name="pay_all_in_one_go">Pay all in one go</string>
+    <string name="change_card_pin">Change card pin</string>
+    <string name="reissue_new_card">Reissue a new card</string>
+    <string name="theft_or_closure">Theft or closure</string>
+    <string name="card_lost_stollen">Card lost or stolen</string>
+    <string name="terminated_card_srvc">Terminate your card services</string>
+    <string name="reset_card_pin">RESET CARD PIN</string>
 
     <string-array name="month">
         <item>January</item>

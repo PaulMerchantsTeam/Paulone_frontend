@@ -13,24 +13,25 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PmlGoldLoan : BaseFragment<PmlGoldLoanBinding>(PmlGoldLoanBinding::inflate) {
- private lateinit var dueLoans:DueLoans
+    private lateinit var dueLoans: DueLoans
     override fun PmlGoldLoanBinding.initialize() {
-dueLoans = (DueLoans(1,12,2000))
+        dueLoans = (DueLoans(1, 12, 2000))
     }
 
     override fun onStart() {
         super.onStart()
         binding.apply {
-            dueLoanParent.viewStateMent.setOnClickListener {
 
+            dueLoanParent.viewStateMent.setOnClickListener {
                 findNavController().navigate(R.id.loanStatementFrag)
             }
-            dueLoanParent.payNowBtn.setOnClickListener {
 
+            dueLoanParent.payNowBtn.setOnClickListener {
                 onPayDueClicked(dueLoans)
             }
         }
     }
+
     private fun onPayDueClicked(dueLoans: DueLoans) {
         val bundle = Bundle().apply {
             putParcelable(Constants.DUE_LOAN_DATA, dueLoans)

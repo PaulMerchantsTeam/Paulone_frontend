@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/splash_screen_two">
+
+    <include
+        android:id="@+id/headerResetPin"
+        layout="@layout/header_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/prepaidCardDescTv"
+        style="@style/text_11_medium_blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:gravity="center"
+        android:text="For prepaid card ending with xxxx 2109"
+        android:textColor="@color/splash_screen_three"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerResetPin" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/expiryMonthTv"
+        style="@style/text_11_medium_blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:text="Expiry Month"
+        android:textColor="@color/splash_screen_three"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prepaidCardDescTv" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/monthParentSpin"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/edit_text_rect"
+        app:layout_constraintEnd_toEndOf="@+id/expiryMonthTv"
+        app:layout_constraintStart_toStartOf="@+id/expiryMonthTv"
+        app:layout_constraintTop_toBottomOf="@+id/expiryMonthTv">
+
+        <Spinner
+            android:id="@+id/monthSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:entries="@array/month"
+            android:paddingStart="@dimen/ten_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/expiryYearTv"
+        style="@style/text_11_medium_blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:text="Expiry Year"
+        android:textColor="@color/splash_screen_three"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/monthParentSpin" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/yearParentSpin"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/edit_text_rect"
+        app:layout_constraintEnd_toEndOf="@+id/expiryMonthTv"
+        app:layout_constraintStart_toStartOf="@+id/expiryMonthTv"
+        app:layout_constraintTop_toBottomOf="@+id/expiryYearTv">
+
+        <Spinner
+            android:id="@+id/yearSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:entries="@array/year"
+            android:paddingStart="@dimen/ten_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/enterNewPinTv"
+        style="@style/text_11_medium_blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:text="Enter New Pin"
+        android:textColor="@color/splash_screen_three"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yearParentSpin" />
+
+
+    <EditText
+        android:id="@+id/newPin1Et"
+        style="@style/text_11_medium_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_29sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/edit_text_rect"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center_vertical"
+        android:hint="1"
+        android:inputType="numberPassword"
+        android:maxLength="1"
+        android:paddingHorizontal="@dimen/_18sdp"
+        android:textColor="@color/text_color"
+        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintEnd_toStartOf="@+id/newPin2Et"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enterNewPinTv" />
+
+    <EditText
+        android:id="@+id/newPin2Et"
+        style="@style/text_11_medium_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_29sdp"
+        android:background="@drawable/edit_text_rect"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center_vertical"
+        android:hint="2"
+        android:maxLength="1"
+        android:inputType="numberPassword"
+        android:paddingHorizontal="@dimen/_18sdp"
+        android:textColor="@color/text_color"
+
+        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintBottom_toBottomOf="@+id/newPin1Et"
+        app:layout_constraintEnd_toStartOf="@+id/newPin3Et"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/newPin1Et"
+        app:layout_constraintTop_toTopOf="@+id/newPin1Et" />
+
+
+    <EditText
+        android:id="@+id/newPin3Et"
+        style="@style/text_11_medium_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_29sdp"
+        android:background="@drawable/edit_text_rect"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center_vertical"
+        android:hint="3"
+        android:inputType="numberPassword"
+        android:maxLength="1"
+        android:paddingHorizontal="@dimen/_18sdp"
+        android:textColor="@color/text_color"
+        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintBottom_toBottomOf="@+id/newPin2Et"
+        app:layout_constraintEnd_toStartOf="@+id/newPin4Et"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/newPin2Et"
+        app:layout_constraintTop_toTopOf="@+id/newPin1Et" />
+
+    <EditText
+        android:id="@+id/newPin4Et"
+        style="@style/text_11_medium_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_29sdp"
+        android:background="@drawable/edit_text_rect"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center_vertical"
+        android:hint="4"
+        android:inputType="numberPassword"
+        android:maxLength="1"
+        android:paddingHorizontal="@dimen/_18sdp"
+        android:textColor="@color/text_color"
+        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintBottom_toBottomOf="@+id/newPin3Et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/newPin3Et"
+        app:layout_constraintTop_toTopOf="@+id/newPin3Et" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/reconmfirmNewPinTv"
+        style="@style/text_11_medium_blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:text="Enter New Pin"
+        android:textColor="@color/splash_screen_three"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newPin1Et" />
+
+
+    <EditText
+        android:id="@+id/newConfirmPin1Et"
+        style="@style/text_11_medium_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_29sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/edit_text_rect"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center_vertical"
+        android:hint="1"
+        android:inputType="numberPassword"
+        android:maxLength="1"
+        android:paddingHorizontal="@dimen/_18sdp"
+        android:textColor="@color/text_color"
+        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintEnd_toStartOf="@+id/newConfirmPin2Et"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reconmfirmNewPinTv" />
+
+    <EditText
+        android:id="@+id/newConfirmPin2Et"
+        style="@style/text_11_medium_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_29sdp"
+        android:background="@drawable/edit_text_rect"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center_vertical"
+        android:hint="2"
+        android:maxLength="1"
+        android:inputType="numberPassword"
+        android:paddingHorizontal="@dimen/_18sdp"
+        android:textColor="@color/text_color"
+        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintBottom_toBottomOf="@+id/newConfirmPin1Et"
+        app:layout_constraintEnd_toStartOf="@+id/newConfirmPin3Et"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/newConfirmPin1Et"
+        app:layout_constraintTop_toTopOf="@+id/newConfirmPin1Et" />
+
+
+    <EditText
+        android:id="@+id/newConfirmPin3Et"
+        style="@style/text_11_medium_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_29sdp"
+        android:background="@drawable/edit_text_rect"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center_vertical"
+        android:hint="3"
+        android:inputType="numberPassword"
+        android:maxLength="1"
+        android:paddingHorizontal="@dimen/_18sdp"
+        android:textColor="@color/text_color"
+        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintBottom_toBottomOf="@+id/newConfirmPin2Et"
+        app:layout_constraintEnd_toStartOf="@+id/newConfirmPin4Et"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/newConfirmPin2Et"
+        app:layout_constraintTop_toTopOf="@+id/newConfirmPin2Et" />
+
+    <EditText
+        android:id="@+id/newConfirmPin4Et"
+        style="@style/text_11_medium_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_29sdp"
+        android:background="@drawable/edit_text_rect"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center_vertical"
+        android:hint="4"
+        android:inputType="numberPassword"
+        android:maxLength="1"
+        android:paddingHorizontal="@dimen/_18sdp"
+        android:textColor="@color/text_color"
+        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintBottom_toBottomOf="@+id/newConfirmPin3Et"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/newConfirmPin3Et"
+        app:layout_constraintTop_toTopOf="@+id/newConfirmPin3Et" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/proceedParent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_75sdp"
+        android:background="@color/pg_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/proceedBtn"
+            style="@style/text_12_semi_bold_sky"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/color_prim_one_40"
+            android:paddingStart="@dimen/_65sdp"
+            android:paddingTop="@dimen/screen_start_margin"
+            android:paddingEnd="@dimen/_65sdp"
+            android:paddingBottom="@dimen/screen_end_margin"
+            android:text="@string/confirm"
+            android:textColor="@color/yellow_main"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

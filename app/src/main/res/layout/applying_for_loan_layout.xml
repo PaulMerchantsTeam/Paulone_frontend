@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/splash_screen_two"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/splash_screen_two">
 
     <include
         android:id="@+id/header"
@@ -19,8 +19,8 @@
         android:layout_marginHorizontal="@dimen/_16sdp"
         android:layout_marginTop="@dimen/_31sdp"
 
-        app:layout_constraintEnd_toEndOf="parent"
         android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header">
 
@@ -145,13 +145,13 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/showingTv"
         style="@style/text_18_semi_bold_sk_blue"
-        android:layout_marginTop="@dimen/_80sdp"
-        android:layout_marginStart="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_46sdp"
         android:layout_width="match_parent"
-android:visibility="gone"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_80sdp"
+        android:layout_marginEnd="@dimen/_46sdp"
         android:text="@string/thanks_for_showing_intere"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header" />
@@ -164,9 +164,9 @@ android:visibility="gone"
         android:layout_marginStart="@dimen/_16sdp"
         android:layout_marginTop="@dimen/_33sdp"
         android:layout_marginEnd="@dimen/_43sdp"
-        android:visibility="gone"
-
         android:text="One of our executive will connect with you in next 24-48 hours. Kindly allow us time till then. "
+
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showingTv" />

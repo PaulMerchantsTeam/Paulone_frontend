@@ -29,6 +29,7 @@ import com.google.android.material.dialog.MaterialDialogs
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.*
+import com.paulmerchants.gold.databinding.DialogPinRestSuccessBinding
 import com.paulmerchants.gold.databinding.OtpFillLayoutBinding
 import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
 import com.paulmerchants.gold.enums.BbpsType
@@ -50,7 +51,7 @@ fun RecyclerView.setUiOnHomeSweetHomeBills(context: Context, onBillClicked: (Act
     val homeSweetBillsAdapter = HomeSweetBillsAdapter(onBillClicked)
     val actionItem1 = ActionItem(
         BbpsType.Electricity.type,
-       R.drawable.anim_elec_icon,
+        R.drawable.anim_elec_icon,
         context.getString(R.string.electricity)
     )
     val actionItem2 =
@@ -90,7 +91,11 @@ fun RecyclerView.setUiOnHomeSweetHomeBills(context: Context, onBillClicked: (Act
         context.getString(R.string.homerent)
     )
     val actionItem8 =
-        ActionItem(BbpsType.WaterBill.type, R.drawable.anim_water_icon, context.getString(R.string.water))
+        ActionItem(
+            BbpsType.WaterBill.type,
+            R.drawable.anim_water_icon,
+            context.getString(R.string.water)
+        )
     val actionItem9 =
         ActionItem(
             BbpsType.LandLineBill.type,
@@ -251,13 +256,14 @@ fun RecyclerView.setGoldLoanOverView(type: Int) {
     fun clicked(actionItem: ActionItem) {
         findNavController().navigate(R.id.pmlGoldLoan)
     }
-    fun payNowClicked(actionItem: ActionItem){
+
+    fun payNowClicked(actionItem: ActionItem) {
         findNavController().navigate(R.id.paymentModesFrag)
     }
 
-    val lastStatemnetAdapter = GoldLoanOverViewAdapter(::clicked,::payNowClicked)
+    val lastStatemnetAdapter = GoldLoanOverViewAdapter(::clicked, ::payNowClicked)
     val actionItem1 = ActionItem(
-       type,
+        type,
         0, "231212121"
     )
     val actionItem2 = ActionItem(
@@ -321,7 +327,11 @@ fun RecyclerView.setServicesUi(
     onMenuServiceClickedTwo: (MenuServices) -> Unit,
     onMenuServiceClickedTitle: (MenuServices) -> Unit
 ) {
-    val menuServiceAdapter = MenuServicesAdapter(onMenuServiceClicked, onMenuServiceClickedTwo,onMenuServiceClickedTitle)
+    val menuServiceAdapter = MenuServicesAdapter(
+        onMenuServiceClicked,
+        onMenuServiceClickedTwo,
+        onMenuServiceClickedTitle
+    )
     val service1 = MenuServices(
         100,
         context.getString(R.string.privac_settings),
@@ -358,6 +368,23 @@ fun RecyclerView.setServicesUi(
     this.adapter = menuServiceAdapter
 }
 
+fun Fragment.showResetPinSuccessDialog() {
+    val sBinding = DialogPinRestSuccessBinding.inflate(layoutInflater)
+    val builder = MaterialAlertDialogBuilder(
+        requireContext(), R.style.MaterialAlertDialogStyle
+    ).setView(sBinding.root).setCancelable(true).create()
+    builder.apply {
+        window?.setLayout(
+            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        setCancelable(false)
+        setContentView(sBinding.root)
+    }
+    sBinding.cancelBtn.setOnClickListener {
+        builder.dismiss()
+    }
+    builder.show()
+}
 
 fun View.show() {
     visibility = View.VISIBLE

@@ -39,6 +39,15 @@
         app:launchSingleTop="true"
         app:popUpTo="@id/homeScreenFrag" />
 
+    <action
+        android:id="@+id/action_to_resetPinCard"
+        app:destination="@id/resetCardPinFrag"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:launchSingleTop="true"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:popUpTo="@id/pcFrag" />
 
     <fragment
         android:id="@+id/splashFragment"
@@ -216,4 +225,9 @@
         android:name="com.paulmerchants.gold.ui.others.RaiseComplaint"
         android:label="NotificationsScreenFrag"
         tools:layout="@layout/register_complaint" />
+    <fragment
+        android:id="@+id/resetCardPinFrag"
+        android:name="com.paulmerchants.gold.ui.others.ResetCardPinFrag"
+        android:label="ResetCardPinFrag"
+        tools:layout="@layout/reset_card_pin" />
 </navigation>
