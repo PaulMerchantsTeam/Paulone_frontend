@@ -7,12 +7,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
-import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.ProfileLayoutBinding
-import com.paulmerchants.gold.databinding.QuickPayPopupBinding
 import com.paulmerchants.gold.model.MenuServices
 import com.paulmerchants.gold.sharedpref.AppSharedPref
-import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.setServicesUi
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,15 +34,10 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             findNavController().navigateUp()
         }
         binding.editProfileBtn.setOnClickListener {
-            binding.toolbar.hide()
+binding.toolbar.hide()
             binding.appBarCollaps.setBackgroundColor(resources.getColor(R.color.splash_screen_two))
-            binding.backProfileIv.startAnimation(
-                AnimationUtils.loadAnimation(
-                    requireContext(),
-                    R.anim.slide_zoom_out
-                )
-            )
-            lifecycleScope.launch {
+           binding.backProfileIv.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_zoom_out))
+            lifecycleScope.launch{
                 delay(300)
                 findNavController().navigate(
                     R.id.editProfileScreenFrag,
@@ -57,31 +49,26 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
     }
 
     private fun settingUi() {
-        binding.profileSettingsRv.setServicesUi(
-            requireContext(),
-            ::onMenuServiceClicked,
-            ::onMenuServiceClickedTwo,
-            ::onMenuServiceClickedTitle
-        )
+        binding.profileSettingsRv.setServicesUi(requireContext(),::onMenuServiceClicked, ::onMenuServiceClickedTwo,::onMenuServiceClickedTitle )
     }
 
     private fun onMenuServiceClicked(menuServices: MenuServices) {
-        var headerValue: Int? = null
+         var headerValue: Int? = null
         when (menuServices.serviceId) {
             100 -> {
                 headerValue = 100
 
                 val changePinBundle = Bundle().apply {
-                    putInt("ProfileChangePin", headerValue)
+                    putInt("ProfileChangePin",headerValue)
                 }
 
-                findNavController().navigate(R.id.phoenNumVerifiactionFragment, changePinBundle)
+                findNavController().navigate(R.id.phoenNumVerifiactionFragment,changePinBundle)
             }
             101 -> {
                 findNavController().navigate(R.id.menuScreenFrag)
             }
             103 -> {
-                //Need Ui for your spent
+               //Need Ui for your spent
             }
             104 -> {
 //playStore
@@ -96,24 +83,25 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             }
         }
     }
-
     private fun onMenuServiceClickedTwo(menuServices: MenuServices) {
         when (menuServices.serviceId) {
             104 -> {
-                findNavController().navigate(R.id.raiseComplaintFrag)
+findNavController().navigate(R.id.raiseComplaintFrag)
             }
         }
     }
-
     private fun onMenuServiceClickedTitle(menuServices: MenuServices) {
         when (menuServices.serviceId) {
             105 -> {
                 Log.d("TAG", "onMenuServiceClickedTitle: logoutClicked")
                 findNavController().navigate(R.id.phoenNumVerifiactionFragment)
+//                findNavController().navigateUp()
                 AppSharedPref.clearSharedPref()
             }
         }
     }
+
+
 
 
 }
