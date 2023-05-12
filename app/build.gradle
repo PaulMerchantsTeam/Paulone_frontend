@@ -36,6 +36,9 @@ android {
             shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            buildConfigField "String", "BASE_URL", "\"http://localhost:52693/api/\""
+        }
         benchmark {
             signingConfig signingConfigs.debug
             matchingFallbacks = ['release']
@@ -109,6 +112,13 @@ dependencies {
     def lottieVersion = "3.4.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.6.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.6.0"
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+
     //gson converter
     implementation 'com.google.code.gson:gson:2.8.8'
 
@@ -129,5 +139,7 @@ dependencies {
     implementation 'com.intuit.ssp:ssp-android:1.1.0'
 
 //    implementation 'com.google.android.gms:play-services-places:20.0.0'
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+
 
 }

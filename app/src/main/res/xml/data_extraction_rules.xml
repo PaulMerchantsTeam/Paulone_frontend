@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--
    Sample data extraction rules file; uncomment and customize as necessary.
    See https://developer.android.com/about/versions/12/backup-restore#xml-changes
+   https://developer.android.com/training/app-links/verify-android-applinks
    for details.
 -->
 <data-extraction-rules>
