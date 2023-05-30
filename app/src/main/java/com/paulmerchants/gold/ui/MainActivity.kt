@@ -41,6 +41,10 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         setContentView(binding.root)
 //        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         AppUtility.changeStatusBarWithReqdColor(this, R.color.splash_screen_two)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+            WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
+        )
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.battery_main_nav_graph) as NavHostFragment
         navController = navHostFragment.navController

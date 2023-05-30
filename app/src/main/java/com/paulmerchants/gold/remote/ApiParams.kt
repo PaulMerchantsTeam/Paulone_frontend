@@ -1,20 +1,30 @@
 package com.paulmerchants.gold.remote
 
+import com.paulmerchants.gold.model.RequestLogin
+import com.paulmerchants.gold.model.RespGetCustomer
+import com.paulmerchants.gold.model.RespLogin
+import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface ApiParams {
 
     @POST("Login/GetLogin")
-    fun getLogin()
+    fun getLogin(
+        @Body login: RequestLogin
+    ): Response<RespLogin>
 
     @GET("Login/GetCustomer")
-    fun getCustomer()
+    fun getCustomer(
+        @Query("MobileNo") MobileNo: String
+    ): RespGetCustomer
 
     @GET("LoanDetails/GetLoanOutstanding")
     fun getLoanOutstanding()
 
-    @GET("LoanDetails/GetLoanDueDate")
+    @GET("LoanDetails/GetLoanDueDate")F
     fun getLoanDueDate()
 
     @GET("LoanDetails/GetPendingInterestDues")

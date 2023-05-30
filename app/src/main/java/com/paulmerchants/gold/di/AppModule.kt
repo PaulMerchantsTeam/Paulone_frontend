@@ -32,7 +32,6 @@ class AppModule {
         )
     }
 
-
     fun provideOkHttpClient(
         cache: Cache
     ): OkHttpClient = if (BuildConfig.DEBUG) {

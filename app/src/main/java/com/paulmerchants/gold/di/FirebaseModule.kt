@@ -26,10 +26,5 @@ class FirebaseModule {
         return Firebase.auth
     }
 
-    @Provides
-    fun provideRemoteConfig():FirebaseRemoteConfig{
-        return Firebase.remoteConfig
-    }
-
 
 }

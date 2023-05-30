@@ -13,5 +13,5 @@
 <!--        android:duration="400" />-->
     <item
         android:drawable="@drawable/gold_layer4"
-        android:duration="500" />
+        android:duration="2000" />
 </animation-list>
