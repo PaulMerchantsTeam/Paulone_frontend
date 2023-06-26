@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.di
 
+
 import com.bumptech.glide.load.engine.cache.ExternalPreferredCacheDiskCacheFactory
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -21,7 +22,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
-
     @Provides
     fun cache(): Cache {
         val httpCacheDirectory =
@@ -32,6 +32,8 @@ class AppModule {
         )
     }
 
+    @Provides
+    @Singleton
     fun provideOkHttpClient(
         cache: Cache
     ): OkHttpClient = if (BuildConfig.DEBUG) {
@@ -49,9 +51,11 @@ class AppModule {
         .cache(cache)
         .build()
 
+
     @Provides
     @Singleton
     fun gson(): Gson = GsonBuilder().setLenient().create()
+
 
     @Provides
     @Singleton
@@ -69,6 +73,5 @@ class AppModule {
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiParams =
         retrofit.create(ApiParams::class.java)
-
 
 }

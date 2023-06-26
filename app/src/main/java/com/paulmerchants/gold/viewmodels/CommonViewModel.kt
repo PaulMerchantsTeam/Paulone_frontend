@@ -4,18 +4,22 @@ import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
 import com.paulmerchants.gold.R
+import com.paulmerchants.gold.model.RequestLogin
 import com.paulmerchants.gold.place.Place
+import com.paulmerchants.gold.remote.ApiParams
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CommonViewModel @Inject constructor() : ViewModel() {
+class CommonViewModel @Inject constructor(private val apiParams: ApiParams) : ViewModel() {
     private var remoteDataList: List<Place>? = null
     private var listOfLocation: List<com.paulmerchants.gold.place.Place>? = null
 
@@ -35,6 +39,7 @@ class CommonViewModel @Inject constructor() : ViewModel() {
         remoteConfig.setDefaultsAsync(R.xml.places)
         loadData()
     }
+
 
     fun timerStart(millis: Long) {
         timer = object : CountDownTimer(millis, 1000) {
@@ -58,12 +63,14 @@ class CommonViewModel @Inject constructor() : ViewModel() {
                 }
                 placesLive.postValue(ch as MutableList<Place>?)
             }
+
             "pb", "punjab", "panjab", "pun", "punj" -> {
                 val pb = listOfLocation?.filter {
                     it.city == "pb"
                 }
                 placesLive.postValue(pb as MutableList<Place>?)
             }
+
             else -> {
                 placesLive.postValue(listOfLocation as MutableList<Place>?)
             }

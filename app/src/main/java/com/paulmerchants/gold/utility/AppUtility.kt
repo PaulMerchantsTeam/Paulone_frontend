@@ -12,8 +12,44 @@ import androidx.navigation.NavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.model.ActionItem
+import javax.crypto.Cipher
+import javax.crypto.SecretKey
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
+
 
 object AppUtility {
+
+
+    @Throws(Exception::class)
+    fun encrypt(
+        plaintext: ByteArray?,
+        key: SecretKey,
+        IV  : ByteArray?,
+    ): ByteArray? {
+        val cipher = Cipher.getInstance("AES")
+        val keySpec =
+            SecretKeySpec(key.encoded, "AES")
+        val ivSpec = IvParameterSpec(IV)
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec)
+        return cipher.doFinal(plaintext)
+    }
+
+    fun decrypt(cipherText: ByteArray?, key: SecretKey, IV: ByteArray?): String? {
+        try {
+            val cipher = Cipher.getInstance("AES")
+            val keySpec = SecretKeySpec(key.encoded, "AES")
+            val ivSpec = IvParameterSpec(IV)
+            cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
+            val decryptedText = cipher.doFinal(cipherText)
+            return String(decryptedText)
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+
     fun changeStatusBarWithReqdColor(activity: Activity, colorId: Int) {
         val window = activity.window
         window.statusBarColor = ContextCompat.getColor(activity, colorId)
@@ -34,7 +70,7 @@ object AppUtility {
         fourth: String = "",
         fifth: String = "",
         sixth: String = "",
-        tv: TextView
+        tv: TextView,
     ) {
         val text =
             "<font color=#3F72AF>$first</font> <font color=#150750>$second</font> <font color=#3F72AF>$third</font> <font color=#150750>$fourth</font> <font color=#3F72AF>$fifth</font> <font color=#150750>$sixth</font>"

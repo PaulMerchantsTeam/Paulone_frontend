@@ -37,7 +37,8 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 R.id.homeScreenFrag,
                 null,
                 (activity as MainActivity).navOption
-            ) } else if (AppSharedPref.getBooleanValue(SPLASH_SCRN_VISITED)) {
+            )
+        } else if (AppSharedPref.getBooleanValue(SPLASH_SCRN_VISITED)) {
             findNavController().popBackStack(R.id.splashFragment, true)
             findNavController().navigate(R.id.phoenNumVerifiactionFragment)
         } else {
@@ -53,6 +54,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         binding.nextBtn.setOnClickListener {
             setIntroForNextCounter(splashViewModel.counter)
         }
+//        splashViewModel.getLogin()
 
     }
 
@@ -64,7 +66,8 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 personIv.startAnimation(
                     AnimationUtils.loadAnimation(
                         requireContext(), R.anim.slide_rotate
-                    ))
+                    )
+                )
                 lifecycleScope.launch {
                     delay(600)
                     AppSharedPref.putBoolean(SPLASH_SCRN_VISITED, true)
@@ -72,9 +75,10 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                         R.id.phoenNumVerifiactionFragment,
                         null,
                         (activity as MainActivity).navOption
-                    )}
-                    return
+                    )
                 }
+                return
+            }
         }
         splashViewModel.setValue()
         updateTopCounter()
@@ -85,12 +89,14 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 }
 
             }
+
             1 -> {
                 binding.apply {
                     personIv.startAnimation(
                         AnimationUtils.loadAnimation(
                             requireContext(), R.anim.slide_rotate
-                        ))
+                        )
+                    )
                     lifecycleScope.launch {
                         delay(600)
                         headingTv.text = getString(R.string.your_payment_checklist)
@@ -98,7 +104,12 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                         headingTvSupport.text = getString(R.string.sorted)
                         circleBtmIv.setBackgroundResource(R.drawable.cirlce_yellow)
                         personIv.setBackgroundResource(R.drawable.online_payment_person_plant)
-                        personIv.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_in_left))
+                        personIv.startAnimation(
+                            AnimationUtils.loadAnimation(
+                                requireContext(),
+                                R.anim.slide_in_left
+                            )
+                        )
 
                         nextBtn.apply {
 
@@ -112,20 +123,20 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                             setStrokeColorResource(R.color.splash_screen_three)
 
 
-
                         }
                     }
 
 
-
                 }
             }
+
             2 -> {
                 binding.apply {
                     personIv.startAnimation(
                         AnimationUtils.loadAnimation(
                             requireContext(), R.anim.slide_rotate
-                        ))
+                        )
+                    )
                     lifecycleScope.launch {
                         delay(600)
                         headingTv.text = getString(R.string.payment_is_equal)
@@ -133,7 +144,12 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                         headingTvSupport.text = getString(R.string.rewards)
                         circleBtmIv.setBackgroundResource(R.drawable.circle_sky_blue)
                         personIv.setBackgroundResource(R.drawable.person_box)
-                        personIv.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_in_left))
+                        personIv.startAnimation(
+                            AnimationUtils.loadAnimation(
+                                requireContext(),
+                                R.anim.slide_in_left
+                            )
+                        )
                         nextBtn.apply {
                             text = getString(R.string.proceed)
                             setBackgroundColor(

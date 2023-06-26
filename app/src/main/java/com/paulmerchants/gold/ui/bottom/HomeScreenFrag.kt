@@ -2,12 +2,16 @@ package com.paulmerchants.gold.ui.bottom
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -26,20 +30,26 @@ import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.DueLoans
 import com.paulmerchants.gold.model.OurServices
 import com.paulmerchants.gold.model.PrepaidCardModel
+import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.ui.MapActivity
 import com.paulmerchants.gold.utility.*
+import com.paulmerchants.gold.viewmodels.AuthViewModel
+import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import java.util.Base64
+import javax.crypto.SecretKey
 
 
 @AndroidEntryPoint
 class HomeScreenFrag :
     BaseFragment<DummyHomeScreenFragmentBinding>(DummyHomeScreenFragmentBinding::inflate) {
+
     private val upcomingLoanAdapter = UpcomingLoanAdapter(::onPayDueClicked)
     private val upcomingNewUserAdapter = UpcomingLoanNewuserAdapter()
     private val prePaidCardAdapter = PrePaidCardAdapter(::onClicked)
-
-
+    private val authViewModel: AuthViewModel by viewModels()
+    private lateinit var secureFiles: SecureFiles
     lateinit var navController: NavController
 
     //    private val homeSweetBillsAdapter = HomeSweetBillsAdapter()
@@ -55,6 +65,8 @@ class HomeScreenFrag :
 
     override fun onStart() {
         super.onStart()
+        secureFiles = SecureFiles(requireContext())
+        authViewModel.getLogin(secureFiles)
         setProfileUi()
         startAnimationOnIcon()
         setUiOnHomeSweetHomeBills()
@@ -309,7 +321,12 @@ class HomeScreenFrag :
                 )
             )
             delay(1000)
-            binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.slide_mid_to_up))
+            binding.searchProfileParent.searchView.startAnimation(
+                AnimationUtils.loadAnimation(
+                    requireContext(),
+                    R.anim.slide_mid_to_up
+                )
+            )
             delay(500)
             binding.searchProfileParent.searchView.hint = strList[2]
             binding.searchProfileParent.searchView.startAnimation(

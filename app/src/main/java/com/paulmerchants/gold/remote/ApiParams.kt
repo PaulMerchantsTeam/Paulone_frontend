@@ -12,43 +12,43 @@ import retrofit2.http.Query
 interface ApiParams {
 
     @POST("Login/GetLogin")
-    fun getLogin(
-        @Body login: RequestLogin
+    suspend fun getLogin(
+        @Body login: RequestLogin,
     ): Response<RespLogin>
 
     @GET("Login/GetCustomer")
-    fun getCustomer(
-        @Query("MobileNo") MobileNo: String
+    suspend fun getCustomer(
+        @Query("MobileNo") MobileNo: String,
     ): RespGetCustomer
 
     @GET("LoanDetails/GetLoanOutstanding")
-    fun getLoanOutstanding()
+    suspend fun getLoanOutstanding()
 
-    @GET("LoanDetails/GetLoanDueDate")F
-    fun getLoanDueDate()
+    @GET("LoanDetails/GetLoanDueDate")
+    suspend fun getLoanDueDate()
 
     @GET("LoanDetails/GetPendingInterestDues")
-    fun getPendingInterestDues()
+    suspend fun getPendingInterestDues()
 
     @GET("LoanDetails/GetLoanClosureReceipt")
-    fun getLoanClosureReceipt()
+    suspend fun getLoanClosureReceipt()
 
     @GET("LoanDetails/GetReceipt ")
-    fun getReceipt()
+    suspend fun getReceipt()
 
     @GET("oanDetails/GetLoanStatement")
-    fun getLoanStatement()
+    suspend fun getLoanStatement()
 
     @GET("LoanDetails/GetCustomerDetails")
-    fun getCustomerDetails()
+    suspend fun getCustomerDetails()
 
     @GET("LoanDetails/GetPaymentUpdate")
-    fun getPaymentUpdate()
+    suspend fun getPaymentUpdate()
 
     @GET("LoanDetails/GetRenewalEligibility")
-    fun getRenewalEligibility()
+    suspend fun getRenewalEligibility()
 
     @GET("LoanDetails/GetLoanRenewalProcess")
-    fun getLoanRenewalProcess()
+    suspend fun getLoanRenewalProcess()
 
 }

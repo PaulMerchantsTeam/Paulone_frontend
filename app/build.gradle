@@ -37,7 +37,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField "String", "BASE_URL", "\"http://localhost:52693/api/\""
+            buildConfigField "String", "BASE_URL", "\"http://180.179.213.203:8020/api/\""
         }
         benchmark {
             signingConfig signingConfigs.debug
@@ -112,12 +112,19 @@ dependencies {
     def lottieVersion = "3.4.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
-
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.6.0"
     implementation "com.squareup.retrofit2:converter-gson:2.6.0"
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+
+//    // Retrofit
+//    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+//    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
+//    implementation 'com.google.code.gson:gson:2.9.0'
+//    //okHttp
+    implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.3"
+    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3"
 
     //gson converter
     implementation 'com.google.code.gson:gson:2.8.8'
@@ -140,6 +147,8 @@ dependencies {
 
 //    implementation 'com.google.android.gms:play-services-places:20.0.0'
     implementation 'com.github.bumptech.glide:glide:4.15.1'
-
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.68'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'javax.activation:javax.activation-api:1.2.0'
 
 }

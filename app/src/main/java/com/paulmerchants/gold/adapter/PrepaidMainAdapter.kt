@@ -3,12 +3,10 @@ package com.paulmerchants.gold.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.paulmerchants.gold.R
-import com.paulmerchants.gold.databinding.ItemLoansOverViewBinding
 import com.paulmerchants.gold.databinding.ItemPrepaidCardWithNameBinding
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.utility.hide

@@ -1,6 +1,7 @@
 package com.paulmerchants.gold.ui
 
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -21,8 +22,10 @@ import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
+import com.paulmerchants.gold.viewmodels.AuthViewModel
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.ref.WeakReference
 
 
 @AndroidEntryPoint
@@ -33,12 +36,17 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     lateinit var navOptionTop: NavOptions
     lateinit var navController: NavController
 
+    companion object {
+        lateinit var context: WeakReference<Context>
+    }
+
     public override val mViewModel: CommonViewModel by viewModels()
     override fun getViewBinding() = ActivityMainBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        context = WeakReference(this)
 //        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         AppUtility.changeStatusBarWithReqdColor(this, R.color.splash_screen_two)
         window.setFlags(
@@ -82,10 +90,12 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                     navController.navigate(R.id.homeScreenFrag, null, navOptionLeft)
                     true
                 }
+
                 R.id.goldLoanScreenFrag -> {
                     navController.navigate(MainNavGraphDirections.actionToGoldLoan())
                     true
                 }
+
                 R.id.billsAndMoreScreenFrag -> {
                     navController.navigate(
                         MainNavGraphDirections.actionToBillsAndMore(),
@@ -93,6 +103,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                     )
                     true
                 }
+
                 R.id.locateUsFrag -> {
 //                    navController.navigate(MainNavGraphDirections.actionToLocateUs())
                     startActivity(
@@ -101,6 +112,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                     )
                     true
                 }
+
                 R.id.menuScreenFrag -> {
                     navController.navigate(
                         MainNavGraphDirections.actionToMenuScreen(),
@@ -108,6 +120,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                     )
                     true
                 }
+
                 else -> {
                     false
                 }
