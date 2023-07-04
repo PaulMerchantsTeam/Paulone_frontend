@@ -9,7 +9,7 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.ProfileLayoutBinding
 import com.paulmerchants.gold.model.MenuServices
-import com.paulmerchants.gold.sharedpref.AppSharedPref
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.setServicesUi
 import dagger.hilt.android.AndroidEntryPoint

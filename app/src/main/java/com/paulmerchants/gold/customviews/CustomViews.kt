@@ -1,16 +1,12 @@
 package com.paulmerchants.gold.customviews
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import android.text.Layout
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.paulmerchants.gold.R
 

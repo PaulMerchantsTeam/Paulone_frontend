@@ -45,12 +45,15 @@ import com.paulmerchants.gold.databinding.ActivityMapBinding
 import com.paulmerchants.gold.place.BitmapHelper
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.viewmodels.CommonViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import java.util.*
 
-
+@AndroidEntryPoint
 class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener {
+
+    override fun getViewBinding() = ActivityMapBinding.inflate(layoutInflater)
     private var cityName: String = ""
     private val mapLocationAdapter = MapLocationAdapter(::OnLocationClicked)
 
@@ -92,11 +95,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
     private var likelyPlaceAddresses: Array<String?> = arrayOfNulls(0)
     private var likelyPlaceAttributions: Array<List<*>?> = arrayOfNulls(0)
     private var likelyPlaceLatLngs: Array<LatLng?> = arrayOfNulls(0)
-
-
     override val mViewModel: CommonViewModel by viewModels()
-    override fun getViewBinding() = ActivityMapBinding.inflate(layoutInflater)
-
 
     // [START maps_current_place_on_create]
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -225,46 +224,46 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
     }
 
 
-/*
-    fun getListLocation(){
-        val bounds = LatLngBounds.builder()
-            .include(LatLng(8.058430, 68.084473)) // Southwest corner of India
-            .include(LatLng(37.090240, 97.344664)) // Northeast corner of India
-            .build()
+    /*
+        fun getListLocation(){
+            val bounds = LatLngBounds.builder()
+                .include(LatLng(8.058430, 68.084473)) // Southwest corner of India
+                .include(LatLng(37.090240, 97.344664)) // Northeast corner of India
+                .build()
 
-        val filter = AutocompleteFilter.Builder()
-            .setTypeFilter(TypeFilter.ESTABLISHMENT)
-            .setCountry("IN")
-            .build()
+            val filter = AutocompleteFilter.Builder()
+                .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                .setCountry("IN")
+                .build()
 
-        val placesClient = Places.createClient(this)
+            val placesClient = Places.createClient(this)
 
-        placesClient.autocomplete(
-            "Paul Merchants",
-            bounds,
-            filter
-        ).addOnSuccessListener { response: AutocompleteResponse ->
-            // Handle the response here
-            val predictions = response.autocompletePredictions
-            for (prediction in predictions) {
-                Log.i("Places API", prediction.placeId)
-                // Get the latitude and longitude of the place
-                placesClient.fetchPlace(
-                    FetchPlaceRequest.newInstance(prediction.placeId, listOf(Place.Field.LAT_LNG))
-                ).addOnSuccessListener { fetchPlaceResponse: FetchPlaceResponse ->
-                    val latLng = fetchPlaceResponse.place.latLng
-                    Log.i("Places API", "Latitude: ${latLng?.latitude}, Longitude: ${latLng?.longitude}")
-                }.addOnFailureListener { exception: Exception ->
-                    Log.e("Places API", exception.message, exception)
+            placesClient.autocomplete(
+                "Paul Merchants",
+                bounds,
+                filter
+            ).addOnSuccessListener { response: AutocompleteResponse ->
+                // Handle the response here
+                val predictions = response.autocompletePredictions
+                for (prediction in predictions) {
+                    Log.i("Places API", prediction.placeId)
+                    // Get the latitude and longitude of the place
+                    placesClient.fetchPlace(
+                        FetchPlaceRequest.newInstance(prediction.placeId, listOf(Place.Field.LAT_LNG))
+                    ).addOnSuccessListener { fetchPlaceResponse: FetchPlaceResponse ->
+                        val latLng = fetchPlaceResponse.place.latLng
+                        Log.i("Places API", "Latitude: ${latLng?.latitude}, Longitude: ${latLng?.longitude}")
+                    }.addOnFailureListener { exception: Exception ->
+                        Log.e("Places API", exception.message, exception)
+                    }
                 }
+            }.addOnFailureListener { exception: Exception ->
+                // Handle the exception here
+                Log.e("Places API", exception.message, exception)
             }
-        }.addOnFailureListener { exception: Exception ->
-            // Handle the exception here
-            Log.e("Places API", exception.message, exception)
-        }
 
-    }
-*/
+        }
+    */
 
 
     // [START maps_current_place_on_map_ready]
@@ -483,7 +482,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         locationPermissionGranted = false
         when (requestCode) {
@@ -497,6 +496,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
                     updateLocationUI()
                 }
             }
+
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
 //        updateLocationUI()

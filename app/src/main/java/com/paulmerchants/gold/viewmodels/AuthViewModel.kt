@@ -1,6 +1,7 @@
 package com.paulmerchants.gold.viewmodels
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.paulmerchants.gold.model.RequestLogin
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(private val retrofitSetup: RetrofitSetup) : ViewModel() {
     val pass = "FU510N@pro"
     val userId = "pml"
+    var isStartAnim = MutableLiveData<Boolean>()
 
     fun getLogin(secureFiles: SecureFiles) = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
@@ -25,8 +27,8 @@ class AuthViewModel @Inject constructor(private val retrofitSetup: RetrofitSetup
             override suspend fun sendRequest(apiParams: ApiParams): Response<RespLogin> {
                 return apiParams.getLogin(
                     RequestLogin(
-                        "b7ah0vVuRsjzEfx/R6CHAg==",
-                        "+rxS+i2nKgwhZi0QXKoKfw=="
+                        "WSAEePMGDzOzj7H3kPAATQ==",
+                        "IZx4nB4qUdocO3CTgWamNQ=="
                     )
                 )
             }
@@ -42,5 +44,4 @@ class AuthViewModel @Inject constructor(private val retrofitSetup: RetrofitSetup
             }
         })
     }
-
 }

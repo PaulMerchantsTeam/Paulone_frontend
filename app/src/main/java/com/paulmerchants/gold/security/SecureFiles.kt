@@ -5,6 +5,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKeys
+import com.paulmerchants.gold.BuildConfig
+import com.paulmerchants.gold.common.LogicSecure
 import dagger.hilt.android.internal.Contexts.getApplication
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.util.encoders.Base64
@@ -16,33 +18,23 @@ import java.security.InvalidKeyException
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.security.Security
+import java.util.Locale
 import javax.crypto.BadPaddingException
 import javax.crypto.Cipher
 import javax.crypto.IllegalBlockSizeException
-import javax.crypto.KeyGenerator
 import javax.crypto.NoSuchPaddingException
-import javax.crypto.SecretKey
 import javax.crypto.ShortBufferException
-import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 
-class SecureFiles(val context: Context) {
+class SecureFiles(val context: Context) : LogicSecure {
 
-    fun encryptStr(strToEncrypt: String): ByteArray {
-        val plainText = strToEncrypt.toByteArray(Charsets.UTF_8)
-        val keygen = KeyGenerator.getInstance("AES")
-        keygen.init(256)
-        val key = keygen.generateKey()
-        val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
-        cipher.init(Cipher.ENCRYPT_MODE, key)
-        val cipherText = cipher.doFinal(plainText)
-        return cipherText
-    }
-
-    fun getSHA256(hashedInput: String): String {
+    //    SECRETKEY: MobApp#L0AnDeT@ils#SeCUretechpool*20&23
+//    val secretKey = "MobApp#L0AnDeT@ils#SeCUretechpool*20&23"
+    val secret = BuildConfig.SECRET_KEY
+    override fun getSHA256(key: String): String {
         val md: MessageDigest = MessageDigest.getInstance("SHA-256")
-        val messageDigest = md.digest(hashedInput.toByteArray())
+        val messageDigest = md.digest(key.toByteArray())
         // Convert byte array into signum representation
         val no = BigInteger(1, messageDigest)
         // Convert message digest into hex value
@@ -51,12 +43,94 @@ class SecureFiles(val context: Context) {
         while (hashText.length < 256) {
             hashText = "0$hashText"
         }
-        return hashText
+        return hashText.substring(0, 32)
+            .uppercase(Locale.getDefault())
+    }
+
+    override fun encryptKey(strToEncrypt: String, secret_key: String): String? {
+        Security.addProvider(BouncyCastleProvider())
+        val keyBytes: ByteArray
+
+        try {
+            keyBytes = secret_key.toByteArray(charset("UTF8"))
+            val skey = SecretKeySpec(keyBytes, "AES")
+            val input = strToEncrypt.toByteArray(charset("UTF8"))
+
+            synchronized(Cipher::class.java) {
+                val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
+                cipher.init(Cipher.ENCRYPT_MODE, skey)
+
+                val cipherText = ByteArray(cipher.getOutputSize(input.size))
+                var ctLength = cipher.update(
+                    input, 0, input.size,
+                    cipherText, 0
+                )
+                ctLength += cipher.doFinal(cipherText, ctLength)
+                return String(
+                    Base64.encode(cipherText)
+                )
+            }
+        } catch (uee: UnsupportedEncodingException) {
+            uee.printStackTrace()
+        } catch (ibse: IllegalBlockSizeException) {
+            ibse.printStackTrace()
+        } catch (bpe: BadPaddingException) {
+            bpe.printStackTrace()
+        } catch (ike: InvalidKeyException) {
+            ike.printStackTrace()
+        } catch (nspe: NoSuchPaddingException) {
+            nspe.printStackTrace()
+        } catch (nsae: NoSuchAlgorithmException) {
+            nsae.printStackTrace()
+        } catch (e: ShortBufferException) {
+            e.printStackTrace()
+        }
+
+        return null
+    }
+
+    override fun decryptKey(key: String, strToDecrypt: String?): String? {
+        Security.addProvider(BouncyCastleProvider())
+        var keyBytes: ByteArray
+
+        try {
+            keyBytes = key.toByteArray(charset("UTF8"))
+            val skey = SecretKeySpec(keyBytes, "AES")
+            val input = org.bouncycastle.util.encoders.Base64
+                .decode(strToDecrypt?.trim { it <= ' ' }?.toByteArray(charset("UTF8")))
+
+            synchronized(Cipher::class.java) {
+                val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
+                cipher.init(Cipher.DECRYPT_MODE, skey)
+
+                val plainText = ByteArray(cipher.getOutputSize(input.size))
+                var ptLength = cipher.update(input, 0, input.size, plainText, 0)
+                ptLength += cipher.doFinal(plainText, ptLength)
+                val decryptedString = String(plainText)
+                return decryptedString.trim { it <= ' ' }
+            }
+        } catch (uee: UnsupportedEncodingException) {
+            uee.printStackTrace()
+        } catch (ibse: IllegalBlockSizeException) {
+            ibse.printStackTrace()
+        } catch (bpe: BadPaddingException) {
+            bpe.printStackTrace()
+        } catch (ike: InvalidKeyException) {
+            ike.printStackTrace()
+        } catch (nspe: NoSuchPaddingException) {
+            nspe.printStackTrace()
+        } catch (nsae: NoSuchAlgorithmException) {
+            nsae.printStackTrace()
+        } catch (e: ShortBufferException) {
+            e.printStackTrace()
+        }
+
+        return null
     }
 
 
     //This is the app's internal storage folder
-//    val baseDir = getApplication(context).filesDir
+    //val baseDir = getApplication(context).filesDir
     val mainKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
     lateinit var encryptedFile: EncryptedFile
     fun start() {
@@ -113,123 +187,45 @@ class SecureFiles(val context: Context) {
         return String(fileContent, 0, numBytesRead)
     }
 
-}
 
-fun generateSecretKey(): SecretKey {
-    val keyGenerator = KeyGenerator.getInstance("AES")
-    keyGenerator.init(256) // Specify the key size (in bits), in this case, 256 bits for AES-256
-    return keyGenerator.generateKey()
-}
-
-fun getSHA256(hashedInput: String): String {
-    val md: MessageDigest = MessageDigest.getInstance("SHA-256")
-    val messageDigest = md.digest(hashedInput.toByteArray())
-    // Convert byte array into signum representation
-    val no = BigInteger(1, messageDigest)
-    // Convert message digest into hex value
-    var hashText: String = no.toString(16)
-    // Add preceding 0s to make it 128 chars long
-//    while (hashText.length < 128) {
-//        hashText = "0$hashText"
-//    }
-    return hashText
-}
-
-fun encryptStr(strToEncrypt: String): ByteArray {
-    val plainText = strToEncrypt.toByteArray(Charsets.UTF_8)
-    val keygen = KeyGenerator.getInstance("AES")
-    keygen.init(256)
-    val key = keygen.generateKey()
-    val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
-    cipher.init(Cipher.ENCRYPT_MODE, key)
-    val cipherText = cipher.doFinal(plainText)
-    return cipherText
-}
-
-
-fun encrypt(strToEncrypt: String, secret_key: String): String? {
-    Security.addProvider(BouncyCastleProvider())
-    var keyBytes: ByteArray
-
-    try {
-        keyBytes = secret_key.toByteArray(charset("UTF8"))
-        val skey = SecretKeySpec(keyBytes, "AES")
-        val input = strToEncrypt.toByteArray(charset("UTF8"))
-
-        synchronized(Cipher::class.java) {
-            val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
-            cipher.init(Cipher.ENCRYPT_MODE, skey)
-
-            val cipherText = ByteArray(cipher.getOutputSize(input.size))
-            var ctLength = cipher.update(
-                input, 0, input.size,
-                cipherText, 0
-            )
-            ctLength += cipher.doFinal(cipherText, ctLength)
-            return String(
-                Base64.encode(cipherText)
-            )
-        }
-    } catch (uee: UnsupportedEncodingException) {
-        uee.printStackTrace()
-    } catch (ibse: IllegalBlockSizeException) {
-        ibse.printStackTrace()
-    } catch (bpe: BadPaddingException) {
-        bpe.printStackTrace()
-    } catch (ike: InvalidKeyException) {
-        ike.printStackTrace()
-    } catch (nspe: NoSuchPaddingException) {
-        nspe.printStackTrace()
-    } catch (nsae: NoSuchAlgorithmException) {
-        nsae.printStackTrace()
-    } catch (e: ShortBufferException) {
-        e.printStackTrace()
-    }
-
-    return null
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-fun secretKeyToString(secretKey: SecretKey): String {
-    return java.util.Base64.getEncoder().encodeToString(secretKey.encoded)
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-fun encryptStrings(input: String, secretKey: SecretKey): ByteArray {
-    val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
-    val iv = ByteArray(cipher.blockSize)
-    val ivSpec = IvParameterSpec(iv)
-
-    cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec)
-    val encryptedBytes = cipher.doFinal(input.toByteArray())
-    return java.util.Base64.getEncoder().encodeToString(encryptedBytes).toByteArray()
-}
-
-fun decrypt(cipherText: kotlin.ByteArray?, key: javax.crypto.SecretKey, IV: kotlin.ByteArray?): kotlin.String?{
-    try {
-        val cipher: Cipher = Cipher.getInstance("AES")
-        val keySpec = SecretKeySpec(key.getEncoded(), "AES")
-        val ivSpec = IvParameterSpec(IV)
-        cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
-        val decryptedText: kotlin.ByteArray = cipher.doFinal(cipherText)
-        return String(decryptedText)
-    }catch ( e: java.lang.Exception){
-        e.printStackTrace()
-    }
-    return null
 }
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun main() {
-//    val a = getSHA256("vishnuap")
-//    println(a)
-//    println(encryptStr("vishnuap"))
-//    println(encryptString("vishnuap",generateSecretKey()))
-    val secretKey = generateSecretKey()
-//    println(encrypt("vishnuap", secretKeyToString(secretKey)))
-    println(encryptStrings("pml", secretKey))
-    println(encryptStrings("FU510N@pro", secretKey))
-    println(encryptStr("FU510N@pro"))
-    println(encryptStr("pml"))
+
+//    println(
+//        getSHA256("MobApp#L0AnDeT@ils#SeCUretechpool*20&23").substring(0, 32)
+//            .uppercase(Locale.getDefault())
+//    )
+
+
+//    println(getSHA256("MobApp#L0AnDeT@ils#SeCUretechpool*20&23").substring(0,32).length)
+//
+//    println(
+//        "userID--  " + encrypt(
+//            "pml",
+//            getSHA256("MobApp#L0AnDeT@ils#SeCUretechpool*20&23").substring(0, 32)
+//                .uppercase(
+//                    Locale.getDefault()
+//                )
+//        )
+//    )
+//    println(
+//        "pass -- " + encrypt(
+//            "FU510N@pro",
+//            getSHA256("MobApp#L0AnDeT@ils#SeCUretechpool*20&23").substring(0, 32)
+//                .uppercase(
+//                    Locale.getDefault()
+//                )
+//        )
+//    )
+//
+//
+//    println("decrypt -- "+ decryptWithAES(getSHA256("MobApp#L0AnDeT@ils#SeCUretechpool*20&23").substring(0,32),
+//        encrypt("FU510N@pro",getSHA256("MobApp#L0AnDeT@ils#SeCUretechpool*20&23").substring(0,32))))
+//
+//
+//    println(getSHA256("MobApp#L0AnDeT@ils#SeCUretechpool*20&23"))
+
 }

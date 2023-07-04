@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.ViewUtils
 import com.paulmerchants.gold.MainNavGraphDirections
@@ -35,6 +36,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     lateinit var navOptionLeft: NavOptions
     lateinit var navOptionTop: NavOptions
     lateinit var navController: NavController
+    lateinit var secureFiles: SecureFiles
 
     companion object {
         lateinit var context: WeakReference<Context>
@@ -53,6 +55,12 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
         )
+        if (AppUtility.isUsbDebuggingEnabled(this)) {
+            Toast.makeText(this, "DEBUG_MODE_ENABLED", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "NO_DEBUG_MODE_ENABLED", Toast.LENGTH_SHORT).show()
+        }
+        secureFiles = SecureFiles(this)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.battery_main_nav_graph) as NavHostFragment
         navController = navHostFragment.navController

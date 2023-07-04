@@ -55,12 +55,11 @@ class HomeScreenFrag :
     //    private val homeSweetBillsAdapter = HomeSweetBillsAdapter()
     private val TAG = "HomeScreenFrag"
 
-    //    private var isStartAnim = true
-    private var isStartAnim = MutableLiveData<Boolean>()
     override fun DummyHomeScreenFragmentBinding.initialize() {
         navController = findNavController()
 //        setUpComingOurServices()
         setUpComingDueLoans()
+
     }
 
     override fun onStart() {
@@ -99,8 +98,7 @@ class HomeScreenFrag :
     }
 
     private fun setProfileUi() {
-        isStartAnim.postValue(true)
-        isStartAnim.observe(viewLifecycleOwner) {
+        authViewModel.isStartAnim.observe(viewLifecycleOwner) {
             it?.let {
                 if (it) {
                     animateHintEditText()
@@ -110,24 +108,24 @@ class HomeScreenFrag :
 
         binding.searchProfileParent.apply {
             searchView.setOnClickListener {
-                isStartAnim.postValue(false)
+                authViewModel.isStartAnim.postValue(false)
                 binding.searchProfileParent.searchView.clearAnimation()
             }
 
             searchView.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    isStartAnim.postValue(false)
+                    authViewModel.isStartAnim.postValue(false)
                     binding.searchProfileParent.searchView.clearAnimation()
 
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    isStartAnim.postValue(false)
+                    authViewModel.isStartAnim.postValue(false)
                     binding.searchProfileParent.searchView.clearAnimation()
                     p0?.let { char ->
                         Log.d("TAG", "onTextChanged: text = $char")
                         if (char.isNotEmpty()) {
-                            isStartAnim.postValue(false)
+                            authViewModel.isStartAnim.postValue(false)
                             binding.searchProfileParent.searchView.clearAnimation()
 
 //                            searchView.setCompoundDrawablesWithIntrinsicBounds(
@@ -137,7 +135,7 @@ class HomeScreenFrag :
 //                                0
 //                            )
                         } else {
-                            isStartAnim.postValue(false)
+                            authViewModel.isStartAnim.postValue(false)
                             binding.searchProfileParent.searchView.clearAnimation()
 
                         }
@@ -261,7 +259,7 @@ class HomeScreenFrag :
     override fun onResume() {
         super.onResume()
         binding.searchProfileParent.searchView.show()
-        isStartAnim.postValue(true)
+        authViewModel.isStartAnim.postValue(true)
 
         binding.searchProfileParent.searchView.startAnimation(
             AnimationUtils.loadAnimation(
@@ -274,8 +272,7 @@ class HomeScreenFrag :
 
     override fun onPause() {
         super.onPause()
-
-        isStartAnim.postValue(false)
+        authViewModel.isStartAnim.postValue(false)
         binding.searchProfileParent.searchView.clearAnimation()
         binding.searchProfileParent.searchView.startAnimation(
             AnimationUtils.loadAnimation(
@@ -297,7 +294,7 @@ class HomeScreenFrag :
             getString(R.string.search_for_loans),
         )
         lifecycleScope.launchWhenResumed {
-            delay(500)
+            delay(1000)
             binding.searchProfileParent.searchView.hint = strList[0]
             binding.searchProfileParent.searchView.startAnimation(
                 AnimationUtils.loadAnimation(
@@ -312,7 +309,7 @@ class HomeScreenFrag :
                     R.anim.slide_mid_to_up
                 )
             )
-            delay(500)
+            delay(1000)
             binding.searchProfileParent.searchView.hint = strList[1]
             binding.searchProfileParent.searchView.startAnimation(
                 AnimationUtils.loadAnimation(
@@ -327,7 +324,7 @@ class HomeScreenFrag :
                     R.anim.slide_mid_to_up
                 )
             )
-            delay(500)
+            delay(1000)
             binding.searchProfileParent.searchView.hint = strList[2]
             binding.searchProfileParent.searchView.startAnimation(
                 AnimationUtils.loadAnimation(
@@ -344,7 +341,7 @@ class HomeScreenFrag :
             )
 
 
-            delay(500)
+            delay(1000)
             binding.searchProfileParent.searchView.hint = strList[3]
             binding.searchProfileParent.searchView.startAnimation(
                 AnimationUtils.loadAnimation(
@@ -360,11 +357,8 @@ class HomeScreenFrag :
                 )
             )
 
-
-            delay(500)
-            isStartAnim.postValue(true)
-
-
+            delay(1000)
+            authViewModel.isStartAnim.postValue(true)
         }
 
     }

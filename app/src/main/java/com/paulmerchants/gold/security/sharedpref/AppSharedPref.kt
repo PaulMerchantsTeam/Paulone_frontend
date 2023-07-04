@@ -1,4 +1,4 @@
-package com.paulmerchants.gold.sharedpref
+package com.paulmerchants.gold.security.sharedpref
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -13,7 +13,7 @@ import com.paulmerchants.gold.common.Constants.LOGIN_DONE
 import com.paulmerchants.gold.common.Constants.SIGNUP_DONE
 import com.paulmerchants.gold.common.Constants.SPLASH_SCRN_VISITED
 import com.paulmerchants.gold.databinding.SplashFragmentBinding
-import com.paulmerchants.gold.sharedpref.AppSharedPref
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hideViewGrp
 import com.paulmerchants.gold.utility.show
@@ -63,11 +63,11 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         Log.d(TAG, "setIntroForNextCounter: $counter")
         if (counter == 3) {
             binding.apply {
-                personIv.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        requireContext(), R.anim.slide_rotate
-                    )
-                )
+//                personIv.startAnimation(
+//                    AnimationUtils.loadAnimation(
+//                        requireContext(), R.anim.slide_rotate
+//                    )
+//                )
                 lifecycleScope.launch {
                     delay(600)
                     AppSharedPref.putBoolean(SPLASH_SCRN_VISITED, true)
