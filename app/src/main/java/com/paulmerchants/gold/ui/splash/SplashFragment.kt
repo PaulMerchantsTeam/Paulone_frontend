@@ -87,7 +87,6 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 binding.apply {
 
                 }
-
             }
 
             1 -> {
@@ -180,6 +179,12 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         delay(1000)
         animateSecondScreen(R.color.splash_screen_two, R.color.splash_screen_one)
         delay(1000)
+        try {
+            AppUtility.progressBarAlert()
+            splashViewModel.getLogin2()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         showFirstPageIntro()
     }
 

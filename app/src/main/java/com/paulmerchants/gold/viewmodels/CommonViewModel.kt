@@ -10,16 +10,31 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
+import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.model.RequestLogin
+import com.paulmerchants.gold.model.RespLogin
+import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.place.Place
 import com.paulmerchants.gold.remote.ApiParams
+import com.paulmerchants.gold.security.SecureFiles
+import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.decryptKey
+import com.shacklabs.quicke.remote.networks.RetrofitSetup
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import org.bouncycastle.asn1.ocsp.ResponseBytes
+import retrofit2.Converter
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class CommonViewModel @Inject constructor(private val apiParams: ApiParams) : ViewModel() {
+class CommonViewModel @Inject constructor(
+    private val retrofitSetup: RetrofitSetup,
+    private val apiParams: ApiParams,
+) :
+    ViewModel() {
     private var remoteDataList: List<Place>? = null
     private var listOfLocation: List<com.paulmerchants.gold.place.Place>? = null
 
@@ -38,6 +53,34 @@ class CommonViewModel @Inject constructor(private val apiParams: ApiParams) : Vi
         remoteConfig.setConfigSettingsAsync(configSettings)
         remoteConfig.setDefaultsAsync(R.xml.places)
         loadData()
+    }
+
+
+
+
+    fun getLogin() = viewModelScope.launch {
+        Log.d("TAG", "getLogin: //../........")
+        retrofitSetup.callApi(true, object : CallHandler<ResponseBody> {
+            override suspend fun sendRequest(apiParams: ApiParams): ResponseBody {
+                return apiParams.getLogin(
+                    RequestLogin(
+                        BuildConfig.PASSWORD,
+                        BuildConfig.USERNAME
+                    )
+                )
+            }
+
+            override fun success(response: ResponseBody) {
+                Log.d("TAG", "success: /////////")
+                Log.d("TAG", "success: ......$response")
+            }
+
+            override fun error(message: String) {
+                super.error(message)
+
+                Log.d("TAG", "error: ......$message")
+            }
+        })
     }
 
 
@@ -99,3 +142,8 @@ class CommonViewModel @Inject constructor(private val apiParams: ApiParams) : Vi
     }
 
 }
+
+
+/**
+ * RESPONSE --  DECRYPT --
+ */

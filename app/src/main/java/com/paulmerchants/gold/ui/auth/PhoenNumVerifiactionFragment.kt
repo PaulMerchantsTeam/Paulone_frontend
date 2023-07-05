@@ -12,6 +12,7 @@ import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -29,6 +30,7 @@ import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.*
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.diffColorText
+import com.paulmerchants.gold.viewmodels.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -43,7 +45,7 @@ class PhoenNumVerifiactionFragment :
     private var isMobileEntered: Boolean = false
     private var isOtpVerified: Boolean = false
     private var pinValue: Int? = null
-
+    private val splashViewModel: SplashViewModel by viewModels()
 
     companion object {
         const val REQ_CODE = 123
@@ -69,7 +71,7 @@ class PhoenNumVerifiactionFragment :
 
     override fun PhoneAuthFragmentBinding.initialize() {
         changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
-        pinValue = arguments?.getInt( "ProfileChangePin",0 )
+        pinValue = arguments?.getInt("ProfileChangePin", 0)
 
     }
 
@@ -77,7 +79,7 @@ class PhoenNumVerifiactionFragment :
         super.onStart()
         //Welcome to Paul Gold,
         //we are happy to serve you!!
-        if (pinValue == 100){
+        if (pinValue == 100) {
             binding.apply {
                 titleWelcomTv.hide()
                 pleaseTv.hide()
@@ -90,11 +92,7 @@ class PhoenNumVerifiactionFragment :
                 createMpinAndSuccessMain.finalSIgnUpParent.hide()
                 hideAndShowOtpView()
             }
-        }
-        else
-
-
-        diffColorText(
+        } else diffColorText(
             "Welcome to Paul Gold,\nwe are",
             "happy",
             "to serve you!!",
@@ -442,7 +440,7 @@ class PhoenNumVerifiactionFragment :
 
 
     inner class GenericKeyEvent internal constructor(
-        private val currentView: EditText, private val previousView: EditText?
+        private val currentView: EditText, private val previousView: EditText?,
     ) : View.OnKeyListener {
         override fun onKey(p0: View?, keyCode: Int, event: KeyEvent?): Boolean {
             if (event?.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL && currentView.id != R.id.otpOneEt && currentView.text.isEmpty()) {
@@ -456,7 +454,7 @@ class PhoenNumVerifiactionFragment :
     }
 
     inner class GenericTextWatcher internal constructor(
-        private val currentView: View, private val nextView: View?
+        private val currentView: View, private val nextView: View?,
     ) : TextWatcher {
         override fun afterTextChanged(editable: Editable) {
             val text = editable.toString()
@@ -470,6 +468,7 @@ class PhoenNumVerifiactionFragment :
                     }
 
                 }
+
                 R.id.otpTwoEt -> {
                     if (text.length == 1) {
                         binding.proceedAuthBtn.enableButton(requireContext())
@@ -478,6 +477,7 @@ class PhoenNumVerifiactionFragment :
                         binding.proceedAuthBtn.disableButton(requireContext())
                     }
                 }
+
                 R.id.otpThreeEt -> {
                     if (text.length == 1) {
                         binding.proceedAuthBtn.enableButton(requireContext())
@@ -486,6 +486,7 @@ class PhoenNumVerifiactionFragment :
                         binding.proceedAuthBtn.disableButton(requireContext())
                     }
                 }
+
                 R.id.otpFourEt -> {
                     if (text.length == 1) {
                         binding.proceedAuthBtn.enableButton(requireContext())
@@ -503,6 +504,7 @@ class PhoenNumVerifiactionFragment :
                         binding.signUpParentMain.signUpBtn.disableButton(requireContext())
                     }
                 }
+
                 R.id.mpinTwoEt -> {
                     if (text.length == 1) {
                         binding.signUpParentMain.signUpBtn.enableButton(requireContext())
@@ -511,6 +513,7 @@ class PhoenNumVerifiactionFragment :
                         binding.signUpParentMain.signUpBtn.disableButton(requireContext())
                     }
                 }
+
                 R.id.mpinThreeEt -> {
                     if (text.length == 1) {
                         binding.signUpParentMain.signUpBtn.enableButton(requireContext())
@@ -519,6 +522,7 @@ class PhoenNumVerifiactionFragment :
                         binding.signUpParentMain.signUpBtn.disableButton(requireContext())
                     }
                 }
+
                 R.id.mpinFourEt -> {
                     if (text.length == 1) {
                         binding.signUpParentMain.signUpBtn.enableButton(requireContext())
@@ -533,12 +537,12 @@ class PhoenNumVerifiactionFragment :
         }
 
         override fun beforeTextChanged(
-            arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int
+            arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int,
         ) {
         }
 
         override fun onTextChanged(
-            arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int
+            arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int,
         ) {
         }
 

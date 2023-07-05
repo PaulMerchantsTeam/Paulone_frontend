@@ -65,7 +65,7 @@ class HomeScreenFrag :
     override fun onStart() {
         super.onStart()
         secureFiles = SecureFiles(requireContext())
-        authViewModel.getLogin(secureFiles)
+//        authViewModel.getLogin(secureFiles)
         setProfileUi()
         startAnimationOnIcon()
         setUiOnHomeSweetHomeBills()

@@ -61,6 +61,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             Toast.makeText(this, "NO_DEBUG_MODE_ENABLED", Toast.LENGTH_SHORT).show()
         }
         secureFiles = SecureFiles(this)
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.battery_main_nav_graph) as NavHostFragment
         navController = navHostFragment.navController

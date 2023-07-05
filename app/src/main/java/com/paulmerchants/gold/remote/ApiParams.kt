@@ -3,6 +3,8 @@ package com.paulmerchants.gold.remote
 import com.paulmerchants.gold.model.RequestLogin
 import com.paulmerchants.gold.model.RespGetCustomer
 import com.paulmerchants.gold.model.RespLogin
+import okhttp3.ResponseBody
+
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -14,7 +16,7 @@ interface ApiParams {
     @POST("Login/GetLogin")
     suspend fun getLogin(
         @Body login: RequestLogin,
-    ): Response<RespLogin>
+    ): ResponseBody
 
     @GET("Login/GetCustomer")
     suspend fun getCustomer(
