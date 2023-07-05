@@ -25,6 +25,7 @@ class SplashViewModel @Inject constructor(private val apiParams: ApiParams) : Vi
 
     }
 
+
     fun getLogin2() = viewModelScope.launch {
         val response = apiParams.getLogin(
             RequestLogin(
