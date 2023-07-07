@@ -181,7 +181,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         delay(1000)
         try {
             AppUtility.progressBarAlert()
-            splashViewModel.getLogin2()
+            splashViewModel.getLogin2(requireContext())
         } catch (e: Exception) {
             e.printStackTrace()
         }

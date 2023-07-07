@@ -1,44 +1,33 @@
 package com.paulmerchants.gold.ui.bottom
 
-import android.app.ActivityOptions
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.paulmerchants.gold.MainNavGraphDirections
-import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.PrePaidCardAdapter
 import com.paulmerchants.gold.adapter.UpcomingLoanAdapter
 import com.paulmerchants.gold.adapter.UpcomingLoanNewuserAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants.DUE_LOAN_DATA
-
 import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
+import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.DueLoans
+import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.OurServices
 import com.paulmerchants.gold.model.PrepaidCardModel
 import com.paulmerchants.gold.security.SecureFiles
-import com.paulmerchants.gold.ui.MapActivity
 import com.paulmerchants.gold.utility.*
-import com.paulmerchants.gold.viewmodels.AuthViewModel
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
-import java.util.Base64
-import javax.crypto.SecretKey
 
 
 @AndroidEntryPoint
@@ -48,7 +37,7 @@ class HomeScreenFrag :
     private val upcomingLoanAdapter = UpcomingLoanAdapter(::onPayDueClicked)
     private val upcomingNewUserAdapter = UpcomingLoanNewuserAdapter()
     private val prePaidCardAdapter = PrePaidCardAdapter(::onClicked)
-    private val authViewModel: AuthViewModel by viewModels()
+    private val commonViewModel: CommonViewModel by viewModels()
     private lateinit var secureFiles: SecureFiles
     lateinit var navController: NavController
 
@@ -65,7 +54,7 @@ class HomeScreenFrag :
     override fun onStart() {
         super.onStart()
         secureFiles = SecureFiles(requireContext())
-//        authViewModel.getLogin(secureFiles)
+//        commonViewModel.getLogin(secureFiles)
         setProfileUi()
         startAnimationOnIcon()
         setUiOnHomeSweetHomeBills()
@@ -75,7 +64,7 @@ class HomeScreenFrag :
         setAddCardView()
     }
 
-    private fun onPayDueClicked(dueLoans: DueLoans) {
+    private fun onPayDueClicked(dueLoans: GetPendingInrstDueRespItem) {
         val bundle = Bundle().apply {
             putParcelable(DUE_LOAN_DATA, dueLoans)
         }
@@ -98,7 +87,7 @@ class HomeScreenFrag :
     }
 
     private fun setProfileUi() {
-        authViewModel.isStartAnim.observe(viewLifecycleOwner) {
+        commonViewModel.isStartAnim.observe(viewLifecycleOwner) {
             it?.let {
                 if (it) {
                     animateHintEditText()
@@ -108,24 +97,24 @@ class HomeScreenFrag :
 
         binding.searchProfileParent.apply {
             searchView.setOnClickListener {
-                authViewModel.isStartAnim.postValue(false)
+                commonViewModel.isStartAnim.postValue(false)
                 binding.searchProfileParent.searchView.clearAnimation()
             }
 
             searchView.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    authViewModel.isStartAnim.postValue(false)
+                    commonViewModel.isStartAnim.postValue(false)
                     binding.searchProfileParent.searchView.clearAnimation()
 
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    authViewModel.isStartAnim.postValue(false)
+                    commonViewModel.isStartAnim.postValue(false)
                     binding.searchProfileParent.searchView.clearAnimation()
                     p0?.let { char ->
                         Log.d("TAG", "onTextChanged: text = $char")
                         if (char.isNotEmpty()) {
-                            authViewModel.isStartAnim.postValue(false)
+                            commonViewModel.isStartAnim.postValue(false)
                             binding.searchProfileParent.searchView.clearAnimation()
 
 //                            searchView.setCompoundDrawablesWithIntrinsicBounds(
@@ -135,7 +124,7 @@ class HomeScreenFrag :
 //                                0
 //                            )
                         } else {
-                            authViewModel.isStartAnim.postValue(false)
+                            commonViewModel.isStartAnim.postValue(false)
                             binding.searchProfileParent.searchView.clearAnimation()
 
                         }
@@ -259,7 +248,7 @@ class HomeScreenFrag :
     override fun onResume() {
         super.onResume()
         binding.searchProfileParent.searchView.show()
-        authViewModel.isStartAnim.postValue(true)
+        commonViewModel.isStartAnim.postValue(true)
 
         binding.searchProfileParent.searchView.startAnimation(
             AnimationUtils.loadAnimation(
@@ -272,7 +261,7 @@ class HomeScreenFrag :
 
     override fun onPause() {
         super.onPause()
-        authViewModel.isStartAnim.postValue(false)
+        commonViewModel.isStartAnim.postValue(false)
         binding.searchProfileParent.searchView.clearAnimation()
         binding.searchProfileParent.searchView.startAnimation(
             AnimationUtils.loadAnimation(
@@ -358,7 +347,7 @@ class HomeScreenFrag :
             )
 
             delay(1000)
-            authViewModel.isStartAnim.postValue(true)
+            commonViewModel.isStartAnim.postValue(true)
         }
 
     }
@@ -412,13 +401,23 @@ class HomeScreenFrag :
     }
 
     private fun setUpComingDueLoans() {
-        val dueLoans1 = DueLoans(1, 4, 6000)
-        val dueLoans2 = DueLoans(2, 4, 6000)
-        val dueLoans3 = DueLoans(3, 4, 6000)
-        val dueLoans4 = DueLoans(4, 4, 6000)
-        val list = listOf(dueLoans1, dueLoans2, dueLoans3, dueLoans4)
-        upcomingLoanAdapter.submitList(list)
-        binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
+        commonViewModel.getPendingInterestDues(
+            requireContext(),
+            "C2u4GiJrbIdsk0GMeEX9DrdlY9Wd799nWFqIvqOk8lI="
+        )
+        commonViewModel.getPendingInterestDuesLiveData.observe(viewLifecycleOwner) {
+            it?.let {
+                upcomingLoanAdapter.submitList(it)
+                binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
+            }
+        }
+//        val dueLoans1 = DueLoans(1, 4, 6000)
+//        val dueLoans2 = DueLoans(2, 4, 6000)
+//        val dueLoans3 = DueLoans(3, 4, 6000)
+//        val dueLoans4 = DueLoans(4, 4, 6000)
+//        val list = listOf(dueLoans1, dueLoans2, dueLoans3, dueLoans4)
+//        upcomingLoanAdapter.submitList(list)
+//        binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
     }
 
     private fun setUiOnHomeSweetHomeBills() {

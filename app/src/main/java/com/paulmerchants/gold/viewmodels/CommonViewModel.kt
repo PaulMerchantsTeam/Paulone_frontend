@@ -1,7 +1,9 @@
 package com.paulmerchants.gold.viewmodels
 
+import android.content.Context
 import android.os.CountDownTimer
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,13 +14,18 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
+import com.paulmerchants.gold.model.GetPendingInrstDueResp
 import com.paulmerchants.gold.model.RequestLogin
 import com.paulmerchants.gold.model.RespLogin
 import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.place.Place
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.SecureFiles
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.Constants
+import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
+import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
 import com.paulmerchants.gold.utility.decryptKey
 import com.shacklabs.quicke.remote.networks.RetrofitSetup
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,10 +44,10 @@ class CommonViewModel @Inject constructor(
     ViewModel() {
     private var remoteDataList: List<Place>? = null
     private var listOfLocation: List<com.paulmerchants.gold.place.Place>? = null
-
+    val getPendingInterestDuesLiveData = MutableLiveData<GetPendingInrstDueResp>()
     var timer: CountDownTimer? = null
     val countNum = MutableLiveData<Long>()
-
+    var isStartAnim = MutableLiveData<Boolean>()
     var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
 
 
@@ -55,7 +62,46 @@ class CommonViewModel @Inject constructor(
         loadData()
     }
 
+    /**
+     * [
+     * {
+     * "AcNo":102210000015198,
+     * "InterestDue":3588.0000,
+     * "ProductName":"SUGHAM LOAN  R",
+     * "DueDate":"2024-06-21T00:00:00",
+     * "Fine":1.0000
+     * }
+     * ]
+     */
 
+
+    fun getPendingInterestDues(context: Context, date: String) = viewModelScope.launch {
+        try {
+            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
+                val response = apiParams.getPendingInterestDues(
+                    it, AppSharedPref.getStringValue(CUSTOMER_ID).toString(), date
+                )
+                // Get the plain text response
+                val plainTextResponse = response.string()
+
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse)
+
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_GEN,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                getPendingInterestDuesLiveData.value = respPending
+                println("Str_To_Json------$respPending")
+
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        AppUtility.hideProgressBar()
+    }
 
 
     fun getLogin() = viewModelScope.launch {

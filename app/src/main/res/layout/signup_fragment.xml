@@ -118,6 +118,7 @@
                         android:textColor="@color/splash_screen_one"
                         android:textCursorDrawable="@drawable/custom_edit_text_cursor"
                         android:textSize="@dimen/_11ssp"
+                        android:hint="@string/optional"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/emailId" />

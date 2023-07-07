@@ -8,6 +8,7 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -18,10 +19,19 @@ interface ApiParams {
         @Body login: RequestLogin,
     ): ResponseBody
 
-    @GET("Login/GetCustomer")
+    @GET("LoanDetails/GetCustomer")
     suspend fun getCustomer(
+        @Header("Authorization") auth: String,
         @Query("MobileNo") MobileNo: String,
-    ): RespGetCustomer
+    ): ResponseBody   //RespGetCustomer
+
+    @GET("LoanDetails/GetPendingInterestDues")
+    suspend fun getPendingInterestDues(
+        @Header("Authorization") auth: String,
+        @Query("Cust_ID") Cust_ID: String,
+        @Query("AsOnDate") AsOnDate: String,
+    ): ResponseBody
+
 
     @GET("LoanDetails/GetLoanOutstanding")
     suspend fun getLoanOutstanding()
@@ -29,8 +39,6 @@ interface ApiParams {
     @GET("LoanDetails/GetLoanDueDate")
     suspend fun getLoanDueDate()
 
-    @GET("LoanDetails/GetPendingInterestDues")
-    suspend fun getPendingInterestDues()
 
     @GET("LoanDetails/GetLoanClosureReceipt")
     suspend fun getLoanClosureReceipt()

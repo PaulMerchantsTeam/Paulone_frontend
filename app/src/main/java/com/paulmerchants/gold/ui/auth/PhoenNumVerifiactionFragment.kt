@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -24,12 +25,14 @@ import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
+import com.paulmerchants.gold.common.Constants.OTP_VERIFIED
 import com.paulmerchants.gold.common.Constants.SIGNUP_DONE
 import com.paulmerchants.gold.databinding.PhoneAuthFragmentBinding
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.*
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.diffColorText
+import com.paulmerchants.gold.viewmodels.AuthViewModel
 import com.paulmerchants.gold.viewmodels.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -45,7 +48,7 @@ class PhoenNumVerifiactionFragment :
     private var isMobileEntered: Boolean = false
     private var isOtpVerified: Boolean = false
     private var pinValue: Int? = null
-    private val splashViewModel: SplashViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
 
     companion object {
         const val REQ_CODE = 123
@@ -66,7 +69,6 @@ class PhoenNumVerifiactionFragment :
 //
 //                }
 //            }
-//
 //        }
 
     override fun PhoneAuthFragmentBinding.initialize() {
@@ -79,6 +81,10 @@ class PhoenNumVerifiactionFragment :
         super.onStart()
         //Welcome to Paul Gold,
         //we are happy to serve you!!
+        if (AppSharedPref.getBooleanValue(OTP_VERIFIED)) {
+            binding.fillOtpParent.hideView()
+            binding.signUpParentMain.root.show()
+        }
         if (pinValue == 100) {
             binding.apply {
                 titleWelcomTv.hide()
@@ -101,28 +107,50 @@ class PhoenNumVerifiactionFragment :
             "",
             binding.titleWelcomTv
         )
+        authViewModel.isCustomerExist.observe(viewLifecycleOwner) {
+            it?.let {
+                hideAndShowOtpView()
+                isMobileEntered = true
+            }
+        }
         binding.proceedAuthBtn.setOnClickListener {
             if (!isMobileEntered) {
                 if (binding.etPhoenNum.text.isNotEmpty()) {
-                    hideAndShowOtpView()
-                    isMobileEntered = true
+                    authViewModel.getCustomer(binding.etPhoenNum.text.toString(), requireContext())
                 }
             } else {
                 if (binding.otpOneEt.text.isNotEmpty() && binding.otpTwoEt.text.isNotEmpty() && binding.otpThreeEt.text.isNotEmpty() && binding.otpFourEt.text.isNotEmpty()) {
-                    hideAndShowProgressView(false)
-                    lifecycleScope.launch {
-                        delay(2000)
-                        binding.mainPgCons.cirStreakTimePg.endProgress(requireContext())
-                        binding.mainPgCons.progessTv.apply {
-                            setTColor(
-                                getString(R.string.verified),
-                                requireContext(), R.color.green_verified
-                            )
+                    val otp =
+                        binding.otpOneEt.text.toString() + binding.otpTwoEt.text.toString() + binding.otpThreeEt.text.toString() + binding.otpFourEt.text.toString()
+                    Log.d("TAG", "onStart: .........OTP_____$otp")
+
+                    /**
+                     * Currently setting OTP 0808...
+                     */
+
+                    if (otp == "0808") {
+                        hideAndShowProgressView(false)
+                        lifecycleScope.launch {
+                            delay(2000)
+                            binding.mainPgCons.cirStreakTimePg.endProgress(requireContext())
+                            binding.mainPgCons.progessTv.apply {
+                                setTColor(
+                                    getString(R.string.verified),
+                                    requireContext(), R.color.green_verified
+                                )
+                            }
+                            delay(1000)
                         }
-                        delay(1000)
+                        isOtpVerified = true
+                        AppSharedPref.putBoolean(OTP_VERIFIED, isOtpVerified)
+                        hideAndShowSignUpScreen()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Please Enter Correct Otp",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                    isOtpVerified = true
-                    hideAndShowSignUpScreen()
                 }
             }
 
@@ -198,6 +226,14 @@ class PhoenNumVerifiactionFragment :
         customizeText()
         callMpinNextFocus()
 
+        AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)?.let {
+            if (it != "") {
+                binding.signUpParentMain.etName.apply {
+                    setText(it)
+                    isEnabled = false
+                }
+            }
+        }
 
         binding.signUpParentMain.signUpBtn.setOnClickListener {
             if (binding.signUpParentMain.etName.text.isNotEmpty() &&
@@ -335,7 +371,7 @@ class PhoenNumVerifiactionFragment :
             binding.pleaseOtpTv
         )
         (activity as MainActivity).mViewModel.timerStart(30000)
-        (activity as MainActivity).mViewModel.countNum.observe(viewLifecycleOwner, Observer {
+        (activity as MainActivity).mViewModel.countNum.observe(viewLifecycleOwner) {
             it?.let {
                 var count = "$it"
                 if (it < 10) {
@@ -354,7 +390,7 @@ class PhoenNumVerifiactionFragment :
                 }
 
             }
-        })
+        }
     }
 
     private fun callOtpNextFocus() {

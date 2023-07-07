@@ -351,6 +351,7 @@
     <string name="card_lost_stollen">Card lost or stolen</string>
     <string name="terminated_card_srvc">Terminate your card services</string>
     <string name="reset_card_pin">RESET CARD PIN</string>
+    <string name="optional">Optional</string>
 
     <string-array name="month">
         <item>January</item>

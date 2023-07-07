@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.paulmerchants.gold.adapterviewholders.UpcomingLoansViewHolder
 import com.paulmerchants.gold.databinding.ItemUpcomingDueLoanBinding
-import com.paulmerchants.gold.model.DueLoans
+import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 
-class UpcomingLoanAdapter(private val onPayDueClicked: (DueLoans) -> Unit) :
-    ListAdapter<DueLoans, UpcomingLoansViewHolder>(DIFF_CALLBACK) {
+class UpcomingLoanAdapter(private val onPayDueClicked: (GetPendingInrstDueRespItem) -> Unit) :
+    ListAdapter<GetPendingInrstDueRespItem, UpcomingLoansViewHolder>(DIFF_CALLBACK) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = UpcomingLoansViewHolder(
@@ -23,18 +23,16 @@ class UpcomingLoanAdapter(private val onPayDueClicked: (DueLoans) -> Unit) :
 
     companion object {
         private val DIFF_CALLBACK =
-            object : DiffUtil.ItemCallback<DueLoans>() {
+            object : DiffUtil.ItemCallback<GetPendingInrstDueRespItem>() {
                 override fun areItemsTheSame(
-                    oldItem: DueLoans,
-                    newItem: DueLoans,
-                ): Boolean =
-                    oldItem.payId == newItem.payId
+                    oldItem: GetPendingInrstDueRespItem,
+                    newItem: GetPendingInrstDueRespItem,
+                ): Boolean = true
 
                 override fun areContentsTheSame(
-                    oldItem: DueLoans,
-                    newItem: DueLoans,
-                ): Boolean =
-                    oldItem == newItem
+                    oldItem: GetPendingInrstDueRespItem,
+                    newItem: GetPendingInrstDueRespItem,
+                ): Boolean = true
             }
     }
 

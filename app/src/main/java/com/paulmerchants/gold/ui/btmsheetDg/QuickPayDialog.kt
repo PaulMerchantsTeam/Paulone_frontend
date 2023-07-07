@@ -16,6 +16,7 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.QuickPayPopupBinding
 import com.paulmerchants.gold.model.DueLoans
+import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,7 +50,7 @@ class QuickPayDialog : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         quickPayPopupBinding = QuickPayPopupBinding.inflate(inflater, container, false)
         Log.d(TAG, "onCreateView: ")
@@ -61,9 +62,12 @@ class QuickPayDialog : BottomSheetDialogFragment() {
         val dueLoans = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
             arguments?.getParcelable(
                 Constants.DUE_LOAN_DATA,
-                DueLoans::class.java
-            ) else arguments?.getParcelable<DueLoans>(Constants.DUE_LOAN_DATA) as DueLoans
-        Log.d(TAG, "onCreate:---dueDays-${dueLoans?.dueDays}\n-----amount---${dueLoans?.amount} ")
+                GetPendingInrstDueRespItem::class.java
+            ) else arguments?.getParcelable<GetPendingInrstDueRespItem>(Constants.DUE_LOAN_DATA) as GetPendingInrstDueRespItem
+        Log.d(
+            TAG,
+            "onCreate:---dueDays-${dueLoans?.DueDate}\n-----amount---${dueLoans?.InterestDue} "
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,11 +79,11 @@ class QuickPayDialog : BottomSheetDialogFragment() {
         onCLickRadio()
     }
 
-    fun onCLickRadio(){
+    fun onCLickRadio() {
         quickPayPopupBinding.fullPayRadio.setOnClickListener {
 
             quickPayPopupBinding.customPayEt.hide()
-            quickPayPopupBinding.payingAMountText.text =  quickPayPopupBinding.fullPayRadio.text
+            quickPayPopupBinding.payingAMountText.text = quickPayPopupBinding.fullPayRadio.text
 
         }
         quickPayPopupBinding.customPayRadio.setOnClickListener {

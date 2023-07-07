@@ -20,6 +20,9 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.ProgressLayoutBinding
 import com.paulmerchants.gold.model.ActionItem
+import com.paulmerchants.gold.model.GetPendingInrstDueResp
+import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
+import com.paulmerchants.gold.model.RespGetCustomer
 import com.paulmerchants.gold.model.RespLogin
 import com.paulmerchants.gold.ui.MainActivity
 import org.bouncycastle.jce.provider.BouncyCastleProvider
@@ -44,6 +47,18 @@ object AppUtility {
     fun stringToJson(string: String): RespLogin {
         val gson = Gson()
         val data = gson.fromJson(string, RespLogin::class.java)
+        return data
+    }
+
+    fun stringToJsonCustomer(string: String): RespGetCustomer {
+        val gson = Gson()
+        val data = gson.fromJson(string, RespGetCustomer::class.java)
+        return data
+    }
+
+    fun stringToJsonGetPending(string: String): GetPendingInrstDueResp {
+        val gson = Gson()
+        val data = gson.fromJson(string, GetPendingInrstDueResp::class.java)
         return data
     }
 
@@ -104,7 +119,7 @@ object AppUtility {
      * Progress Bar Layout
      * */
 
-     fun progressBarAlert() = try {
+    fun progressBarAlert() = try {
         hideProgressBar()
         MainActivity.context.get()?.let {
             val builder = AlertDialog.Builder(it)
@@ -121,7 +136,7 @@ object AppUtility {
 
 
     /** Hide Progress Bar */
-     fun hideProgressBar() {
+    fun hideProgressBar() {
         try {
             if (::dialog.isInitialized) dialog.dismiss()
         } catch (e: Exception) {
