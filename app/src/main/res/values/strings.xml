@@ -41,6 +41,7 @@
     <string name="m_pin">M-pin</string>
     <string name="for_u">for you</string>
     <string name="conf_the_mpin">Confirm new M-Pin</string>
+    <string name="conf_mpin">Confirm M-Pin</string>
     <string name="confirm">Confirm</string>
     <string name="finally_done_sighup">And we are finally done, welcome home user. We are glad to have you with us.</string>
     <string name="bills_amp_more"><font size="10"><![CDATA[BILLS & MORE]]></font></string>

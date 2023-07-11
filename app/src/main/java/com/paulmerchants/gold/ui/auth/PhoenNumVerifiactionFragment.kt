@@ -225,7 +225,7 @@ class PhoenNumVerifiactionFragment :
         binding.signUpParentMain.root.show()
         customizeText()
         callMpinNextFocus()
-
+        callMpinConfirmNextFocus()
         AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)?.let {
             if (it != "") {
                 binding.signUpParentMain.etName.apply {
@@ -470,6 +470,61 @@ class PhoenNumVerifiactionFragment :
             GenericKeyEvent(
                 binding.signUpParentMain.mpinFourEt,
                 binding.signUpParentMain.mpinThreeEt
+            )
+        )
+    }
+
+    private fun callMpinConfirmNextFocus() {
+        //GenericTextWatcher here works only for moving to next EditText when a number is entered
+        //first parameter is the current EditText and second parameter is next EditText
+        binding.signUpParentMain.mpinOneConfirmEt.addTextChangedListener(
+            GenericTextWatcher(
+                binding.signUpParentMain.mpinOneConfirmEt, binding.signUpParentMain.mpinConfirmTwoEt
+            )
+        )
+        binding.signUpParentMain.mpinConfirmTwoEt.addTextChangedListener(
+            GenericTextWatcher(
+                binding.signUpParentMain.mpinConfirmTwoEt,
+                binding.signUpParentMain.mpinConfirmThreeEt
+            )
+        )
+        binding.signUpParentMain.mpinConfirmThreeEt.addTextChangedListener(
+            GenericTextWatcher(
+                binding.signUpParentMain.mpinConfirmThreeEt,
+                binding.signUpParentMain.mpinConfirmFourEt
+            )
+        )
+        binding.signUpParentMain.mpinFourEt.addTextChangedListener(
+            GenericTextWatcher(
+                binding.signUpParentMain.mpinConfirmFourEt,
+                null
+            )
+        )
+
+        //GenericKeyEvent here works for deleting the element and to switch back to previous EditText
+        //first parameter is the current EditText and second parameter is previous EditText
+        binding.signUpParentMain.mpinOneConfirmEt.setOnKeyListener(
+            GenericKeyEvent(
+                binding.signUpParentMain.mpinOneConfirmEt,
+                null
+            )
+        )
+        binding.signUpParentMain.mpinConfirmTwoEt.setOnKeyListener(
+            GenericKeyEvent(
+                binding.signUpParentMain.mpinConfirmTwoEt,
+                binding.signUpParentMain.mpinOneConfirmEt
+            )
+        )
+        binding.signUpParentMain.mpinConfirmThreeEt.setOnKeyListener(
+            GenericKeyEvent(
+                binding.signUpParentMain.mpinConfirmThreeEt,
+                binding.signUpParentMain.mpinConfirmTwoEt
+            )
+        )
+        binding.signUpParentMain.mpinConfirmFourEt.setOnKeyListener(
+            GenericKeyEvent(
+                binding.signUpParentMain.mpinConfirmFourEt,
+                binding.signUpParentMain.mpinConfirmThreeEt
             )
         )
     }

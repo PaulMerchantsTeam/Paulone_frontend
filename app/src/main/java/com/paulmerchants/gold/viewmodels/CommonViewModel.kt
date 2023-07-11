@@ -3,7 +3,6 @@ package com.paulmerchants.gold.viewmodels
 import android.content.Context
 import android.os.CountDownTimer
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,24 +15,25 @@ import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.model.GetPendingInrstDueResp
 import com.paulmerchants.gold.model.RequestLogin
-import com.paulmerchants.gold.model.RespLogin
+import com.paulmerchants.gold.model.RespClosureReceipt
+import com.paulmerchants.gold.model.RespCustomersDetails
+import com.paulmerchants.gold.model.RespGetLoanOutStanding
+import com.paulmerchants.gold.model.RespLoanDueDate
+import com.paulmerchants.gold.model.RespLoanRenewalProcess
+import com.paulmerchants.gold.model.RespRenewalEligiblity
 import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.place.Place
 import com.paulmerchants.gold.remote.ApiParams
-import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
-import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
 import com.paulmerchants.gold.utility.decryptKey
-import com.shacklabs.quicke.remote.networks.RetrofitSetup
+import com.paulmerchants.gold.networks.RetrofitSetup
+import com.paulmerchants.gold.utility.Constants.ACC_NUM
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
-import org.bouncycastle.asn1.ocsp.ResponseBytes
-import retrofit2.Converter
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,6 +45,12 @@ class CommonViewModel @Inject constructor(
     private var remoteDataList: List<Place>? = null
     private var listOfLocation: List<com.paulmerchants.gold.place.Place>? = null
     val getPendingInterestDuesLiveData = MutableLiveData<GetPendingInrstDueResp>()
+    val getRespGetLoanOutStandingLiveData = MutableLiveData<RespGetLoanOutStanding>()
+    val getRespLoanDueDateLiveData = MutableLiveData<RespLoanDueDate>()
+    val getRespClosureReceiptLiveData = MutableLiveData<RespClosureReceipt>()
+    val getRespCustomersDetailsLiveData = MutableLiveData<RespCustomersDetails>()
+    val getRespRenewalEligiblityLiveData = MutableLiveData<RespRenewalEligiblity>()
+    val getRespLoanRenewalProcessLiveData = MutableLiveData<RespLoanRenewalProcess>()
     var timer: CountDownTimer? = null
     val countNum = MutableLiveData<Long>()
     var isStartAnim = MutableLiveData<Boolean>()
@@ -61,48 +67,6 @@ class CommonViewModel @Inject constructor(
         remoteConfig.setDefaultsAsync(R.xml.places)
         loadData()
     }
-
-    /**
-     * [
-     * {
-     * "AcNo":102210000015198,
-     * "InterestDue":3588.0000,
-     * "ProductName":"SUGHAM LOAN  R",
-     * "DueDate":"2024-06-21T00:00:00",
-     * "Fine":1.0000
-     * }
-     * ]
-     */
-
-
-    fun getPendingInterestDues(context: Context, date: String) = viewModelScope.launch {
-        try {
-            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
-                val response = apiParams.getPendingInterestDues(
-                    it, AppSharedPref.getStringValue(CUSTOMER_ID).toString(), date
-                )
-                // Get the plain text response
-                val plainTextResponse = response.string()
-
-                // Do something with the plain text response
-                Log.d("Response", plainTextResponse)
-
-                val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_GEN,
-                    plainTextResponse
-                )
-                println("decrypt-----$decryptData")
-                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
-                getPendingInterestDuesLiveData.value = respPending
-                println("Str_To_Json------$respPending")
-
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        AppUtility.hideProgressBar()
-    }
-
 
     fun getLogin() = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
@@ -127,6 +91,211 @@ class CommonViewModel @Inject constructor(
                 Log.d("TAG", "error: ......$message")
             }
         })
+    }
+
+    /**
+     * [
+     *      {
+     *          "AcNo":102210000015198,
+     *          "InterestDue":3588.0000,
+     *          "ProductName":"SUGHAM LOAN  R",
+     *          "DueDate":"2024-06-21T00:00:00",
+     *          "Fine":1.0000
+     *      }
+     * ]
+     */
+
+
+    fun getPendingInterestDues(context: Context, date: String) = viewModelScope.launch {
+        try {
+            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
+                val response = apiParams.getPendingInterestDues(
+                    it, AppSharedPref.getStringValue(CUSTOMER_ID).toString(), date
+                )
+                // Get the plain text response
+                val plainTextResponse = response.string()
+
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse)
+
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_GEN,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+                val respPending: GetPendingInrstDueResp? =
+                    AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                respPending?.let { resp ->
+                    getPendingInterestDuesLiveData.value = resp
+                }
+                println("Str_To_Json------$respPending")
+
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        AppUtility.hideProgressBar()
+    }
+
+    fun getLoanOutstanding() = viewModelScope.launch {
+        try {
+            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
+                val response = apiParams.getLoanOutstanding(
+                    it, AppSharedPref.getStringValue(CUSTOMER_ID).toString()
+                )
+                // Get the plain text response
+                val plainTextResponse = response.string()
+
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse)
+
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_GEN,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+                val respPending: RespGetLoanOutStanding? =
+                    AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                respPending?.let { resp ->
+                    getRespGetLoanOutStandingLiveData.value = resp
+                }
+                println("Str_To_Json------$respPending")
+
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        AppUtility.hideProgressBar()
+    }
+
+    fun getLoanDueDate() = viewModelScope.launch {
+        try {
+            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
+                val response = apiParams.getLoanDueDate(
+                    it, AppSharedPref.getStringValue(CUSTOMER_ID).toString()
+                )
+                // Get the plain text response
+                val plainTextResponse = response.string()
+
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse)
+
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_GEN,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+                val respPending: RespLoanDueDate? =
+                    AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                respPending?.let { resp ->
+                    getRespLoanDueDateLiveData.value = resp
+                }
+                println("Str_To_Json------$respPending")
+
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        AppUtility.hideProgressBar()
+    }
+
+    fun getLoanClosureReceipt() = viewModelScope.launch {
+        try {
+            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
+                val response = apiParams.getLoanClosureReceipt(
+                    it, AppSharedPref.getStringValue(ACC_NUM).toString()
+                )
+                // Get the plain text response
+                val plainTextResponse = response.string()
+
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse)
+
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_GEN,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+                val respPending: RespClosureReceipt? =
+                    AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                respPending?.let { resp ->
+                    getRespClosureReceiptLiveData.value = resp
+                }
+                println("Str_To_Json------$respPending")
+
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        AppUtility.hideProgressBar()
+    }
+
+    fun getRenewalEligibility() = viewModelScope.launch {
+        try {
+            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
+                val response = apiParams.getRenewalEligibility(
+                    it, AppSharedPref.getStringValue(CUSTOMER_ID).toString()
+                )
+                // Get the plain text response
+                val plainTextResponse = response.string()
+
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse)
+
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_GEN,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+                val respPending: RespRenewalEligiblity? =
+                    AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                respPending?.let { resp ->
+                    getRespRenewalEligiblityLiveData.value = resp
+                }
+                println("Str_To_Json------$respPending")
+
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        AppUtility.hideProgressBar()
+    }
+
+    fun getLoanRenewalProcess() = viewModelScope.launch {
+        try {
+            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
+                val response = apiParams.getLoanRenewalProcess(
+                    it, AppSharedPref.getStringValue(CUSTOMER_ID).toString()
+                )
+                // Get the plain text response
+                val plainTextResponse = response.string()
+
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse)
+
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_GEN,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+                val respPending: RespLoanRenewalProcess? =
+                    AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                respPending?.let { resp ->
+                    getRespLoanRenewalProcessLiveData.value = resp
+                }
+                println("Str_To_Json------$respPending")
+
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        AppUtility.hideProgressBar()
     }
 
 

@@ -1,4 +1,4 @@
-package com.shacklabs.quicke.remote.networks
+package com.paulmerchants.gold.networks
 
 
 import android.app.AlertDialog
@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import com.paulmerchants.gold.databinding.ProgressLayoutBinding
-import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.ui.MainActivity
 
@@ -67,7 +66,6 @@ class RetrofitSetup @Inject constructor(private val apiParams: ApiParams) {
                         when (response.code()) {
                             400 -> {
                                 //400 Bad Request
-                                callHandler.success(response as T)
 //                                response.message().showSnackBar()
                             }
 

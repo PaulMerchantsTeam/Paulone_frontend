@@ -21,12 +21,15 @@ import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.ProgressLayoutBinding
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.GetPendingInrstDueResp
-import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
+import com.paulmerchants.gold.model.RespClosureReceipt
 import com.paulmerchants.gold.model.RespGetCustomer
+import com.paulmerchants.gold.model.RespGetLoanOutStanding
+import com.paulmerchants.gold.model.RespGetReceipt
+import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLogin
 import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.utility.AppUtility.convertStringToJson
 import org.bouncycastle.jce.provider.BouncyCastleProvider
-import org.bouncycastle.util.encoders.Base64
 import java.io.UnsupportedEncodingException
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
@@ -35,32 +38,58 @@ import javax.crypto.BadPaddingException
 import javax.crypto.Cipher
 import javax.crypto.IllegalBlockSizeException
 import javax.crypto.NoSuchPaddingException
-import javax.crypto.SecretKey
 import javax.crypto.ShortBufferException
-import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 
 object AppUtility {
     private lateinit var dialog: AlertDialog
 
+    inline fun <reified T> convertStringToJson(string: String): T? {
+        return try {
+            val gson = Gson()
+            gson.fromJson(string, T::class.java)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     fun stringToJson(string: String): RespLogin {
         val gson = Gson()
-        val data = gson.fromJson(string, RespLogin::class.java)
-        return data
+        return gson.fromJson(string, RespLogin::class.java)
     }
 
     fun stringToJsonCustomer(string: String): RespGetCustomer {
         val gson = Gson()
-        val data = gson.fromJson(string, RespGetCustomer::class.java)
-        return data
+        return gson.fromJson(string, RespGetCustomer::class.java)
     }
 
     fun stringToJsonGetPending(string: String): GetPendingInrstDueResp {
         val gson = Gson()
-        val data = gson.fromJson(string, GetPendingInrstDueResp::class.java)
-        return data
+        return gson.fromJson(string, GetPendingInrstDueResp::class.java)
     }
+
+    fun stringToJsonGetLoanOutstanding(string: String): RespGetLoanOutStanding {
+        val gson = Gson()
+        return gson.fromJson(string, RespGetLoanOutStanding::class.java)
+    }
+
+    fun stringToJsonGetLoanDueDate(string: String): RespLoanDueDate {
+        val gson = Gson()
+        return gson.fromJson(string, RespLoanDueDate::class.java)
+    }
+
+    fun stringToJsonGetLoanClosureReceipt(string: String): RespClosureReceipt {
+        val gson = Gson()
+        return gson.fromJson(string, RespClosureReceipt::class.java)
+    }
+
+    fun stringToJsonGetReceipt(string: String): RespGetReceipt {
+        val gson = Gson()
+        return gson.fromJson(string, RespGetReceipt::class.java)
+    }
+
 
     fun isDeveloperOptionsEnabled(context: Context): Boolean {
         return Settings.Secure.getInt(
@@ -193,7 +222,11 @@ fun main() {
     )
     println(a)
     val j = AppUtility.stringToJson(a.toString())
+    val respLogin: RespLogin? = convertStringToJson(a.toString())
     println(j)
+    println(respLogin)
+    println(respLogin?.Status)
+    println(respLogin?.JWToken)
 }
 
 

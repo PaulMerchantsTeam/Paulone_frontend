@@ -167,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/splash_screen_one"
                 android:buttonTint="@color/splash_screen_one"
-                android:text="Pay minimum - "
+                android:text="Pay custom - "
                 android:textColor="@color/splash_screen_three"
                 app:useMaterialThemeColors="false" />
 
@@ -182,8 +182,8 @@
             android:backgroundTint="@color/black"
             android:hint="(INR XXXX)"
             android:inputType="number"
-            android:visibility="gone"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/radioGrp"
             app:layout_constraintStart_toStartOf="parent" />
