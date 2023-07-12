@@ -8,64 +8,45 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardParent"
         android:layout_width="match_parent"
+        android:paddingVertical="@dimen/_10sdp"
         android:layout_height="match_parent"
-        android:background="@drawable/rec_frch_blue_solid">
+        android:background="@color/view_color">
 
-        <TextView
+        <View
             android:id="@+id/youHaveTotalLoanTv"
-            style="@style/text_12_regular_white"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_13sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:background="@color/view_color"
             android:visibility="visible"
-            android:textSize="@dimen/_9ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <View
             android:id="@+id/totalLoanAmountTv"
-            style="@style/text_24_regular_blue"
-            android:textColor="@color/splash_screen_one"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_8sdp"
-            android:text="INR 3,00,000"
-            app:layout_constraintEnd_toStartOf="@+id/imageView6"
+            android:background="@color/view_color"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/youHaveTotalLoanTv" />
-<!--        We serve you with the best gold loans-->
-        <com.google.android.material.textview.MaterialTextView
+        <!--        We serve you with the best gold loans-->
+        <View
             android:id="@+id/viewLoanBtn"
-            style="@style/text_12_bold_blue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_25sdp"
             android:layout_marginStart="@dimen/_1sdp"
             android:layout_marginTop="@dimen/_24sdp"
             android:layout_marginBottom="@dimen/_17sdp"
             android:background="@drawable/rec_one_yellow_btn"
-            android:padding="@dimen/_8sdp"
-            android:text="View Loans"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/totalLoanAmountTv"
             app:layout_constraintTop_toBottomOf="@+id/totalLoanAmountTv" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/renewLoansTv"
-            style="@style/text_12_bold_yellow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_22sdp"
-            android:visibility="visible"
-            android:textColor="@color/yellow_main"
-            android:background="@drawable/rec_yellow_empty_btn"
-            android:padding="@dimen/_8sdp"
-            android:text="Renew Loans"
-            app:layout_constraintBottom_toBottomOf="@+id/viewLoanBtn"
-            app:layout_constraintStart_toEndOf="@+id/viewLoanBtn"
-            app:layout_constraintTop_toTopOf="@+id/viewLoanBtn" />
 
         <ImageView
             android:id="@+id/imageView6"

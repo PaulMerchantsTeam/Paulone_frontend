@@ -35,7 +35,7 @@ class AuthViewModel @Inject constructor(private val apiParams: ApiParams) : View
         }
         try {
             val encMobile =
-                SecureFiles(context).encryptKey(mobileNum, BuildConfig.SECRET_KEY_GEN).toString()
+                SecureFiles().encryptKey(mobileNum, BuildConfig.SECRET_KEY_GEN).toString()
 
             AppSharedPref.getStringValue(JWT_TOKEN)?.let {
                 val response = apiParams.getCustomer(it, encMobile)
@@ -55,12 +55,12 @@ class AuthViewModel @Inject constructor(private val apiParams: ApiParams) : View
                     if (respCutomer[0].Status == true) {
                         isCustomerExist.postValue(true)
                         Log.d(
-                            "TAG", "getCustomer: -CustomerId---${respCutomer[0].CustID.toString()}"
+                            "TAG", "getCustomer: -CustomerId---${respCutomer[0].Cust_ID.toString()}"
                         )
                         Log.d(
                             "TAG", "getCustomer: -CustName---${respCutomer[0].CustName.toString()}"
                         )
-                        AppSharedPref.putStringValue(CUSTOMER_ID, respCutomer[0].CustID.toString())
+                        AppSharedPref.putStringValue(CUSTOMER_ID, respCutomer[0].Cust_ID.toString())
                         AppSharedPref.putStringValue(
                             CUSTOMER_NAME, respCutomer[0].CustName.toString()
                         )

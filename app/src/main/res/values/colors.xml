@@ -51,6 +51,7 @@
     <color name="green_success">#2BA00E</color>
     <color name="brown">#484848</color>
     <color name="red">#E20000</color>
+
     <color name="due_4days_red">#E20000</color>
     <color name="due_2days_red">#E43700</color>
     <color name="due_yellow">#E4A400</color>

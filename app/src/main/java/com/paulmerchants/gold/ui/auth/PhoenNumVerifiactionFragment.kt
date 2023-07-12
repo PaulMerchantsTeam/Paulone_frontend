@@ -236,10 +236,17 @@ class PhoenNumVerifiactionFragment :
         }
 
         binding.signUpParentMain.signUpBtn.setOnClickListener {
-            if (binding.signUpParentMain.etName.text.isNotEmpty() &&
-                binding.signUpParentMain.etEmailId.text.isNotEmpty() && binding.signUpParentMain.mpinOneEt.text.isNotEmpty() &&
-                binding.signUpParentMain.mpinTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty()
-                && binding.signUpParentMain.mpinFourEt.text.isNotEmpty() && binding.signUpParentMain.termsCb.isChecked
+            if (binding.signUpParentMain.etName.text.isNotEmpty()
+                && binding.signUpParentMain.etEmailId.text.isNotEmpty()
+                && binding.signUpParentMain.mpinOneEt.text.isNotEmpty()
+                && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty()
+                && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty()
+                && binding.signUpParentMain.mpinFourEt.text.isNotEmpty()
+                && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty()
+                && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty()
+                && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty()
+                && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty()
+                && binding.signUpParentMain.termsCb.isChecked
             ) {
                 binding.signUpParentMain.root.hideView()
                 hideAndShowProgressView(true)
@@ -248,7 +255,6 @@ class PhoenNumVerifiactionFragment :
         binding.signUpParentMain.googleSignInTv.setOnClickListener {
             //flow_remaining...
             googleSignUpScreen()
-
         }
     }
 

@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.ui.bottom
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.PrePaidCardAdapter
 import com.paulmerchants.gold.adapter.UpcomingLoanAdapter
@@ -19,15 +21,24 @@ import com.paulmerchants.gold.common.Constants.DUE_LOAN_DATA
 import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
 import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.model.ActionItem
-import com.paulmerchants.gold.model.DueLoans
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.OurServices
 import com.paulmerchants.gold.model.PrepaidCardModel
 import com.paulmerchants.gold.security.SecureFiles
-import com.paulmerchants.gold.utility.*
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
+import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.Constants
+import com.paulmerchants.gold.utility.hide
+import com.paulmerchants.gold.utility.setUiOnHomeSweetHomeBills
+import com.paulmerchants.gold.utility.show
+import com.paulmerchants.gold.utility.startCustomAnimation
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.util.Date
 
 
 @AndroidEntryPoint
@@ -46,22 +57,35 @@ class HomeScreenFrag :
 
     override fun DummyHomeScreenFragmentBinding.initialize() {
         navController = findNavController()
+        secureFiles = SecureFiles()
 //        setUpComingOurServices()
-        setUpComingDueLoans()
+
 
     }
 
     override fun onStart() {
         super.onStart()
-        secureFiles = SecureFiles(requireContext())
+
 //        commonViewModel.getLogin(secureFiles)
         setProfileUi()
+        setUpComingDueLoans()
+
         startAnimationOnIcon()
         setUiOnHomeSweetHomeBills()
         handleRechargeAndBillUi()
         setPrepaidCardUi()
-        setLoanOverView()
         setAddCardView()
+    }
+
+    private fun showHideLoadinf() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            binding.shimmmerParent.startShimmer()
+            delay(3000)
+            binding.shimmmerParent.hideShimmer()
+            binding.shimmmerParent.hide()
+            binding.rvUpcomingDueLoans.show()
+        }
+
     }
 
     private fun onPayDueClicked(dueLoans: GetPendingInrstDueRespItem) {
@@ -69,8 +93,7 @@ class HomeScreenFrag :
             putParcelable(DUE_LOAN_DATA, dueLoans)
         }
         findNavController().navigate(
-            R.id.quickPayDialog,
-            bundle
+            R.id.quickPayDialog, bundle
         )
     }
 
@@ -87,6 +110,11 @@ class HomeScreenFrag :
     }
 
     private fun setProfileUi() {
+        val userFirstName =
+            AppUtility.getFirstName(AppSharedPref.getStringValue(Constants.CUSTOMER_NAME))
+        binding.searchProfileParent.userName.text =
+            "Hey ${userFirstName ?: "User"}"
+        binding.searchProfileParent.firtLetterUser.text = "${userFirstName?.first() ?: "U"}"
         commonViewModel.isStartAnim.observe(viewLifecycleOwner) {
             it?.let {
                 if (it) {
@@ -250,26 +278,22 @@ class HomeScreenFrag :
         binding.searchProfileParent.searchView.show()
         commonViewModel.isStartAnim.postValue(true)
 
-        binding.searchProfileParent.searchView.startAnimation(
-            AnimationUtils.loadAnimation(
-                requireContext(),
-                R.anim.slide_down_to_mid
-            ).apply {
-                this.start()
-            })
+        binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(
+            requireContext(), R.anim.slide_down_to_mid
+        ).apply {
+            this.start()
+        })
     }
 
     override fun onPause() {
         super.onPause()
         commonViewModel.isStartAnim.postValue(false)
         binding.searchProfileParent.searchView.clearAnimation()
-        binding.searchProfileParent.searchView.startAnimation(
-            AnimationUtils.loadAnimation(
-                requireContext(),
-                R.anim.slide_down_to_mid
-            ).apply {
-                this.cancel()
-            })
+        binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(
+            requireContext(), R.anim.slide_down_to_mid
+        ).apply {
+            this.cancel()
+        })
 
 
     }
@@ -287,45 +311,39 @@ class HomeScreenFrag :
             binding.searchProfileParent.searchView.hint = strList[0]
             binding.searchProfileParent.searchView.startAnimation(
                 AnimationUtils.loadAnimation(
-                    requireContext(),
-                    R.anim.slide_down_to_mid
+                    requireContext(), R.anim.slide_down_to_mid
                 )
             )
             delay(1000)
             binding.searchProfileParent.searchView.startAnimation(
                 AnimationUtils.loadAnimation(
-                    requireContext(),
-                    R.anim.slide_mid_to_up
+                    requireContext(), R.anim.slide_mid_to_up
                 )
             )
             delay(1000)
             binding.searchProfileParent.searchView.hint = strList[1]
             binding.searchProfileParent.searchView.startAnimation(
                 AnimationUtils.loadAnimation(
-                    requireContext(),
-                    R.anim.slide_down_to_mid
+                    requireContext(), R.anim.slide_down_to_mid
                 )
             )
             delay(1000)
             binding.searchProfileParent.searchView.startAnimation(
                 AnimationUtils.loadAnimation(
-                    requireContext(),
-                    R.anim.slide_mid_to_up
+                    requireContext(), R.anim.slide_mid_to_up
                 )
             )
             delay(1000)
             binding.searchProfileParent.searchView.hint = strList[2]
             binding.searchProfileParent.searchView.startAnimation(
                 AnimationUtils.loadAnimation(
-                    requireContext(),
-                    R.anim.slide_down_to_mid
+                    requireContext(), R.anim.slide_down_to_mid
                 )
             )
             delay(1000)
             binding.searchProfileParent.searchView.startAnimation(
                 AnimationUtils.loadAnimation(
-                    requireContext(),
-                    R.anim.slide_mid_to_up
+                    requireContext(), R.anim.slide_mid_to_up
                 )
             )
 
@@ -334,15 +352,13 @@ class HomeScreenFrag :
             binding.searchProfileParent.searchView.hint = strList[3]
             binding.searchProfileParent.searchView.startAnimation(
                 AnimationUtils.loadAnimation(
-                    requireContext(),
-                    R.anim.slide_down_to_mid
+                    requireContext(), R.anim.slide_down_to_mid
                 )
             )
             delay(1000)
             binding.searchProfileParent.searchView.startAnimation(
                 AnimationUtils.loadAnimation(
-                    requireContext(),
-                    R.anim.slide_mid_to_up
+                    requireContext(), R.anim.slide_mid_to_up
                 )
             )
 
@@ -375,24 +391,16 @@ class HomeScreenFrag :
 
     private fun setUpComingOurServices() {
         val ourServices1 = OurServices(
-            R.drawable.gold_loan_hand,
-            getString(R.string.gold_n_loans),
-            R.color.yellow_main
+            R.drawable.gold_loan_hand, getString(R.string.gold_n_loans), R.color.yellow_main
         )
         val ourServices2 = OurServices(
-            R.drawable.hand_prepaid_card,
-            getString(R.string.prepaid_n_cards),
-            R.color.green_main
+            R.drawable.hand_prepaid_card, getString(R.string.prepaid_n_cards), R.color.green_main
         )
         val ourServices3 = OurServices(
-            R.drawable.hand_invoice,
-            getString(R.string.bills_n_payment),
-            R.color.sky_blue_main
+            R.drawable.hand_invoice, getString(R.string.bills_n_payment), R.color.sky_blue_main
         )
         val ourServices4 = OurServices(
-            R.drawable.hand_digital_gold,
-            getString(R.string.digital_n_gold),
-            R.color.orange_main
+            R.drawable.hand_digital_gold, getString(R.string.digital_n_gold), R.color.orange_main
         )
         val serviceList = listOf(ourServices1, ourServices2, ourServices3, ourServices4)
         upcomingNewUserAdapter.submitList(serviceList)
@@ -401,14 +409,32 @@ class HomeScreenFrag :
     }
 
     private fun setUpComingDueLoans() {
+        showHideLoadinf()
+        val currentDate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDateTime.now()
+        } else {
+            Date()
+        }
+        Log.d(TAG, "setUpComingDueLoans: ..currentDate..$currentDate")
+        Log.d(
+            TAG, "setUpComingDueLoans: ..currentDate..${
+                secureFiles.encryptKey(
+                    currentDate.toString(), BuildConfig.SECRET_KEY_GEN
+                )
+            }"
+        )
+        val encDate = secureFiles.encryptKey(
+            currentDate.toString(), BuildConfig.SECRET_KEY_GEN
+        )
         commonViewModel.getPendingInterestDues(
-            requireContext(),
-            "C2u4GiJrbIdsk0GMeEX9DrdlY9Wd799nWFqIvqOk8lI="
+            requireContext(), encDate.toString()
         )
         commonViewModel.getPendingInterestDuesLiveData.observe(viewLifecycleOwner) {
             it?.let {
-                upcomingLoanAdapter.submitList(it)
+                commonViewModel.notZero = it.filter { it.InterestDue != 0.0000 }
+                upcomingLoanAdapter.submitList(commonViewModel.notZero)
                 binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
+                setLoanOverView()
             }
         }
 //        val dueLoans1 = DueLoans(1, 4, 6000)
@@ -422,19 +448,26 @@ class HomeScreenFrag :
 
     private fun setUiOnHomeSweetHomeBills() {
         binding.allPaymnetActionParent.homeSweetHomBillsRv.setUiOnHomeSweetHomeBills(
-            requireContext(),
-            ::onBillClicked
+            requireContext(), ::onBillClicked
         )
     }
 
     private fun setLoanOverView() {
+        var totalAmount = 0.0
         binding.apply {
 //            loanOverViewCardParent.cardParent.setBackgroundColor(R.drawable.new_user_card_grad)
 
 //            loanOverViewCardParent.viewLoanBtn.text = getString(R.string.apply_now)
 //            loanOverViewCardParent.viewLoanBtn.setOnClickListener {
 //                findNavController().navigate(R.id.applyLoanForNewUser)
-//            }
+//            }            android:text="You are having 4 active loans totalling upto"
+            loanOverViewCardParent.youHaveTotalLoanTv.text =
+                "You are having ${commonViewModel.notZero.size} active loans totalling upto"
+            for (i in commonViewModel.notZero) {
+                totalAmount += i.InterestDue
+            }
+            Log.d(TAG, "setLoanOverView: ......${totalAmount}")
+            loanOverViewCardParent.totalLoanAmountTv.text = "INR $totalAmount"
             loanOverViewCardParent.viewLoanBtn.setOnClickListener {
                 findNavController().navigate(R.id.goldLoanScreenFrag)
 
@@ -442,6 +475,8 @@ class HomeScreenFrag :
             loanOverViewCardParent.renewLoansTv.show()
             loanOverViewCardParent.youHaveTotalLoanTv.show()
         }
+        binding.shimmerCardLoanOverView.stopShimmer()
+        binding.loanOverViewCardParent.root.show()
     }
 
     private fun setAddCardView() {

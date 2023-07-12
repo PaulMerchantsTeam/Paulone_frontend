@@ -3,9 +3,9 @@ package com.paulmerchants.gold.model
 import com.google.gson.annotations.SerializedName
 
 data class RespGetCustomerItem(
-    @SerializedName("CustID") val CustID: Long?,
+    @SerializedName("Cust_ID") val Cust_ID: Long?,
     @SerializedName("CustName") val CustName: String?,
-    @SerializedName("Status") val Status: Boolean?
+    @SerializedName("Status") val Status: Boolean?,
 )
 
 

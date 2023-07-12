@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -34,6 +35,13 @@ import java.io.UnsupportedEncodingException
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
 import java.security.Security
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.util.concurrent.TimeUnit
 import javax.crypto.BadPaddingException
 import javax.crypto.Cipher
 import javax.crypto.IllegalBlockSizeException
@@ -44,6 +52,37 @@ import javax.crypto.spec.SecretKeySpec
 
 object AppUtility {
     private lateinit var dialog: AlertDialog
+
+    fun getFirstName(fullName: String?): String? {
+        return fullName?.substringBefore(" ")
+    }
+
+    fun numberOfDaysWrtCurrent(date: String): Long {
+        val daysDifference: Long
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val specificDate = LocalDateTime.parse(date)
+            val currentDate = LocalDateTime.now()
+
+            daysDifference = ChronoUnit.DAYS.between(specificDate, currentDate)
+            println("The number of days difference is: $daysDifference")
+            return daysDifference
+        } else {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+            val specificDate = dateFormat.parse(date)
+            val currentDate = Date()
+            val calendar1 = Calendar.getInstance()
+            val calendar2 = Calendar.getInstance()
+            if (specificDate != null) {
+                calendar1.time = specificDate
+            }
+            calendar2.time = currentDate
+            val millisecondsDifference = calendar2.timeInMillis - calendar1.timeInMillis
+            daysDifference = TimeUnit.MILLISECONDS.toDays(millisecondsDifference)
+            println("The number of days difference is: $daysDifference")
+            return daysDifference
+        }
+    }
+
 
     inline fun <reified T> convertStringToJson(string: String): T? {
         return try {

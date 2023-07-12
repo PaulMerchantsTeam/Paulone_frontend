@@ -101,6 +101,41 @@
                     app:layout_constraintStart_toEndOf="@+id/upcomingTitleTv"
                     app:layout_constraintTop_toTopOf="@+id/upcomingTitleTv" />
 
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmmerParent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/upcomingTitleTv"
+                    app:shimmer_duration="800">
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <include layout="@layout/place_holder_upcoming_due_loan" />
+
+                            <include layout="@layout/place_holder_upcoming_due_loan" />
+
+                            <include layout="@layout/place_holder_upcoming_due_loan" />
+
+                            <include layout="@layout/place_holder_upcoming_due_loan" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </HorizontalScrollView>
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvUpcomingDueLoans"
                     android:layout_width="wrap_content"
@@ -108,6 +143,7 @@
                     android:layout_marginStart="@dimen/screen_start_margin"
                     android:orientation="horizontal"
                     android:overScrollMode="never"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -163,12 +199,38 @@
                     app:layout_constraintTop_toTopOf="@+id/loanOverVIewTv" />
 
 
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerCardLoanOverView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/loanOverVIewTv"
+                    app:shimmer_duration="800">
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:scrollbars="none">
+
+                        <include layout="@layout/place_holder_loan_overview" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
                 <include
                     android:id="@+id/loanOverViewCardParent"
                     layout="@layout/item_loan_over_view_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"

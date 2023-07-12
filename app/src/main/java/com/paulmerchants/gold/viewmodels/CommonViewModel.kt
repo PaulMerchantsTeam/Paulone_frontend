@@ -14,6 +14,7 @@ import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.model.GetPendingInrstDueResp
+import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.RequestLogin
 import com.paulmerchants.gold.model.RespClosureReceipt
 import com.paulmerchants.gold.model.RespCustomersDetails
@@ -30,6 +31,7 @@ import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
 import com.paulmerchants.gold.utility.decryptKey
 import com.paulmerchants.gold.networks.RetrofitSetup
+import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.utility.Constants.ACC_NUM
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -40,8 +42,9 @@ import javax.inject.Inject
 class CommonViewModel @Inject constructor(
     private val retrofitSetup: RetrofitSetup,
     private val apiParams: ApiParams,
-) :
-    ViewModel() {
+) : ViewModel() {
+
+    var notZero: List<GetPendingInrstDueRespItem> = arrayListOf()
     private var remoteDataList: List<Place>? = null
     private var listOfLocation: List<com.paulmerchants.gold.place.Place>? = null
     val getPendingInterestDuesLiveData = MutableLiveData<GetPendingInrstDueResp>()
@@ -55,7 +58,7 @@ class CommonViewModel @Inject constructor(
     val countNum = MutableLiveData<Long>()
     var isStartAnim = MutableLiveData<Boolean>()
     var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
-
+    private lateinit var secureFiles: SecureFiles
 
     val placesLive = MutableLiveData<MutableList<Place>?>()
 
@@ -66,6 +69,7 @@ class CommonViewModel @Inject constructor(
         remoteConfig.setConfigSettingsAsync(configSettings)
         remoteConfig.setDefaultsAsync(R.xml.places)
         loadData()
+        secureFiles = SecureFiles()
     }
 
     fun getLogin() = viewModelScope.launch {
@@ -74,8 +78,7 @@ class CommonViewModel @Inject constructor(
             override suspend fun sendRequest(apiParams: ApiParams): ResponseBody {
                 return apiParams.getLogin(
                     RequestLogin(
-                        BuildConfig.PASSWORD,
-                        BuildConfig.USERNAME
+                        BuildConfig.PASSWORD, BuildConfig.USERNAME
                     )
                 )
             }
@@ -110,7 +113,10 @@ class CommonViewModel @Inject constructor(
         try {
             AppSharedPref.getStringValue(JWT_TOKEN)?.let {
                 val response = apiParams.getPendingInterestDues(
-                    it, AppSharedPref.getStringValue(CUSTOMER_ID).toString(), date
+                    it, secureFiles.encryptKey(
+                        AppSharedPref.getStringValue(CUSTOMER_ID).toString(),
+                        BuildConfig.SECRET_KEY_GEN
+                    ).toString(), date
                 )
                 // Get the plain text response
                 val plainTextResponse = response.string()
@@ -119,8 +125,7 @@ class CommonViewModel @Inject constructor(
                 Log.d("Response", plainTextResponse)
 
                 val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_GEN,
-                    plainTextResponse
+                    BuildConfig.SECRET_KEY_GEN, plainTextResponse
                 )
                 println("decrypt-----$decryptData")
                 val respPending: GetPendingInrstDueResp? =
@@ -151,8 +156,7 @@ class CommonViewModel @Inject constructor(
                 Log.d("Response", plainTextResponse)
 
                 val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_GEN,
-                    plainTextResponse
+                    BuildConfig.SECRET_KEY_GEN, plainTextResponse
                 )
                 println("decrypt-----$decryptData")
                 val respPending: RespGetLoanOutStanding? =
@@ -183,8 +187,7 @@ class CommonViewModel @Inject constructor(
                 Log.d("Response", plainTextResponse)
 
                 val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_GEN,
-                    plainTextResponse
+                    BuildConfig.SECRET_KEY_GEN, plainTextResponse
                 )
                 println("decrypt-----$decryptData")
                 val respPending: RespLoanDueDate? =
@@ -215,8 +218,7 @@ class CommonViewModel @Inject constructor(
                 Log.d("Response", plainTextResponse)
 
                 val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_GEN,
-                    plainTextResponse
+                    BuildConfig.SECRET_KEY_GEN, plainTextResponse
                 )
                 println("decrypt-----$decryptData")
                 val respPending: RespClosureReceipt? =
@@ -247,8 +249,7 @@ class CommonViewModel @Inject constructor(
                 Log.d("Response", plainTextResponse)
 
                 val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_GEN,
-                    plainTextResponse
+                    BuildConfig.SECRET_KEY_GEN, plainTextResponse
                 )
                 println("decrypt-----$decryptData")
                 val respPending: RespRenewalEligiblity? =
@@ -279,8 +280,7 @@ class CommonViewModel @Inject constructor(
                 Log.d("Response", plainTextResponse)
 
                 val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_GEN,
-                    plainTextResponse
+                    BuildConfig.SECRET_KEY_GEN, plainTextResponse
                 )
                 println("decrypt-----$decryptData")
                 val respPending: RespLoanRenewalProcess? =
@@ -288,6 +288,40 @@ class CommonViewModel @Inject constructor(
 //                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
                 respPending?.let { resp ->
                     getRespLoanRenewalProcessLiveData.value = resp
+                }
+                println("Str_To_Json------$respPending")
+
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        AppUtility.hideProgressBar()
+    }
+
+    fun getCustomerDetails() = viewModelScope.launch {
+        try {
+            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
+                val response = apiParams.getCustomerDetails(
+                    it, secureFiles.encryptKey(
+                        AppSharedPref.getStringValue(CUSTOMER_ID).toString(),
+                        BuildConfig.SECRET_KEY_GEN
+                    ).toString()
+                )
+                // Get the plain text response
+                val plainTextResponse = response.string()
+
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse)
+
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_GEN, plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+                val respPending: RespCustomersDetails? =
+                    AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                respPending?.let { resp ->
+                    getRespCustomersDetailsLiveData.value = resp
                 }
                 println("Str_To_Json------$respPending")
 
@@ -343,8 +377,7 @@ class CommonViewModel @Inject constructor(
                 val data = remoteConfig.getString("places")
                 Log.d("loadData", data)
                 val gson = Gson()
-                remoteDataList =
-                    gson.fromJson(data, Array<Place>::class.java).toMutableList()
+                remoteDataList = gson.fromJson(data, Array<Place>::class.java).toMutableList()
                 listOfLocation = remoteDataList
                 placesLive.postValue(remoteDataList as MutableList<Place>)
 

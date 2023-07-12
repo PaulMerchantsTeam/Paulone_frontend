@@ -37,8 +37,8 @@
             android:clickable="true"
             android:focusable="true"
             android:padding="@dimen/_8sdp"
-            app:itemRippleColor="@color/white_gray"
             android:visibility="visible"
+            app:itemRippleColor="@color/white_gray"
             app:layout_constraintBottom_toBottomOf="@+id/profileIv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/profileIv"
@@ -46,16 +46,16 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/loginSignUpBtn"
+            style="@style/text_10_medium_sky"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rec_one_yellow_btn"
             android:padding="@dimen/_8sdp"
             android:text="@string/login_sign_up"
-            style="@style/text_10_medium_sky"
-            android:visibility="gone"
             android:textColor="@color/splash_screen_one"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/rec_one_yellow_btn"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/notRedDot"
@@ -72,15 +72,15 @@
             app:layout_constraintVertical_bias="0.24000001" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/firtLetterUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center_vertical"
             android:text="P"
-            android:visibility="visible"
             android:textColor="@color/splash_screen_one"
             android:textSize="@dimen/_10ssp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/profileIv"
             app:layout_constraintEnd_toEndOf="@+id/profileIv"
             app:layout_constraintStart_toStartOf="@+id/profileIv"
@@ -107,13 +107,13 @@
 
             <EditText
                 android:id="@+id/searchView"
+                style="@style/text_12_regular_white"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:hint="@string/search_for_loans"
                 android:imeOptions="actionSearch"
                 android:maxLines="1"
-                style="@style/text_12_regular_white"
                 android:paddingStart="@dimen/_11sdp"
                 android:textColor="@color/splash_screen_one"
                 android:textColorHint="@color/brown"
@@ -126,27 +126,26 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        
 
         <EditText
             android:id="@+id/searchView1"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_42sdp"
+            android:layout_marginTop="@dimen/_17sdp"
             android:background="@drawable/rec_search_"
             android:drawableStart="@drawable/search"
             android:drawablePadding="@dimen/_14sdp"
-            android:layout_marginTop="@dimen/_17sdp"
             android:fontFamily="@font/poppins_semi_bold"
             android:hint="@string/search_for_loans"
             android:imeOptions="actionSearch"
             android:maxLines="1"
-            android:visibility="gone"
             android:paddingStart="@dimen/ten_dp"
             android:paddingEnd="@dimen/ten_dp"
             android:textColor="@color/splash_screen_one"
             android:textColorHint="@color/brown"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
             android:textSize="@dimen/_16ssp"
+            android:visibility="gone"
             app:autoShowKeyboard="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -157,19 +156,20 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/userName"
+            style="@style/text_16_bold_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_18sdp"
             android:fontFamily="@font/poppins_bold"
             android:lineSpacingExtra="@dimen/_3sdp"
-            android:text="Hey Prithvi"
+            android:text="Hey User"
             android:textColor="@color/splash_screen_three"
-            style="@style/text_16_bold_blue"
-            android:layout_marginTop="@dimen/_18sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout11" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/descTv"
+            style="@style/text_11_medium_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_6sdp"
@@ -177,7 +177,6 @@
             android:lineSpacingExtra="@dimen/_3sdp"
             android:text="This is your space"
             android:textColor="@color/splash_screen_three"
-            style="@style/text_11_medium_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userName" />

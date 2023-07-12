@@ -154,5 +154,7 @@ dependencies {
     implementation 'org.bouncycastle:bcprov-jdk15on:1.68'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
     implementation 'javax.activation:javax.activation-api:1.2.0'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
+
 
 }

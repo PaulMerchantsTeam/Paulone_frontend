@@ -121,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
-                    android:text="Prithvi Kumar"
+                    android:text="User"
                     android:textColor="@color/splash_screen_one"
                     app:layout_constraintStart_toStartOf="@+id/prsnalInfoTv"
                     app:layout_constraintTop_toBottomOf="@+id/prsnalInfoTv" />
@@ -133,7 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:text="kprithvi26@gmail.com"
+                    android:text=""
                     app:layout_constraintStart_toStartOf="@+id/nameUserTv"
                     app:layout_constraintTop_toBottomOf="@+id/nameUserTv" />
 
@@ -144,7 +144,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:text="8968666401"
+                    android:text=""
                     app:layout_constraintStart_toStartOf="@+id/emailUserIv"
                     app:layout_constraintTop_toBottomOf="@+id/emailUserIv" />
 
@@ -158,7 +158,7 @@
                     app:layout_constraintStart_toStartOf="@+id/userNumTv"
                     app:layout_constraintTop_toBottomOf="@+id/userNumTv" />
 
-                  <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/editProfileBtn"
                     style="@style/text_10_semi_bold_blue"
                     android:layout_width="wrap_content"
@@ -178,9 +178,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/parenntProfleCard"
                 tools:itemCount="3"
