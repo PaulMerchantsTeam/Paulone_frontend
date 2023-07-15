@@ -9,38 +9,263 @@
     android:paddingTop="@dimen/_8sdp"
     android:paddingBottom="@dimen/_8sdp">
 
+
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--        android:id="@+id/constraintLayout13"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="8dp"-->
+    <!--        android:paddingHorizontal="@dimen/screen_start_margin"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.0"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent">-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/loanNumTitle"-->
+    <!--            style="@style/text_10_semi_bold_sky_blue"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="Loan Number"-->
+    <!--            app:layout_constraintBottom_toTopOf="@+id/loanNumTv"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/loanNumTv"-->
+    <!--            style="@style/text_12_bold_blue"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="231212121"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="@+id/loanNumTitle"-->
+    <!--            app:layout_constraintTop_toBottomOf="@+id/loanNumTitle" />-->
+
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/outStaTitleTv"-->
+    <!--            style="@style/text_10_semi_bold_sky_blue"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="Final Due Paid"-->
+    <!--            app:layout_constraintBottom_toTopOf="@+id/outStandValueTv"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintHorizontal_bias="0.5"-->
+    <!--            app:layout_constraintStart_toStartOf="@+id/outStandValueTv"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/outStandValueTv"-->
+    <!--            style="@style/text_12_bold_blue"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="2024-06-20T00:00:00"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintTop_toBottomOf="@+id/outStaTitleTv" />-->
+    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--        android:id="@+id/parentOpenLoan"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="@dimen/_10sdp"-->
+    <!--        android:paddingEnd="@dimen/_21sdp"-->
+    <!--        android:visibility="visible"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintVertical_bias="0.4">-->
+
+    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--            android:id="@+id/ovrDueParentArrow"-->
+    <!--            android:layout_width="@dimen/_120sdp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:background="@drawable/rectangle_due_red"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent">-->
+
+    <!--            <com.google.android.material.textview.MaterialTextView-->
+    <!--                android:id="@+id/overDueDaysTv"-->
+    <!--                android:layout_width="0dp"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="@dimen/_12sdp"-->
+
+    <!--                android:fontFamily="@font/poppins_regular"-->
+    <!--                android:paddingVertical="@dimen/_6sdp"-->
+    <!--                android:text="Overdue by 4 days"-->
+    <!--                android:textColor="@color/white"-->
+    <!--                android:textSize="@dimen/_8ssp"-->
+    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/intDueAmountTitleTv"-->
+    <!--            style="@style/text_10_semi_bold_sky_blue"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginEnd="@dimen/_20sdp"-->
+    <!--            android:text="Interest \nDue Amount"-->
+    <!--            android:visibility="visible"-->
+    <!--            app:layout_constraintEnd_toStartOf="@+id/clickPayParent"-->
+    <!--            app:layout_constraintHorizontal_bias="0.92"-->
+    <!--            app:layout_constraintStart_toEndOf="@+id/ovrDueParentArrow"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--            android:id="@+id/clickPayParent"-->
+    <!--            android:layout_width="@dimen/_17sdp"-->
+    <!--            android:layout_height="@dimen/_17sdp"-->
+    <!--            android:background="@drawable/rec_back_btn"-->
+    <!--            android:padding="@dimen/_2sdp"-->
+    <!--            android:visibility="invisible"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent">-->
+
+
+    <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--                android:id="@+id/selectPrecard"-->
+    <!--                android:layout_width="@dimen/_13sdp"-->
+    <!--                android:layout_height="@dimen/_13sdp"-->
+    <!--                android:background="@color/white"-->
+    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/intDueAmountTv"-->
+    <!--            style="@style/text_16_bold_blue"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="INR 0,000"-->
+    <!--            android:visibility="visible"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="@+id/intDueAmountTitleTv"-->
+    <!--            app:layout_constraintTop_toBottomOf="@+id/intDueAmountTitleTv" />-->
+
+    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/intDueTitleTv"-->
+    <!--        style="@style/text_10_semi_bold_sky_blue"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="@dimen/_8sdp"-->
+    <!--        android:text="Interest Due Date "-->
+    <!--        android:visibility="gone"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/intDueDateTv"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/loanNumTv" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/intDueDateTv"-->
+    <!--        style="@style/text_12_bold_blue"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="24/02/2023"-->
+    <!--        android:visibility="gone"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/intDueTitleTv" />-->
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/screen_start_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/loanNumTitle"
+            style="@style/text_10_semi_bold_sky_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loan Number"
+            app:layout_constraintBottom_toTopOf="@+id/loanNumTv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/loanNumTv"
+            style="@style/text_12_bold_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="231212121"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/loanNumTitle"
+            app:layout_constraintTop_toBottomOf="@+id/loanNumTitle" />
+
+
+        <TextView
+            android:id="@+id/outStaTitleTv"
+            style="@style/text_10_semi_bold_sky_blue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Final Due Paid"
+            app:layout_constraintBottom_toTopOf="@+id/outStandValueTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/outStandValueTv"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/outStandValueTv"
+            style="@style/text_12_bold_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2024-06-20T00:00:00"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/outStaTitleTv" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parentOpenLoan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_9sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:paddingEnd="@dimen/_21sdp"
         android:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@+id/loanNumTv">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topLayout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ovrDueParentArrow"
             android:layout_width="@dimen/_120sdp"
             android:layout_height="wrap_content"
             android:background="@drawable/rectangle_due_red"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/intDueAmountTv"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="@+id/intDueAmountTitleTv">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/overDueDaysTv"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:fontFamily="@font/poppins_regular"
-
                 android:paddingVertical="@dimen/_6sdp"
                 android:text="Overdue by 4 days"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_8ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -51,9 +276,22 @@
             android:layout_height="wrap_content"
             android:text="Interest \nDue Amount"
             android:visibility="visible"
-            android:layout_marginEnd="@dimen/_20sdp"
-            app:layout_constraintEnd_toStartOf="@+id/clickPayParent"
+            app:layout_constraintBottom_toTopOf="@+id/intDueAmountTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.69"
+            app:layout_constraintStart_toEndOf="@+id/ovrDueParentArrow"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/intDueAmountTv"
+            style="@style/text_16_bold_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="INR 0,000"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/intDueAmountTitleTv"
+            app:layout_constraintTop_toBottomOf="@+id/intDueAmountTitleTv" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clickPayParent"
@@ -61,6 +299,7 @@
             android:layout_height="@dimen/_17sdp"
             android:background="@drawable/rec_back_btn"
             android:padding="@dimen/_2sdp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -70,55 +309,21 @@
                 android:id="@+id/selectPrecard"
                 android:layout_width="@dimen/_13sdp"
                 android:layout_height="@dimen/_13sdp"
-                android:background="@color/splash_screen_one"
+                android:background="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <TextView
-            android:id="@+id/intDueAmountTv"
-            style="@style/text_12_bold_blue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="INR 6,000"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/intDueAmountTitleTv"
-            app:layout_constraintTop_toBottomOf="@+id/intDueAmountTitleTv" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <TextView
-        android:id="@+id/loanNumTitle"
-        style="@style/text_10_semi_bold_sky_blue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:text="Loan Number"
-        app:layout_constraintBottom_toTopOf="@+id/loanNumTv"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/loanNumTv"
-        style="@style/text_12_bold_blue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="231212121"
-        app:layout_constraintBottom_toTopOf="@+id/intDueTitleTv"
-        app:layout_constraintStart_toStartOf="@+id/loanNumTitle"
-        app:layout_constraintTop_toBottomOf="@+id/loanNumTitle" />
 
     <TextView
         android:id="@+id/viewDetailsBtn"
         style="@style/text_10_semi_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/screen_start_margin"
         android:background="@drawable/rec_back_btn"
         android:paddingStart="@dimen/screen_start_margin"
         android:paddingTop="@dimen/_8sdp"
@@ -129,7 +334,7 @@
         app:layout_constraintEnd_toStartOf="@+id/loanClosedBtn"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="@+id/loanNumTitle"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/loanClosedBtn" />
 
     <TextView
@@ -138,6 +343,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/screen_start_margin"
         android:layout_marginBottom="@dimen/_4sdp"
         android:background="@drawable/rec_one_blue_btn"
         android:paddingStart="@dimen/_12sdp"
@@ -151,51 +357,5 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/outStaTitleTv"
         app:layout_constraintTop_toBottomOf="@+id/parentOpenLoan" />
-
-
-    <TextView
-        android:id="@+id/outStaTitleTv"
-        style="@style/text_10_semi_bold_sky_blue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Final Due Paid"
-        app:layout_constraintBottom_toTopOf="@+id/outStandValueTv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/outStandValueTv"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/outStandValueTv"
-        style="@style/text_12_bold_blue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_21sdp"
-        android:text=" 27/04/2023 (₹6000)"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/outStaTitleTv" />
-
-    <TextView
-        android:id="@+id/intDueTitleTv"
-        style="@style/text_10_semi_bold_sky_blue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:text="Interest Due Date "
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/intDueDateTv"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loanNumTv" />
-
-    <TextView
-        android:id="@+id/intDueDateTv"
-        style="@style/text_12_bold_blue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="24/02/2023"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/intDueTitleTv" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

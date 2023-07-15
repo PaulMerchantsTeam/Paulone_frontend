@@ -19,6 +19,7 @@ import com.paulmerchants.gold.model.RequestLogin
 import com.paulmerchants.gold.model.RespClosureReceipt
 import com.paulmerchants.gold.model.RespCustomersDetails
 import com.paulmerchants.gold.model.RespGetLoanOutStanding
+import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLoanRenewalProcess
 import com.paulmerchants.gold.model.RespRenewalEligiblity
@@ -43,7 +44,7 @@ class CommonViewModel @Inject constructor(
     private val retrofitSetup: RetrofitSetup,
     private val apiParams: ApiParams,
 ) : ViewModel() {
-
+    var respGetLoanOutStanding = ArrayList<RespGetLoanOutStandingItem>()
     var notZero: List<GetPendingInrstDueRespItem> = arrayListOf()
     private var remoteDataList: List<Place>? = null
     private var listOfLocation: List<com.paulmerchants.gold.place.Place>? = null
@@ -147,7 +148,10 @@ class CommonViewModel @Inject constructor(
         try {
             AppSharedPref.getStringValue(JWT_TOKEN)?.let {
                 val response = apiParams.getLoanOutstanding(
-                    it, AppSharedPref.getStringValue(CUSTOMER_ID).toString()
+                    it, secureFiles.encryptKey(
+                        AppSharedPref.getStringValue(CUSTOMER_ID).toString(),
+                        BuildConfig.SECRET_KEY_GEN
+                    ).toString()
                 )
                 // Get the plain text response
                 val plainTextResponse = response.string()

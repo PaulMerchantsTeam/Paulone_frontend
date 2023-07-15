@@ -57,12 +57,20 @@ object AppUtility {
         return fullName?.substringBefore(" ")
     }
 
+    fun getDateFormat(date: String): String? {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        val outputFormat = SimpleDateFormat("dd/MM/yyyy")
+        val dateC = inputFormat.parse(date)
+        val outputDate = dateC?.let { outputFormat.format(it) }
+        println("Converted date: $outputDate")
+        return outputDate
+    }
+
     fun numberOfDaysWrtCurrent(date: String): Long {
         val daysDifference: Long
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val specificDate = LocalDateTime.parse(date)
             val currentDate = LocalDateTime.now()
-
             daysDifference = ChronoUnit.DAYS.between(specificDate, currentDate)
             println("The number of days difference is: $daysDifference")
             return daysDifference
@@ -255,17 +263,19 @@ fun decryptKey(key: String, strToDecrypt: String?): String? {
 
 
 fun main() {
-    val a = decryptKey(
-        "38665180BC70B97BA443CACF2BFDEE67",
-        "KnxvW5yEeCfAWhhz0yRS4gKd9ENrCE9WAuV99u1jutL2r+M1XnP7V5Vc+p/h1jcsNtsqN3QITsqnFysPwSwOi9LGknlLZCkpcdCUXESdl9V06HDP/D0byNhENEAgBLHSUSlYJ7TgmpAGOn+l+wl6t6Cdu6KyQZHiNbmo0QO+Y47wiyw83OJdrFGHCKK6VhaRCKnITtZkqAxknnExD4DsRV8nTWwm20posgRa62P7RVOKUJAINR0zaI6RqdRHC8bSHit1GOITfSUMs6eFviMn3VqoLx8G7JcME3amZDF/JQWeTaUz09KpCMpLk1ARHO2l2J9+gduLOwYLhRIcwcWQ4SKiW0ArUXmna23k0C/bfU3UrVyPD7KiWH4uBFCenRRahuPWoU+5/6QlA2U4wJbdKw=="
-    )
-    println(a)
-    val j = AppUtility.stringToJson(a.toString())
-    val respLogin: RespLogin? = convertStringToJson(a.toString())
-    println(j)
-    println(respLogin)
-    println(respLogin?.Status)
-    println(respLogin?.JWToken)
+//    val a = decryptKey(
+//        "38665180BC70B97BA443CACF2BFDEE67",
+//        "KnxvW5yEeCfAWhhz0yRS4gKd9ENrCE9WAuV99u1jutL2r+M1XnP7V5Vc+p/h1jcsNtsqN3QITsqnFysPwSwOi9LGknlLZCkpcdCUXESdl9V06HDP/D0byNhENEAgBLHSUSlYJ7TgmpAGOn+l+wl6t6Cdu6KyQZHiNbmo0QO+Y47wiyw83OJdrFGHCKK6VhaRCKnITtZkqAxknnExD4DsRV8nTWwm20posgRa62P7RVOKUJAINR0zaI6RqdRHC8bSHit1GOITfSUMs6eFviMn3VqoLx8G7JcME3amZDF/JQWeTaUz09KpCMpLk1ARHO2l2J9+gduLOwYLhRIcwcWQ4SKiW0ArUXmna23k0C/bfU3UrVyPD7KiWH4uBFCenRRahuPWoU+5/6QlA2U4wJbdKw=="
+//    )
+//    println(a)
+//    val j = AppUtility.stringToJson(a.toString())
+//    val respLogin: RespLogin? = convertStringToJson(a.toString())
+//    println(j)
+//    println(respLogin)
+//    println(respLogin?.Status)
+//    println(respLogin?.JWToken)
+
+    println(AppUtility.getDateFormat("2024-06-20T00:00:00"))
 }
 
 

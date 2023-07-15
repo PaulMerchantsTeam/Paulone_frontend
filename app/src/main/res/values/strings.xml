@@ -353,7 +353,8 @@
     <string name="terminated_card_srvc">Terminate your card services</string>
     <string name="reset_card_pin">RESET CARD PIN</string>
     <string name="optional">Optional</string>
-
+    <string name="Rs">\u20B9</string>
+    <string name="intrst_due_date">Interest Due Date\n</string>
     <string-array name="month">
         <item>January</item>
         <item>February</item>

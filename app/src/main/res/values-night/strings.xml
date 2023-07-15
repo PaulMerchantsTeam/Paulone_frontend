@@ -18,4 +18,5 @@
     <string name="other_emi_pay">Others EMI payments</string>
     <string name="others">Others</string>
     <string name="credit_score">Credit Score</string>
+    <string name="intrst_due_date">Interest Due Date\n</string>
 </resources>

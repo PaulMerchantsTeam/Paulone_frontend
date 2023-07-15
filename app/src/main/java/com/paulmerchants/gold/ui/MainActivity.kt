@@ -82,7 +82,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             if (
                 destination.id == R.id.mainScreenFrag ||
                 destination.id == R.id.homeScreenFrag ||
-                destination.id == R.id.goldLoanScreenFrag ||
+//                destination.id == R.id.goldLoanScreenFrag ||
                 destination.id == R.id.billsAndMoreScreenFrag ||
 //                destination.id == R.id.locateUsFrag ||
                 destination.id == R.id.menuScreenFrag
