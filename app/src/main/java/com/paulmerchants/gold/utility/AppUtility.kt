@@ -57,6 +57,14 @@ object AppUtility {
         return fullName?.substringBefore(" ")
     }
 
+    fun getCurrentDate(): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDateTime.now().toString()
+        } else {
+            Date().toString()
+        }
+    }
+
     fun getDateFormat(date: String): String? {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         val outputFormat = SimpleDateFormat("dd/MM/yyyy")

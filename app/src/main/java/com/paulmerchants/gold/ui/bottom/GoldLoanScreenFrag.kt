@@ -1,12 +1,16 @@
 package com.paulmerchants.gold.ui.bottom
 
+import android.os.Build
+import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.GoldLoanOverViewAdapterProd
 import com.paulmerchants.gold.common.BaseFragment
+import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.GoldLoanScreenFragmentBinding
+import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
@@ -19,7 +23,7 @@ class GoldLoanScreenFrag :
     private var amount: Int = 0
     private val commonViewModel: CommonViewModel by viewModels()
     val lastStatementAdapter =
-        GoldLoanOverViewAdapterProd(::optionsClicked, ::viewDetails, ::payNowClicked)
+        GoldLoanOverViewAdapterProd(::optionsClicked, ::payNowClicked, ::viewDetails)
 
     override fun GoldLoanScreenFragmentBinding.initialize() {
         binding.headerBillMore.apply {
@@ -27,12 +31,11 @@ class GoldLoanScreenFrag :
             titlePageTv.text = getString(R.string.loan_overview)
             subTitle.hide()
         }
-
     }
 
     private fun optionsClicked(actionItem: RespGetLoanOutStandingItem, isSelect: Boolean) {
         Log.d("TAG", "optionsClicked: .............${actionItem.OutStanding}")
-        totalAmount(actionItem.OutStanding, isSelect)
+        actionItem.OutStanding?.let { totalAmount(it, isSelect) }
     }
 
     private fun totalAmount(rupees: Int, isSelect: Boolean) {
@@ -49,11 +52,24 @@ class GoldLoanScreenFrag :
     }
 
     private fun viewDetails(actionItem: RespGetLoanOutStandingItem) {
-        findNavController().navigate(R.id.pmlGoldLoan)
+        if (actionItem.IsClosed == false) {
+            val bundle = Bundle().apply {
+                putParcelable(Constants.LOAN_OVERVIEW, actionItem)
+            }
+            findNavController().navigate(R.id.pmlGoldLoan, bundle)
+        } else {
+            val bundle = Bundle().apply {
+                putParcelable(Constants.LOAN_OVERVIEW, actionItem)
+            }
+            findNavController().navigate(R.id.loanStatementFrag, bundle)
+        }
+
     }
 
     private fun payNowClicked(actionItem: RespGetLoanOutStandingItem) {
-        findNavController().navigate(R.id.paymentModesFrag)
+        if (actionItem.IsClosed == false) {
+            findNavController().navigate(R.id.paymentModesFrag)
+        }
     }
 
     override fun onStart() {

@@ -1,19 +1,22 @@
 package com.paulmerchants.gold.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class RespGetLoanOutStandingItem(
     @SerializedName("AcNo") val AcNo: Long,
-    @SerializedName("ClosedDate") val ClosedDate: Any,
+    @SerializedName("ClosedDate") val ClosedDate: String?,
     @SerializedName("DueDate") val DueDate: String,
     @SerializedName("Fine") val Fine: Int,
     @SerializedName("InterestPeriod") val InterestPeriod: Int,
     @SerializedName("IsClosed") val IsClosed: Boolean?,
     @SerializedName("OpenDate") val OpenDate: String,
-    @SerializedName("OpeningAmount") val OpeningAmount: Int,
-    @SerializedName("OutStanding") val OutStanding: Int,
+    @SerializedName("OpeningAmount") val OpeningAmount: Int?,
+    @SerializedName("OutStanding") val OutStanding: Int?,
     @SerializedName("ProductName") val ProductName: String,
-)
+) : Parcelable
 
 /**
  *  [RespGetLoanOutStandingItem(AcNo=104210000012072,

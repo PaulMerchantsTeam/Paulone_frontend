@@ -211,22 +211,25 @@
         <TextView
             android:id="@+id/outStaTitleTv"
             style="@style/text_10_semi_bold_sky_blue"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Final Due Paid"
             app:layout_constraintBottom_toTopOf="@+id/outStandValueTv"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/outStandValueTv"
+            app:layout_constraintHorizontal_bias="0.8
+"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/outStandValueTv"
             style="@style/text_12_bold_blue"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="2024-06-20T00:00:00"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/outStaTitleTv"
             app:layout_constraintTop_toBottomOf="@+id/outStaTitleTv" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -278,8 +281,8 @@
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/intDueAmountTv"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.69"
-            app:layout_constraintStart_toEndOf="@+id/ovrDueParentArrow"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -302,6 +305,8 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/intDueAmountTitleTv"
             app:layout_constraintTop_toTopOf="parent">
 
 
@@ -343,7 +348,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginEnd="@dimen/screen_start_margin"
         android:layout_marginBottom="@dimen/_4sdp"
         android:background="@drawable/rec_one_blue_btn"
         android:paddingStart="@dimen/_12sdp"
@@ -354,8 +358,9 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/outStaTitleTv"
+        app:layout_constraintHorizontal_bias="0.8
+"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/parentOpenLoan" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

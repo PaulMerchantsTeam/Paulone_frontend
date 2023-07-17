@@ -136,11 +136,11 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/materialTextView6"
+            android:id="@+id/loanJourneyMainTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semi_bold"
-            android:text="Loan Journey as of 28/02/2023"
+            android:text="Loan Journey as of ....."
             android:textColor="@color/splash_screen_three"
             android:textSize="@dimen/_9ssp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -155,7 +155,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialTextView6">
+            app:layout_constraintTop_toBottomOf="@+id/loanJourneyMainTitle">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/loanStartedDateTv"
@@ -192,11 +192,14 @@
                 app:trackCornerRadius="@dimen/_8sdp" />
 
             <ImageView
+                android:id="@+id/pgIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/gold_layer4"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -225,8 +228,9 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout5"
         app:layout_constraintVertical_bias="0.0">
 
-        <include layout="@layout/pml_over_due_loan"
-            android:id="@+id/dueLoanParent"/>
+        <include
+            android:id="@+id/dueLoanParent"
+            layout="@layout/pml_over_due_loan" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

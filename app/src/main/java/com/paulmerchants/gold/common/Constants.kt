@@ -4,6 +4,7 @@ import com.paulmerchants.gold.BuildConfig
 
 object Constants {
     const val DUE_LOAN_DATA = "DUE_LOAN_DATA"
+    const val LOAN_OVERVIEW = "LOAN_OVERVIEW"
     const val BBPS_TYPE = "BBPS_TYPE"
     const val BBPS_HEADER = "BBPS_HEADER"
 
@@ -15,7 +16,6 @@ object Constants {
     const val LOGIN_DONE = "LOGIN_DONE"
     const val SIGNUP_DONE = "SIGNUP_DONE"
     const val OTP_VERIFIED = "OTP_VERIFIED"
-
 
 
 }

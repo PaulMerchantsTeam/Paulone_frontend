@@ -112,8 +112,7 @@ class HomeScreenFrag :
     private fun setProfileUi() {
         val userFirstName =
             AppUtility.getFirstName(AppSharedPref.getStringValue(Constants.CUSTOMER_NAME))
-        binding.searchProfileParent.userName.text =
-            "Hey ${userFirstName ?: "User"}"
+        binding.searchProfileParent.userName.text = "Hey ${userFirstName ?: "User"}"
         binding.searchProfileParent.firtLetterUser.text = "${userFirstName?.first() ?: "U"}"
         commonViewModel.isStartAnim.observe(viewLifecycleOwner) {
             it?.let {
@@ -410,21 +409,17 @@ class HomeScreenFrag :
 
     private fun setUpComingDueLoans() {
         showHideLoadinf()
-        val currentDate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LocalDateTime.now()
-        } else {
-            Date()
-        }
+        val currentDate = AppUtility.getCurrentDate()
         Log.d(TAG, "setUpComingDueLoans: ..currentDate..$currentDate")
         Log.d(
             TAG, "setUpComingDueLoans: ..currentDate..${
                 secureFiles.encryptKey(
-                    currentDate.toString(), BuildConfig.SECRET_KEY_GEN
+                    currentDate, BuildConfig.SECRET_KEY_GEN
                 )
             }"
         )
         val encDate = secureFiles.encryptKey(
-            currentDate.toString(), BuildConfig.SECRET_KEY_GEN
+            currentDate, BuildConfig.SECRET_KEY_GEN
         )
         commonViewModel.getPendingInterestDues(
             requireContext(), encDate.toString()

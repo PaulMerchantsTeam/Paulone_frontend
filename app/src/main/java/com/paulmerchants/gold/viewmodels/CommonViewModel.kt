@@ -22,6 +22,7 @@ import com.paulmerchants.gold.model.RespGetLoanOutStanding
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLoanRenewalProcess
+import com.paulmerchants.gold.model.RespLoanStatment
 import com.paulmerchants.gold.model.RespRenewalEligiblity
 import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.place.Place
@@ -53,6 +54,7 @@ class CommonViewModel @Inject constructor(
     val getRespLoanDueDateLiveData = MutableLiveData<RespLoanDueDate>()
     val getRespClosureReceiptLiveData = MutableLiveData<RespClosureReceipt>()
     val getRespCustomersDetailsLiveData = MutableLiveData<RespCustomersDetails>()
+    val getRespLoanStatmentLiveData = MutableLiveData<RespLoanStatment>()
     val getRespRenewalEligiblityLiveData = MutableLiveData<RespRenewalEligiblity>()
     val getRespLoanRenewalProcessLiveData = MutableLiveData<RespLoanRenewalProcess>()
     var timer: CountDownTimer? = null
@@ -209,11 +211,11 @@ class CommonViewModel @Inject constructor(
         AppUtility.hideProgressBar()
     }
 
-    fun getLoanClosureReceipt() = viewModelScope.launch {
+    fun getLoanClosureReceipt(accNum: String) = viewModelScope.launch {
         try {
             AppSharedPref.getStringValue(JWT_TOKEN)?.let {
                 val response = apiParams.getLoanClosureReceipt(
-                    it, AppSharedPref.getStringValue(ACC_NUM).toString()
+                    it, secureFiles.encryptKey(accNum, BuildConfig.SECRET_KEY_GEN).toString()
                 )
                 // Get the plain text response
                 val plainTextResponse = response.string()
@@ -334,6 +336,37 @@ class CommonViewModel @Inject constructor(
             e.printStackTrace()
         }
         AppUtility.hideProgressBar()
+    }
+
+    fun getLoanStatement(accNum: String, fromDat: String, toDate: String) = viewModelScope.launch {
+        try {
+            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
+                val response = apiParams.getLoanStatement(
+                    it, secureFiles.encryptKey(
+                        accNum, BuildConfig.SECRET_KEY_GEN
+                    ).toString(), fromDat, toDate
+                )
+                // Get the plain text response
+                val plainTextResponse = response.string()
+
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse)
+
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_GEN, plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+                val respPending: RespLoanStatment? =
+                    AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                respPending?.let { resp ->
+                    getRespLoanStatmentLiveData.value = resp
+                }
+                println("Str_To_Json------$respPending")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 
