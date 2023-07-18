@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.GoldLoanOverViewAdapterProd
@@ -16,6 +17,9 @@ import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GoldLoanScreenFrag :
@@ -31,6 +35,7 @@ class GoldLoanScreenFrag :
             titlePageTv.text = getString(R.string.loan_overview)
             subTitle.hide()
         }
+
     }
 
     private fun optionsClicked(actionItem: RespGetLoanOutStandingItem, isSelect: Boolean) {
@@ -74,12 +79,21 @@ class GoldLoanScreenFrag :
 
     override fun onStart() {
         super.onStart()
+        lifecycleScope.launch(Dispatchers.Main) {
+            binding.shmrLaonOverView.startShimmer()
+            delay(1000)
+            binding.shmrLaonOverView.stopShimmer()
+            binding.shmrLaonOverView.hide()
+            binding.goldLoanParentMain.rvLoanOverViewMain.show()
+        }
         binding.apply {
             goldLoanParentMain.openLoanTv.setOnClickListener {
                 goldLoanParentMain.openLoanTv.setBackgroundResource(R.drawable.rec_sky_loan_blue_solid)
                 goldLoanParentMain.closedLoanTv.setBackgroundColor(resources.getColor(R.color.splash_screen_two))
                 setUiFoOpenGoldLoans()
                 lastStatementAdapter.notifyDataSetChanged()
+                binding.constraintLayout12.show()
+                binding.ttlAmountNumTv.text = "INR 0"
             }
 
             goldLoanParentMain.closedLoanTv.setOnClickListener {
@@ -87,6 +101,9 @@ class GoldLoanScreenFrag :
                 goldLoanParentMain.openLoanTv.setBackgroundColor(resources.getColor(R.color.splash_screen_two))
                 setUiForClosedGoldLoans()
                 lastStatementAdapter.notifyDataSetChanged()
+                amount = 0
+                binding.constraintLayout12.hide()
+                binding.ttlAmountNumTv.text = "INR 0"
             }
         }
         commonViewModel.getLoanOutstanding()
@@ -97,6 +114,7 @@ class GoldLoanScreenFrag :
                         hideViews()
                     }
                     commonViewModel.respGetLoanOutStanding = it
+
                     setUiFoOpenGoldLoans()
                 } else {
                     hideViews()
@@ -123,8 +141,17 @@ class GoldLoanScreenFrag :
 
     private fun setUiFoOpenGoldLoans() {
 //        binding.goldLoanParentMain.rvLoanOverViewMain.setGoldLoanOverView(1)
+        var totalAmount = 0
         val open = commonViewModel.respGetLoanOutStanding.filter { it.IsClosed == false }
         Log.d("TAG", "setUiFoOpenGoldLoans: $open")
+
+        for (i in open) {
+            if (i.OutStanding != null) {
+                totalAmount += i.OutStanding
+            }
+        }
+        binding.goldLoanParentMain.lonOverDesc.text =
+            "You have taken up ${open.size} active loans. And they total upto INR $totalAmount"
         setData(open as ArrayList<RespGetLoanOutStandingItem>)
 
     }

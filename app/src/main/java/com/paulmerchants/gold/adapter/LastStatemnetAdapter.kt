@@ -7,10 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.paulmerchants.gold.databinding.ItemLastStatementBinding
-import com.paulmerchants.gold.model.ActionItem
+import com.paulmerchants.gold.model.RespLoanStatmentItem
+import com.paulmerchants.gold.utility.AppUtility
 
 class LastStatemnetAdapter :
-    ListAdapter<ActionItem, LastStatemnetAdapter.LastStatementHolder>(DIFF_CALLBACK) {
+    ListAdapter<RespLoanStatmentItem, LastStatemnetAdapter.LastStatementHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LastStatementHolder(
         ItemLastStatementBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,29 +22,28 @@ class LastStatemnetAdapter :
     }
 
     companion object {
-        private val DIFF_CALLBACK =
-            object : DiffUtil.ItemCallback<ActionItem>() {
-                override fun areItemsTheSame(
-                    oldItem: ActionItem,
-                    newItem: ActionItem,
-                ): Boolean =
-                    oldItem.itemId == newItem.itemId
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<RespLoanStatmentItem>() {
+            override fun areItemsTheSame(
+                oldItem: RespLoanStatmentItem,
+                newItem: RespLoanStatmentItem,
+            ): Boolean = oldItem.TransID == newItem.TransID
 
-                override fun areContentsTheSame(
-                    oldItem: ActionItem,
-                    newItem: ActionItem,
-                ): Boolean =
-                    oldItem == newItem
-            }
+            override fun areContentsTheSame(
+                oldItem: RespLoanStatmentItem,
+                newItem: RespLoanStatmentItem,
+            ): Boolean = oldItem == newItem
+        }
     }
 
     inner class LastStatementHolder(private val binding: ItemLastStatementBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindLast(actionItem: ActionItem) {
+        fun bindLast(resp: RespLoanStatmentItem) {
             binding.apply {
                 binding.apply {
-                    binding.dateValue.text = actionItem.name
+                    dateValue.text = AppUtility.getDateMoth(resp.TransDate)
+                    chargeValue.text = resp.OtherCharges.toString()
+                    paymentValue.text = resp.Interest.toString()
                 }
             }
         }

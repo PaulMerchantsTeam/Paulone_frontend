@@ -3,6 +3,7 @@ package com.paulmerchants.gold.ui.others
 import android.os.Build
 import androidx.fragment.app.viewModels
 import com.paulmerchants.gold.BuildConfig
+import com.paulmerchants.gold.adapter.LastStatemnetAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.LoanStatementBinding
@@ -19,7 +20,7 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
 
     private val commonViewModel: CommonViewModel by viewModels()
     private lateinit var secureFiles: SecureFiles
-
+    private val lastLoanAdapter = LastStatemnetAdapter()
     override fun LoanStatementBinding.initialize() {
         secureFiles = SecureFiles()
     }
@@ -29,7 +30,7 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
         val loanOutStanding =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) arguments?.getParcelable(
                 Constants.LOAN_OVERVIEW, RespGetLoanOutStandingItem::class.java
-            ) else arguments?.getParcelable<RespGetLoanOutStandingItem>(Constants.LOAN_OVERVIEW) as RespGetLoanOutStandingItem
+            ) else arguments?.getParcelable<RespGetLoanOutStandingItem>(Constants.LOAN_OVERVIEW) as? RespGetLoanOutStandingItem
         setData(loanOutStanding)
         val fromDate = AppUtility.getCurrentDate()
         val toDate = ""
@@ -40,15 +41,18 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
 
             }
         }
+        //opening date to till now.
         commonViewModel.getLoanStatement(
             loanOutStanding?.AcNo.toString(),
+            secureFiles.encryptKey(loanOutStanding?.OpenDate.toString(), BuildConfig.SECRET_KEY_GEN)
+                .toString(),
             secureFiles.encryptKey(fromDate, BuildConfig.SECRET_KEY_GEN).toString(),
-            secureFiles.encryptKey(fromDate, BuildConfig.SECRET_KEY_GEN).toString()
         )
 
         commonViewModel.getRespLoanStatmentLiveData.observe(viewLifecycleOwner) {
             it?.let {
-
+                lastLoanAdapter.submitList(it)
+                binding.rvLastTrans.adapter = lastLoanAdapter
             }
         }
     }
@@ -62,6 +66,8 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
     private fun setData(loanOutStanding: RespGetLoanOutStandingItem?) {
         binding.apply {
             loanNumTv.text = "Loan Number - ${loanOutStanding?.AcNo}"
+            loanStateDateLargeTv.text =
+                "Last Statement (${AppUtility.getDateWithYearOrdinals(loanOutStanding?.OpenDate.toString())} - ${AppUtility.getCurrentDateOnly()})"
         }
     }
 

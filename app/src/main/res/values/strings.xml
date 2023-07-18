@@ -89,7 +89,7 @@
     <string name="loan_overview">LOAN OVERVIEW</string>
     <string name="overview">OverView:</string>
     <string name="search_for_specific_loans">Search for the specific loans</string>
-    <string name="you_have_taken_up_4_act">You have taken up 4 active loans. And they total upto INR 3,00,000</string>
+    <string name="you_have_taken_up_4_act">You have taken up X active loans. And they total upto INR XXXXXX</string>
     <string name="open_loans">Open Loans</string>
     <string name="closed_loans">Closed Loans</string>
     <string name="view_details">VIEW DETAILS</string>
@@ -354,7 +354,8 @@
     <string name="reset_card_pin">RESET CARD PIN</string>
     <string name="optional">Optional</string>
     <string name="Rs">\u20B9</string>
-    <string name="intrst_due_date">Interest Due Date\n</string>
+    <string name="intrst_due_date">Interest Due Date</string>
+    <string name="final_due_paid">Final Due Paid</string>
     <string-array name="month">
         <item>January</item>
         <item>February</item>

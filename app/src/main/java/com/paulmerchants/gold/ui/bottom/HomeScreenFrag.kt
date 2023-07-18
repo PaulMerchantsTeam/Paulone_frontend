@@ -80,7 +80,7 @@ class HomeScreenFrag :
     private fun showHideLoadinf() {
         lifecycleScope.launch(Dispatchers.Main) {
             binding.shimmmerParent.startShimmer()
-            delay(3000)
+            delay(2000)
             binding.shimmmerParent.hideShimmer()
             binding.shimmmerParent.hide()
             binding.rvUpcomingDueLoans.show()
@@ -422,7 +422,7 @@ class HomeScreenFrag :
             currentDate, BuildConfig.SECRET_KEY_GEN
         )
         commonViewModel.getPendingInterestDues(
-            requireContext(), encDate.toString()
+            encDate.toString()
         )
         commonViewModel.getPendingInterestDuesLiveData.observe(viewLifecycleOwner) {
             it?.let {

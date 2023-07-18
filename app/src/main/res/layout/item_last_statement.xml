@@ -13,10 +13,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_8sdp"
         android:fontFamily="@font/poppins_light"
-        android:text="Oct 27"
+        android:text="Sep 25"
         android:textColor="@color/black"
         android:textSize="@dimen/_9ssp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/paymentRcvdTv"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,13 +26,15 @@
         android:id="@+id/paymentRcvdTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_38sdp"
         android:fontFamily="@font/poppins_regular"
         android:text="Payment received"
         android:textColor="@color/black"
         android:textSize="@dimen/_9ssp"
         app:layout_constraintBottom_toBottomOf="@+id/dateValue"
-        app:layout_constraintStart_toEndOf="@+id/dateValue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3
+"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/dateValue" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -38,12 +42,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
-        android:text="xx"
+        android:text="13452"
         android:textColor="@color/black"
         android:textSize="@dimen/_9ssp"
         app:layout_constraintBottom_toBottomOf="@+id/paymentRcvdTv"
-        app:layout_constraintEnd_toStartOf="@+id/paymentValue"
-        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintStart_toEndOf="@+id/paymentRcvdTv"
         app:layout_constraintTop_toTopOf="@+id/paymentRcvdTv" />
 
@@ -53,11 +57,14 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_8sdp"
         android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
         android:text="xxxx"
         android:textColor="@color/black"
         android:textSize="@dimen/_9ssp"
         app:layout_constraintBottom_toBottomOf="@+id/chargeValue"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.83"
+        app:layout_constraintStart_toEndOf="@+id/chargeValue"
         app:layout_constraintTop_toTopOf="@+id/chargeValue" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

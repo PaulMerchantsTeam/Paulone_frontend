@@ -192,7 +192,7 @@ fun Fragment.showCustomDialogOTPVerify(context: Context, title: String = "") {
     }
 }
 
-fun RecyclerView.setUiOnLastTransaction() {
+/*fun RecyclerView.setUiOnLastTransaction() {
     val lastStatemnetAdapter = LastStatemnetAdapter()
     val actionItem1 = ActionItem(
         BbpsType.Electricity.type,
@@ -250,7 +250,7 @@ fun RecyclerView.setUiOnLastTransaction() {
         adapter = lastStatemnetAdapter
     }
 
-}
+}*/
 
 fun RecyclerView.setGoldLoanOverView(type: Int) {
     fun clicked(actionItem: ActionItem) {

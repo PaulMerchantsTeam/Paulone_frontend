@@ -30,6 +30,8 @@ import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLogin
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility.convertStringToJson
+import com.paulmerchants.gold.utility.AppUtility.getCurrentDate
+import com.paulmerchants.gold.utility.AppUtility.getDateWithOrdinals
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.io.UnsupportedEncodingException
 import java.security.InvalidKeyException
@@ -49,6 +51,11 @@ import javax.crypto.NoSuchPaddingException
 import javax.crypto.ShortBufferException
 import javax.crypto.spec.SecretKeySpec
 
+/**
+ * android:background=”?android:attr/selectableItemBackground”: this creates ripple effect with border.
+android:background=”?android:attr/selectableItemBackgroundBorderless”: this creates ripple effect without border.
+Note: These tags are need to be set under the TextView.
+ */
 
 object AppUtility {
     private lateinit var dialog: AlertDialog
@@ -57,12 +64,93 @@ object AppUtility {
         return fullName?.substringBefore(" ")
     }
 
+    fun getDateWithOrdinals(inputDate: String): String { //14th May
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("MMMM", Locale.getDefault())
+
+//        val inputDate = "2027-07-16T00:00:00"
+        val date = inputFormat.parse(inputDate)
+        val outputDate = date?.let { outputFormat.format(it) }
+
+        val day = date.date
+        val ordinal = getDayOrdinal(day)
+        println("Converted date: $ordinal $outputDate")
+        return "$ordinal $outputDate"
+    }
+
+    fun getDateWithYearOrdinals(inputDate: String): String? { //14th May, 2023
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()) //14th May
+        val outputFormat = SimpleDateFormat("d MMM, yyyy", Locale.getDefault())
+        val date = inputFormat.parse(inputDate)
+        val formattedDate = date?.let { formatWithOrdinalSuffix(it, outputFormat) }
+        println("Current Date: $formattedDate")
+        return formattedDate
+    }
+
+
+    fun getYear(inputDate: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy", Locale.getDefault())
+
+//        val inputDate = "2027-07-16T00:00:00"
+        val date = inputFormat.parse(inputDate)
+        val outputDate = date?.let { outputFormat.format(it) }
+        println("Converted date:$outputDate")
+        return outputDate.toString()
+    }
+
+
+    fun getDayOrdinal(day: Int): String {
+        return when (day) {
+            1, 21, 31 -> "${day}st"
+            2, 22 -> "${day}nd"
+            3, 23 -> "${day}rd"
+            else -> "${day}th"
+        }
+    }
+
+    fun getOrdinalSuffix(day: Int): String {
+        return when (day % 10) {
+            1 -> "st"
+            2 -> "nd"
+            3 -> "rd"
+            else -> "th"
+        }
+    }
+
     fun getCurrentDate(): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LocalDateTime.now().toString()
         } else {
             Date().toString()
         }
+    }
+
+    fun getCurrentDateOnly(): String {
+        val outputFormat = SimpleDateFormat("d MMM, yyyy", Locale.getDefault())
+        val currentDate = Date()
+        val formattedDate = formatWithOrdinalSuffix(currentDate, outputFormat)
+        println("Current Date: $formattedDate")
+        return formattedDate
+    }
+
+
+    fun formatWithOrdinalSuffix(date: Date, format: SimpleDateFormat): String {
+        val day = SimpleDateFormat("d", Locale.getDefault()).format(date).toInt()
+        val suffix = getOrdinalSuffix(day)
+
+        return format.format(date).replaceFirst("\\d+".toRegex(), "$0$suffix")
+    }
+
+    fun getDateMoth(inputDate: String): String? {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("MMM d", Locale.getDefault())
+
+//        val inputDate = "2027-04-16T00:00:00"
+        val date = inputFormat.parse(inputDate)
+        val outputDate = date?.let { outputFormat.format(it) }
+        println("Converted date: $outputDate")
+        return outputDate
     }
 
     fun getDateFormat(date: String): String? {
@@ -148,15 +236,13 @@ object AppUtility {
 
     fun isDeveloperOptionsEnabled(context: Context): Boolean {
         return Settings.Secure.getInt(
-            context.contentResolver,
-            Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0
+            context.contentResolver, Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0
         ) == 1
     }
 
     fun isUsbDebuggingEnabled(context: Context): Boolean {
         return Settings.Global.getInt(
-            context.contentResolver,
-            Settings.Global.ADB_ENABLED, 0
+            context.contentResolver, Settings.Global.ADB_ENABLED, 0
         ) == 1
     }
 
@@ -187,8 +273,7 @@ object AppUtility {
     }
 
     fun diffColorText(first: String, second: String, tv: TextView) {
-        val text =
-            "<font color=#3F72AF>$first</font> <font color=#150750>$second</font>"
+        val text = "<font color=#3F72AF>$first</font> <font color=#150750>$second</font>"
         tv.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 
@@ -237,8 +322,8 @@ fun decryptKey(key: String, strToDecrypt: String?): String? {
     try {
         keyBytes = key.toByteArray(charset("UTF8"))
         val skey = SecretKeySpec(keyBytes, "AES")
-        val input = org.bouncycastle.util.encoders.Base64
-            .decode(strToDecrypt?.trim { it <= ' ' }?.toByteArray(charset("UTF8")))
+        val input = org.bouncycastle.util.encoders.Base64.decode(strToDecrypt?.trim { it <= ' ' }
+            ?.toByteArray(charset("UTF8")))
 
         synchronized(Cipher::class.java) {
             val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
@@ -282,8 +367,9 @@ fun main() {
 //    println(respLogin)
 //    println(respLogin?.Status)
 //    println(respLogin?.JWToken)
-
-    println(AppUtility.getDateFormat("2024-06-20T00:00:00"))
+//    getDateWithOrdinals()
+    println(getCurrentDate())
+//    println(AppUtility.getDateFormat("2024-06-20T00:00:00"))
 }
 
 

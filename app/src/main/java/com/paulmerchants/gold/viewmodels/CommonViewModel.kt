@@ -112,7 +112,7 @@ class CommonViewModel @Inject constructor(
      */
 
 
-    fun getPendingInterestDues(context: Context, date: String) = viewModelScope.launch {
+    fun getPendingInterestDues(date: String) = viewModelScope.launch {
         try {
             AppSharedPref.getStringValue(JWT_TOKEN)?.let {
                 val response = apiParams.getPendingInterestDues(

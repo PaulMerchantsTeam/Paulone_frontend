@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.paulmerchants.gold.R
-import com.paulmerchants.gold.databinding.ItemLoansOverViewBinding
+import com.paulmerchants.gold.databinding.ItemLoansOverViewNewBinding
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hide
@@ -27,7 +27,7 @@ class GoldLoanOverViewAdapterProd(
     var isShowCustomPay: Boolean? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = GoldLoanOverViewHolder(
-        ItemLoansOverViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        ItemLoansOverViewNewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
     override fun onBindViewHolder(holder: GoldLoanOverViewHolder, position: Int) {
@@ -48,7 +48,7 @@ class GoldLoanOverViewAdapterProd(
         }
     }
 
-    inner class GoldLoanOverViewHolder(private val binding: ItemLoansOverViewBinding) :
+    inner class GoldLoanOverViewHolder(private val binding: ItemLoansOverViewNewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindLast(
@@ -91,13 +91,17 @@ class GoldLoanOverViewAdapterProd(
 
             binding.apply {
                 if (actionItem.IsClosed != true) {
-                    Log.d("TAG", "bindLast: /.....")
                     binding.apply {
+//                        parentOpenLoan.show()
+                        ovrDueParentArrow.show()
+                        intDueAmountTitleTv.show()
+                        intDueAmountTv.show()
+//                        clickPayParent.show()
+
                         outStaTitleTv.text =
                             binding.root.context.getString(R.string.intrst_due_date)
-                        outStandValueTv.text = "${AppUtility.getDateFormat(actionItem.DueDate)}"
-                        parentOpenLoan.show()
-
+                        outStandValueTv.text =
+                            AppUtility.getDateFormat(actionItem.DueDate)?.trim().toString()
                         val duedate = AppUtility.numberOfDaysWrtCurrent(actionItem.DueDate)
                         when {
                             duedate.toInt() < 0 -> {
@@ -113,8 +117,6 @@ class GoldLoanOverViewAdapterProd(
                             }
                         }
                         intDueAmountTv.text = "INR ${actionItem.OutStanding.toString()}"
-                        overDueDaysTv.text =
-                            "${AppUtility.numberOfDaysWrtCurrent(actionItem.DueDate)} days"
                         binding.loanClosedBtn.apply {
                             text = binding.root.context.getString(R.string.pay_now)
                             setTextColor(
@@ -127,7 +129,13 @@ class GoldLoanOverViewAdapterProd(
                 } else {
                     Log.d("TAG", "bindLast: ...else.....")
                     binding.apply {
-                        parentOpenLoan.hide()
+                        ovrDueParentArrow.hide()
+                        intDueAmountTitleTv.hide()
+                        intDueAmountTv.hide()
+                        clickPayParent.hide()
+                        outStaTitleTv.text = root.context.getString(R.string.final_due_paid)
+                        outStandValueTv.text =
+                            AppUtility.getDateFormat(actionItem.ClosedDate.toString())
                         binding.loanClosedBtn.apply {
                             text = binding.root.context.getString(R.string.loan_closed)
                             setTextColor(

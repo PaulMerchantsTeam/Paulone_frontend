@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.ui.others
 
+import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.PaymentModesBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,11 +21,10 @@ class PaymentModesFrag : BaseFragment<PaymentModesBinding>(PaymentModesBinding::
 
     private fun modifyHeaders() {
         binding.apply {
-
+            binding.headerBillMore.titlePageTv.text = getString(R.string.credit_score_caps)
         }
 
     }
-
 
 
 }

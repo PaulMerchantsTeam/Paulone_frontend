@@ -60,7 +60,7 @@ interface ApiParams {
         @Query("TransID") TransID: String,
     ): ResponseBody
 
-    @GET("oanDetails/GetLoanStatement") //RespLoanStatment
+    @GET("LoanDetails/GetLoanStatement") //RespLoanStatment
     suspend fun getLoanStatement(
         @Header("Authorization") auth: String,
         @Query("AcNo") AcNo: String,

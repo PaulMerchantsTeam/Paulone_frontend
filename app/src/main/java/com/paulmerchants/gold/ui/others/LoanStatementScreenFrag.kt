@@ -5,7 +5,6 @@ import android.widget.ArrayAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.LoanStatementBinding
 import com.paulmerchants.gold.utility.hide
-import com.paulmerchants.gold.utility.setUiOnLastTransaction
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -20,7 +19,7 @@ class LoanStatementScreenFrag : BaseFragment<LoanStatementBinding>(LoanStatement
         super.onStart()
         modifyHeaders()
         addEntriesToSpinners()
-        setLastStatement()
+//        setLastStatement()
     }
 
     private fun modifyHeaders() {
@@ -41,8 +40,8 @@ class LoanStatementScreenFrag : BaseFragment<LoanStatementBinding>(LoanStatement
         binding.yrSpinner.adapter = adapter2
     }
 
-    private fun setLastStatement() {
-        binding.rvLastTrans.setUiOnLastTransaction()
-    }
+//    private fun setLastStatement() {
+//        binding.rvLastTrans.setUiOnLastTransaction()
+//    }
 
 }
