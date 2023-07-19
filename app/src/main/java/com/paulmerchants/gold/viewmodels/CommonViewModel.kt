@@ -61,7 +61,7 @@ class CommonViewModel @Inject constructor(
     val countNum = MutableLiveData<Long>()
     var isStartAnim = MutableLiveData<Boolean>()
     var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
-    private lateinit var secureFiles: SecureFiles
+    private val secureFiles: SecureFiles = SecureFiles()
 
     val placesLive = MutableLiveData<MutableList<Place>?>()
 
@@ -72,7 +72,6 @@ class CommonViewModel @Inject constructor(
         remoteConfig.setConfigSettingsAsync(configSettings)
         remoteConfig.setDefaultsAsync(R.xml.places)
         loadData()
-        secureFiles = SecureFiles()
     }
 
     fun getLogin() = viewModelScope.launch {

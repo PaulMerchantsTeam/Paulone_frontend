@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/backIv"
-        android:layout_width="@dimen/_22sdp"
-        android:layout_height="@dimen/_22sdp"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
         android:layout_marginStart="@dimen/screen_start_margin"
         android:src="@drawable/back_button"
         android:visibility="visible"
@@ -18,9 +18,9 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/titlePageTv"
         style="@style/text_16_bold"
-        android:layout_marginTop="@dimen/_28sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_28sdp"
         android:text="@string/loan_overview"
         android:textAlignment="center"
         android:textColor="@color/splash_screen_three"
@@ -43,8 +43,8 @@
 
     <ImageView
         android:id="@+id/endIconIv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
         android:layout_marginEnd="@dimen/_19sdp"
         android:src="@drawable/bbps_small"
         android:visibility="gone"

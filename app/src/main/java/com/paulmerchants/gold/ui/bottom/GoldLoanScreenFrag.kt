@@ -13,6 +13,7 @@ import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.GoldLoanScreenFragmentBinding
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
+import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
@@ -31,11 +32,10 @@ class GoldLoanScreenFrag :
 
     override fun GoldLoanScreenFragmentBinding.initialize() {
         binding.headerBillMore.apply {
-            backIv.hide()
+            backIv.setOnClickListener { findNavController().navigateUp() }
             titlePageTv.text = getString(R.string.loan_overview)
             subTitle.hide()
         }
-
     }
 
     private fun optionsClicked(actionItem: RespGetLoanOutStandingItem, isSelect: Boolean) {
@@ -150,8 +150,14 @@ class GoldLoanScreenFrag :
                 totalAmount += i.OutStanding
             }
         }
-        binding.goldLoanParentMain.lonOverDesc.text =
-            "You have taken up ${open.size} active loans. And they total upto INR $totalAmount"
+        AppUtility.diffColorText(
+            "You have taken up ",
+            "${open.size}",
+            " active loans. And they total upto ",
+            "INR $totalAmount", "", "", binding.goldLoanParentMain.lonOverDesc
+        )
+
+        "You have taken up ${open.size} active loans. And they total upto INR $totalAmount"
         setData(open as ArrayList<RespGetLoanOutStandingItem>)
 
     }

@@ -97,7 +97,7 @@
         app:layout_constraintTop_toBottomOf="@+id/prefPyModeTv" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/chnagePayModeTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/change_underln"
@@ -156,6 +156,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/splash_screen_one"
+                android:checked="true"
                 android:text="Pay INR 6,000 fully"
                 android:textColor="@color/splash_screen_three"
                 app:useMaterialThemeColors="false" />
@@ -182,6 +183,7 @@
             android:backgroundTint="@color/black"
             android:hint="(INR XXXX)"
             android:inputType="number"
+            android:maxLength="5"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -211,7 +213,7 @@
     <!--        android:layout_height="wrap_content"-->
     <!--        app:layout_constraintBottom_toTopOf="@+id/constraintLayout8"-->
     <!--        app:layout_constraintEnd_toEndOf="@+id/constraintLayout8"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/textView11"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/chnagePayModeTv"-->
     <!--        app:layout_constraintVertical_bias="1.0"-->
     <!--        app:lottie_autoPlay="true"-->
     <!--        app:lottie_loop="true"-->

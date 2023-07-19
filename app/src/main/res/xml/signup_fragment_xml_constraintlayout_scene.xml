@@ -15,10 +15,8 @@
             android:id="@+id/createAccTitleTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="130dp"
             motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent" />
+            motion:layout_constraintStart_toStartOf="parent" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">

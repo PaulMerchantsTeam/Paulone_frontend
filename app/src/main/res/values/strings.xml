@@ -43,6 +43,7 @@
     <string name="conf_the_mpin">Confirm new M-Pin</string>
     <string name="conf_mpin">Confirm M-Pin</string>
     <string name="confirm">Confirm</string>
+    <string name="confirm_cap">CONFIRM</string>
     <string name="finally_done_sighup">And we are finally done, welcome home user. We are glad to have you with us.</string>
     <string name="bills_amp_more"><font size="10"><![CDATA[BILLS & MORE]]></font></string>
     <string name="gold_loan"><font size="10">GOLD LOAN</font></string>
@@ -108,6 +109,7 @@
     <string name="one_place_for_everything">(One place for everything)</string>
     <string name="pay_bill_point_desc">*Pay bills and more to win \nPaul Points and get exciting offers.</string>
     <string name="search_yr_transac">Search your transactions</string>
+    <string name="pay_modes">PAYMENT MODES</string>
     <string name="history">History</string>
     <string name="view_trans">View Transactions</string>
     <string name="bank_acc">Bank Accounts</string>
@@ -356,6 +358,12 @@
     <string name="Rs">\u20B9</string>
     <string name="intrst_due_date">Interest Due Date</string>
     <string name="final_due_paid">Final Due Paid</string>
+    <string name="prepaid_card_small">Prepaid card</string>
+    <string name="paytm">Paytm</string>
+    <string name="gpay">Google Pay</string>
+    <string name="phone_pay">Phone Pe</string>
+    <string name="axis">Axis Bank</string>
+    <string name="hdfc">HDFC Bank</string>
     <string-array name="month">
         <item>January</item>
         <item>February</item>

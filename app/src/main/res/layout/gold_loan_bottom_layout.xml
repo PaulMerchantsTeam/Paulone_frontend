@@ -11,6 +11,7 @@
         android:id="@+id/lonOverDesc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_50sdp"
         android:fontFamily="@font/poppins_semi_bold"
         android:text="@string/you_have_taken_up_4_act"
         android:textColor="@color/splash_screen_three"

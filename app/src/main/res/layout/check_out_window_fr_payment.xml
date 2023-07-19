@@ -30,8 +30,9 @@
             layout="@layout/otp_fill_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_52sdp"
+            android:layout_marginTop="68dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/headerCheckOutQuickPay" />
 
@@ -123,9 +124,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/change_underln"
-                android:textSize="@dimen/_9ssp"
-
                 android:textColor="@color/blue_light"
+
+                android:textSize="@dimen/_9ssp"
                 app:layout_constraintBottom_toBottomOf="@+id/prefPyModeTv"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/prefPyModeTv" />
@@ -142,19 +143,23 @@
                 app:layout_constraintTop_toTopOf="@+id/dueIntPerMonth" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/confirmBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/color_prim_one_40"
-            android:drawableEnd="@drawable/ic_arrow_yellow"
+            android:background="@drawable/rec_one_blue_btn_8"
+            android:drawableEnd="@drawable/arrow_big_right"
+            android:drawablePadding="@dimen/_20sdp"
             android:enabled="true"
             android:fontFamily="@font/poppins_medium"
-            android:text="@string/confirm"
+            android:gravity="center"
+            android:paddingVertical="@dimen/_10sdp"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingEnd="@dimen/_35sdp"
+            android:text="@string/confirm_cap"
             android:textColor="@color/yellow_main"
-            android:textSize="@dimen/_9ssp"
+            android:textSize="@dimen/_16ssp"
             android:visibility="visible"
-            app:cornerRadius="@dimen/_2sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

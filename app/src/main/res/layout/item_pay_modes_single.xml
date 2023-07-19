@@ -7,7 +7,7 @@
     android:layout_marginEnd="@dimen/screen_start_margin"
     android:background="@drawable/pay_modes_back"
     android:paddingHorizontal="@dimen/_16sdp"
-    android:paddingVertical="@dimen/_10sdp">
+    android:paddingVertical="@dimen/_5sdp">
 
 
     <ImageView
@@ -32,6 +32,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/addAnyTv"
+        style="@style/text_10_medium_sky"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_13sdp"
+        android:text="@string/add_new_upi"
+        android:textSize="@dimen/_10ssp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/payImageOptTv"
+        app:layout_constraintStart_toEndOf="@+id/payImageOptTv"
+        app:layout_constraintTop_toTopOf="@+id/payImageOptTv" />
+
+
+    <TextView
         android:id="@+id/cardPcNumTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/prepdCardTv" />
 
     <ImageView
-        android:id="@+id/imageView14"
+        android:id="@+id/arrowGoIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/payImageOptTv"

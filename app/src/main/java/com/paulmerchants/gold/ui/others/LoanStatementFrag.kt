@@ -2,7 +2,9 @@ package com.paulmerchants.gold.ui.others
 
 import android.os.Build
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.BuildConfig
+import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.LastStatemnetAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
@@ -11,6 +13,9 @@ import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.model.RespLoanStatment
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.getScreenBitmap
+import com.paulmerchants.gold.utility.AppUtility.saveAsPdf
+import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,6 +32,10 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
 
     override fun onStart() {
         super.onStart()
+        binding.headerScrn.apply {
+            backIv.setOnClickListener { findNavController().navigateUp() }
+            titlePageTv.text = getString(R.string.loan_Statment)
+        }
         val loanOutStanding =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) arguments?.getParcelable(
                 Constants.LOAN_OVERVIEW, RespGetLoanOutStandingItem::class.java
@@ -54,6 +63,23 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
                 lastLoanAdapter.submitList(it)
                 binding.rvLastTrans.adapter = lastLoanAdapter
             }
+        }
+        binding.gotToHomeBtn.setOnClickListener {
+            findNavController().popBackStack(R.id.goldLoanScreenFrag, true)
+            findNavController().popBackStack(R.id.loanStatementFrag, true)
+            findNavController().navigate(R.id.homeScreenFrag)
+        }
+        binding.donwloadPdfBtn.setOnClickListener {
+            val screenBitmap = getScreenBitmap(binding.constraintLayout7, R.color.open_loans)
+            val pdfWidth = 450f
+            val pdfHeight = 842f
+            saveAsPdf(
+                requireContext(),
+                pdfWidth,
+                pdfHeight,
+                screenBitmap,
+                R.color.open_loans
+            )
         }
     }
 

@@ -6,10 +6,13 @@ import android.content.DialogInterface
 import android.os.Build
 import android.os.Build.VERSION
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.paulmerchants.gold.R
@@ -17,6 +20,7 @@ import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.QuickPayPopupBinding
 import com.paulmerchants.gold.model.DueLoans
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
+import com.paulmerchants.gold.ui.MapActivity
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,9 +43,11 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class QuickPayDialog : BottomSheetDialogFragment() {
 
+    private var dueLoans: GetPendingInrstDueRespItem? = null
     lateinit var quickPayPopupBinding: QuickPayPopupBinding
     val TAG = "QuickPayDialog"
 
+    //Pay INR 6,000 fully
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Log.d(TAG, "onAttach: ")
@@ -59,43 +65,87 @@ class QuickPayDialog : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val dueLoans = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            arguments?.getParcelable(
-                Constants.DUE_LOAN_DATA,
-                GetPendingInrstDueRespItem::class.java
-            ) else arguments?.getParcelable<GetPendingInrstDueRespItem>(Constants.DUE_LOAN_DATA) as GetPendingInrstDueRespItem
+        dueLoans = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) arguments?.getParcelable(
+            Constants.DUE_LOAN_DATA, GetPendingInrstDueRespItem::class.java
+        ) else arguments?.getParcelable<GetPendingInrstDueRespItem>(Constants.DUE_LOAN_DATA) as GetPendingInrstDueRespItem
         Log.d(
-            TAG,
-            "onCreate:---dueDays-${dueLoans?.DueDate}\n-----amount---${dueLoans?.InterestDue} "
+            TAG, "onCreate:---dueDays-${dueLoans?.DueDate}\n-----amount---${dueLoans?.InterestDue} "
         )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setAmount("${dueLoans?.InterestDue}")
         quickPayPopupBinding.quixPayParentBtn.setOnClickListener {
-            dismiss()
-            findNavController().navigate(R.id.quickPayMainFrag)
+            if (quickPayPopupBinding.customPayRadio.isChecked) {
+                dueLoans?.InterestDue?.toInt()?.let {
+                    if (quickPayPopupBinding.customPayEt.text.toString().toInt() > it) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Amount Due: ${dueLoans?.InterestDue}\nPlease fill valid amount",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        dismiss()
+                        findNavController().navigate(R.id.quickPayMainFrag)
+                    }
+                }
+            } else {
+                dismiss()
+                findNavController().navigate(R.id.quickPayMainFrag)
+            }
+
+        }
+        quickPayPopupBinding.chnagePayModeTv.setOnClickListener {
+            findNavController().navigate(R.id.paymentModesFrag)
+        }
+        quickPayPopupBinding.apply {
+            fullPayRadio.text = "Pay INR ${dueLoans?.InterestDue} fully"
         }
         onCLickRadio()
+
+        quickPayPopupBinding.customPayEt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0 != null) {
+
+                    setAmount(amount = p0.toString())
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+        })
+    }
+
+    fun setAmount(amount: String) {
+        quickPayPopupBinding.payingAMountText.text = "Pay INR $amount"
     }
 
     fun onCLickRadio() {
         quickPayPopupBinding.fullPayRadio.setOnClickListener {
-
             quickPayPopupBinding.customPayEt.hide()
-            quickPayPopupBinding.payingAMountText.text = quickPayPopupBinding.fullPayRadio.text
-
+            dueLoans?.InterestDue?.toString()?.let { it1 -> setAmount(it1) }
         }
         quickPayPopupBinding.customPayRadio.setOnClickListener {
             quickPayPopupBinding.customPayEt.show()
-            Log.d(TAG, "onCLickRadio: ${quickPayPopupBinding.customPayEt.text}")
-            Log.d(TAG, "onCLickRadio: ${quickPayPopupBinding.payingAMountText.text}")
-            quickPayPopupBinding.customPayEt.setOnClickListener {
-                quickPayPopupBinding.payingAMountText.text =
-                    "Pay INR ${quickPayPopupBinding.customPayEt.text}"
-            }
+            dueLoans?.InterestDue?.toString()?.let { it1 -> setAmount(it1) }
         }
-
+//        quickPayPopupBinding.customPayEt.setOnClickListener {
+//            if (quickPayPopupBinding.customPayEt.text.toString()
+//                    .toInt() > dueLoans?.InterestDue?.toInt() as Int
+//            ) {
+//                Toast.makeText(requireContext(), "Please fill valid amount", Toast.LENGTH_SHORT)
+//                    .show()
+//            } else {
+//                quickPayPopupBinding.payingAMountText.text =
+//                    "Pay INR ${quickPayPopupBinding.customPayEt.text}"
+//            }
+//        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

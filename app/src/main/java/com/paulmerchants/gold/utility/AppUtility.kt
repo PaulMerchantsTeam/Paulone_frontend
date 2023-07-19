@@ -4,19 +4,33 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
 import android.provider.Settings
 import android.view.LayoutInflater
+import android.view.PixelCopy
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.navigation.NavController
 import com.google.gson.Gson
+import com.itextpdf.text.BaseColor
+import com.itextpdf.text.Document
+import com.itextpdf.text.Image
+import com.itextpdf.text.PageSize
+import com.itextpdf.text.Rectangle
+import com.itextpdf.text.pdf.PdfContentByte
+import com.itextpdf.text.pdf.PdfWriter
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.ProgressLayoutBinding
@@ -33,6 +47,9 @@ import com.paulmerchants.gold.utility.AppUtility.convertStringToJson
 import com.paulmerchants.gold.utility.AppUtility.getCurrentDate
 import com.paulmerchants.gold.utility.AppUtility.getDateWithOrdinals
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 import java.io.UnsupportedEncodingException
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
@@ -59,6 +76,84 @@ Note: These tags are need to be set under the TextView.
 
 object AppUtility {
     private lateinit var dialog: AlertDialog
+
+    fun getScreenBitmap(view: View, backgroundColor: Int): Bitmap {
+//        view.setBackgroundColor(backgroundColor)
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.draw(canvas)
+        return bitmap
+    }
+
+    fun saveAsPdf(
+        context: Context,
+        pdfWidth: Float,
+        pdfHeight: Float,
+        bitmap: Bitmap,
+        backgroundColor: Int,
+    ) {
+        val document = Document(Rectangle(pdfWidth, pdfHeight))
+        // Set the PDF background color
+        document.addHeader("Statement", "")
+        val outputPath =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val outputFilename = "statement.pdf"
+        val outputFile = File(outputPath, outputFilename)
+
+        try {
+            val fileOutputStream = FileOutputStream(outputFile)
+            PdfWriter.getInstance(document, fileOutputStream)
+            document.open()
+            // Create a new Rectangle with the desired background color
+            val pdfBackgroundColor = BaseColor(backgroundColor)
+            val rectangle = Rectangle(document.pageSize)
+            rectangle.backgroundColor = pdfBackgroundColor
+
+            // Add the image to the PDF
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            val image = Image.getInstance(stream.toByteArray())
+            image.scaleToFit(document.pageSize.width, document.pageSize.height)
+            document.add(image)
+
+            document.close()
+            fileOutputStream.close()
+
+            Toast.makeText(context, "PDF saved to Downloads folder.", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(context, "Failed to save PDF.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    fun getBitmapFromView(view: View, activity: Activity, callback: (Bitmap) -> Unit) {
+        activity.window?.let { window ->
+            val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+            val locationOfViewInWindow = IntArray(2)
+            view.getLocationInWindow(locationOfViewInWindow)
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    PixelCopy.request(
+                        window, Rect(
+                            locationOfViewInWindow[0],
+                            locationOfViewInWindow[1],
+                            locationOfViewInWindow[0] + view.width,
+                            locationOfViewInWindow[1] + view.height
+                        ), bitmap, { copyResult ->
+                            if (copyResult == PixelCopy.SUCCESS) {
+                                callback(bitmap)
+                            }
+                            // possible to handle other result codes ...
+                        }, Handler()
+                    )
+                }
+            } catch (e: IllegalArgumentException) {
+                // PixelCopy may throw IllegalArgumentException, make sure to handle it
+                e.printStackTrace()
+            }
+        }
+    }
 
     fun getFirstName(fullName: String?): String? {
         return fullName?.substringBefore(" ")

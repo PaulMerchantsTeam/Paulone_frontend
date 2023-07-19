@@ -81,6 +81,50 @@ class PhoenNumVerifiactionFragment :
         super.onStart()
         //Welcome to Paul Gold,
         //we are happy to serve you!!
+        callMpinNextFocus()
+        callMpinConfirmNextFocus()
+        AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)?.let {
+            if (it != "") {
+                binding.signUpParentMain.etName.apply {
+                    setText(it)
+                    isEnabled = false
+                }
+            }
+        }
+        binding.signUpParentMain.signUpBtn.setOnClickListener {
+            binding.enterPhoneNumMain.hide()
+            println(
+                "-----------ggggggg---------${
+                    binding.signUpParentMain.etName.text.isNotEmpty()
+                            && binding.signUpParentMain.etEmailId.text.isNotEmpty()
+                            && binding.signUpParentMain.mpinOneEt.text.isNotEmpty()
+                            && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty()
+                            && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty()
+                            && binding.signUpParentMain.mpinFourEt.text.isNotEmpty()
+                            && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty()
+                            && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty()
+                            && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty()
+                            && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty()
+                            && binding.signUpParentMain.termsCb.isChecked
+                }"
+            )
+            if ((binding.signUpParentMain.etName.text.isNotEmpty()
+                        && binding.signUpParentMain.etEmailId.text.isNotEmpty()
+                        && binding.signUpParentMain.mpinOneEt.text.isNotEmpty()
+                        && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty()
+                        && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty()
+                        && binding.signUpParentMain.mpinFourEt.text.isNotEmpty()
+                        && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty()
+                        && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty()
+                        && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty()
+                        && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty()) && binding.signUpParentMain.termsCb.isChecked
+            ) {
+                binding.signUpParentMain.root.hideView()
+                hideAndShowProgressView(true)
+            } else {
+
+            }
+        }
         if (AppSharedPref.getBooleanValue(OTP_VERIFIED)) {
             binding.fillOtpParent.hideView()
             binding.signUpParentMain.root.show()
@@ -232,24 +276,6 @@ class PhoenNumVerifiactionFragment :
                     setText(it)
                     isEnabled = false
                 }
-            }
-        }
-
-        binding.signUpParentMain.signUpBtn.setOnClickListener {
-            if (binding.signUpParentMain.etName.text.isNotEmpty()
-                && binding.signUpParentMain.etEmailId.text.isNotEmpty()
-                && binding.signUpParentMain.mpinOneEt.text.isNotEmpty()
-                && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty()
-                && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty()
-                && binding.signUpParentMain.mpinFourEt.text.isNotEmpty()
-                && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty()
-                && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty()
-                && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty()
-                && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty()
-                && binding.signUpParentMain.termsCb.isChecked
-            ) {
-                binding.signUpParentMain.root.hideView()
-                hideAndShowProgressView(true)
             }
         }
         binding.signUpParentMain.googleSignInTv.setOnClickListener {
@@ -563,7 +589,6 @@ class PhoenNumVerifiactionFragment :
                     } else {
                         binding.proceedAuthBtn.disableButton(requireContext())
                     }
-
                 }
 
                 R.id.otpTwoEt -> {
@@ -621,6 +646,43 @@ class PhoenNumVerifiactionFragment :
                 }
 
                 R.id.mpinFourEt -> {
+                    if (text.length == 1) {
+                        binding.signUpParentMain.signUpBtn.enableButton(requireContext())
+                        nextView?.requestFocus()
+                    } else {
+                        binding.signUpParentMain.signUpBtn.disableButton(requireContext())
+                    }
+
+                }
+
+                R.id.mpinOneConfirmEt -> {
+                    if (text.length == 1) {
+                        binding.signUpParentMain.signUpBtn.enableButton(requireContext())
+                        nextView?.requestFocus()
+                    } else {
+                        binding.signUpParentMain.signUpBtn.disableButton(requireContext())
+                    }
+                }
+
+                R.id.mpinConfirmTwoEt -> {
+                    if (text.length == 1) {
+                        binding.signUpParentMain.signUpBtn.enableButton(requireContext())
+                        nextView?.requestFocus()
+                    } else {
+                        binding.signUpParentMain.signUpBtn.disableButton(requireContext())
+                    }
+                }
+
+                R.id.mpinConfirmThreeEt -> {
+                    if (text.length == 1) {
+                        binding.signUpParentMain.signUpBtn.enableButton(requireContext())
+                        nextView?.requestFocus()
+                    } else {
+                        binding.signUpParentMain.signUpBtn.disableButton(requireContext())
+                    }
+                }
+
+                R.id.mpinConfirmFourEt -> {
                     if (text.length == 1) {
                         binding.signUpParentMain.signUpBtn.enableButton(requireContext())
                         nextView?.requestFocus()
