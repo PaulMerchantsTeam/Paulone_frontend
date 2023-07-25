@@ -6,6 +6,8 @@
         android:width="1dp"
         android:color="@color/splash_screen_one" />
 
+    <solid android:color="@color/splash_screen_two" />
+
     <corners
         android:bottomLeftRadius="23dp"
         android:bottomRightRadius="23dp"

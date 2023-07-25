@@ -39,7 +39,7 @@ class ProceedToPay :
         var creditValue = true
         binding.apply {
             headerLoan.endIconIv.show()
-            headerLoan.endIconIv.setImageResource(R.drawable.bbps_small)
+            headerLoan.endIconIv.setImageResource(R.drawable.bbps)
             headerLoan.backIv.setOnClickListener {
                 findNavController().navigateUp()
             }

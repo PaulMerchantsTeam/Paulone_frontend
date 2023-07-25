@@ -30,7 +30,7 @@ class AddCardFrag :
         binding.apply {
             headerCredit.titlePageTv.setText(headerValue.toString())
             headerCredit.endIconIv.show()
-            headerCredit.endIconIv.setImageResource(R.drawable.bbps_small)
+            headerCredit.endIconIv.setImageResource(R.drawable.bbps)
             proceedToPayBtn.setOnClickListener {
 
                 findNavController().navigate(R.id.paymentConfirmed,headerBundle)

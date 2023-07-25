@@ -316,7 +316,10 @@
     <string name="your_credit_activity">Your Credit Activity</string>
     <string name="as_of_the_various_credit_sources">as of the various credit sources</string>
     <string name="how_to_keep_a_good_score">How to keep a good score</string>
-    <string name="pay_your_bills_on_time">. Pay your bills on time</string>
+    <string name="pay_your_bills_on_time">\u2022 Pay your bills on time.\n
+                                          \u2022 Keep your credit utilization low.\n
+                                          \u2022 Avoid opening too many new accounts.\n
+                                          \u2022 Regularly check your credit report for errors and fraud.</string>
     <string name="paul_merchants">Paul Merchants</string>
     <string name="update_your_scores">Update your scores</string>
     <string name="gold_n_loans">GOLD \nLOANS</string>
@@ -364,6 +367,13 @@
     <string name="phone_pay">Phone Pe</string>
     <string name="axis">Axis Bank</string>
     <string name="hdfc">HDFC Bank</string>
+    <string name="download_bill">Download bill</string>
+    <string name="share_this">Share this</string>
+    <string name="paid_to">Paid to</string>
+    <string name="paid_from">Paid from</string>
+    <string name="reference_no">Reference No</string>
+    <string name="transfer_type">Transfer type</string>
+    <string name="transaction_id_cap">Transaction ID</string>
     <string-array name="month">
         <item>January</item>
         <item>February</item>
@@ -394,4 +404,5 @@
         <item>2012</item>
     </string-array>
 
+    <!--  • = \u2022,   ● = \u25CF,   ○ = \u25CB,   ▪ = \u25AA,   ■ = \u25A0,   □ = \u25A1,   ► = \u25BA-->
 </resources>

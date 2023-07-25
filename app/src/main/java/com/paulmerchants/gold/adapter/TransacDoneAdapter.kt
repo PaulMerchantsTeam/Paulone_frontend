@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.paulmerchants.gold.adapterviewholders.TransDoneHolder
-import com.paulmerchants.gold.databinding.ItemServiceMenuBinding
 import com.paulmerchants.gold.databinding.ItemTransactionServicesBinding
 import com.paulmerchants.gold.model.TransDoneModel
 
-class TransacDoneAdapter :
+class TransacDoneAdapter(private val onTransactionClicked: (TransDoneModel) -> Unit) :
     ListAdapter<TransDoneModel, TransDoneHolder>(DIFF_CALLBACK) {
 
 
@@ -19,7 +18,7 @@ class TransacDoneAdapter :
     )
 
     override fun onBindViewHolder(holder: TransDoneHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position),onTransactionClicked)
     }
 
     companion object {

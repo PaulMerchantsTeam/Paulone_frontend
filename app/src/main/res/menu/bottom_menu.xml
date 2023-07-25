@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/billsAndMoreScreenFrag"
-        android:icon="@drawable/bills_an_more"
+        android:icon="@drawable/bbps"
         android:title="@string/bills_amp_more"
         />
     <item

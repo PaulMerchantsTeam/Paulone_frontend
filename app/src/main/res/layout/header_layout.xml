@@ -46,7 +46,7 @@
         android:layout_width="@dimen/_25sdp"
         android:layout_height="@dimen/_25sdp"
         android:layout_marginEnd="@dimen/_19sdp"
-        android:src="@drawable/bbps_small"
+        android:src="@drawable/bbps"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

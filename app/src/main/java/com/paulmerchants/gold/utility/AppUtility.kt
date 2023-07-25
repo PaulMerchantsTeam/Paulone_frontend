@@ -5,9 +5,12 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.BlurMaskFilter
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
@@ -17,6 +20,7 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.PixelCopy
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
@@ -47,6 +51,7 @@ import com.paulmerchants.gold.utility.AppUtility.convertStringToJson
 import com.paulmerchants.gold.utility.AppUtility.getCurrentDate
 import com.paulmerchants.gold.utility.AppUtility.getDateWithOrdinals
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.w3c.dom.Text
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -76,6 +81,50 @@ Note: These tags are need to be set under the TextView.
 
 object AppUtility {
     private lateinit var dialog: AlertDialog
+
+    fun blurTextView(blurredTextView: TextView, context: Context) {
+        // Wait until the layout is measured to get the dimensions of the TextView
+        blurredTextView.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                blurredTextView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                // Get the dimensions of the TextView
+                val width = blurredTextView.width
+                val height = blurredTextView.height
+
+                // Create a Bitmap of the TextView's background
+                val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+                val canvas = Canvas(bitmap)
+                blurredTextView.background?.draw(canvas)
+
+                // Apply blur effect to the Bitmap
+                val blurredBitmap = blurBitmap(bitmap, 25f, context)
+
+                // Create a BitmapDrawable with the blurred Bitmap and set it as the TextView's background
+                val blurredDrawable = BitmapDrawable(blurredTextView.resources, blurredBitmap)
+                blurredTextView.background = blurredDrawable
+            }
+        })
+    }
+
+
+    // Function to apply blur effect to a Bitmap
+    private fun blurBitmap(bitmap: Bitmap, radius: Float, context: Context): Bitmap {
+        val overlay = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(overlay)
+
+        val paint = Paint()
+        paint.flags = Paint.FILTER_BITMAP_FLAG
+        canvas.drawBitmap(bitmap, 0f, 0f, paint)
+
+        val blurMaskFilter = BlurMaskFilter(radius, BlurMaskFilter.Blur.NORMAL)
+        paint.maskFilter = blurMaskFilter
+
+        canvas.drawBitmap(overlay, 0f, 0f, paint)
+
+        return overlay
+    }
 
     fun getScreenBitmap(view: View, backgroundColor: Int): Bitmap {
 //        view.setBackgroundColor(backgroundColor)

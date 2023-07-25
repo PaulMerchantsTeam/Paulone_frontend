@@ -230,4 +230,14 @@
         android:name="com.paulmerchants.gold.ui.others.ResetCardPinFrag"
         android:label="ResetCardPinFrag"
         tools:layout="@layout/reset_card_pin" />
+    <fragment
+        android:id="@+id/transactionDoneScreenFrag"
+        android:name="com.paulmerchants.gold.ui.others.TransactionDoneScreenFrag"
+        android:label="TransactionDoneScreenFrag"
+        tools:layout="@layout/transac_receipt" />
+    <dialog
+        android:id="@+id/daysFilterDialog"
+        tools:layout="@layout/item_filiter_time_bottom"
+        android:name="com.paulmerchants.gold.ui.btmsheetDg.daysFilterDialog"
+        android:label="daysFilterDialog" />
 </navigation>

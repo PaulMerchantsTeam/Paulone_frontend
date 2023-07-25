@@ -26,7 +26,11 @@ class MenuScreenFrag :
 
     private var myView: CustomViews? = null
 
-    private val menuServiceAdapter = MenuServicesAdapter(::onMenuServiceClicked,::onMenuServiceClicedTwo,::onMenuServiceTitleClicked)
+    private val menuServiceAdapter = MenuServicesAdapter(
+        ::onMenuServiceClicked,
+        ::onMenuServiceClicedTwo,
+        ::onMenuServiceTitleClicked
+    )
 
 
     private fun onMenuServiceClicedTwo(menuServices: MenuServices) {
@@ -35,36 +39,49 @@ class MenuScreenFrag :
             1 -> {
                 findNavController().navigate(R.id.applyLoanForNewUser)
             }
+
             2 -> {
                 val bundle = Bundle().apply {
-                    putString("Other","other")
+                    putString("Other", "other")
                 }
-                findNavController().navigate(R.id.billsAndMoreScreenFrag,bundle)
+                findNavController().navigate(R.id.billsAndMoreScreenFrag, bundle)
             }
+
             3 -> {
                 findNavController().navigate(R.id.billsFragment)
             }
+
             4 -> {
                 findNavController().navigate(R.id.pcFrag)
             }
+
             5 -> {
             }
+
             6 -> {
             }
+
             7 -> {
             }
+
             8 -> {
             }
+
             9 -> {
             }
+
             10 -> {
             }
+
             11 -> {
             }
+
             12 -> {
             }
+
             13 -> {
             }
+
             else -> {
                 Log.d("TAG", "onMenuServiceClicked: [=false")
             }
@@ -77,34 +94,47 @@ class MenuScreenFrag :
             1 -> {
                 findNavController().navigate(R.id.goldLoanScreenFrag)
             }
+
             2 -> {
                 findNavController().navigate(R.id.billsAndMoreScreenFrag)
             }
+
             3 -> {
                 findNavController().navigate(R.id.goldLoanScreenFrag)
             }
+
             4 -> {
                 findNavController().navigate(R.id.pcFrag)
             }
+
             5 -> {
                 findNavController().navigate(R.id.creditScoreScreenFrag)
             }
+
             6 -> {
             }
+
             7 -> {
             }
+
             8 -> {
             }
+
             9 -> {
             }
+
             10 -> {
             }
+
             11 -> {
             }
+
             12 -> {
             }
+
             13 -> {
             }
+
             else -> {
                 Log.d("TAG", "onMenuServiceClicked: [=false")
             }
@@ -112,11 +142,16 @@ class MenuScreenFrag :
 
     }
 
-    private fun onMenuServiceTitleClicked(menuServices: MenuServices){
+    private fun onMenuServiceTitleClicked(menuServices: MenuServices) {
 
     }
 
-    private val transacDoneAdapter = TransacDoneAdapter()
+    private val transacDoneAdapter = TransacDoneAdapter(::onTransactionClicked)
+
+    private fun onTransactionClicked(transDoneModel: TransDoneModel) {
+        findNavController().navigate(R.id.transactionDoneScreenFrag)
+    }
+
     private val typeServicesAdapter = TypeServiceAdapter(::onTypeServiceClicked)
     override fun DummyMenuScreenFragmentBinding.initialize() {
 
@@ -129,6 +164,11 @@ class MenuScreenFrag :
         myView = CustomViews(requireContext(), binding.linearOne)
         binding.linearOne.addView(myView)
         navigateToAnotherScreen()
+
+        binding.viewSperate.setOnClickListener {
+            //open time  filter dialog
+            findNavController().navigate(R.id.daysFilterDialog)
+        }
     }
 
     private fun navigateToAnotherScreen() {
@@ -164,13 +204,16 @@ class MenuScreenFrag :
             ServiceType.SERVICES.type -> {
                 setServicesUi()
             }
+
             ServiceType.TRANSACTION.type -> {
                 setTransactionUi()
             }
+
             ServiceType.SETTINGS.type -> {
 //                typeServicesAdapter.submitList(null)
                 setSettingsUi()
             }
+
             ServiceType.REWARDS.type -> {
                 setRewardsUi()
             }
@@ -179,14 +222,14 @@ class MenuScreenFrag :
 
     private fun setRewardsUi() {
         //no data available
-        binding.transacSearchView.hide()
+        binding.transacSearchViewParent.hide()
         binding.servicesRv.hide()
         binding.lotteAwards.root.show()
     }
 
     private fun setSettingsUi() {
         binding.lotteAwards.root.hide()
-        binding.transacSearchView.hide()
+        binding.transacSearchViewParent.hide()
         binding.servicesRv.show()
         val service1 = MenuServices(
             6,
@@ -248,7 +291,7 @@ class MenuScreenFrag :
     }
 
     private fun setTransactionUi() {
-        binding.transacSearchView.show()
+        binding.transacSearchViewParent.show()
         binding.servicesRv.show()
         binding.lotteAwards.root.hide()
         val trans1 = TransDoneModel(
@@ -285,7 +328,7 @@ class MenuScreenFrag :
 
 
     private fun setServicesUi() {
-        binding.transacSearchView.hide()
+        binding.transacSearchViewParent.hide()
         binding.servicesRv.show()
         binding.lotteAwards.root.hide()
         val service1 = MenuServices(

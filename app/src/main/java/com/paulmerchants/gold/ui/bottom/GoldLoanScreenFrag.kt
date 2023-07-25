@@ -27,7 +27,7 @@ class GoldLoanScreenFrag :
     BaseFragment<GoldLoanScreenFragmentBinding>(GoldLoanScreenFragmentBinding::inflate) {
     private var amount: Int = 0
     private val commonViewModel: CommonViewModel by viewModels()
-    val lastStatementAdapter =
+    private val lastStatementAdapter =
         GoldLoanOverViewAdapterProd(::optionsClicked, ::payNowClicked, ::viewDetails)
 
     override fun GoldLoanScreenFragmentBinding.initialize() {
@@ -79,6 +79,7 @@ class GoldLoanScreenFrag :
 
     override fun onStart() {
         super.onStart()
+        amount = 0
         lifecycleScope.launch(Dispatchers.Main) {
             binding.shmrLaonOverView.startShimmer()
             delay(1000)
@@ -123,8 +124,13 @@ class GoldLoanScreenFrag :
         }
 
         binding.payAllBtn.setOnClickListener {
-            lastStatementAdapter.isShowSelctOption(true)
-            lastStatementAdapter.notifyDataSetChanged()
+            if (amount > 0) {
+                findNavController().navigate(R.id.paymentModesFrag)
+            } else {
+                lastStatementAdapter.isShowSelctOption(true)
+                lastStatementAdapter.notifyDataSetChanged()
+            }
+
         }
     }
 

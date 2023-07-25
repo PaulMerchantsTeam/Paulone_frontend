@@ -192,8 +192,8 @@
                     android:id="@+id/animationViewCoin"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
-                    android:layout_marginBottom="@dimen/_minus9sdp"
                     android:layout_marginStart="@dimen/_minus4sdp"
+                    android:layout_marginBottom="@dimen/_minus9sdp"
 
                     app:layout_constraintBottom_toTopOf="@+id/goldMenuParent"
                     app:layout_constraintStart_toStartOf="@+id/goldMenuParent"
@@ -246,20 +246,20 @@
                     android:id="@+id/animationViewCard"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
-                    android:layout_marginBottom="@dimen/_minus12sdp"
                     android:layout_marginStart="@dimen/_minus4sdp"
+                    android:layout_marginBottom="@dimen/_minus12sdp"
                     app:layout_constraintBottom_toTopOf="@+id/prepaidMenuCard"
                     app:layout_constraintStart_toStartOf="@+id/prepaidMenuCard"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true"
                     app:lottie_rawRes="@raw/credit_card" />
-<!--                <ImageView-->
-<!--                    android:id="@+id/pcIv"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:src="@drawable/gold_point_half"-->
-<!--                    app:layout_constraintBottom_toTopOf="@+id/prepaidMenuCard"-->
-<!--                    app:layout_constraintStart_toStartOf="@+id/prepaidMenuCard" />-->
+                <!--                <ImageView-->
+                <!--                    android:id="@+id/pcIv"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:src="@drawable/gold_point_half"-->
+                <!--                    app:layout_constraintBottom_toTopOf="@+id/prepaidMenuCard"-->
+                <!--                    app:layout_constraintStart_toStartOf="@+id/prepaidMenuCard" />-->
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/prepaidMenuCard"
@@ -304,13 +304,14 @@
                     android:id="@+id/animationViewCall"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
-                    android:layout_marginBottom="@dimen/_minus12sdp"
                     android:layout_marginStart="@dimen/_minus4sdp"
+                    android:layout_marginBottom="@dimen/_minus12sdp"
                     app:layout_constraintBottom_toTopOf="@+id/neddSuppMenuCard"
                     app:layout_constraintStart_toStartOf="@+id/neddSuppMenuCard"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true"
                     app:lottie_rawRes="@raw/need_support" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/neddSuppMenuCard"
                     android:layout_width="wrap_content"
@@ -376,32 +377,56 @@
                 tools:listitem="@layout/item_option_menu" />
 
 
-            <EditText
-                android:id="@+id/transacSearchView"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/transacSearchViewParent"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_27sdp"
-                android:layout_marginStart="@dimen/_24sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_24sdp"
                 android:layout_marginTop="@dimen/_18sdp"
-                android:layout_marginEnd="@dimen/_24sdp"
-                android:background="@drawable/rec_search_"
-                android:drawableStart="@drawable/search"
-                android:drawablePadding="@dimen/_10sdp"
-                android:fontFamily="@font/poppins_semi_bold"
-                android:hint="@string/search_yr_transac"
-                android:imeOptions="actionSearch"
-                android:maxLines="1"
-                android:paddingStart="@dimen/_5sdp"
-                android:paddingEnd="@dimen/_5sdp"
-                android:textColor="@color/splash_screen_one"
-                android:textColorHint="@color/view_line"
-                android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-                android:textSize="@dimen/_10ssp"
-                app:autoShowKeyboard="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/optionItemMenuRv"
-                app:queryHint="@string/search"
-                app:searchIcon="@drawable/search" />
+                app:layout_constraintTop_toBottomOf="@+id/optionItemMenuRv">
+
+                <EditText
+                    android:id="@+id/transacSearchView"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="@drawable/rec_search__half"
+                    android:drawableStart="@drawable/search"
+                    android:drawablePadding="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:hint="@string/search_yr_transac"
+                    android:imeOptions="actionSearch"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    android:textColor="@color/splash_screen_one"
+                    android:textColorHint="@color/view_line"
+                    android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                    android:textSize="@dimen/_10ssp"
+                    app:autoShowKeyboard="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/viewSperate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:queryHint="@string/search"
+                    app:searchIcon="@drawable/search" />
+
+
+                <ImageView
+                    android:id="@+id/viewSperate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="@drawable/rec_search__half_right"
+                    android:padding="@dimen/_10sdp"
+                    android:src="@drawable/filter_days"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/transacSearchView" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/servicesRv"
@@ -412,7 +437,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/transacSearchView"
+                app:layout_constraintTop_toBottomOf="@+id/transacSearchViewParent"
                 tools:itemCount="5"
                 tools:listitem="@layout/item_transaction_services" />
 
@@ -426,7 +451,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/transacSearchView" />
+                app:layout_constraintTop_toBottomOf="@+id/transacSearchViewParent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

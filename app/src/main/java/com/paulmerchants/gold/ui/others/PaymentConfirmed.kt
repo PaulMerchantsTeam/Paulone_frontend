@@ -30,7 +30,7 @@ class PaymentConfirmed :
             headerLoanConfirmed.backIv.hide()
             headerLoanConfirmed.endIconIv.show()
             headerLoanConfirmed.titlePageTv.setText(headerValue.toString())
-            headerLoanConfirmed.endIconIv.setImageResource(R.drawable.bbps_small)
+            headerLoanConfirmed.endIconIv.setImageResource(R.drawable.bbps)
             gotoHomeBtn.setOnClickListener {
       }
             lifecycleScope.launch {

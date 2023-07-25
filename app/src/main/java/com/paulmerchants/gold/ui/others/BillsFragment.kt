@@ -23,18 +23,15 @@ class BillsFragment : BaseFragment<LayoutLoanEmiBinding>(LayoutLoanEmiBinding::i
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
          bbpsActionValue = arguments?.getInt(BBPS_TYPE, 0)
-
         Log.d("TAGValue", "onCreate: $bbpsActionValue")
-
-
     }
 
     override fun onStart() {
         super.onStart()
     }
-private fun showHeaderDetails(text:Int,image:Int){
+private fun showHeaderDetails(text:Int,image:Int){ //bbps_small
     binding.headerLoan.endIconIv.show()
-    binding.headerLoan.endIconIv.setImageResource(R.drawable.bbps_small)
+    binding.headerLoan.endIconIv.setImageResource(R.drawable.bbps)
     binding.headerLoan.titlePageTv.setText(text)
     binding.loanPersonIv.setImageResource(image)
     binding.headerLoan.backIv.setOnClickListener {

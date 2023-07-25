@@ -24,7 +24,10 @@ class PrepaidCardMainFrag :
         ::onMenuServiceTitleClicked
     )
     private val prepaidMainAdapter = PrepaidMainAdapter(::viewBtnClicked)
-    private val transacDoneAdapter = TransacDoneAdapter()
+    private val transacDoneAdapter = TransacDoneAdapter(::onTransactionClicked)
+    private fun onTransactionClicked(transDoneModel: TransDoneModel) {
+        findNavController().navigate(R.id.transactionDoneScreenFrag)
+    }
 
     private fun viewBtnClicked(actionItem: ActionItem, isShow: Boolean) {
 
@@ -36,6 +39,7 @@ class PrepaidCardMainFrag :
                 findNavController().navigate(R.id.action_to_resetPinCard)
                 Log.d("TAG", "onMenuServiceClicked: ...1....${menuServices.titleName}")
             }
+
             ServiceType.ACTION_CARD_LOST_OR_STOLEN.type -> {
                 Log.d("TAG", "onMenuServiceClicked: ...2....${menuServices.titleName}")
             }
@@ -48,6 +52,7 @@ class PrepaidCardMainFrag :
 
                 Log.d("TAG", "onMenuServiceClicked: ...3....${menuServices.titleName}")
             }
+
             ServiceType.ACTION_CARD_LOST_OR_STOLEN.type -> {
                 Log.d("TAG", "onMenuServiceClicked: ...4....${menuServices.titleName}")
             }
