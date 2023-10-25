@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.ui.bottom
 
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable

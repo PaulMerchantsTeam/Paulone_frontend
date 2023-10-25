@@ -9,12 +9,11 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.widget.ViewUtils
-import com.paulmerchants.gold.MainNavGraphDirections
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.paulmerchants.gold.MainNavGraphDirections
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.databinding.ActivityMainBinding
@@ -23,7 +22,6 @@ import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
-import com.paulmerchants.gold.viewmodels.AuthViewModel
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference

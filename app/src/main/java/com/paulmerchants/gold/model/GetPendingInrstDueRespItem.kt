@@ -8,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class GetPendingInrstDueRespItem(
     @SerializedName("AcNo") val AcNo: Long,
     @SerializedName("DueDate") val DueDate: String,
+    @SerializedName("RebateAmount") val RebateAmount: String,
     @SerializedName("Fine") val Fine: Double,
     @SerializedName("InterestDue") val InterestDue: Double,
     @SerializedName("ProductName") val ProductName: String,
