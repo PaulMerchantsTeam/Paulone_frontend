@@ -35,6 +35,7 @@ import com.itextpdf.text.PageSize
 import com.itextpdf.text.Rectangle
 import com.itextpdf.text.pdf.PdfContentByte
 import com.itextpdf.text.pdf.PdfWriter
+import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.ProgressLayoutBinding
@@ -46,6 +47,7 @@ import com.paulmerchants.gold.model.RespGetLoanOutStanding
 import com.paulmerchants.gold.model.RespGetReceipt
 import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLogin
+import com.paulmerchants.gold.model.newmodel.DeviceDetailsDTO
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility.convertStringToJson
 import com.paulmerchants.gold.utility.AppUtility.getCurrentDate
@@ -81,6 +83,14 @@ Note: These tags are need to be set under the TextView.
 
 object AppUtility {
     private lateinit var dialog: AlertDialog
+
+    fun getDeviceDetails() = DeviceDetailsDTO(
+        BuildConfig.VERSION_NAME,
+        BuildConfig.VERSION_CODE.toString(),
+        Build.MODEL,
+        "",
+        ""
+    )
 
     fun blurTextView(blurredTextView: TextView, context: Context) {
         // Wait until the layout is measured to get the dimensions of the TextView

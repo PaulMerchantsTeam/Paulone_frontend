@@ -1,6 +1,5 @@
 package com.paulmerchants.gold.viewmodels
 
-import android.content.Context
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -24,6 +23,11 @@ import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLoanRenewalProcess
 import com.paulmerchants.gold.model.RespLoanStatment
 import com.paulmerchants.gold.model.RespRenewalEligiblity
+import com.paulmerchants.gold.model.newmodel.LoginNewResp
+import com.paulmerchants.gold.model.newmodel.LoginReqNew
+import com.paulmerchants.gold.model.newmodel.ReGetLoanClosureReceipNew
+import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
+import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.place.Place
 import com.paulmerchants.gold.remote.ApiParams
@@ -34,7 +38,7 @@ import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
 import com.paulmerchants.gold.utility.decryptKey
 import com.paulmerchants.gold.networks.RetrofitSetup
 import com.paulmerchants.gold.security.SecureFiles
-import com.paulmerchants.gold.utility.Constants.ACC_NUM
+import com.paulmerchants.gold.utility.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
@@ -74,18 +78,20 @@ class CommonViewModel @Inject constructor(
         loadData()
     }
 
-    fun getLogin() = viewModelScope.launch {
+   /* fun getLogin() = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
-        retrofitSetup.callApi(true, object : CallHandler<ResponseBody> {
-            override suspend fun sendRequest(apiParams: ApiParams): ResponseBody {
+        retrofitSetup.callApi(true, object : CallHandler<LoginNewResp> {
+            override suspend fun sendRequest(apiParams: ApiParams): LoginNewResp {
                 return apiParams.getLogin(
-                    RequestLogin(
-                        BuildConfig.PASSWORD, BuildConfig.USERNAME
+                    LoginReqNew(
+                        AppUtility.getDeviceDetails(),
+                        BuildConfig.PASSWORD,
+                        BuildConfig.USERNAME
                     )
                 )
             }
 
-            override fun success(response: ResponseBody) {
+            override fun success(response: LoginNewResp) {
                 Log.d("TAG", "success: /////////")
                 Log.d("TAG", "success: ......$response")
             }
@@ -96,7 +102,7 @@ class CommonViewModel @Inject constructor(
                 Log.d("TAG", "error: ......$message")
             }
         })
-    }
+    }*/
 
     /**
      * [
@@ -111,75 +117,105 @@ class CommonViewModel @Inject constructor(
      */
 
 
-    fun getPendingInterestDues(date: String) = viewModelScope.launch {
-        try {
-            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
-                val response = apiParams.getPendingInterestDues(
-                    it, secureFiles.encryptKey(
+    fun getPendingInterestDues() = viewModelScope.launch {
+
+        retrofitSetup.callApi(true, object : CallHandler<RespCommon> {
+            override suspend fun sendRequest(apiParams: ApiParams): RespCommon {
+                return apiParams.getPendingInterestDues(
+                    AppSharedPref.getStringValue(JWT_TOKEN).toString(),
+                    ReqpendingInterstDueNew(
                         AppSharedPref.getStringValue(CUSTOMER_ID).toString(),
-                        BuildConfig.SECRET_KEY_GEN
-                    ).toString(), date
+                        AppUtility.getDeviceDetails()
+                    )
                 )
-                // Get the plain text response
-                val plainTextResponse = response.string()
-
-                // Do something with the plain text response
-                Log.d("Response", plainTextResponse)
-
-                val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_GEN, plainTextResponse
-                )
-                println("decrypt-----$decryptData")
-                val respPending: GetPendingInrstDueResp? =
-                    AppUtility.convertStringToJson(decryptData.toString())
-//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
-                respPending?.let { resp ->
-                    getPendingInterestDuesLiveData.value = resp
-                }
-                println("Str_To_Json------$respPending")
-
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        AppUtility.hideProgressBar()
+
+            override fun success(response: RespCommon) {
+                Log.d("TAG", "success: ......$response")
+                try {
+                    // Get the plain text response
+                    val plainTextResponse = response.data
+
+                    // Do something with the plain text response
+                    Log.d("Response", plainTextResponse)
+
+                    val decryptData = decryptKey(
+                        BuildConfig.SECRET_KEY_GEN, plainTextResponse
+                    )
+                    println("decrypt-----$decryptData")
+                    val respPending: GetPendingInrstDueResp? =
+                        AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                    respPending?.let { resp ->
+                        getPendingInterestDuesLiveData.value = resp
+                    }
+                    println("Str_To_Json------$respPending")
+
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                AppUtility.hideProgressBar()
+            }
+
+            override fun error(message: String) {
+                super.error(message)
+                Log.d("TAG", "error: ......$message")
+            }
+        })
+
+
     }
 
     fun getLoanOutstanding() = viewModelScope.launch {
-        try {
-            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
-                val response = apiParams.getLoanOutstanding(
-                    it, secureFiles.encryptKey(
+
+        retrofitSetup.callApi(true, object : CallHandler<RespCommon> {
+            override suspend fun sendRequest(apiParams: ApiParams): RespCommon {
+                return apiParams.getLoanOutstanding(
+                    AppSharedPref.getStringValue(JWT_TOKEN).toString(),
+                    ReqpendingInterstDueNew(
                         AppSharedPref.getStringValue(CUSTOMER_ID).toString(),
-                        BuildConfig.SECRET_KEY_GEN
-                    ).toString()
+                        AppUtility.getDeviceDetails()
+                    )
                 )
-                // Get the plain text response
-                val plainTextResponse = response.string()
-
-                // Do something with the plain text response
-                Log.d("Response", plainTextResponse)
-
-                val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_GEN, plainTextResponse
-                )
-                println("decrypt-----$decryptData")
-                val respPending: RespGetLoanOutStanding? =
-                    AppUtility.convertStringToJson(decryptData.toString())
-//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
-                respPending?.let { resp ->
-                    getRespGetLoanOutStandingLiveData.value = resp
-                }
-                println("Str_To_Json------$respPending")
-
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        AppUtility.hideProgressBar()
+
+            override fun success(response: RespCommon) {
+                try {
+                    // Get the plain text response
+                    val plainTextResponse = response.data
+
+                    // Do something with the plain text response
+                    Log.d("Response", plainTextResponse)
+
+                    val decryptData = decryptKey(
+                        BuildConfig.SECRET_KEY_GEN, plainTextResponse
+                    )
+                    println("decrypt-----$decryptData")
+                    val respPending: RespGetLoanOutStanding? =
+                        AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                    respPending?.let { resp ->
+                        getRespGetLoanOutStandingLiveData.value = resp
+                    }
+                    println("Str_To_Json------$respPending")
+
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                AppUtility.hideProgressBar()
+            }
+
+            override fun error(message: String) {
+                super.error(message)
+            }
+        })
+
+
     }
 
-    fun getLoanDueDate() = viewModelScope.launch {
+    /*fun getLoanDueDate() = viewModelScope.launch {
         try {
             AppSharedPref.getStringValue(JWT_TOKEN)?.let {
                 val response = apiParams.getLoanDueDate(
@@ -208,40 +244,56 @@ class CommonViewModel @Inject constructor(
             e.printStackTrace()
         }
         AppUtility.hideProgressBar()
-    }
+    }*/
 
     fun getLoanClosureReceipt(accNum: String) = viewModelScope.launch {
-        try {
-            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
-                val response = apiParams.getLoanClosureReceipt(
-                    it, secureFiles.encryptKey(accNum, BuildConfig.SECRET_KEY_GEN).toString()
+
+        retrofitSetup.callApi(true, object : CallHandler<RespCommon> {
+            override suspend fun sendRequest(apiParams: ApiParams): RespCommon {
+                return apiParams.getLoanClosureReceipt(
+                    AppSharedPref.getStringValue(JWT_TOKEN).toString(),
+                    ReGetLoanClosureReceipNew(
+                        accNum,
+                        AppUtility.getDeviceDetails()
+                    )
                 )
-                // Get the plain text response
-                val plainTextResponse = response.string()
-
-                // Do something with the plain text response
-                Log.d("Response", plainTextResponse)
-
-                val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_GEN, plainTextResponse
-                )
-                println("decrypt-----$decryptData")
-                val respPending: RespClosureReceipt? =
-                    AppUtility.convertStringToJson(decryptData.toString())
-//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
-                respPending?.let { resp ->
-                    getRespClosureReceiptLiveData.value = resp
-                }
-                println("Str_To_Json------$respPending")
-
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        AppUtility.hideProgressBar()
+
+            override fun success(response: RespCommon) {
+                try {
+                    // Get the plain text response
+                    val plainTextResponse = response.data
+
+
+                    // Do something with the plain text response
+                    Log.d("Response", plainTextResponse)
+
+                    val decryptData = decryptKey(
+                        BuildConfig.SECRET_KEY_GEN, plainTextResponse
+                    )
+                    println("decrypt-----$decryptData")
+                    val respPending: RespClosureReceipt? =
+                        AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                    respPending?.let { resp ->
+                        getRespClosureReceiptLiveData.value = resp
+                    }
+                    println("Str_To_Json------$respPending")
+
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                AppUtility.hideProgressBar()
+            }
+
+            override fun error(message: String) {
+                super.error(message)
+            }
+        })
     }
 
-    fun getRenewalEligibility() = viewModelScope.launch {
+  /*  fun getRenewalEligibility() = viewModelScope.launch {
         try {
             AppSharedPref.getStringValue(JWT_TOKEN)?.let {
                 val response = apiParams.getRenewalEligibility(
@@ -301,40 +353,52 @@ class CommonViewModel @Inject constructor(
             e.printStackTrace()
         }
         AppUtility.hideProgressBar()
-    }
+    }*/
 
     fun getCustomerDetails() = viewModelScope.launch {
-        try {
-            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
-                val response = apiParams.getCustomerDetails(
-                    it, secureFiles.encryptKey(
+        retrofitSetup.callApi(true, object : CallHandler<RespCommon> {
+            override suspend fun sendRequest(apiParams: ApiParams): RespCommon {
+                return apiParams.getCustomerDetails(
+                    AppSharedPref.getStringValue(JWT_TOKEN).toString(),
+                    ReqpendingInterstDueNew(
                         AppSharedPref.getStringValue(CUSTOMER_ID).toString(),
-                        BuildConfig.SECRET_KEY_GEN
-                    ).toString()
+                        AppUtility.getDeviceDetails()
+                    )
                 )
-                // Get the plain text response
-                val plainTextResponse = response.string()
-
-                // Do something with the plain text response
-                Log.d("Response", plainTextResponse)
-
-                val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_GEN, plainTextResponse
-                )
-                println("decrypt-----$decryptData")
-                val respPending: RespCustomersDetails? =
-                    AppUtility.convertStringToJson(decryptData.toString())
-//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
-                respPending?.let { resp ->
-                    getRespCustomersDetailsLiveData.value = resp
-                }
-                println("Str_To_Json------$respPending")
-
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        AppUtility.hideProgressBar()
+
+            override fun success(response: RespCommon) {
+                try {
+                    // Get the plain text response
+                    val plainTextResponse = response.data
+
+
+                    // Do something with the plain text response
+                    Log.d("Response", plainTextResponse)
+
+                    val decryptData = decryptKey(
+                        BuildConfig.SECRET_KEY_GEN, plainTextResponse
+                    )
+                    println("decrypt-----$decryptData")
+                    val respPending: RespCustomersDetails? =
+                        AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                    respPending?.let { resp ->
+                        getRespCustomersDetailsLiveData.value = resp
+                    }
+                    println("Str_To_Json------$respPending")
+
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                AppUtility.hideProgressBar()
+            }
+
+            override fun error(message: String) {
+                super.error(message)
+            }
+        })
     }
 
     fun getLoanStatement(accNum: String, fromDat: String, toDate: String) = viewModelScope.launch {
@@ -346,7 +410,7 @@ class CommonViewModel @Inject constructor(
                     ).toString(), fromDat, toDate
                 )
                 // Get the plain text response
-                val plainTextResponse = response.string()
+                val plainTextResponse = response.data
 
                 // Do something with the plain text response
                 Log.d("Response", plainTextResponse)

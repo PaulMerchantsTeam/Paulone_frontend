@@ -87,7 +87,8 @@ class RetrofitSetup @Inject constructor(private val apiParams: ApiParams) {
                           }*/
 
 
-                            else -> response?.errorBody()?.string().let {
+                            else -> response.errorBody()?.string().let {
+                                Log.d("TAG", "callApi: ........$it")
                                 try {
 
                                     callHandler.error(JSONObject(it).getString("responseMessage"))

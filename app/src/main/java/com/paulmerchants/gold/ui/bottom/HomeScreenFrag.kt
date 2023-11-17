@@ -14,6 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
+import com.paulmerchants.gold.adapter.MoreToComeAdapter
 import com.paulmerchants.gold.adapter.PrePaidCardAdapter
 import com.paulmerchants.gold.adapter.UpcomingLoanAdapter
 import com.paulmerchants.gold.adapter.UpcomingLoanNewuserAdapter
@@ -23,6 +24,7 @@ import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
 import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
+import com.paulmerchants.gold.model.MoreToComeModel
 import com.paulmerchants.gold.model.OurServices
 import com.paulmerchants.gold.model.PrepaidCardModel
 import com.paulmerchants.gold.security.SecureFiles
@@ -52,6 +54,13 @@ class HomeScreenFrag :
     private val commonViewModel: CommonViewModel by viewModels()
     private lateinit var secureFiles: SecureFiles
     lateinit var navController: NavController
+    private val moreToComeAdapter = MoreToComeAdapter()
+
+    val bannerList = listOf(
+        MoreToComeModel(R.drawable.banner_sample, 1),
+        MoreToComeModel(R.drawable.banner_sample, 2),
+        MoreToComeModel(R.drawable.banner_sample, 3)
+    )
 
     //    private val homeSweetBillsAdapter = HomeSweetBillsAdapter()
     private val TAG = "HomeScreenFrag"
@@ -71,11 +80,12 @@ class HomeScreenFrag :
         setProfileUi()
         setUpComingDueLoans()
 
-        startAnimationOnIcon()
+//        startAnimationOnIcon()
         setUiOnHomeSweetHomeBills()
-        handleRechargeAndBillUi()
-        setPrepaidCardUi()
-        setAddCardView()
+//        handleRechargeAndBillUi()
+//        setPrepaidCardUi()
+//        setAddCardView()
+        setUpBanner()
     }
 
     private fun showHideLoadinf() {
@@ -87,6 +97,11 @@ class HomeScreenFrag :
             binding.rvUpcomingDueLoans.show()
         }
 
+    }
+
+    private fun setUpBanner() {
+        moreToComeAdapter.submitList(bannerList)
+        binding.moreToCome.viewPagerMoreToCome.adapter = moreToComeAdapter
     }
 
     private fun onPayDueClicked(dueLoans: GetPendingInrstDueRespItem) {
@@ -111,6 +126,7 @@ class HomeScreenFrag :
     }
 
     private fun setProfileUi() {
+        AppSharedPref.putStringValue(Constants.CUSTOMER_NAME,"Prithvi Kumar")
         val userFirstName =
             AppUtility.getFirstName(AppSharedPref.getStringValue(Constants.CUSTOMER_NAME))
         binding.searchProfileParent.userName.text = "Hey ${userFirstName ?: "User"}"
@@ -410,21 +426,19 @@ class HomeScreenFrag :
 
     private fun setUpComingDueLoans() {
         showHideLoadinf()
-        val currentDate = AppUtility.getCurrentDate()
-        Log.d(TAG, "setUpComingDueLoans: ..currentDate..$currentDate")
-        Log.d(
-            TAG, "setUpComingDueLoans: ..currentDate..${
-                secureFiles.encryptKey(
-                    currentDate, BuildConfig.SECRET_KEY_GEN
-                )
-            }"
-        )
-        val encDate = secureFiles.encryptKey(
-            currentDate, BuildConfig.SECRET_KEY_GEN
-        )
-        commonViewModel.getPendingInterestDues(
-            encDate.toString()
-        )
+//        val currentDate = AppUtility.getCurrentDate()
+//        Log.d(TAG, "setUpComingDueLoans: ..currentDate..$currentDate")
+//        Log.d(
+//            TAG, "setUpComingDueLoans: ..currentDate..${
+//                secureFiles.encryptKey(
+//                    currentDate, BuildConfig.SECRET_KEY_GEN
+//                )
+//            }"
+//        )
+//        val encDate = secureFiles.encryptKey(
+//            currentDate, BuildConfig.SECRET_KEY_GEN
+//        )
+        commonViewModel.getPendingInterestDues()
         commonViewModel.getPendingInterestDuesLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 commonViewModel.notZero = it.filter { it.InterestDue != 0.0000 }

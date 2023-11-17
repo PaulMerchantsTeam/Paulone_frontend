@@ -9,7 +9,7 @@
         android:id="@+id/cardParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/rec_frch_blue_solid">
+        android:background="@drawable/rec_purple_new_solid">
 
         <TextView
             android:id="@+id/youHaveTotalLoanTv"
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_22sdp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:textColor="@color/yellow_main"
             android:background="@drawable/rec_yellow_empty_btn"
             android:padding="@dimen/_8sdp"
@@ -71,12 +71,12 @@
             android:id="@+id/imageView6"
             android:layout_width="@dimen/_88sdp"
             android:layout_height="0dp"
-            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
             android:scaleType="fitCenter"
+            android:layout_marginBottom="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/gold_coin_rupees" />
+            app:srcCompat="@drawable/gold_rupees_png" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
