@@ -60,6 +60,7 @@
             android:fontFamily="@font/poppins_semi_bold"
             android:inputType="number"
             android:maxLength="10"
+            android:text="8968059147"
             android:textColor="@color/splash_screen_one"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
             android:textSize="@dimen/_12ssp"

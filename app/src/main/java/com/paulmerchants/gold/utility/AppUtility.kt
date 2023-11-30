@@ -118,7 +118,6 @@ object AppUtility {
         })
     }
 
-
     // Function to apply blur effect to a Bitmap
     private fun blurBitmap(bitmap: Bitmap, radius: Float, context: Context): Bitmap {
         val overlay = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)

@@ -90,7 +90,6 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                 binding.bottomNavigationView.visibility = View.GONE
             }
         }
-
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.homeScreenFrag -> {
