@@ -1,5 +1,9 @@
 package com.paulmerchants.gold.remote
 
+import com.paulmerchants.gold.model.ReqCustomerOtpNew
+import com.paulmerchants.gold.model.ReqSetMPin
+import com.paulmerchants.gold.model.RespSetMpin
+import com.paulmerchants.gold.model.ResponseGetOtp
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReGetLoanClosureReceipNew
@@ -21,21 +25,40 @@ interface ApiParams {
 
     @POST("auth/pml-login")
     suspend fun getLogin(
-        @Body login: LoginReqNew,
+        @Body login: LoginReqNew
     ): Response<LoginNewResp>
 
-    @GET("api/CustomerInfo")
+    @POST("api/CustomerInfo")
     suspend fun getCustomer(
-        @Header("Authorization") auth: String,
-        @Body reqCustomerNew: ReqCustomerNew,
+        @Header("Authorization") Authorization: String,
+        @Body reqCustomerNew: ReqCustomerNew
+
     ): Response<RespCutomerInfo>   //RespGetCustomer
 
-    @GET("api/get-pending-interest-dues") // GetPendingInrstDueResp
+    @POST("otp/get-otp")
+    suspend fun getOtp(
+        @Header("Authorization") Authorization: String,
+        @Body reqCustomerNew: ReqCustomerNew
+    ): Response<ResponseGetOtp>
+
+    @POST("otp/validate-otp")
+    suspend fun verifyOtp(
+        @Header("Authorization") Authorization: String,
+        @Body reqCustomerOtpNew: ReqCustomerOtpNew
+    ):Response<ResponseGetOtp>
+
+    @POST("api/signup")
+    suspend fun setMPin(
+        @Header("Authorization") Authorization: String,
+        @Body reqSetMPin : ReqSetMPin
+    ):Response<RespSetMpin>
+    @POST("api/get-pending-interest-dues") // GetPendingInrstDueResp
     suspend fun getPendingInterestDues(
         @Header("Authorization") auth: String,
         @Body reqpendingInterstDueNew: ReqpendingInterstDueNew,
 //        @Query("AsOnDate") AsOnDate: String,
     ): RespCommon
+
 
 
     @GET("api/get-loan-outstanding")   //RespGetLoanOutStanding

@@ -74,7 +74,6 @@ class PhoenNumVerifiactionFragment :
     override fun PhoneAuthFragmentBinding.initialize() {
         changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
         pinValue = arguments?.getInt("ProfileChangePin", 0)
-
     }
 
     override fun onStart() {
@@ -119,8 +118,10 @@ class PhoenNumVerifiactionFragment :
                         && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty()
                         && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty()) && binding.signUpParentMain.termsCb.isChecked
             ) {
-                binding.signUpParentMain.root.hideView()
-                hideAndShowProgressView(true)
+                val confirmPin = (binding.signUpParentMain.mpinOneConfirmEt.text.toString()  + binding.signUpParentMain.mpinConfirmTwoEt.text.toString() + binding.signUpParentMain.mpinConfirmThreeEt.text.toString() + binding.signUpParentMain.mpinConfirmFourEt.text.toString())
+                val mPin = (binding.signUpParentMain.mpinOneEt.text.toString()  + binding.signUpParentMain.mpinTwoEt.text.toString() + binding.signUpParentMain.mpinThreeEt.text.toString() + binding.signUpParentMain.mpinFourEt.text.toString())
+                authViewModel.setMpin(binding.etPhoenNum.text.toString(),confirmPin,mPin,requireContext(),binding.signUpParentMain.etEmailId.text.toString())
+
             } else {
 
             }
@@ -157,6 +158,33 @@ class PhoenNumVerifiactionFragment :
                 isMobileEntered = true
             }
         }
+        authViewModel.isMPinSet.observe(viewLifecycleOwner) {
+            it?.let {
+                binding.signUpParentMain.root.hideView()
+                hideAndShowProgressView(true)
+            }
+        }
+
+        authViewModel.isOtpVerify.observe(viewLifecycleOwner) {
+            it?.let {
+                hideAndShowProgressView(false)
+                lifecycleScope.launch {
+                    delay(2000)
+                    binding.mainPgCons.cirStreakTimePg.endProgress(requireContext())
+                    binding.mainPgCons.progessTv.apply {
+                        setTColor(
+                            getString(R.string.verified),
+                            requireContext(), R.color.green_verified
+                        )
+                    }
+                    delay(1000)
+                }
+                isOtpVerified = true
+                AppSharedPref.putBoolean(OTP_VERIFIED, isOtpVerified)
+                hideAndShowSignUpScreen()
+            }
+        }
+
         binding.proceedAuthBtn.setOnClickListener {
             if (!isMobileEntered) {
                 if (binding.etPhoenNum.text.isNotEmpty()) {
@@ -172,29 +200,34 @@ class PhoenNumVerifiactionFragment :
                      * Currently setting OTP 0808...
                      */
 
-                    if (otp == "0808") {
-                        hideAndShowProgressView(false)
-                        lifecycleScope.launch {
-                            delay(2000)
-                            binding.mainPgCons.cirStreakTimePg.endProgress(requireContext())
-                            binding.mainPgCons.progessTv.apply {
-                                setTColor(
-                                    getString(R.string.verified),
-                                    requireContext(), R.color.green_verified
-                                )
-                            }
-                            delay(1000)
-                        }
-                        isOtpVerified = true
-                        AppSharedPref.putBoolean(OTP_VERIFIED, isOtpVerified)
-                        hideAndShowSignUpScreen()
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Please Enter Correct Otp",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                    if(otp.isNotEmpty()){
+                        authViewModel.verifyOtp(binding.etPhoenNum.text.toString(),otp,requireContext())
+
                     }
+
+//                    if (otp == "0808") {
+//                        hideAndShowProgressView(false)
+//                        lifecycleScope.launch {
+//                            delay(2000)
+//                            binding.mainPgCons.cirStreakTimePg.endProgress(requireContext())
+//                            binding.mainPgCons.progessTv.apply {
+//                                setTColor(
+//                                    getString(R.string.verified),
+//                                    requireContext(), R.color.green_verified
+//                                )
+//                            }
+//                            delay(1000)
+//                        }
+//                        isOtpVerified = true
+//                        AppSharedPref.putBoolean(OTP_VERIFIED, isOtpVerified)
+//                        hideAndShowSignUpScreen()
+//                    } else {
+//                        Toast.makeText(
+//                            requireContext(),
+//                            "Please Enter Correct Otp",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
                 }
             }
 
@@ -282,6 +315,7 @@ class PhoenNumVerifiactionFragment :
             //flow_remaining...
             googleSignUpScreen()
         }
+
     }
 
     private fun signInWithSaveCredential() {
