@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.tabs.TabLayoutMediator
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MoreToComeAdapter
@@ -30,23 +31,29 @@ import com.paulmerchants.gold.model.PrepaidCardModel
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.setUiOnHomeSweetHomeBills
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.utility.startCustomAnimation
 import com.paulmerchants.gold.viewmodels.CommonViewModel
+import com.razorpay.Checkout
+import com.razorpay.PaymentData
+import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.time.LocalDateTime
 import java.util.Date
 
 
 @AndroidEntryPoint
 class HomeScreenFrag :
-    BaseFragment<DummyHomeScreenFragmentBinding>(DummyHomeScreenFragmentBinding::inflate) {
+    BaseFragment<DummyHomeScreenFragmentBinding>(DummyHomeScreenFragmentBinding::inflate),
+    PaymentResultWithDataListener {
 
     private val upcomingLoanAdapter = UpcomingLoanAdapter(::onPayDueClicked)
     private val upcomingNewUserAdapter = UpcomingLoanNewuserAdapter()
@@ -70,7 +77,6 @@ class HomeScreenFrag :
         secureFiles = SecureFiles()
 //        setUpComingOurServices()
 
-
     }
 
     override fun onStart() {
@@ -86,6 +92,12 @@ class HomeScreenFrag :
 //        setPrepaidCardUi()
 //        setAddCardView()
         setUpBanner()
+
+        commonViewModel.tokenExpiredResp.observe(viewLifecycleOwner) {
+            it?.let {
+                showSnackBar(it.errorMessage)
+            }
+        }
     }
 
     private fun showHideLoadinf() {
@@ -102,6 +114,12 @@ class HomeScreenFrag :
     private fun setUpBanner() {
         moreToComeAdapter.submitList(bannerList)
         binding.moreToCome.viewPagerMoreToCome.adapter = moreToComeAdapter
+        TabLayoutMediator(
+            binding.moreToCome.tabLayout,
+            binding.moreToCome.viewPagerMoreToCome
+        ) { tab, position ->
+
+        }.attach()
     }
 
     private fun onPayDueClicked(dueLoans: GetPendingInrstDueRespItem) {
@@ -126,7 +144,7 @@ class HomeScreenFrag :
     }
 
     private fun setProfileUi() {
-        AppSharedPref.putStringValue(Constants.CUSTOMER_NAME,"Prithvi Kumar")
+        AppSharedPref.putStringValue(Constants.CUSTOMER_NAME, "Prithvi Kumar")
         val userFirstName =
             AppUtility.getFirstName(AppSharedPref.getStringValue(Constants.CUSTOMER_NAME))
         binding.searchProfileParent.userName.text = "Hey ${userFirstName ?: "User"}"
@@ -500,6 +518,66 @@ class HomeScreenFrag :
 
     private fun onBillClicked(actionItem: ActionItem) {
         AppUtility.onBillClicked(actionItem, findNavController())
+    }
+
+    fun createOrder() {
+        startPaymentFromRazorPay("", "")
+    }
+
+    private fun startPaymentFromRazorPay(
+        orderId: String,
+        callbaclUrl: String,
+    ) {
+        val amount: Double = 100.00
+
+
+        val checkout = Checkout()
+        checkout.setKeyID(BuildConfig.RAZORPAY_KEY)
+        try {
+            val options = JSONObject()
+//            if (paymentMethod == "upi") {
+//                if (validateUPI(upiEditText?.text.toString())) {
+//                    options.put("vpa", upiEditText?.text.toString())
+//                } else {
+//                    "UPI ID is not valid".showSnackBar(this)
+//                    return
+//                }
+//            }
+            options.put("name", "Paul Merchants")
+            options.put("description", "RefNo..")
+            options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png")
+            options.put("currency", "INR")
+            options.put("amount", amount.toString())
+            options.put("order_Id", orderId)
+//            options.put("method", paymentMethod);
+            val preFill = JSONObject()
+            preFill.put("email", "kprithvi26@gmail.com")
+            preFill.put("contact", "8968666401")
+            options.put("prefill", preFill)
+            options.put("theme", "#F9AC59")
+//            options.put("callback_url", callbaclUrl)
+            options.put("key", BuildConfig.RAZORPAY_KEY);
+//            options.put("method", JSONObject().put("upi", true))
+
+            Log.d(TAG, "startPaymentFromRazorPay: .......${options.toString()}")
+            checkout.open(requireActivity(), options)
+
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Error in payment: " + e.message, Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
+    override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+        sendPaymentStatusToServer("SUCCESS", p1)
+    }
+
+    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+        sendPaymentStatusToServer("FAIL", p2)
+    }
+
+    private fun sendPaymentStatusToServer(status: String, paymentData: PaymentData?) {
+
     }
 
 

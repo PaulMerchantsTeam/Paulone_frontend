@@ -134,8 +134,15 @@ class GoldLoanOverViewAdapterProd(
                         intDueAmountTv.hide()
                         clickPayParent.hide()
                         outStaTitleTv.text = root.context.getString(R.string.final_due_paid)
-                        outStandValueTv.text =
-                            AppUtility.getDateFormat(actionItem.ClosedDate.toString())
+                        if (actionItem.ClosedDate != "" && actionItem.ClosedDate != null) {
+
+                            outStandValueTv.text =
+                                AppUtility.getDateFormat(actionItem.ClosedDate.toString())
+                            outStandValueTv.show()
+                        } else {
+                            outStandValueTv.hide()
+                        }
+
                         binding.loanClosedBtn.apply {
                             text = binding.root.context.getString(R.string.loan_closed)
                             setTextColor(

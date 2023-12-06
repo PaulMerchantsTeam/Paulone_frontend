@@ -34,6 +34,8 @@ android {
             minifyEnabled true
             shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "RAZORPAY_KEY", "\"rzp_test_sC3pnynLq27dfw\""
+
         }
         debug {
 //            buildConfigField "String", "BASE_URL", "\"http://180.179.213.203:8020/api/\""
@@ -44,6 +46,8 @@ android {
 //            buildConfigField "String", "USERNAME", "\"/ERCVzcMkkl4h1IDVSf1FA==\""
             buildConfigField "String", "PASSWORD", "\"FU510N@pro\""
             buildConfigField "String", "USERNAME", "\"pml\""
+            buildConfigField "String", "RAZORPAY_KEY", "\"rzp_test_sC3pnynLq27dfw\""
+
         }
         benchmark {
             signingConfig signingConfigs.debug
@@ -119,6 +123,9 @@ dependencies {
     //lotte
     def lottieVersion = "3.4.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    //RazorPay
+    implementation 'com.razorpay:checkout:1.6.36'
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.6.0"

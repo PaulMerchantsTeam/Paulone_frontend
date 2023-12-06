@@ -62,24 +62,24 @@ class UpcomingLoanAdapter(private val onPayDueClicked: (GetPendingInrstDueRespIt
 }
 
 
-fun main() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val specificDate = LocalDateTime.parse("2024-06-21T00:00:00")
-        val currentDate = LocalDateTime.now()
-
-        val daysDifference = ChronoUnit.DAYS.between(specificDate, currentDate)
-        println("The number of days difference is: $daysDifference")
-    } else {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-        val specificDate = dateFormat.parse("2024-06-21T00:00:00")
-        val currentDate = Date()
-        val calendar1 = Calendar.getInstance()
-        val calendar2 = Calendar.getInstance()
-        calendar1.time = specificDate
-        calendar2.time = currentDate
-        val millisecondsDifference = calendar2.timeInMillis - calendar1.timeInMillis
-        val daysDifference = TimeUnit.MILLISECONDS.toDays(millisecondsDifference)
-        println("The number of days difference is: $daysDifference")
-    }
-
-}
+//fun main() {
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//        val specificDate = LocalDateTime.parse("2024-06-21T00:00:00")
+//        val currentDate = LocalDateTime.now()
+//
+//        val daysDifference = ChronoUnit.DAYS.between(specificDate, currentDate)
+//        println("The number of days difference is: $daysDifference")
+//    } else {
+//        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+//        val specificDate = dateFormat.parse("2024-06-21T00:00:00")
+//        val currentDate = Date()
+//        val calendar1 = Calendar.getInstance()
+//        val calendar2 = Calendar.getInstance()
+//        calendar1.time = specificDate
+//        calendar2.time = currentDate
+//        val millisecondsDifference = calendar2.timeInMillis - calendar1.timeInMillis
+//        val daysDifference = TimeUnit.MILLISECONDS.toDays(millisecondsDifference)
+//        println("The number of days difference is: $daysDifference")
+//    }
+//
+//}

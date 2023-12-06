@@ -62,6 +62,7 @@
         android:id="@+id/view4"
         android:layout_width="0dp"
         android:layout_height="@dimen/_1sdp"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/_21sdp"
         android:background="@color/view_line"
         app:layout_constraintEnd_toEndOf="@+id/upcomDTv"
@@ -71,6 +72,7 @@
     <TextView
         android:id="@+id/prefPyModeTv"
         android:layout_width="0dp"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_13sdp"
         android:fontFamily="@font/poppins_bold"
@@ -88,6 +90,8 @@
         android:layout_marginTop="@dimen/_5sdp"
         android:drawableStart="@drawable/paul_pay_small"
         android:drawablePadding="@dimen/_8sdp"
+        android:visibility="gone"
+
         android:fontFamily="@font/poppins_semi_bold"
         android:gravity="center_vertical"
         android:text="Paulpay prepaid card"
@@ -101,6 +105,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/change_underln"
+        android:visibility="gone"
+
         android:textColor="@color/blue_light"
         app:layout_constraintBottom_toBottomOf="@+id/prepaidCard"
         app:layout_constraintEnd_toEndOf="@+id/prefPyModeTv"
@@ -157,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/splash_screen_one"
                 android:checked="true"
-                android:text="Pay INR 6,000 fully"
+                android:text="Pay INR 000 fully"
                 android:textColor="@color/splash_screen_three"
                 app:useMaterialThemeColors="false" />
 
@@ -183,7 +189,8 @@
             android:backgroundTint="@color/black"
             android:hint="(INR XXXX)"
             android:inputType="number"
-            android:maxLength="5"
+            android:digits="0123456789"
+            android:maxLength="10"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

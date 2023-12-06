@@ -25,49 +25,49 @@ interface ApiParams {
 
     @POST("auth/pml-login")
     suspend fun getLogin(
-        @Body login: LoginReqNew
+        @Body login: LoginReqNew,
     ): Response<LoginNewResp>
 
     @POST("api/CustomerInfo")
     suspend fun getCustomer(
         @Header("Authorization") Authorization: String,
-        @Body reqCustomerNew: ReqCustomerNew
+        @Body reqCustomerNew: ReqCustomerNew,
 
-    ): Response<RespCutomerInfo>   //RespGetCustomer
+        ): Response<RespCutomerInfo>   //RespGetCustomer
 
     @POST("otp/get-otp")
     suspend fun getOtp(
         @Header("Authorization") Authorization: String,
-        @Body reqCustomerNew: ReqCustomerNew
+        @Body reqCustomerNew: ReqCustomerNew,
     ): Response<ResponseGetOtp>
 
     @POST("otp/validate-otp")
     suspend fun verifyOtp(
         @Header("Authorization") Authorization: String,
-        @Body reqCustomerOtpNew: ReqCustomerOtpNew
-    ):Response<ResponseGetOtp>
+        @Body reqCustomerOtpNew: ReqCustomerOtpNew,
+    ): Response<ResponseGetOtp>
 
     @POST("api/signup")
     suspend fun setMPin(
         @Header("Authorization") Authorization: String,
-        @Body reqSetMPin : ReqSetMPin
-    ):Response<RespSetMpin>
+        @Body reqSetMPin: ReqSetMPin,
+    ): Response<RespSetMpin>
+
     @POST("api/get-pending-interest-dues") // GetPendingInrstDueResp
     suspend fun getPendingInterestDues(
         @Header("Authorization") auth: String,
         @Body reqpendingInterstDueNew: ReqpendingInterstDueNew,
 //        @Query("AsOnDate") AsOnDate: String,
-    ): RespCommon
+    ): Response<*>
 
 
-
-    @GET("api/get-loan-outstanding")   //RespGetLoanOutStanding
+    @POST("api/get-loan-outstanding")   //RespGetLoanOutStanding
     suspend fun getLoanOutstanding(
         @Header("Authorization") auth: String,
         @Body reqpendingInterstDueNew: ReqpendingInterstDueNew,
-    ): RespCommon
+    ):Response<RespCommon>
 
-    @GET("api/get-loan-due-date")   //RespLoanDueDate
+    @POST("api/get-loan-due-date")   //RespLoanDueDate
     suspend fun getLoanDueDate(
         @Header("Authorization") auth: String,
         @Query("Cust_ID") Cust_ID: String,

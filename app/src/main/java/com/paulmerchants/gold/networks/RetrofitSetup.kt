@@ -59,7 +59,7 @@ class RetrofitSetup @Inject constructor(private val apiParams: ApiParams) {
                 withContext(Dispatchers.Main) {
                     hideProgressBar()
                     Log.d("Response", "callApi: ${response.isSuccessful}")
-                    if (response.isSuccessful) {
+                    if (response.isSuccessful) { //200...300
                         callHandler.success(response as T)
                     } else {
                         Log.d("RETROFITSETUP", "callApi: ${response.code()}")

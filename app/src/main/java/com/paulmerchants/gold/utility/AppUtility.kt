@@ -17,16 +17,21 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.provider.Settings
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.PixelCopy
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.WindowManager
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
@@ -314,7 +319,34 @@ object AppUtility {
         println("Converted date: $outputDate")
         return outputDate
     }
-
+    fun Fragment.showSnackBar(message: String) {
+        val snakbar = this.view?.let {
+            Snackbar.make(
+                it,
+                message,
+                Snackbar.LENGTH_SHORT
+            )
+        }
+        val snackbarView = snakbar?.view
+        val params = snackbarView?.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP
+        snackbarView.layoutParams = params
+        snakbar.show()
+    }
+    fun BottomSheetDialogFragment.showSnackBar(message: String) {
+        val snakbar = this.view?.let {
+            Snackbar.make(
+                it,
+                message,
+                Snackbar.LENGTH_SHORT
+            )
+        }
+        val snackbarView = snakbar?.view
+        val params = snackbarView?.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP
+        snackbarView.layoutParams = params
+        snakbar.show()
+    }
     fun numberOfDaysWrtCurrent(date: String): Long {
         val daysDifference: Long
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

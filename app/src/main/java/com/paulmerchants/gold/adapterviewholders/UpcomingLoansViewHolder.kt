@@ -31,8 +31,11 @@ class UpcomingLoansViewHolder(private val binding: ItemUpcomingDueLoanBinding) :
                     overDueDaysTv.text = "Overdue by $duedate days"
                 }
             }
-
-            dueAmountTv.text = "INR ${dueLoans.InterestDue}"
+            if (dueLoans.RebateAmount > 0.000) {
+                dueAmountTv.text = "INR ${dueLoans.InterestDue - dueLoans.RebateAmount}"
+            } else {
+                dueAmountTv.text = "INR ${dueLoans.InterestDue}"
+            }
         }
         binding.payNowBtn.setOnClickListener {
             onPayDueClicked(dueLoans)
