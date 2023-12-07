@@ -7,6 +7,7 @@ import com.paulmerchants.gold.model.ResponseGetOtp
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReGetLoanClosureReceipNew
+import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
@@ -18,6 +19,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiParams {
@@ -65,7 +67,7 @@ interface ApiParams {
     suspend fun getLoanOutstanding(
         @Header("Authorization") auth: String,
         @Body reqpendingInterstDueNew: ReqpendingInterstDueNew,
-    ):Response<RespCommon>
+    ): Response<RespCommon>
 
     @POST("api/get-loan-due-date")   //RespLoanDueDate
     suspend fun getLoanDueDate(
@@ -73,6 +75,26 @@ interface ApiParams {
         @Query("Cust_ID") Cust_ID: String,
     ): ResponseBody
 
+    @POST("payments/create-order")   //RespLoanDueDate
+    suspend fun createOrder(
+        @Header("Authorization") auth: String,
+        @Body reqCreateOrder: ReqCreateOrder,
+    ): Response<*>
+
+    @POST("payments/payment/success/")   //RespLoanDueDate
+    suspend fun updatePaymentStatus(
+        @Header("Authorization") auth: String,
+        @Query("status") status: String,
+        @Query("razorpay_payment_id") razorpayPaymentId: String,
+        @Query("razorpay_order_id") razorpayOrderId: String,
+        @Query("razorpay_signature") razorpaySignature: String,
+        @Query("custId") custId: String,
+        @Path("amount") amount: Float,
+        @Path("contactCount") contactCount: Int,
+        @Path("companyName") companyName: String,
+        @Path("currency") currency: String,
+        @Path("description") description: String,
+    ): Response<*>
 
     @GET("LoanDetails/GetLoanClosureReceipt") //RespClosureReceipt
     suspend fun getLoanClosureReceipt(

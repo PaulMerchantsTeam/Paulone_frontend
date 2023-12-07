@@ -23,12 +23,15 @@ import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
+import com.razorpay.PaymentData
+import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
+class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
+    PaymentResultWithDataListener {
 
     lateinit var navOption: NavOptions
     lateinit var navOptionLeft: NavOptions
@@ -132,6 +135,10 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                 }
             }
         }
+
+
+
+
     }
 
     fun showQuickPayDialog() {
@@ -164,6 +171,14 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
     fun showStatusBar() {
         this.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+    }
+
+    override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+
+    }
+
+    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+
     }
 
 

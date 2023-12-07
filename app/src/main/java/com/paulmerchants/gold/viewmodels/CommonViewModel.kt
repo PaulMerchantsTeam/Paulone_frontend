@@ -10,6 +10,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.model.GetPendingInrstDueResp
@@ -26,8 +27,10 @@ import com.paulmerchants.gold.model.RespRenewalEligiblity
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReGetLoanClosureReceipNew
+import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
+import com.paulmerchants.gold.model.newmodel.RespCreateOrder
 import com.paulmerchants.gold.model.newmodel.TokenExpiredResp
 import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.place.Place
@@ -69,7 +72,7 @@ class CommonViewModel @Inject constructor(
     var isStartAnim = MutableLiveData<Boolean>()
     var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
     private val secureFiles: SecureFiles = SecureFiles()
-
+     val responseCreateOrder = MutableLiveData<RespCreateOrder?>()
     val placesLive = MutableLiveData<MutableList<Place>?>()
 
     init {
@@ -134,10 +137,14 @@ class CommonViewModel @Inject constructor(
             }
 
             override fun success(response: Response<*>) {
-                Log.d("TAG", "success: ......$response")
+                Log.d("TAG", "success: ......${response.body()}")
                 if (response.isSuccessful) {
                     try {
-                        val respSuccess = response.body() as RespCommon?
+                        val gson = Gson()
+                        val respSuccess: RespCommon? = gson.fromJson(
+                            gson.toJsonTree(response.body()).asJsonObject,
+                            RespCommon::class.java
+                        )
                         // Get the plain text response
                         val plainTextResponse = respSuccess?.data
                         // Do something with the plain text response
@@ -160,8 +167,61 @@ class CommonViewModel @Inject constructor(
                         e.printStackTrace()
                     }
                 } else if (response.code() == 401) {
-                    Log.d("FAILED_401", "success: ...............${response.body()}")
-                    val respFail = response.body() as TokenExpiredResp?
+                    Log.d("FAILED_401", "400000111111: ...............${response.body()}")
+                    val gson = Gson()
+                    val respFail: TokenExpiredResp? = gson.fromJson(
+                        gson.toJsonTree(response.body()).asJsonObject,
+                        TokenExpiredResp::class.java
+                    )
+                    tokenExpiredResp.value = respFail
+                    getLogin2()
+                }
+
+                AppUtility.hideProgressBar()
+            }
+
+            override fun error(message: String) {
+                super.error(message)
+                Log.d("TAG", "error: ......$message")
+            }
+        })
+
+    }
+
+    fun createOrder(reqCreateOrder: ReqCreateOrder) = viewModelScope.launch {
+
+        retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
+            override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
+                return apiParams.createOrder(
+                    "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
+                    reqCreateOrder
+                )
+            }
+
+            override fun success(response: Response<*>) {
+                Log.d("TAG", "success: ......${response.body()}")
+                if (response.isSuccessful) {
+                    try {
+                        val gson = Gson()
+                        val respSuccess: RespCreateOrder? = gson.fromJson(
+                            gson.toJsonTree(response.body()).asJsonObject,
+                            RespCreateOrder::class.java
+                        )
+                        // Get the plain text response
+                        val plainTextResponse = respSuccess?.data
+                        // Do something with the plain text response
+                        Log.d("TAG", "success: .,..$plainTextResponse.")
+                        responseCreateOrder.value = respSuccess
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else if (response.code() == 401) {
+                    Log.d("FAILED_401", "400000111111: ...............${response.body()}")
+                    val gson = Gson()
+                    val respFail: TokenExpiredResp? = gson.fromJson(
+                        gson.toJsonTree(response.body()).asJsonObject,
+                        TokenExpiredResp::class.java
+                    )
                     tokenExpiredResp.value = respFail
                     getLogin2()
                 }

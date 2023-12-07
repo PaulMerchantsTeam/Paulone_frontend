@@ -30,6 +30,7 @@ import com.paulmerchants.gold.model.OurServices
 import com.paulmerchants.gold.model.PrepaidCardModel
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
+import com.paulmerchants.gold.ui.btmsheetDg.QuickPayDialog
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
@@ -69,6 +70,7 @@ class HomeScreenFrag :
         MoreToComeModel(R.drawable.banner_sample, 3)
     )
 
+    //    private val homeSweetBillsAdapter = HomeSweetBillsAdapter()
     //    private val homeSweetBillsAdapter = HomeSweetBillsAdapter()
     private val TAG = "HomeScreenFrag"
 
@@ -126,6 +128,9 @@ class HomeScreenFrag :
         val bundle = Bundle().apply {
             putParcelable(DUE_LOAN_DATA, dueLoans)
         }
+        val quickPayDialog = QuickPayDialog()
+        val listener = this as PaymentResultWithDataListener
+        quickPayDialog.setPaymentResultListener(listener)
         findNavController().navigate(
             R.id.quickPayDialog, bundle
         )
@@ -492,7 +497,7 @@ class HomeScreenFrag :
             loanOverViewCardParent.youHaveTotalLoanTv.text =
                 "You are having ${commonViewModel.notZero.size} active loans totalling upto"
             for (i in commonViewModel.notZero) {
-                totalAmount += i.InterestDue
+                totalAmount += (i.InterestDue - i.RebateAmount)
             }
             Log.d(TAG, "setLoanOverView: ......${totalAmount}")
             loanOverViewCardParent.totalLoanAmountTv.text = "INR $totalAmount"

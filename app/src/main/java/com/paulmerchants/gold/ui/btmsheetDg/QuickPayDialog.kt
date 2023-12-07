@@ -16,17 +16,26 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.QuickPayPopupBinding
 import com.paulmerchants.gold.model.DueLoans
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
+import com.paulmerchants.gold.model.newmodel.Notes
+import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MapActivity
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
+import com.razorpay.Checkout
+import com.razorpay.PaymentData
+import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONObject
 
 
 /**
@@ -44,13 +53,27 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 
 @AndroidEntryPoint
-class QuickPayDialog : BottomSheetDialogFragment() {
+class QuickPayDialog : BottomSheetDialogFragment(), PaymentResultWithDataListener {
+    private var paymentResultListener: PaymentResultWithDataListener? = null
 
     private var dueLoans: GetPendingInrstDueRespItem? = null
     lateinit var quickPayPopupBinding: QuickPayPopupBinding
     val TAG = "QuickPayDialog"
     private var actualLoan: Double? = 0.000
     private val viewModel: CommonViewModel by viewModels()
+    // Method to set the listener
+    fun setPaymentResultListener(listener: PaymentResultWithDataListener) {
+        paymentResultListener = listener
+    }
+
+    // Methods inside the dialog where you trigger events
+    private fun notifyPaymentSuccess(p0: String?, p1: PaymentData?) {
+        paymentResultListener?.onPaymentSuccess(p0, p1)
+    }
+
+    private fun notifyPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+        paymentResultListener?.onPaymentError(p0, p1, p2)
+    }
 
     //Pay INR 6,000 fully
     override fun onAttach(context: Context) {
@@ -87,17 +110,29 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                     if (quickPayPopupBinding.customPayEt.text.toString().toDouble() > it) {
                         Toast.makeText(
                             requireContext(),
-                            "Amount Due: ${dueLoans?.InterestDue}\nPlease fill valid amount",
+                            "Amount Due: ${
+                                dueLoans?.RebateAmount?.let {
+                                    dueLoans?.InterestDue?.minus(
+                                        it
+                                    )
+                                }
+                            }\nPlease fill valid amount",
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
-                        dismiss()
+                        createOrder(quickPayPopupBinding.customPayEt.text.toString().toDouble())
+//                        dismiss()
                         findNavController().navigate(R.id.quickPayMainFrag)
                     }
                 }
             } else {
-                dismiss()
-                findNavController().navigate(R.id.quickPayMainFrag)
+//                dismiss()
+                dueLoans?.RebateAmount?.let {
+                    dueLoans?.InterestDue?.minus(
+                        it
+                    )
+                }?.let { it1 -> createOrder(it1) }
+//                findNavController().navigate(R.id.quickPayMainFrag)
             }
 
         }
@@ -105,10 +140,85 @@ class QuickPayDialog : BottomSheetDialogFragment() {
             findNavController().navigate(R.id.paymentModesFrag)
         }
         quickPayPopupBinding.apply {
-            fullPayRadio.text = "Pay INR ${dueLoans?.InterestDue} fully"
+            fullPayRadio.text =
+                "Pay INR ${dueLoans?.RebateAmount?.let { dueLoans?.InterestDue?.minus(it) }} fully"
         }
         onCLickRadio()
 
+        requireActivity()
+
+        val listener =object :PaymentResultWithDataListener{
+            override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+                TODO("Not yet implemented")
+            }
+
+        }
+    }
+
+    private fun createOrder(amount: Double) {
+        Log.d(TAG, "createOrder: ......$amount")
+        viewModel.createOrder(
+            reqCreateOrder = ReqCreateOrder(
+                amount = amount,
+                currency = "INR",
+                custId = AppSharedPref.getStringValue(CUSTOMER_ID).toString(),
+                notes = Notes("n_1_test", "n_2_test"),
+                receipt = "121221212"
+            )
+        )
+        viewModel.responseCreateOrder.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.statusCode == "200") {
+                    startPaymentFromRazorPay(it.data.amount.toString(), it.data.orderId)
+                }
+            }
+        }
+
+    }
+
+    private fun startPaymentFromRazorPay(
+        amount: String,
+        orderId: String,
+    ) {
+        val checkout = Checkout()
+        checkout.setKeyID(BuildConfig.RAZORPAY_KEY)
+        try {
+            val options = JSONObject()
+//            if (paymentMethod == "upi") {
+//                if (validateUPI(upiEditText?.text.toString())) {
+//                    options.put("vpa", upiEditText?.text.toString())
+//                } else {
+//                    "UPI ID is not valid".showSnackBar(this)
+//                    return
+//                }
+//            }
+            options.put("name", "Paul Merchants")
+            options.put("description", "RefNo..")
+            options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png")
+            options.put("currency", "INR")
+            options.put("amount", amount)
+            options.put("order_Id", orderId)
+//            options.put("method", paymentMethod);
+            val preFill = JSONObject()
+            preFill.put("email", "kprithvi26@gmail.com")
+            preFill.put("contact", "8968666401")
+            options.put("prefill", preFill)
+            options.put("theme", "#F9AC59")
+//            options.put("callback_url", callbaclUrl)
+            options.put("key", BuildConfig.RAZORPAY_KEY);
+//            options.put("method", JSONObject().put("upi", true))
+
+            Log.d(TAG, "startPaymentFromRazorPay: .......${options.toString()}")
+            checkout.open(requireActivity(), options)
+
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Error in payment: " + e.message, Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 
     fun setAmount(amount: String) {
@@ -139,8 +249,12 @@ class QuickPayDialog : BottomSheetDialogFragment() {
 
             override fun afterTextChanged(amount: Editable?) {
                 actualLoan?.let {
-                    if (amount.toString().toDouble() > it) {
-                        showSnackBar("amount should not be greater than interest amount")
+                    if (amount.toString() != "" && amount.toString().toDouble() > it) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Amount should not be greater than interest",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
@@ -184,4 +298,5 @@ class QuickPayDialog : BottomSheetDialogFragment() {
     override fun setStyle(style: Int, theme: Int) {
         super.setStyle(style, theme)
     }
+
 }
