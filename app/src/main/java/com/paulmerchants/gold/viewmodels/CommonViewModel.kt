@@ -1,10 +1,12 @@
 package com.paulmerchants.gold.viewmodels
 
+import android.os.Build
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.wallet.PaymentData
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
@@ -23,14 +25,18 @@ import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLoanRenewalProcess
 import com.paulmerchants.gold.model.RespLoanStatment
+import com.paulmerchants.gold.model.RespPaymentNotDone
 import com.paulmerchants.gold.model.RespRenewalEligiblity
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReGetLoanClosureReceipNew
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
+import com.paulmerchants.gold.model.newmodel.ReqGetLoanStatement
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCreateOrder
+import com.paulmerchants.gold.model.newmodel.RespUpdatePaymentStatus
+import com.paulmerchants.gold.model.newmodel.StatusPayment
 import com.paulmerchants.gold.model.newmodel.TokenExpiredResp
 import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.place.Place
@@ -42,6 +48,8 @@ import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
 import com.paulmerchants.gold.utility.decryptKey
 import com.paulmerchants.gold.networks.RetrofitSetup
 import com.paulmerchants.gold.security.SecureFiles
+import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -54,12 +62,14 @@ class CommonViewModel @Inject constructor(
     private val retrofitSetup: RetrofitSetup,
     private val apiParams: ApiParams,
 ) : ViewModel() {
+    val paymentData = MutableLiveData<StatusPayment?>()
+    var dueLoanSelected: GetPendingInrstDueRespItem? = null
     var respGetLoanOutStanding = ArrayList<RespGetLoanOutStandingItem>()
     var notZero: List<GetPendingInrstDueRespItem> = arrayListOf()
     private var remoteDataList: List<Place>? = null
     private var listOfLocation: List<com.paulmerchants.gold.place.Place>? = null
     val getPendingInterestDuesLiveData = MutableLiveData<GetPendingInrstDueResp>()
-    val tokenExpiredResp = MutableLiveData<TokenExpiredResp?>()
+    val tokenExpiredResp = MutableLiveData<RespCommon?>()
     val getRespGetLoanOutStandingLiveData = MutableLiveData<RespGetLoanOutStanding>()
     val getRespLoanDueDateLiveData = MutableLiveData<RespLoanDueDate>()
     val getRespClosureReceiptLiveData = MutableLiveData<RespClosureReceipt>()
@@ -72,8 +82,10 @@ class CommonViewModel @Inject constructor(
     var isStartAnim = MutableLiveData<Boolean>()
     var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
     private val secureFiles: SecureFiles = SecureFiles()
-     val responseCreateOrder = MutableLiveData<RespCreateOrder?>()
+    val responseCreateOrder = MutableLiveData<RespCreateOrder?>()
     val placesLive = MutableLiveData<MutableList<Place>?>()
+
+    val respPaymentUpdate = MutableLiveData<RespUpdatePaymentStatus?>()
 
     init {
         val configSettings = remoteConfigSettings {
@@ -167,14 +179,15 @@ class CommonViewModel @Inject constructor(
                         e.printStackTrace()
                     }
                 } else if (response.code() == 401) {
+                    getLogin2()
                     Log.d("FAILED_401", "400000111111: ...............${response.body()}")
                     val gson = Gson()
-                    val respFail: TokenExpiredResp? = gson.fromJson(
+                    val respFail: RespCommon? = gson.fromJson(
                         gson.toJsonTree(response.body()).asJsonObject,
-                        TokenExpiredResp::class.java
+                        RespCommon::class.java
                     )
                     tokenExpiredResp.value = respFail
-                    getLogin2()
+
                 }
 
                 AppUtility.hideProgressBar()
@@ -218,14 +231,83 @@ class CommonViewModel @Inject constructor(
                 } else if (response.code() == 401) {
                     Log.d("FAILED_401", "400000111111: ...............${response.body()}")
                     val gson = Gson()
-                    val respFail: TokenExpiredResp? = gson.fromJson(
+                    val respFail: RespCommon? = gson.fromJson(
                         gson.toJsonTree(response.body()).asJsonObject,
-                        TokenExpiredResp::class.java
+                        RespCommon::class.java
                     )
                     tokenExpiredResp.value = respFail
                     getLogin2()
                 }
 
+                AppUtility.hideProgressBar()
+            }
+
+            override fun error(message: String) {
+                super.error(message)
+                Log.d("TAG", "error: ......$message")
+            }
+        })
+
+    }
+
+    fun updatePaymentStatus(
+        status: String,
+        razorpay_payment_id: String,
+        razorpay_order_id: String,
+        razorpay_signature: String,
+        custId: String = AppSharedPref.getStringValue(CUSTOMER_ID).toString(),
+        amount: Double,
+        contactCount: Int,
+        companyName: String = "PAUL MERCHANTS",
+        currency: String = "INR",
+        description: String,
+    ) = viewModelScope.launch {
+
+        retrofitSetup.callApi(false, object : CallHandler<Response<*>> {
+            override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
+                return apiParams.updatePaymentStatus(
+                    "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
+                    amount,
+                    contactCount,
+                    companyName,
+                    currency,
+                    description,
+                    status,
+                    razorpay_payment_id,
+                    razorpay_order_id,
+                    razorpay_signature,
+                    custId,
+                    dueLoanSelected?.AcNo.toString(),
+                    makerId = "12545as",
+                    macID = "12.121.1212",
+                    deviceDetailsDTO = AppUtility.getDeviceDetails()
+                )
+            }
+
+            override fun success(response: Response<*>) {
+                Log.d("TAG", "success: ......${response.body()}")
+                if (response.isSuccessful) {
+                    try {
+                        val gson = Gson()
+                        val respSuccess: RespUpdatePaymentStatus? = gson.fromJson(
+                            gson.toJsonTree(response.body()).asJsonObject,
+                            RespUpdatePaymentStatus::class.java
+                        )
+                        respSuccess?.response_message.showSnackBar()
+                        respPaymentUpdate.value = respSuccess
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else if (response.code() == 401) {
+                    Log.d("FAILED_401", "400000111111: ...............${response.body()}")
+                    val gson = Gson()
+                    val respFail: RespCommon? = gson.fromJson(
+                        gson.toJsonTree(response.body()).asJsonObject,
+                        RespCommon::class.java
+                    )
+                    tokenExpiredResp.value = respFail
+                    getLogin2()
+                }
                 AppUtility.hideProgressBar()
             }
 
@@ -349,10 +431,10 @@ class CommonViewModel @Inject constructor(
 
     fun getLoanClosureReceipt(accNum: String) = viewModelScope.launch {
 
-        retrofitSetup.callApi(true, object : CallHandler<RespCommon> {
-            override suspend fun sendRequest(apiParams: ApiParams): RespCommon {
+        retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
+            override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
                 return apiParams.getLoanClosureReceipt(
-                    AppSharedPref.getStringValue(JWT_TOKEN).toString(),
+                    "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                     ReGetLoanClosureReceipNew(
                         accNum,
                         AppUtility.getDeviceDetails()
@@ -360,27 +442,29 @@ class CommonViewModel @Inject constructor(
                 )
             }
 
-            override fun success(response: RespCommon) {
+            override fun success(response: Response<RespCommon>) {
                 try {
-                    // Get the plain text response
-                    val plainTextResponse = response.data
+                    if (response.isSuccessful) {
+                        val plainTextResponse = response.body()?.data
 
+                        // Get the plain text response
 
-                    // Do something with the plain text response
-                    Log.d("Response", plainTextResponse)
-
-                    val decryptData = decryptKey(
-                        BuildConfig.SECRET_KEY_GEN, plainTextResponse
-                    )
-                    println("decrypt-----$decryptData")
-                    val respPending: RespClosureReceipt? =
-                        AppUtility.convertStringToJson(decryptData.toString())
+                        // Do something with the plain text response
+                        if (plainTextResponse != null) {
+                            Log.d("Response", plainTextResponse)
+                            val decryptData = decryptKey(
+                                BuildConfig.SECRET_KEY_GEN, plainTextResponse
+                            )
+                            println("decrypt-----$decryptData")
+                            val respPending: RespClosureReceipt? =
+                                AppUtility.convertStringToJson(decryptData.toString())
 //                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
-                    respPending?.let { resp ->
-                        getRespClosureReceiptLiveData.value = resp
+                            respPending?.let { resp ->
+                                getRespClosureReceiptLiveData.value = resp
+                            }
+                            println("Str_To_Json------$respPending")
+                        }
                     }
-                    println("Str_To_Json------$respPending")
-
 
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -457,10 +541,10 @@ class CommonViewModel @Inject constructor(
       }*/
 
     fun getCustomerDetails() = viewModelScope.launch {
-        retrofitSetup.callApi(true, object : CallHandler<RespCommon> {
-            override suspend fun sendRequest(apiParams: ApiParams): RespCommon {
+        retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
+            override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
                 return apiParams.getCustomerDetails(
-                    AppSharedPref.getStringValue(JWT_TOKEN).toString(),
+                    "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                     ReqpendingInterstDueNew(
                         AppSharedPref.getStringValue(CUSTOMER_ID).toString(),
                         AppUtility.getDeviceDetails()
@@ -468,26 +552,30 @@ class CommonViewModel @Inject constructor(
                 )
             }
 
-            override fun success(response: RespCommon) {
+            override fun success(response: Response<RespCommon>) {
                 try {
                     // Get the plain text response
-                    val plainTextResponse = response.data
+                    if (response.isSuccessful) {
+                        val plainTextResponse = response.body()?.data
 
-
-                    // Do something with the plain text response
-                    Log.d("Response", plainTextResponse)
-
-                    val decryptData = decryptKey(
-                        BuildConfig.SECRET_KEY_GEN, plainTextResponse
-                    )
-                    println("decrypt-----$decryptData")
-                    val respPending: RespCustomersDetails? =
-                        AppUtility.convertStringToJson(decryptData.toString())
+                        // Do something with the plain text response
+                        if (plainTextResponse != null) {
+                            Log.d("Response", plainTextResponse)
+                            val decryptData = decryptKey(
+                                BuildConfig.SECRET_KEY_GEN, plainTextResponse
+                            )
+                            println("decrypt-----$decryptData")
+                            val respPending: RespCustomersDetails? =
+                                AppUtility.convertStringToJson(decryptData.toString())
 //                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
-                    respPending?.let { resp ->
-                        getRespCustomersDetailsLiveData.value = resp
+                            respPending?.let { resp ->
+                                getRespCustomersDetailsLiveData.value = resp
+                            }
+                            println("Str_To_Json------$respPending")
+                        }
+
+
                     }
-                    println("Str_To_Json------$respPending")
 
 
                 } catch (e: Exception) {
@@ -503,34 +591,44 @@ class CommonViewModel @Inject constructor(
     }
 
     fun getLoanStatement(accNum: String, fromDat: String, toDate: String) = viewModelScope.launch {
-        try {
-            AppSharedPref.getStringValue(JWT_TOKEN)?.let {
-                val response = apiParams.getLoanStatement(
-                    it, secureFiles.encryptKey(
-                        accNum, BuildConfig.SECRET_KEY_GEN
-                    ).toString(), fromDat, toDate
-                )
-                // Get the plain text response
-                val plainTextResponse = response.data
 
-                // Do something with the plain text response
-                Log.d("Response", plainTextResponse)
 
-                val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_GEN, plainTextResponse
+        retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
+            override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
+                return apiParams.getLoanStatement(
+                    "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
+                    ReqGetLoanStatement(accNum, fromDat, toDate, AppUtility.getDeviceDetails())
                 )
-                println("decrypt-----$decryptData")
-                val respPending: RespLoanStatment? =
-                    AppUtility.convertStringToJson(decryptData.toString())
-//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
-                respPending?.let { resp ->
-                    getRespLoanStatmentLiveData.value = resp
-                }
-                println("Str_To_Json------$respPending")
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+
+            override fun success(response: Response<RespCommon>) {
+                try {
+                    if (response.isSuccessful) {
+                        val plainTextResponse = response.body()?.data
+                        // Do something with the plain text response
+                        if (plainTextResponse != null) {
+                            // Get the plain text response
+                            // Do something with the plain text response
+                            Log.d("Response", plainTextResponse)
+                            val decryptData = decryptKey(
+                                BuildConfig.SECRET_KEY_GEN, plainTextResponse
+                            )
+                            println("decrypt-----$decryptData")
+                            val respPending: RespLoanStatment? =
+                                AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                            respPending?.let { resp ->
+                                getRespLoanStatmentLiveData.value = resp
+                            }
+                            println("Str_To_Json------$respPending")
+                        }
+                    }
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        })
     }
 
 

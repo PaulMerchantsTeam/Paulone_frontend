@@ -50,7 +50,7 @@ class PmlGoldLoan : BaseFragment<PmlGoldLoanBinding>(PmlGoldLoanBinding::inflate
             loanNumTv.text = loanOutStanding?.AcNo.toString()
             intPeriodNumTv.text = "${loanOutStanding?.InterestPeriod} days"
             outStandLoanNumTv.text = "INR ${loanOutStanding?.OutStanding}"
-            if (loanOutStanding?.ClosedDate != null) {
+            if (loanOutStanding?.ClosedDate != null && loanOutStanding.ClosedDate !="") {
                 closedDate = AppUtility.getDateFormat(loanOutStanding.ClosedDate)
             } else {
                 closedDate = "NA"

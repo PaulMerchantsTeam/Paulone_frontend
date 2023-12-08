@@ -18,6 +18,7 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.databinding.ActivityMainBinding
 import com.paulmerchants.gold.databinding.HeaderLayoutBinding
+import com.paulmerchants.gold.model.newmodel.StatusPayment
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hide
@@ -38,6 +39,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
     lateinit var navOptionTop: NavOptions
     lateinit var navController: NavController
     lateinit var secureFiles: SecureFiles
+     val commonViewModel: CommonViewModel by viewModels()
 
     companion object {
         lateinit var context: WeakReference<Context>
@@ -137,8 +139,6 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
         }
 
 
-
-
     }
 
     fun showQuickPayDialog() {
@@ -174,12 +174,19 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
     }
 
     override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
-
+        Log.i(
+            TAG,
+            "onPaymentSuccess: ......$p0........${p1?.orderId}.....${p1?.paymentId}------${p1?.signature}"
+        )
+        commonViewModel.paymentData.postValue(StatusPayment(true, p1))
     }
 
     override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
-
+        Log.i(TAG, "onPaymentError: -----------$p0..${p2?.orderId}.....${p2?.paymentId}------${p2?.signature}")
+        commonViewModel.paymentData.postValue(StatusPayment(false, p2))
     }
 
 
 }
+
+const val TAG = "MAIN_ACTIVITY"

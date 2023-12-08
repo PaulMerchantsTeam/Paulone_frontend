@@ -1,7 +1,5 @@
 package com.paulmerchants.gold.ui.bottom
 
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -28,9 +26,10 @@ import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.MoreToComeModel
 import com.paulmerchants.gold.model.OurServices
 import com.paulmerchants.gold.model.PrepaidCardModel
+import com.paulmerchants.gold.model.newmodel.StatusPayment
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
-import com.paulmerchants.gold.ui.btmsheetDg.QuickPayDialog
+import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
@@ -41,25 +40,20 @@ import com.paulmerchants.gold.utility.startCustomAnimation
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import com.razorpay.Checkout
 import com.razorpay.PaymentData
-import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import java.time.LocalDateTime
-import java.util.Date
 
 
 @AndroidEntryPoint
 class HomeScreenFrag :
-    BaseFragment<DummyHomeScreenFragmentBinding>(DummyHomeScreenFragmentBinding::inflate),
-    PaymentResultWithDataListener {
+    BaseFragment<DummyHomeScreenFragmentBinding>(DummyHomeScreenFragmentBinding::inflate) {
 
     private val upcomingLoanAdapter = UpcomingLoanAdapter(::onPayDueClicked)
     private val upcomingNewUserAdapter = UpcomingLoanNewuserAdapter()
     private val prePaidCardAdapter = PrePaidCardAdapter(::onClicked)
-    private val commonViewModel: CommonViewModel by viewModels()
     private lateinit var secureFiles: SecureFiles
     lateinit var navController: NavController
     private val moreToComeAdapter = MoreToComeAdapter()
@@ -95,11 +89,46 @@ class HomeScreenFrag :
 //        setAddCardView()
         setUpBanner()
 
-        commonViewModel.tokenExpiredResp.observe(viewLifecycleOwner) {
+        (activity as MainActivity).commonViewModel.tokenExpiredResp.observe(viewLifecycleOwner) {
             it?.let {
                 showSnackBar(it.errorMessage)
             }
         }
+
+        (activity as MainActivity).commonViewModel.paymentData.observe(viewLifecycleOwner) {
+            Log.d(TAG, "ojnnnnnnn: /............$it")
+            it?.let {
+                if (it.status) {
+                    updatePaymentStatusToServer(it)
+                }
+            }
+        }
+
+        (activity as MainActivity).commonViewModel.respPaymentUpdate.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.status == "200") {
+                    Log.d(TAG, "ojnnnnnn: /.................$it")
+                    (activity as MainActivity).commonViewModel.getPendingInterestDues()
+                }
+            }
+        }
+
+    }
+
+
+    //Remove Observer...
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop: ..................")
+        (activity as MainActivity).commonViewModel.respPaymentUpdate.removeObservers(this)
+        (activity as MainActivity).commonViewModel.paymentData.removeObservers(this)
+        (activity as MainActivity).commonViewModel.tokenExpiredResp.removeObservers(this)
+        (activity as MainActivity).commonViewModel.isStartAnim.removeObservers(this)
+
+        (activity as MainActivity).commonViewModel.respPaymentUpdate.postValue(null)
+        (activity as MainActivity).commonViewModel.tokenExpiredResp.postValue(null)
+        (activity as MainActivity).commonViewModel.paymentData.postValue(null)
+        (activity as MainActivity).commonViewModel.isStartAnim.postValue(null)
     }
 
     private fun showHideLoadinf() {
@@ -125,12 +154,12 @@ class HomeScreenFrag :
     }
 
     private fun onPayDueClicked(dueLoans: GetPendingInrstDueRespItem) {
+        (activity as MainActivity).commonViewModel.dueLoanSelected = dueLoans
         val bundle = Bundle().apply {
             putParcelable(DUE_LOAN_DATA, dueLoans)
         }
-        val quickPayDialog = QuickPayDialog()
-        val listener = this as PaymentResultWithDataListener
-        quickPayDialog.setPaymentResultListener(listener)
+//        val quickPayDialog = QuickPayDialog()
+//        quickPayDialog.setPaymentResultListener(this)
         findNavController().navigate(
             R.id.quickPayDialog, bundle
         )
@@ -149,12 +178,12 @@ class HomeScreenFrag :
     }
 
     private fun setProfileUi() {
-        AppSharedPref.putStringValue(Constants.CUSTOMER_NAME, "Prithvi Kumar")
+        AppSharedPref.putStringValue(Constants.CUSTOMER_NAME, "User")
         val userFirstName =
             AppUtility.getFirstName(AppSharedPref.getStringValue(Constants.CUSTOMER_NAME))
         binding.searchProfileParent.userName.text = "Hey ${userFirstName ?: "User"}"
         binding.searchProfileParent.firtLetterUser.text = "${userFirstName?.first() ?: "U"}"
-        commonViewModel.isStartAnim.observe(viewLifecycleOwner) {
+        (activity as MainActivity).commonViewModel.isStartAnim.observe(viewLifecycleOwner) {
             it?.let {
                 if (it) {
                     animateHintEditText()
@@ -164,24 +193,24 @@ class HomeScreenFrag :
 
         binding.searchProfileParent.apply {
             searchView.setOnClickListener {
-                commonViewModel.isStartAnim.postValue(false)
+                (activity as MainActivity).commonViewModel.isStartAnim.postValue(false)
                 binding.searchProfileParent.searchView.clearAnimation()
             }
 
             searchView.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    commonViewModel.isStartAnim.postValue(false)
+                    (activity as MainActivity).commonViewModel.isStartAnim.postValue(false)
                     binding.searchProfileParent.searchView.clearAnimation()
 
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    commonViewModel.isStartAnim.postValue(false)
+                    (activity as MainActivity).commonViewModel.isStartAnim.postValue(false)
                     binding.searchProfileParent.searchView.clearAnimation()
                     p0?.let { char ->
                         Log.d("TAG", "onTextChanged: text = $char")
                         if (char.isNotEmpty()) {
-                            commonViewModel.isStartAnim.postValue(false)
+                            (activity as MainActivity).commonViewModel.isStartAnim.postValue(false)
                             binding.searchProfileParent.searchView.clearAnimation()
 
 //                            searchView.setCompoundDrawablesWithIntrinsicBounds(
@@ -191,7 +220,7 @@ class HomeScreenFrag :
 //                                0
 //                            )
                         } else {
-                            commonViewModel.isStartAnim.postValue(false)
+                            (activity as MainActivity).commonViewModel.isStartAnim.postValue(false)
                             binding.searchProfileParent.searchView.clearAnimation()
 
                         }
@@ -314,19 +343,22 @@ class HomeScreenFrag :
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume: ...............")
         binding.searchProfileParent.searchView.show()
-        commonViewModel.isStartAnim.postValue(true)
+        (activity as MainActivity).commonViewModel.isStartAnim.postValue(true)
 
         binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(
             requireContext(), R.anim.slide_down_to_mid
         ).apply {
             this.start()
         })
+
     }
 
     override fun onPause() {
         super.onPause()
-        commonViewModel.isStartAnim.postValue(false)
+        Log.d(TAG, "onPause: ...........")
+        (activity as MainActivity).commonViewModel.isStartAnim.postValue(false)
         binding.searchProfileParent.searchView.clearAnimation()
         binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(
             requireContext(), R.anim.slide_down_to_mid
@@ -334,7 +366,19 @@ class HomeScreenFrag :
             this.cancel()
         })
 
+    }
 
+    private fun updatePaymentStatusToServer(statusData: StatusPayment) {
+        Log.d(TAG, "updatePaymentStatusToServer: ....$statusData")
+        (activity as MainActivity).commonViewModel.updatePaymentStatus(
+            status = if (statusData.status) "success" else "fail",
+            statusData.paymentData?.paymentId.toString(),
+            statusData.paymentData?.orderId.toString(),
+            statusData.paymentData?.signature.toString(),
+            amount = 100.00,
+            contactCount = 0,
+            description = "test___"
+        )
     }
 
 
@@ -402,7 +446,7 @@ class HomeScreenFrag :
             )
 
             delay(1000)
-            commonViewModel.isStartAnim.postValue(true)
+            (activity as MainActivity).commonViewModel.isStartAnim.postValue(true)
         }
 
     }
@@ -461,11 +505,14 @@ class HomeScreenFrag :
 //        val encDate = secureFiles.encryptKey(
 //            currentDate, BuildConfig.SECRET_KEY_GEN
 //        )
-        commonViewModel.getPendingInterestDues()
-        commonViewModel.getPendingInterestDuesLiveData.observe(viewLifecycleOwner) {
+        (activity as MainActivity).commonViewModel.getPendingInterestDues()
+        (activity as MainActivity).commonViewModel.getPendingInterestDuesLiveData.observe(
+            viewLifecycleOwner
+        ) {
             it?.let {
-                commonViewModel.notZero = it.filter { it.InterestDue != 0.0000 }
-                upcomingLoanAdapter.submitList(commonViewModel.notZero)
+                (activity as MainActivity).commonViewModel.notZero =
+                    it.filter { it.InterestDue != 0.0000 }
+                upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
                 binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
                 setLoanOverView()
             }
@@ -495,8 +542,8 @@ class HomeScreenFrag :
 //                findNavController().navigate(R.id.applyLoanForNewUser)
 //            }            android:text="You are having 4 active loans totalling upto"
             loanOverViewCardParent.youHaveTotalLoanTv.text =
-                "You are having ${commonViewModel.notZero.size} active loans totalling upto"
-            for (i in commonViewModel.notZero) {
+                "You are having ${(activity as MainActivity).commonViewModel.notZero.size} active loans totalling upto"
+            for (i in (activity as MainActivity).commonViewModel.notZero) {
                 totalAmount += (i.InterestDue - i.RebateAmount)
             }
             Log.d(TAG, "setLoanOverView: ......${totalAmount}")
@@ -505,7 +552,7 @@ class HomeScreenFrag :
                 findNavController().navigate(R.id.goldLoanScreenFrag)
 
             }
-            loanOverViewCardParent.renewLoansTv.show()
+//            loanOverViewCardParent.renewLoansTv.show()
             loanOverViewCardParent.youHaveTotalLoanTv.show()
         }
         binding.shimmerCardLoanOverView.stopShimmer()
@@ -573,15 +620,8 @@ class HomeScreenFrag :
         }
     }
 
-    override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
-        sendPaymentStatusToServer("SUCCESS", p1)
-    }
-
-    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
-        sendPaymentStatusToServer("FAIL", p2)
-    }
-
     private fun sendPaymentStatusToServer(status: String, paymentData: PaymentData?) {
+        Log.d(TAG, "sendPaymentStatusToServer: ......$status")
 
     }
 

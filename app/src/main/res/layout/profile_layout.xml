@@ -167,6 +167,7 @@
                     android:paddingStart="@dimen/screen_end_margin"
                     android:paddingTop="@dimen/_8sdp"
                     android:paddingEnd="@dimen/screen_end_margin"
+                    android:visibility="gone"
                     android:paddingBottom="@dimen/_8sdp"
                     android:text="@string/edit_profile"
                     app:layout_constraintBottom_toBottomOf="parent"

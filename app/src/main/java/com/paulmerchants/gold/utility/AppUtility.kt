@@ -93,8 +93,8 @@ object AppUtility {
         BuildConfig.VERSION_NAME,
         BuildConfig.VERSION_CODE.toString(),
         Build.MODEL,
-        "",
-        ""
+        "121212.12",
+        "41221.22"
     )
 
     fun blurTextView(blurredTextView: TextView, context: Context) {
@@ -312,7 +312,7 @@ object AppUtility {
     }
 
     fun getDateFormat(date: String): String? {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd")
         val outputFormat = SimpleDateFormat("dd/MM/yyyy")
         val dateC = inputFormat.parse(date)
         val outputDate = dateC?.let { outputFormat.format(it) }
@@ -347,6 +347,40 @@ object AppUtility {
         snackbarView.layoutParams = params
         snakbar.show()
     }
+
+    /**
+     *
+     * Show Snack Bar
+     * **/
+    fun String?.showSnackBar() = try {
+        var msg = this
+//    if (msg?.contains("Unable to resolve host") == true || msg?.contains(
+//            "Failed to connect", true
+//        ) == true
+//    ) msg = MainActivity.context.get()?.getString(R.string.internet_not_connected)
+        Snackbar.make(
+            (MainActivity.context.get() as Activity).findViewById(android.R.id.content),
+            msg ?: "Something went wrong.",
+            Snackbar.LENGTH_LONG
+        ).apply {
+            setBackgroundTint(
+                ContextCompat.getColor(
+                    (MainActivity.context.get() as Activity), R.color.splash_screen_three
+                )
+            )
+            animationMode = Snackbar.ANIMATION_MODE_SLIDE
+            setTextColor(
+                ContextCompat.getColor(
+                    (MainActivity.context.get() as Activity), R.color.white
+                )
+            )
+            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = 5
+            show()
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+
     fun numberOfDaysWrtCurrent(date: String): Long {
         val daysDifference: Long
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

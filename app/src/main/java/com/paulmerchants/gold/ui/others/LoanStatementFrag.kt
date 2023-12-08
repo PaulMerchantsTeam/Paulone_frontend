@@ -53,9 +53,8 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
         //opening date to till now.
         commonViewModel.getLoanStatement(
             loanOutStanding?.AcNo.toString(),
-            secureFiles.encryptKey(loanOutStanding?.OpenDate.toString(), BuildConfig.SECRET_KEY_GEN)
-                .toString(),
-            secureFiles.encryptKey(fromDate, BuildConfig.SECRET_KEY_GEN).toString(),
+            loanOutStanding?.OpenDate.toString(),
+            fromDate,
         )
 
         commonViewModel.getRespLoanStatmentLiveData.observe(viewLifecycleOwner) {
@@ -92,8 +91,11 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
     private fun setData(loanOutStanding: RespGetLoanOutStandingItem?) {
         binding.apply {
             loanNumTv.text = "Loan Number - ${loanOutStanding?.AcNo}"
-            loanStateDateLargeTv.text =
-                "Last Statement (${AppUtility.getDateWithYearOrdinals(loanOutStanding?.OpenDate.toString())} - ${AppUtility.getCurrentDateOnly()})"
+            if (loanOutStanding?.OpenDate !=null && loanOutStanding?.OpenDate!= ""){
+                loanStateDateLargeTv.text =
+                    "Last Statement (${AppUtility.getDateWithYearOrdinals(loanOutStanding?.OpenDate.toString())} - ${AppUtility.getCurrentDateOnly()})"
+            }
+
         }
     }
 

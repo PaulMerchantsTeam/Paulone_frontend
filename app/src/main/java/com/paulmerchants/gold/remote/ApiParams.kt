@@ -4,11 +4,14 @@ import com.paulmerchants.gold.model.ReqCustomerOtpNew
 import com.paulmerchants.gold.model.ReqSetMPin
 import com.paulmerchants.gold.model.RespSetMpin
 import com.paulmerchants.gold.model.ResponseGetOtp
+import com.paulmerchants.gold.model.newmodel.DeviceDetailsDTO
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReGetLoanClosureReceipNew
+import com.paulmerchants.gold.model.newmodel.ReqComplaintRaise
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
+import com.paulmerchants.gold.model.newmodel.ReqGetLoanStatement
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
@@ -34,8 +37,7 @@ interface ApiParams {
     suspend fun getCustomer(
         @Header("Authorization") Authorization: String,
         @Body reqCustomerNew: ReqCustomerNew,
-
-        ): Response<RespCutomerInfo>   //RespGetCustomer
+    ): Response<RespCutomerInfo>   //RespGetCustomer
 
     @POST("otp/get-otp")
     suspend fun getOtp(
@@ -81,26 +83,37 @@ interface ApiParams {
         @Body reqCreateOrder: ReqCreateOrder,
     ): Response<*>
 
-    @POST("payments/payment/success/")   //RespLoanDueDate
+    //https://www.globedu.in/paulgoldv01/
+    @POST("payments/payment/success/{amount}/{contactCount}/{companyName}/{currency}/{description}")   //RespLoanDueDate
     suspend fun updatePaymentStatus(
         @Header("Authorization") auth: String,
+        @Path("amount") amount: Double,
+        @Path("contactCount") contactCount: Int,
+        @Path("companyName") companyName: String,
+        @Path("currency") currency: String,
+        @Path("description") description: String,
         @Query("status") status: String,
         @Query("razorpay_payment_id") razorpayPaymentId: String,
         @Query("razorpay_order_id") razorpayOrderId: String,
         @Query("razorpay_signature") razorpaySignature: String,
         @Query("custId") custId: String,
-        @Path("amount") amount: Float,
-        @Path("contactCount") contactCount: Int,
-        @Path("companyName") companyName: String,
-        @Path("currency") currency: String,
-        @Path("description") description: String,
+        @Query("acNo") acNo: String,
+        @Query("makerId") makerId: String ,
+        @Query("macID") macID: String,
+        @Body deviceDetailsDTO: DeviceDetailsDTO,
     ): Response<*>
 
-    @GET("LoanDetails/GetLoanClosureReceipt") //RespClosureReceipt
+    /**
+     *    @RequestParam("acNo") String acNo,
+    @RequestParam("makerId") String makerId,
+    @RequestParam("macID") String macID,
+     */
+
+    @GET("api/get-loan-closure-receipt") //RespClosureReceipt
     suspend fun getLoanClosureReceipt(
         @Header("Authorization") auth: String,
         @Body reqGetLoanClosureReceipNew: ReGetLoanClosureReceipNew,
-    ): RespCommon
+    ): Response<RespCommon>
 
     @GET("LoanDetails/GetReceipt ") //RespGetReceipt
     suspend fun getReceipt(
@@ -108,21 +121,19 @@ interface ApiParams {
         @Query("AcNo") AcNo: String,
         @Query("VoucherNo") VoucherNo: String,
         @Query("TransID") TransID: String,
-    ): RespCommon
+    ): Response<RespCommon>
 
-    @GET("LoanDetails/GetLoanStatement") //RespLoanStatment
+    @POST("api/get-loan-statements") //RespLoanStatment
     suspend fun getLoanStatement(
         @Header("Authorization") auth: String,
-        @Query("AcNo") AcNo: String,
-        @Query("FromDate") FromDate: String,
-        @Query("ToDate") ToDate: String,
-    ): RespCommon
+        @Body reqGetLoanStatement: ReqGetLoanStatement,
+    ): Response<RespCommon>
 
-    @GET("api/get-customer-details") //RespCustomersDetails
+    @POST("api/get-customer-details") //RespCustomersDetails
     suspend fun getCustomerDetails(
         @Header("Authorization") auth: String,
         @Body reqpendingInterstDueNew: ReqpendingInterstDueNew,
-    ): RespCommon
+    ): Response<RespCommon>
 
     /**
      *̄----------ResPaymentDone     -----------------
@@ -139,19 +150,30 @@ interface ApiParams {
         @Query("ValueDate") ValueDate: String,
         @Query("makerID") makerID: String,
         @Query("mACID") mACID: String,
-    ): RespCommon
+    ): Response<RespCommon>
 
 
     @GET("LoanDetails/GetRenewalEligibility")  //RespRenewalEligiblity
     suspend fun getRenewalEligibility(
         @Header("Authorization") auth: String,
         @Query("AcNo") AcNo: String,
-    ): RespCommon
+    ): Response<RespCommon>
 
     @GET("LoanDetails/GetLoanRenewalProcess")   //RespLoanRenewalProcess
     suspend fun getLoanRenewalProcess(
         @Header("Authorization") auth: String,
         @Query("AcNo") AcNo: String,
-    ): RespCommon
+    ): Response<RespCommon>
+
+    @GET("complaint/create")   //RespLoanRenewalProcess
+    suspend fun raiseAComplaint(
+        @Header("Authorization") auth: String,
+        @Body reqComplaintRaise: ReqComplaintRaise,
+    ): Response<RespCommon>
+
+    @GET("complaint/getAllComplaints")   //
+    suspend fun getAllComplaint(
+        @Header("Authorization") auth: String,
+    ): Response<RespCommon>
 
 }

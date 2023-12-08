@@ -63,6 +63,7 @@ class AuthViewModel @Inject constructor(
                     )
                     val respCutomer: RespGetCustomer? =
                         AppUtility.convertStringToJson(decryptData.toString())
+                    Log.d("TAG", "success: .,cucucucu....$respCutomer")
                     //getting initially first customer
                     if (respCutomer != null) {
                         Log.d(

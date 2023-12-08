@@ -20,13 +20,11 @@ import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.QuickPayPopupBinding
-import com.paulmerchants.gold.model.DueLoans
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.newmodel.Notes
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
-import com.paulmerchants.gold.ui.MapActivity
-import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
@@ -53,27 +51,29 @@ import org.json.JSONObject
  */
 
 @AndroidEntryPoint
-class QuickPayDialog : BottomSheetDialogFragment(), PaymentResultWithDataListener {
+class QuickPayDialog : BottomSheetDialogFragment() {
     private var paymentResultListener: PaymentResultWithDataListener? = null
 
     private var dueLoans: GetPendingInrstDueRespItem? = null
     lateinit var quickPayPopupBinding: QuickPayPopupBinding
     val TAG = "QuickPayDialog"
     private var actualLoan: Double? = 0.000
-    private val viewModel: CommonViewModel by viewModels()
-    // Method to set the listener
-    fun setPaymentResultListener(listener: PaymentResultWithDataListener) {
-        paymentResultListener = listener
-    }
 
-    // Methods inside the dialog where you trigger events
-    private fun notifyPaymentSuccess(p0: String?, p1: PaymentData?) {
-        paymentResultListener?.onPaymentSuccess(p0, p1)
-    }
 
-    private fun notifyPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
-        paymentResultListener?.onPaymentError(p0, p1, p2)
-    }
+//    // Method to set the listener
+//    fun setPaymentResultListener(listener: PaymentResultWithDataListener) {
+//        Log.d(TAG, "setPaymentResultListener: .............")
+//        paymentResultListener = listener
+//    }
+//
+//    // Methods inside the dialog where you trigger events
+//    private fun notifyPaymentSuccess(p0: String?, p1: PaymentData?) {
+//        paymentResultListener?.onPaymentSuccess(p0, p1)
+//    }
+//
+//    private fun notifyPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+//        paymentResultListener?.onPaymentError(p0, p1, p2)
+//    }
 
     //Pay INR 6,000 fully
     override fun onAttach(context: Context) {
@@ -122,7 +122,7 @@ class QuickPayDialog : BottomSheetDialogFragment(), PaymentResultWithDataListene
                     } else {
                         createOrder(quickPayPopupBinding.customPayEt.text.toString().toDouble())
 //                        dismiss()
-                        findNavController().navigate(R.id.quickPayMainFrag)
+//                        findNavController().navigate(R.id.quickPayMainFrag)
                     }
                 }
             } else {
@@ -132,6 +132,7 @@ class QuickPayDialog : BottomSheetDialogFragment(), PaymentResultWithDataListene
                         it
                     )
                 }?.let { it1 -> createOrder(it1) }
+
 //                findNavController().navigate(R.id.quickPayMainFrag)
             }
 
@@ -144,41 +145,31 @@ class QuickPayDialog : BottomSheetDialogFragment(), PaymentResultWithDataListene
                 "Pay INR ${dueLoans?.RebateAmount?.let { dueLoans?.InterestDue?.minus(it) }} fully"
         }
         onCLickRadio()
-
-        requireActivity()
-
-        val listener =object :PaymentResultWithDataListener{
-            override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
-                TODO("Not yet implemented")
-            }
-
-        }
     }
 
     private fun createOrder(amount: Double) {
         Log.d(TAG, "createOrder: ......$amount")
-        viewModel.createOrder(
+        (activity as MainActivity).commonViewModel.createOrder(
             reqCreateOrder = ReqCreateOrder(
                 amount = amount,
                 currency = "INR",
                 custId = AppSharedPref.getStringValue(CUSTOMER_ID).toString(),
                 notes = Notes("n_1_test", "n_2_test"),
-                receipt = "121221212"
+                receipt = "121221212",
             )
         )
-        viewModel.responseCreateOrder.observe(viewLifecycleOwner) {
+        (activity as MainActivity).commonViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.statusCode == "200") {
                     startPaymentFromRazorPay(it.data.amount.toString(), it.data.orderId)
+                    dismiss()
                 }
             }
         }
 
     }
+
+
 
     private fun startPaymentFromRazorPay(
         amount: String,
