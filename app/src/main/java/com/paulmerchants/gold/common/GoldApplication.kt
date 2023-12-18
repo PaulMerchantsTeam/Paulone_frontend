@@ -10,7 +10,7 @@ class GoldApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         try {
-            AppSharedPref.start(this)
+            AppSharedPref().start(this)
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -20,7 +20,10 @@ import com.paulmerchants.gold.databinding.ActivityMainBinding
 import com.paulmerchants.gold.databinding.HeaderLayoutBinding
 import com.paulmerchants.gold.model.newmodel.StatusPayment
 import com.paulmerchants.gold.security.SecureFiles
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
@@ -39,7 +42,9 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
     lateinit var navOptionTop: NavOptions
     lateinit var navController: NavController
     lateinit var secureFiles: SecureFiles
-     val commonViewModel: CommonViewModel by viewModels()
+    var appSharedPref: AppSharedPref? = null
+    val commonViewModel: CommonViewModel by viewModels()
+    var amount: Double? = null   //will assign dynamically...
 
     companion object {
         lateinit var context: WeakReference<Context>
@@ -51,6 +56,8 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        appSharedPref = AppSharedPref()
+        appSharedPref?.start(this)
         context = WeakReference(this)
 //        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         AppUtility.changeStatusBarWithReqdColor(this, R.color.splash_screen_two)
@@ -86,7 +93,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
                 destination.id == R.id.mainScreenFrag ||
                 destination.id == R.id.homeScreenFrag ||
 //                destination.id == R.id.goldLoanScreenFrag ||
-                destination.id == R.id.billsAndMoreScreenFrag ||
+//                destination.id == R.id.billsAndMoreScreenFrag ||
 //                destination.id == R.id.locateUsFrag ||
                 destination.id == R.id.menuScreenFrag
             ) {
@@ -107,13 +114,13 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
                     true
                 }
 
-                R.id.billsAndMoreScreenFrag -> {
-                    navController.navigate(
-                        MainNavGraphDirections.actionToBillsAndMore(),
-                        navOptionTop
-                    )
-                    true
-                }
+//                R.id.billsAndMoreScreenFrag -> {
+//                    navController.navigate(
+//                        MainNavGraphDirections.actionToBillsAndMore(),
+//                        navOptionTop
+//                    )
+//                    true
+//                }
 
                 R.id.locateUsFrag -> {
 //                    navController.navigate(MainNavGraphDirections.actionToLocateUs())
@@ -124,13 +131,13 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
                     true
                 }
 
-                R.id.menuScreenFrag -> {
-                    navController.navigate(
-                        MainNavGraphDirections.actionToMenuScreen(),
-                        navOptionTop
-                    )
-                    true
-                }
+//                R.id.menuScreenFrag -> {
+//                    navController.navigate(
+//                        MainNavGraphDirections.actionToMenuScreen(),
+//                        navOptionTop
+//                    )
+//                    true
+//                }
 
                 else -> {
                     false
@@ -178,12 +185,37 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
             TAG,
             "onPaymentSuccess: ......$p0........${p1?.orderId}.....${p1?.paymentId}------${p1?.signature}"
         )
-        commonViewModel.paymentData.postValue(StatusPayment(true, p1))
+//        commonViewModel.paymentData.postValue(StatusPayment(true, p1))
+        updatePaymentStatusToServer(StatusPayment("captured", p1))
     }
 
     override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
-        Log.i(TAG, "onPaymentError: -----------$p0..${p2?.orderId}.....${p2?.paymentId}------${p2?.signature}")
-        commonViewModel.paymentData.postValue(StatusPayment(false, p2))
+        Log.i(
+            TAG,
+            "onPaymentError: -----------$p0.---$p1...${p2?.orderId}.....${p2?.paymentId}------${p2?.signature}"
+        )
+//      commonViewModel.paymentData.postValue(StatusPayment(false, p2))
+        updatePaymentStatusToServer(StatusPayment("not_captured", p2))
+    }
+
+    private fun updatePaymentStatusToServer(statusData: StatusPayment) {
+        Log.d(TAG, "updatePaymentStatusToServer: $amount....$statusData")
+        if (amount != null) {
+            amount?.let {
+                commonViewModel.updatePaymentStatus(
+                    appSharedPref = appSharedPref,
+                    status = statusData.status,
+                    razorpay_payment_id = statusData.paymentData?.paymentId.toString(),
+                    razorpay_order_id = statusData.paymentData?.orderId.toString(),
+                    razorpay_signature = statusData.paymentData?.signature.toString(),
+                    custId = appSharedPref?.getStringValue(Constants.CUSTOMER_ID).toString(),
+                    amount = amount,
+                    contactCount = 0, description ="desc_payment"
+                )
+            }
+        } else {
+            "Amount: Some thing went wrong".showSnackBar()
+        }
     }
 
 

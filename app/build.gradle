@@ -39,7 +39,8 @@ android {
         }
         debug {
 //            buildConfigField "String", "BASE_URL", "\"http://180.179.213.203:8020/api/\""
-            buildConfigField "String", "BASE_URL", "\"https://www.globedu.in/paulgoldv01/\""
+//            buildConfigField "String", "BASE_URL", "\"https://globedu.in/paulgoldv01/\""
+            buildConfigField "String", "BASE_URL", "\"https://paulmerchantsworld.com/paulgoldv01/\""
             buildConfigField "String", "SECRET_KEY", "\"MobApp#L0AnDeT@ils#SeCUretechpool*20&23\""
             buildConfigField "String", "SECRET_KEY_GEN", "\"09C427004E85E561ED607E0038946EBF\""
 //            buildConfigField "String", "PASSWORD", "\"usK5/InzkDZBowGuLZ2wNg==\""

@@ -30,6 +30,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -88,6 +89,17 @@ Note: These tags are need to be set under the TextView.
 
 object AppUtility {
     private lateinit var dialog: AlertDialog
+
+    fun ShimmerFrameLayout.showShimmer() {
+        startShimmer()
+        show()
+    }
+
+    fun ShimmerFrameLayout.hideShim() {
+        stopShimmer()
+        hideShimmer()
+        hide()
+    }
 
     fun getDeviceDetails() = DeviceDetailsDTO(
         BuildConfig.VERSION_NAME,
@@ -219,7 +231,7 @@ object AppUtility {
     }
 
     fun getFirstName(fullName: String?): String? {
-        return fullName?.substringBefore(" ")
+        return fullName?.first().toString()
     }
 
     fun getDateWithOrdinals(inputDate: String): String { //14th May
@@ -319,6 +331,7 @@ object AppUtility {
         println("Converted date: $outputDate")
         return outputDate
     }
+
     fun Fragment.showSnackBar(message: String) {
         val snakbar = this.view?.let {
             Snackbar.make(
@@ -333,6 +346,7 @@ object AppUtility {
         snackbarView.layoutParams = params
         snakbar.show()
     }
+
     fun BottomSheetDialogFragment.showSnackBar(message: String) {
         val snakbar = this.view?.let {
             Snackbar.make(

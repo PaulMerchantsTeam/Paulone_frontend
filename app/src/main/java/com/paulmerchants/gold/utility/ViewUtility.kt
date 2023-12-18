@@ -325,7 +325,7 @@ fun RecyclerView.setServicesUi(
     context: Context,
     onMenuServiceClicked: (MenuServices) -> Unit,
     onMenuServiceClickedTwo: (MenuServices) -> Unit,
-    onMenuServiceClickedTitle: (MenuServices) -> Unit
+    onMenuServiceClickedTitle: (MenuServices) -> Unit,
 ) {
     val menuServiceAdapter = MenuServicesAdapter(
         onMenuServiceClicked,

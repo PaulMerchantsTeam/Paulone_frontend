@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.remote
 
+import com.itextpdf.text.PageSize
 import com.paulmerchants.gold.model.ReqCustomerOtpNew
 import com.paulmerchants.gold.model.ReqSetMPin
 import com.paulmerchants.gold.model.RespSetMpin
@@ -12,6 +13,7 @@ import com.paulmerchants.gold.model.newmodel.ReqComplaintRaise
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
 import com.paulmerchants.gold.model.newmodel.ReqGetLoanStatement
+import com.paulmerchants.gold.model.newmodel.ReqResetPin
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
@@ -27,11 +29,16 @@ import retrofit2.http.Query
 
 interface ApiParams {
 
-
     @POST("auth/pml-login")
     suspend fun getLogin(
         @Body login: LoginReqNew,
     ): Response<LoginNewResp>
+
+
+    @POST("auth/logout")
+    suspend fun logOut(
+        @Header("Authorization") Authorization: String,
+    ): Response<RespCommon>
 
     @POST("api/CustomerInfo")
     suspend fun getCustomer(
@@ -56,6 +63,13 @@ interface ApiParams {
         @Header("Authorization") Authorization: String,
         @Body reqSetMPin: ReqSetMPin,
     ): Response<RespSetMpin>
+
+    @POST("api/reset-mpin")
+    suspend fun reSetMPin(
+        @Header("Authorization") Authorization: String,
+        @Body reqResetPin: ReqResetPin,
+    ): Response<RespCommon>
+
 
     @POST("api/get-pending-interest-dues") // GetPendingInrstDueResp
     suspend fun getPendingInterestDues(
@@ -87,7 +101,7 @@ interface ApiParams {
     @POST("payments/payment/success/{amount}/{contactCount}/{companyName}/{currency}/{description}")   //RespLoanDueDate
     suspend fun updatePaymentStatus(
         @Header("Authorization") auth: String,
-        @Path("amount") amount: Double,
+        @Path("amount") amount: Double?,
         @Path("contactCount") contactCount: Int,
         @Path("companyName") companyName: String,
         @Path("currency") currency: String,
@@ -98,7 +112,7 @@ interface ApiParams {
         @Query("razorpay_signature") razorpaySignature: String,
         @Query("custId") custId: String,
         @Query("acNo") acNo: String,
-        @Query("makerId") makerId: String ,
+        @Query("makerId") makerId: String,
         @Query("macID") macID: String,
         @Body deviceDetailsDTO: DeviceDetailsDTO,
     ): Response<*>
@@ -174,6 +188,27 @@ interface ApiParams {
     @GET("complaint/getAllComplaints")   //
     suspend fun getAllComplaint(
         @Header("Authorization") auth: String,
+    ): Response<RespCommon>
+
+    @GET("branch/all")   //
+    suspend fun fetchAllBranch(
+        @Header("Authorization") auth: String,
+    ): Response<RespCommon>
+
+
+    @POST("payments/transaction-history/{custId}")   //
+    suspend fun txnHistory(
+        @Header("Authorization") auth: String,
+        @Path("custId") custId: String,
+    ): Response<RespCommon>
+
+    @GET("/branch/search-by-branch-name/Paul Merchants")   //
+    suspend fun searchBranch(
+        @Header("Authorization") auth: String,
+        @Query("pageNumber") pageNumber: String,
+        @Query("pageSize") pageSize: String,
+        @Query("sortBy") sortBy: String,
+        @Query("sortDir") sortDir: String,
     ): Response<RespCommon>
 
 }

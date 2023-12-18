@@ -28,10 +28,10 @@ import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.common.Constants.OTP_VERIFIED
 import com.paulmerchants.gold.common.Constants.SIGNUP_DONE
 import com.paulmerchants.gold.databinding.PhoneAuthFragmentBinding
-import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.*
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.diffColorText
+import com.paulmerchants.gold.utility.Constants.IS_LOGOUT
 import com.paulmerchants.gold.viewmodels.AuthViewModel
 import com.paulmerchants.gold.viewmodels.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,59 +74,60 @@ class PhoenNumVerifiactionFragment :
     override fun PhoneAuthFragmentBinding.initialize() {
         changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
         pinValue = arguments?.getInt("ProfileChangePin", 0)
+        Log.d("TAG", "initialize: ........${arguments?.getBoolean(IS_LOGOUT, false)}")
+        authViewModel.isFrmLogout = arguments?.getBoolean(IS_LOGOUT, false)
     }
 
     override fun onStart() {
         super.onStart()
+        val backStack = findNavController().backQueue
+        for (i in backStack) {
+            Log.d(
+                "TAG", "STACK__COUNT_NAME: ...${i.id}..--------.${i.destination.displayName}"
+            )
+        }
+        if (authViewModel.isFrmLogout == true) {
+            (activity as MainActivity).commonViewModel.getLogin2((activity as MainActivity).appSharedPref)
+        }
         //Welcome to Paul Gold,
         //we are happy to serve you!!
         callMpinNextFocus()
         callMpinConfirmNextFocus()
-        AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)?.let {
-            if (it != "") {
-                binding.signUpParentMain.etName.apply {
-                    setText(it)
-                    isEnabled = false
+        (activity as MainActivity).appSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)
+            ?.let {
+                if (it != "") {
+                    binding.signUpParentMain.etName.apply {
+                        setText(it)
+                        isEnabled = false
+                    }
                 }
             }
-        }
         binding.signUpParentMain.signUpBtn.setOnClickListener {
             binding.enterPhoneNumMain.hide()
             println(
                 "-----------ggggggg---------${
-                    binding.signUpParentMain.etName.text.isNotEmpty()
-                            && binding.signUpParentMain.etEmailId.text.isNotEmpty()
-                            && binding.signUpParentMain.mpinOneEt.text.isNotEmpty()
-                            && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty()
-                            && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty()
-                            && binding.signUpParentMain.mpinFourEt.text.isNotEmpty()
-                            && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty()
-                            && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty()
-                            && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty()
-                            && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty()
-                            && binding.signUpParentMain.termsCb.isChecked
+                    binding.signUpParentMain.etName.text.isNotEmpty() && binding.signUpParentMain.etEmailId.text.isNotEmpty() && binding.signUpParentMain.mpinOneEt.text.isNotEmpty() && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinFourEt.text.isNotEmpty() && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty() && binding.signUpParentMain.termsCb.isChecked
                 }"
             )
-            if ((binding.signUpParentMain.etName.text.isNotEmpty()
-                        && binding.signUpParentMain.etEmailId.text.isNotEmpty()
-                        && binding.signUpParentMain.mpinOneEt.text.isNotEmpty()
-                        && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty()
-                        && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty()
-                        && binding.signUpParentMain.mpinFourEt.text.isNotEmpty()
-                        && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty()
-                        && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty()
-                        && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty()
-                        && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty()) && binding.signUpParentMain.termsCb.isChecked
-            ) {
-                val confirmPin = (binding.signUpParentMain.mpinOneConfirmEt.text.toString()  + binding.signUpParentMain.mpinConfirmTwoEt.text.toString() + binding.signUpParentMain.mpinConfirmThreeEt.text.toString() + binding.signUpParentMain.mpinConfirmFourEt.text.toString())
-                val mPin = (binding.signUpParentMain.mpinOneEt.text.toString()  + binding.signUpParentMain.mpinTwoEt.text.toString() + binding.signUpParentMain.mpinThreeEt.text.toString() + binding.signUpParentMain.mpinFourEt.text.toString())
-                authViewModel.setMpin(binding.etPhoenNum.text.toString(),confirmPin,mPin,requireContext(),binding.signUpParentMain.etEmailId.text.toString())
+            if ((binding.signUpParentMain.etName.text.isNotEmpty() && binding.signUpParentMain.etEmailId.text.isNotEmpty() && binding.signUpParentMain.mpinOneEt.text.isNotEmpty() && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinFourEt.text.isNotEmpty() && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty()) && binding.signUpParentMain.termsCb.isChecked) {
+                val confirmPin =
+                    (binding.signUpParentMain.mpinOneConfirmEt.text.toString() + binding.signUpParentMain.mpinConfirmTwoEt.text.toString() + binding.signUpParentMain.mpinConfirmThreeEt.text.toString() + binding.signUpParentMain.mpinConfirmFourEt.text.toString())
+                val mPin =
+                    (binding.signUpParentMain.mpinOneEt.text.toString() + binding.signUpParentMain.mpinTwoEt.text.toString() + binding.signUpParentMain.mpinThreeEt.text.toString() + binding.signUpParentMain.mpinFourEt.text.toString())
+                authViewModel.setMpin(
+                    (activity as MainActivity).appSharedPref,
+                    binding.etPhoenNum.text.toString(),
+                    confirmPin,
+                    mPin,
+                    requireContext(),
+                    binding.signUpParentMain.etEmailId.text.toString()
+                )
 
             } else {
 
             }
         }
-        if (AppSharedPref.getBooleanValue(OTP_VERIFIED)) {
+        if ((activity as MainActivity).appSharedPref?.getBooleanValue(OTP_VERIFIED) == true) {
             binding.fillOtpParent.hideView()
             binding.signUpParentMain.root.show()
         }
@@ -142,16 +143,20 @@ class PhoenNumVerifiactionFragment :
                 createMpinAndSuccessMain.setUpMPinParent.show()
                 createMpinAndSuccessMain.finalSIgnUpParent.hide()
                 hideAndShowOtpView()
+                callMpinNextFocus()
+                callMpinConfirmNextFocus()
             }
-        } else diffColorText(
-            "Welcome to Paul Gold,\nwe are",
-            "happy",
-            "to serve you!!",
-            "",
-            "",
-            "",
-            binding.titleWelcomTv
-        )
+        } else {
+            diffColorText(
+                "Welcome to Paul Gold,\nwe are",
+                "happy",
+                "to serve you!!",
+                "",
+                "",
+                "",
+                binding.titleWelcomTv
+            )
+        }
         authViewModel.isCustomerExist.observe(viewLifecycleOwner) {
             it?.let {
                 hideAndShowOtpView()
@@ -173,14 +178,13 @@ class PhoenNumVerifiactionFragment :
                     binding.mainPgCons.cirStreakTimePg.endProgress(requireContext())
                     binding.mainPgCons.progessTv.apply {
                         setTColor(
-                            getString(R.string.verified),
-                            requireContext(), R.color.green_verified
+                            getString(R.string.verified), requireContext(), R.color.green_verified
                         )
                     }
                     delay(1000)
                 }
                 isOtpVerified = true
-                AppSharedPref.putBoolean(OTP_VERIFIED, isOtpVerified)
+                (activity as MainActivity).appSharedPref?.putBoolean(OTP_VERIFIED, isOtpVerified)
                 hideAndShowSignUpScreen()
             }
         }
@@ -188,7 +192,11 @@ class PhoenNumVerifiactionFragment :
         binding.proceedAuthBtn.setOnClickListener {
             if (!isMobileEntered) {
                 if (binding.etPhoenNum.text.isNotEmpty()) {
-                    authViewModel.getCustomer(binding.etPhoenNum.text.toString(), requireContext())
+                    authViewModel.getCustomer(
+                        (activity as MainActivity).appSharedPref,
+                        binding.etPhoenNum.text.toString(),
+                        requireContext()
+                    )
                 }
             } else {
                 if (binding.otpOneEt.text.isNotEmpty() && binding.otpTwoEt.text.isNotEmpty() && binding.otpThreeEt.text.isNotEmpty() && binding.otpFourEt.text.isNotEmpty()) {
@@ -200,8 +208,13 @@ class PhoenNumVerifiactionFragment :
                      * Currently setting OTP 0808...
                      */
 
-                    if(otp.isNotEmpty()){
-                        authViewModel.verifyOtp(binding.etPhoenNum.text.toString(),otp,requireContext())
+                    if (otp.isNotEmpty()) {
+                        authViewModel.verifyOtp(
+                            (activity as MainActivity).appSharedPref,
+                            binding.etPhoenNum.text.toString(),
+                            otp,
+                            requireContext()
+                        )
 
                     }
 
@@ -219,7 +232,7 @@ class PhoenNumVerifiactionFragment :
 //                            delay(1000)
 //                        }
 //                        isOtpVerified = true
-//                        AppSharedPref.putBoolean(OTP_VERIFIED, isOtpVerified)
+//                        (activity as MainActivity).appSharedPref?.putBoolean(OTP_VERIFIED, isOtpVerified)
 //                        hideAndShowSignUpScreen()
 //                    } else {
 //                        Toast.makeText(
@@ -303,14 +316,15 @@ class PhoenNumVerifiactionFragment :
         customizeText()
         callMpinNextFocus()
         callMpinConfirmNextFocus()
-        AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)?.let {
-            if (it != "") {
-                binding.signUpParentMain.etName.apply {
-                    setText(it)
-                    isEnabled = false
+        (activity as MainActivity).appSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)
+            ?.let {
+                if (it != "") {
+                    binding.signUpParentMain.etName.apply {
+                        setText(it)
+                        isEnabled = false
+                    }
                 }
             }
-        }
         binding.signUpParentMain.googleSignInTv.setOnClickListener {
             //flow_remaining...
             googleSignUpScreen()
@@ -319,17 +333,13 @@ class PhoenNumVerifiactionFragment :
     }
 
     private fun signInWithSaveCredential() {
-        signInRequest = BeginSignInRequest.builder()
-            .setGoogleIdTokenRequestOptions(
-                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                    .setSupported(true)
-                    // Your server's client ID, not your Android client ID.
+        signInRequest = BeginSignInRequest.builder().setGoogleIdTokenRequestOptions(
+            BeginSignInRequest.GoogleIdTokenRequestOptions.builder().setSupported(true)
+                // Your server's client ID, not your Android client ID.
 //                    .setServerClientId(getString(R.string.your_web_client_id))
-                    // Only show accounts previously used to sign in.
-                    .setFilterByAuthorizedAccounts(true)
-                    .build()
-            )
-            .build()
+                // Only show accounts previously used to sign in.
+                .setFilterByAuthorizedAccounts(true).build()
+        ).build()
     }
 
 
@@ -381,9 +391,7 @@ class PhoenNumVerifiactionFragment :
                 delay(1000)
                 binding.mainPgCons.progessTv.apply {
                     setTColor(
-                        getString(R.string.verified),
-                        requireContext(),
-                        R.color.green_verified
+                        getString(R.string.verified), requireContext(), R.color.green_verified
                     )
                 }
                 binding.mainPgCons.cirStreakTimePg.endProgress(requireContext())
@@ -406,12 +414,13 @@ class PhoenNumVerifiactionFragment :
             "finally",
             "done, welcome",
             " home ",
-            " user . We are glad to have ", "you with us ",
+            " user . We are glad to have ",
+            "you with us ",
             binding.createMpinAndSuccessMain.finallySignUpDoneTv
         )
 
         binding.createMpinAndSuccessMain.root.show()
-        AppSharedPref.putBoolean(SIGNUP_DONE, true)
+        (activity as MainActivity).appSharedPref?.putBoolean(SIGNUP_DONE, true)
         lifecycleScope.launchWhenCreated {
             delay(2000)
             findNavController().popBackStack(R.id.phoenNumVerifiactionFragment, true)
@@ -507,8 +516,7 @@ class PhoenNumVerifiactionFragment :
         )
         binding.signUpParentMain.mpinFourEt.addTextChangedListener(
             GenericTextWatcher(
-                binding.signUpParentMain.mpinFourEt,
-                null
+                binding.signUpParentMain.mpinFourEt, null
             )
         )
 
@@ -516,26 +524,22 @@ class PhoenNumVerifiactionFragment :
         //first parameter is the current EditText and second parameter is previous EditText
         binding.signUpParentMain.mpinOneEt.setOnKeyListener(
             GenericKeyEvent(
-                binding.signUpParentMain.mpinOneEt,
-                null
+                binding.signUpParentMain.mpinOneEt, null
             )
         )
         binding.signUpParentMain.mpinTwoEt.setOnKeyListener(
             GenericKeyEvent(
-                binding.signUpParentMain.mpinTwoEt,
-                binding.signUpParentMain.mpinOneEt
+                binding.signUpParentMain.mpinTwoEt, binding.signUpParentMain.mpinOneEt
             )
         )
         binding.signUpParentMain.mpinThreeEt.setOnKeyListener(
             GenericKeyEvent(
-                binding.signUpParentMain.mpinThreeEt,
-                binding.signUpParentMain.mpinTwoEt
+                binding.signUpParentMain.mpinThreeEt, binding.signUpParentMain.mpinTwoEt
             )
         )
         binding.signUpParentMain.mpinFourEt.setOnKeyListener(
             GenericKeyEvent(
-                binding.signUpParentMain.mpinFourEt,
-                binding.signUpParentMain.mpinThreeEt
+                binding.signUpParentMain.mpinFourEt, binding.signUpParentMain.mpinThreeEt
             )
         )
     }
@@ -562,8 +566,7 @@ class PhoenNumVerifiactionFragment :
         )
         binding.signUpParentMain.mpinFourEt.addTextChangedListener(
             GenericTextWatcher(
-                binding.signUpParentMain.mpinConfirmFourEt,
-                null
+                binding.signUpParentMain.mpinConfirmFourEt, null
             )
         )
 
@@ -571,14 +574,12 @@ class PhoenNumVerifiactionFragment :
         //first parameter is the current EditText and second parameter is previous EditText
         binding.signUpParentMain.mpinOneConfirmEt.setOnKeyListener(
             GenericKeyEvent(
-                binding.signUpParentMain.mpinOneConfirmEt,
-                null
+                binding.signUpParentMain.mpinOneConfirmEt, null
             )
         )
         binding.signUpParentMain.mpinConfirmTwoEt.setOnKeyListener(
             GenericKeyEvent(
-                binding.signUpParentMain.mpinConfirmTwoEt,
-                binding.signUpParentMain.mpinOneConfirmEt
+                binding.signUpParentMain.mpinConfirmTwoEt, binding.signUpParentMain.mpinOneConfirmEt
             )
         )
         binding.signUpParentMain.mpinConfirmThreeEt.setOnKeyListener(

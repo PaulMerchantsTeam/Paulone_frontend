@@ -6,7 +6,7 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.paulmerchants.gold.common.Constants.SHARED_PREF_FILE
 
-object AppSharedPref {
+class AppSharedPref {
     private val mainKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
     private lateinit var preferences: SharedPreferences
 

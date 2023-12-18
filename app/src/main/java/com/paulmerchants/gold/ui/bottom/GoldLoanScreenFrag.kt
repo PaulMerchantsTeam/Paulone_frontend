@@ -13,6 +13,7 @@ import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.GoldLoanScreenFragmentBinding
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
+import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
@@ -107,7 +108,7 @@ class GoldLoanScreenFrag :
                 binding.ttlAmountNumTv.text = "INR 0"
             }
         }
-        commonViewModel.getLoanOutstanding()
+        commonViewModel.getLoanOutstanding((activity as MainActivity).appSharedPref)
         commonViewModel.getRespGetLoanOutStandingLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.size != 0) {

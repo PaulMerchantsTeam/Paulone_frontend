@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/billsAndMoreScreenFrag"
-        android:icon="@drawable/bbps"
-        android:title="@string/bills_amp_more"
-        />
+<!--    <item-->
+<!--        android:id="@+id/billsAndMoreScreenFrag"-->
+<!--        android:icon="@drawable/bbps"-->
+<!--        android:title="@string/bills_amp_more"-->
+<!--        />-->
     <item
         android:id="@+id/goldLoanScreenFrag"
         android:icon="@drawable/gold_both_icon"
@@ -19,8 +19,8 @@
         android:id="@+id/locateUsFrag"
         android:icon="@drawable/locate_both_icon"
         android:title="@string/locate_us" />
-    <item
-        android:id="@+id/menuScreenFrag"
-        android:icon="@drawable/menu_both_icon"
-        android:title="@string/menu" />
+<!--    <item-->
+<!--        android:id="@+id/menuScreenFrag"-->
+<!--        android:icon="@drawable/menu_both_icon"-->
+<!--        android:title="@string/menu" />-->
 </menu>

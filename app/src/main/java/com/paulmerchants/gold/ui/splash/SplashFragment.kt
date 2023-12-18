@@ -31,14 +31,17 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
     override fun SplashFragmentBinding.initialize() {
         AppUtility.changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
 
-        if (AppSharedPref.getBooleanValue(SIGNUP_DONE) || AppSharedPref.getBooleanValue(LOGIN_DONE)) {
+        if ((activity as MainActivity).appSharedPref?.getBooleanValue(SIGNUP_DONE) == true || (activity as MainActivity).appSharedPref?.getBooleanValue(
+                LOGIN_DONE
+            ) == true
+        ) {
             findNavController().popBackStack(R.id.splashFragment, true)
             findNavController().navigate(
                 R.id.homeScreenFrag,
                 null,
                 (activity as MainActivity).navOption
             )
-        } else if (AppSharedPref.getBooleanValue(SPLASH_SCRN_VISITED)) {
+        } else if ((activity as MainActivity).appSharedPref?.getBooleanValue(SPLASH_SCRN_VISITED) == true) {
             findNavController().popBackStack(R.id.splashFragment, true)
             findNavController().navigate(R.id.phoenNumVerifiactionFragment)
         } else {
@@ -70,7 +73,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
 //                )
                 lifecycleScope.launch {
                     delay(600)
-                    AppSharedPref.putBoolean(SPLASH_SCRN_VISITED, true)
+                    (activity as MainActivity).appSharedPref?.putBoolean(SPLASH_SCRN_VISITED, true)
                     findNavController().navigate(
                         R.id.phoenNumVerifiactionFragment,
                         null,
@@ -165,7 +168,6 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 }
             }
         }
-
     }
 
     private fun updateTopCounter() {
@@ -181,7 +183,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         delay(1000)
         try {
             AppUtility.progressBarAlert()
-            splashViewModel.getLogin2()
+            splashViewModel.getLogin2((activity as MainActivity).appSharedPref)
         } catch (e: Exception) {
             e.printStackTrace()
         }

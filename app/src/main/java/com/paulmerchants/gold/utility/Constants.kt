@@ -6,4 +6,6 @@ object Constants {
     const val CUSTOMER_ID = "CUSTOMER_ID"
     const val ACC_NUM = "ACC_NUM"
     const val CUSTOMER_NAME = "CUSTOMER_NAME"
+    const val CUST_MOBILE = "CUST_MOBILE"
+    const val IS_LOGOUT = "IS_LOGOUT"
 }

@@ -22,16 +22,15 @@ class RaiseComplaint : BaseFragment<RegisterComplaintBinding>(RegisterComplaintB
         handleClicks()
 
     }
-    private fun handleClicks(){
+
+    private fun handleClicks() {
         binding.apply {
             getOtpBtn.setOnClickListener {
                 showCustomDialogOTPVerify(requireContext())
-
                 RegisterComplaintParent.show()
                 getOtpBtn.hide()
                 submitBtn.show()
                 trackComplaint.show()
-
             }
             submitBtn.setOnClickListener {
                 ComplaintSuccessFullyRegisterParent.show()

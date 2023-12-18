@@ -12,6 +12,7 @@ import com.paulmerchants.gold.databinding.LoanStatementBinding
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.model.RespLoanStatment
 import com.paulmerchants.gold.security.SecureFiles
+import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.getScreenBitmap
 import com.paulmerchants.gold.utility.AppUtility.saveAsPdf
@@ -44,7 +45,7 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
         val fromDate = AppUtility.getCurrentDate()
         val toDate = ""
 
-        commonViewModel.getLoanClosureReceipt(loanOutStanding?.AcNo.toString())
+        commonViewModel.getLoanClosureReceipt((activity as MainActivity).appSharedPref,loanOutStanding?.AcNo.toString())
         commonViewModel.getRespClosureReceiptLiveData.observe(viewLifecycleOwner) {
             it?.let {
 
@@ -52,6 +53,7 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
         }
         //opening date to till now.
         commonViewModel.getLoanStatement(
+            (activity as MainActivity).appSharedPref,
             loanOutStanding?.AcNo.toString(),
             loanOutStanding?.OpenDate.toString(),
             fromDate,

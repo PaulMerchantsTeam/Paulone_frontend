@@ -43,8 +43,10 @@ import com.paulmerchants.gold.adapter.MapLocationAdapter
 import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.databinding.ActivityMapBinding
 import com.paulmerchants.gold.place.BitmapHelper
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.viewmodels.CommonViewModel
+import com.paulmerchants.gold.viewmodels.MapViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import java.util.*
@@ -56,7 +58,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
     override fun getViewBinding() = ActivityMapBinding.inflate(layoutInflater)
     private var cityName: String = ""
     private val mapLocationAdapter = MapLocationAdapter(::OnLocationClicked)
-
+    private val mapViewModel: MapViewModel by viewModels()
     private fun OnLocationClicked(place: com.paulmerchants.gold.place.Place) {
         val pm22 = LatLng(place.lat, place.lng)
         Log.d(TAG, "addMarkers: $pm22")
@@ -95,11 +97,18 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
     private var likelyPlaceAddresses: Array<String?> = arrayOfNulls(0)
     private var likelyPlaceAttributions: Array<List<*>?> = arrayOfNulls(0)
     private var likelyPlaceLatLngs: Array<LatLng?> = arrayOfNulls(0)
+    private lateinit var appSharedPref: AppSharedPref
     override val mViewModel: CommonViewModel by viewModels()
 
     // [START maps_current_place_on_create]
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        appSharedPref = AppSharedPref()
+        appSharedPref.start(this)
+
+        mapViewModel.getBranchLocation(appSharedPref)
+
         mViewModel.placesLive.observe(this) {
             it?.let {
                 Log.d(TAG, "onCreate: .....${it.size}")
@@ -174,6 +183,8 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
     override fun onStart() {
         super.onStart()
         AppUtility.changeStatusBarWithReqdColor(this, R.color.splash_screen_two)
+
+
 
         binding.searchCity.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {

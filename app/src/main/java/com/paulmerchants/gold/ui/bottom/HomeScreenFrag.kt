@@ -6,12 +6,10 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
-import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MoreToComeAdapter
 import com.paulmerchants.gold.adapter.PrePaidCardAdapter
@@ -28,23 +26,18 @@ import com.paulmerchants.gold.model.OurServices
 import com.paulmerchants.gold.model.PrepaidCardModel
 import com.paulmerchants.gold.model.newmodel.StatusPayment
 import com.paulmerchants.gold.security.SecureFiles
-import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.hideShim
+import com.paulmerchants.gold.utility.AppUtility.showShimmer
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.setUiOnHomeSweetHomeBills
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.utility.startCustomAnimation
-import com.paulmerchants.gold.viewmodels.CommonViewModel
-import com.razorpay.Checkout
-import com.razorpay.PaymentData
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import org.json.JSONObject
 
 
 @AndroidEntryPoint
@@ -77,6 +70,19 @@ class HomeScreenFrag :
 
     override fun onStart() {
         super.onStart()
+        (activity as MainActivity).commonViewModel.getTxnHistory((activity as MainActivity).appSharedPref)
+        Log.d(
+            TAG,
+            "onStart: .......MOBILE-----....${
+                (activity as MainActivity).appSharedPref?.getStringValue(
+                    Constants.CUST_MOBILE,
+                )
+            }-------------------$.${
+                (activity as MainActivity).appSharedPref?.getStringValue(
+                    Constants.CUSTOMER_NAME,
+                )
+            }"
+        )
 
 //        commonViewModel.getLogin(secureFiles)
         setProfileUi()
@@ -95,20 +101,20 @@ class HomeScreenFrag :
             }
         }
 
-        (activity as MainActivity).commonViewModel.paymentData.observe(viewLifecycleOwner) {
-            Log.d(TAG, "ojnnnnnnn: /............$it")
-            it?.let {
-                if (it.status) {
-                    updatePaymentStatusToServer(it)
-                }
-            }
-        }
+//        (activity as MainActivity).commonViewModel.paymentData.observe(viewLifecycleOwner) {
+//            Log.d(TAG, "ojnnnnnnn: /............$it")
+//            it?.let {
+//                if (it.status) {
+//                    updatePaymentStatusToServer(it)
+//                }
+//            }
+//        }
 
         (activity as MainActivity).commonViewModel.respPaymentUpdate.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.status == "200") {
                     Log.d(TAG, "ojnnnnnn: /.................$it")
-                    (activity as MainActivity).commonViewModel.getPendingInterestDues()
+//                    (activity as MainActivity).commonViewModel.getPendingInterestDues()
                 }
             }
         }
@@ -131,16 +137,13 @@ class HomeScreenFrag :
         (activity as MainActivity).commonViewModel.isStartAnim.postValue(null)
     }
 
-    private fun showHideLoadinf() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            binding.shimmmerParent.startShimmer()
-            delay(2000)
-            binding.shimmmerParent.hideShimmer()
-            binding.shimmmerParent.hide()
-            binding.rvUpcomingDueLoans.show()
-        }
+//    private fun showHideLoadinf() {
+//        binding.shimmmerParent.startShimmer()
+//        binding.shimmmerParent.hideShimmer()
+//        binding.shimmmerParent.hide()
+//        binding.rvUpcomingDueLoans.show()
+//    }
 
-    }
 
     private fun setUpBanner() {
         moreToComeAdapter.submitList(bannerList)
@@ -178,9 +181,14 @@ class HomeScreenFrag :
     }
 
     private fun setProfileUi() {
-        AppSharedPref.putStringValue(Constants.CUSTOMER_NAME, "User")
+        (activity as MainActivity).appSharedPref?.putStringValue(Constants.CUSTOMER_NAME, "User")
         val userFirstName =
-            AppUtility.getFirstName(AppSharedPref.getStringValue(Constants.CUSTOMER_NAME))
+            AppUtility.getFirstName(
+                (activity as MainActivity).appSharedPref?.getStringValue(
+                    Constants.CUSTOMER_NAME
+                )
+            )
+        Log.d(TAG, "setProfileUi: ...............$userFirstName")
         binding.searchProfileParent.userName.text = "Hey ${userFirstName ?: "User"}"
         binding.searchProfileParent.firtLetterUser.text = "${userFirstName?.first() ?: "U"}"
         (activity as MainActivity).commonViewModel.isStartAnim.observe(viewLifecycleOwner) {
@@ -368,18 +376,22 @@ class HomeScreenFrag :
 
     }
 
-    private fun updatePaymentStatusToServer(statusData: StatusPayment) {
-        Log.d(TAG, "updatePaymentStatusToServer: ....$statusData")
-        (activity as MainActivity).commonViewModel.updatePaymentStatus(
-            status = if (statusData.status) "success" else "fail",
-            statusData.paymentData?.paymentId.toString(),
-            statusData.paymentData?.orderId.toString(),
-            statusData.paymentData?.signature.toString(),
-            amount = 100.00,
-            contactCount = 0,
-            description = "test___"
-        )
-    }
+    /*    private fun updatePaymentStatusToServer(statusData: StatusPayment) {
+            Log.d(TAG, "updatePaymentStatusToServer: ....$statusData")
+            (activity as MainActivity).commonViewModel.updatePaymentStatus(
+                (activity as MainActivity).appSharedPref,
+                status = statusData.status,
+                razorpay_payment_id = statusData.paymentData?.paymentId.toString(),
+                razorpay_order_id = statusData.paymentData?.orderId.toString(),
+                razorpay_signature = statusData.paymentData?.signature.toString(),
+                custId = (activity as MainActivity).appSharedPref?.getStringValue(Constants.CUSTOMER_ID)
+                    .toString(),
+                amount = 100.00,
+                contactCount = 0,
+                description = "test___"
+            )
+            }
+        */
 
 
     private fun animateHintEditText() {
@@ -492,7 +504,7 @@ class HomeScreenFrag :
     }
 
     private fun setUpComingDueLoans() {
-        showHideLoadinf()
+        binding.shimmmerParent.showShimmer()
 //        val currentDate = AppUtility.getCurrentDate()
 //        Log.d(TAG, "setUpComingDueLoans: ..currentDate..$currentDate")
 //        Log.d(
@@ -505,7 +517,10 @@ class HomeScreenFrag :
 //        val encDate = secureFiles.encryptKey(
 //            currentDate, BuildConfig.SECRET_KEY_GEN
 //        )
-        (activity as MainActivity).commonViewModel.getPendingInterestDues()
+//        if (!(activity as MainActivity).commonViewModel.isCalled) {
+        (activity as MainActivity).commonViewModel.getPendingInterestDues((activity as MainActivity).appSharedPref)
+//            (activity as MainActivity).commonViewModel.isCalled = true
+//        }
         (activity as MainActivity).commonViewModel.getPendingInterestDuesLiveData.observe(
             viewLifecycleOwner
         ) {
@@ -514,6 +529,8 @@ class HomeScreenFrag :
                     it.filter { it.InterestDue != 0.0000 }
                 upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
                 binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
+                binding.shimmmerParent.hideShim()
+                binding.rvUpcomingDueLoans.show()
                 setLoanOverView()
             }
         }
@@ -555,7 +572,7 @@ class HomeScreenFrag :
 //            loanOverViewCardParent.renewLoansTv.show()
             loanOverViewCardParent.youHaveTotalLoanTv.show()
         }
-        binding.shimmerCardLoanOverView.stopShimmer()
+        binding.shimmerCardLoanOverView.hideShim()
         binding.loanOverViewCardParent.root.show()
     }
 
@@ -563,66 +580,12 @@ class HomeScreenFrag :
         binding.apply {
             addCardBtn.setOnClickListener {
                 findNavController().navigate(R.id.addUpiCard)
-
             }
         }
     }
 
     private fun onBillClicked(actionItem: ActionItem) {
         AppUtility.onBillClicked(actionItem, findNavController())
-    }
-
-    fun createOrder() {
-        startPaymentFromRazorPay("", "")
-    }
-
-    private fun startPaymentFromRazorPay(
-        orderId: String,
-        callbaclUrl: String,
-    ) {
-        val amount: Double = 100.00
-
-
-        val checkout = Checkout()
-        checkout.setKeyID(BuildConfig.RAZORPAY_KEY)
-        try {
-            val options = JSONObject()
-//            if (paymentMethod == "upi") {
-//                if (validateUPI(upiEditText?.text.toString())) {
-//                    options.put("vpa", upiEditText?.text.toString())
-//                } else {
-//                    "UPI ID is not valid".showSnackBar(this)
-//                    return
-//                }
-//            }
-            options.put("name", "Paul Merchants")
-            options.put("description", "RefNo..")
-            options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png")
-            options.put("currency", "INR")
-            options.put("amount", amount.toString())
-            options.put("order_Id", orderId)
-//            options.put("method", paymentMethod);
-            val preFill = JSONObject()
-            preFill.put("email", "kprithvi26@gmail.com")
-            preFill.put("contact", "8968666401")
-            options.put("prefill", preFill)
-            options.put("theme", "#F9AC59")
-//            options.put("callback_url", callbaclUrl)
-            options.put("key", BuildConfig.RAZORPAY_KEY);
-//            options.put("method", JSONObject().put("upi", true))
-
-            Log.d(TAG, "startPaymentFromRazorPay: .......${options.toString()}")
-            checkout.open(requireActivity(), options)
-
-        } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Error in payment: " + e.message, Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
-
-    private fun sendPaymentStatusToServer(status: String, paymentData: PaymentData?) {
-        Log.d(TAG, "sendPaymentStatusToServer: ......$status")
-
     }
 
 

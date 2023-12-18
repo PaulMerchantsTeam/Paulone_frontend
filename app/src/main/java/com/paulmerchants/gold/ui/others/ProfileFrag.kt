@@ -12,16 +12,19 @@ import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.ProfileLayoutBinding
 import com.paulmerchants.gold.model.MenuServices
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
+import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.setServicesUi
 import com.paulmerchants.gold.viewmodels.CommonViewModel
+import com.paulmerchants.gold.viewmodels.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * {
+ *
+{
 "DisplayName": "SEEMA",
 "Photo":",
 "MobileNo": "8968059147",
@@ -35,7 +38,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inflate) {
 
-    private val commonViewModel: CommonViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
 
     override fun ProfileLayoutBinding.initialize() {
 
@@ -43,8 +46,17 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
 
     override fun onStart() {
         super.onStart()
-        commonViewModel.getCustomerDetails()
-        commonViewModel.getRespCustomersDetailsLiveData.observe(viewLifecycleOwner) {
+
+        val backStack = findNavController().backQueue
+        for (i in backStack) {
+            Log.d(
+                "TAG",
+                "STACK__COUNT_NAME: ...${i.id}..--------.${i.destination.displayName}"
+            )
+        }
+
+        (activity as MainActivity).appSharedPref?.let { profileViewModel.getCustomerDetails(it) }
+        profileViewModel.getRespCustomersDetailsLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 binding.nameUserTv.text = it.DisplayName ?: "NA"
                 binding.emailUserIv.text = it.MailingAddress ?: "NA"
@@ -97,7 +109,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                     putInt("ProfileChangePin", headerValue)
                 }
 
-                findNavController().navigate(R.id.phoenNumVerifiactionFragment, changePinBundle)
+                findNavController().navigate(R.id.resetMPinFrag)
             }
 
             101 -> {
@@ -110,6 +122,8 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
 
             104 -> {
 //playStore
+
+
             }
 
             105 -> {
@@ -136,12 +150,12 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
         when (menuServices.serviceId) {
             105 -> {
                 Log.d("TAG", "onMenuServiceClickedTitle: logoutClicked")
-                findNavController().navigate(R.id.phoenNumVerifiactionFragment)
-//                findNavController().navigateUp()
-                AppSharedPref.clearSharedPref()
+                profileViewModel.logout(
+                    findNavController(),
+                    appSharedPref = (activity as MainActivity).appSharedPref
+                )
             }
         }
     }
-
 
 }
