@@ -203,6 +203,7 @@
     <string name="add_upi_id_here">Add UPI ID here</string>
     <string name="save_this_upi_id_for_future_use">Save this UPI id for future use</string>
     <string name="verify_">Verify</string>
+    <string name="verify_pay">Verify &amp; Pay</string>
     <string name="pleas_payment">Please open the application connected with the UPI and make the payment</string>
     <string name="add_card">Add Card</string>
     <string name="by_adding_this">By adding this card, you agree to save it with Rupay for seamless future payments</string>
@@ -374,6 +375,7 @@
     <string name="reference_no">Reference No</string>
     <string name="transfer_type">Transfer type</string>
     <string name="transaction_id_cap">Transaction ID</string>
+    <string name="pay_through_upi">Pay through UPI</string>
     <string-array name="month">
         <item>January</item>
         <item>February</item>

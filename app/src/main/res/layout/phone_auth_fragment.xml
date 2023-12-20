@@ -178,7 +178,6 @@
             app:layout_constraintTop_toTopOf="@+id/otpTwoEt" />
 
 
-
         <EditText
             android:id="@+id/otpFourEt"
             android:layout_width="@dimen/_48sdp"
@@ -224,11 +223,11 @@
         android:backgroundTint="@color/color_prim_one_40"
         android:enabled="false"
         android:fontFamily="@font/poppins_medium"
+        android:paddingHorizontal="@dimen/_29sdp"
         android:text="@string/proceed"
         android:textColor="@color/yellow_main"
         android:textSize="@dimen/_9ssp"
         android:visibility="visible"
-        android:paddingHorizontal="@dimen/_29sdp"
         app:cornerRadius="@dimen/_1sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

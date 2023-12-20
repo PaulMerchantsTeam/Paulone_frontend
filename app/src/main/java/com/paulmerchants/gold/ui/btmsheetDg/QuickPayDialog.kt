@@ -19,6 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
+import com.paulmerchants.gold.common.Constants.CUST_ACC
 import com.paulmerchants.gold.databinding.QuickPayPopupBinding
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.newmodel.Notes
@@ -29,7 +30,7 @@ import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
-import com.razorpay.Checkout
+//import com.razorpay.Checkout
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -127,9 +128,17 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
-                        createOrder(
-                            quickPayPopupBinding.customPayEt.text.toString().toDouble()
-                        )
+                        val bundle = Bundle().apply {
+                            putDouble(
+                                "AMOUNT_PAYABLE",
+                                quickPayPopupBinding.customPayEt.text.toString().toDouble()
+                            )
+                            putString(CUST_ACC, dueLoans?.AcNo.toString())
+                        }
+                        findNavController().navigate(R.id.paymentModesFragNew, bundle)
+//                        createOrder(
+//                            quickPayPopupBinding.customPayEt.text.toString().toDouble()
+//                        )
 //                        dismiss()
 //                        findNavController().navigate(R.id.quickPayMainFrag)
                     }
@@ -140,88 +149,95 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                     dueLoans?.InterestDue?.minus(
                         it
                     )
-                }?.let { it1 -> createOrder(it1) }
+                }?.let { it1 ->
+                    val bundle = Bundle().apply {
+                        putDouble("AMOUNT_PAYABLE", it1)
+                        putString(CUST_ACC, dueLoans?.AcNo.toString())
+                    }
+                    findNavController().navigate(R.id.paymentModesFragNew, bundle)
+//                    createOrder(it1)
+                }
 
-//                findNavController().navigate(R.id.quickPayMainFrag)
+//
             }
 
         }
-        quickPayPopupBinding.chnagePayModeTv.setOnClickListener {
-            findNavController().navigate(R.id.paymentModesFrag)
-        }
+//        quickPayPopupBinding.chnagePayModeTv.setOnClickListener {
+//            findNavController().navigate(R.id.paymentModesFrag)
+//        }
         quickPayPopupBinding.apply {
             fullPayRadio.text =
                 "Pay INR ${dueLoans?.RebateAmount?.let { dueLoans?.InterestDue?.minus(it) }} fully"
         }
         onCLickRadio()
     }
-
-    private fun createOrder(amount: Double) {
-        Log.d(TAG, "createOrder: ......$amount")
-        (activity as MainActivity).commonViewModel.createOrder(
-            (activity as MainActivity).appSharedPref,
-            reqCreateOrder = ReqCreateOrder(
-                amount = amount,
-                currency = "INR",
-                custId = (activity as MainActivity).appSharedPref?.getStringValue(CUSTOMER_ID)
-                    .toString(),
-                notes = Notes("n_1_test", "n_2_test"),
-                receipt = "rec__",
+    /*
+        private fun createOrder(amount: Double) {
+            Log.d(TAG, "createOrder: ......$amount")
+            (activity as MainActivity).commonViewModel.createOrder(
+                (activity as MainActivity).appSharedPref,
+                reqCreateOrder = ReqCreateOrder(
+                    amount = amount,
+                    currency = "INR",
+                    custId = (activity as MainActivity).appSharedPref?.getStringValue(CUSTOMER_ID)
+                        .toString(),
+                    notes = Notes("n_1_test", "n_2_test"),
+                    receipt = "rec__",
+                )
             )
-        )
-        (activity as MainActivity).commonViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it.statusCode == "200") {
-                    (activity as MainActivity).amount = it.data.amount
-                    startPaymentFromRazorPay(it.data.amount*100, it.data.orderId)
-                    dismiss()
+            (activity as MainActivity).commonViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
+                it?.let {
+                    if (it.statusCode == "200") {
+                        (activity as MainActivity).amount = it.data.amount
+    //                    startPaymentFromRazorPay(it.data.amount * 100, it.data.orderId)
+                        dismiss()
+                    }
                 }
             }
-        }
 
-    }
+        }*/
 
 
-    private fun startPaymentFromRazorPay(
-        amount: Double,
-        orderId: String,
-    ) {
-        val checkout = Checkout()
-        checkout.setKeyID(BuildConfig.RAZORPAY_KEY)
-        try {
-            val options = JSONObject()
-//            if (paymentMethod == "upi") {
-//                if (validateUPI(upiEditText?.text.toString())) {
-//                    options.put("vpa", upiEditText?.text.toString())
-//                } else {
-//                    "UPI ID is not valid".showSnackBar(this)
-//                    return
-//                }
-//            }
-            options.put("name", "Paul Merchants")
-            options.put("description", "RefNo..")
-            options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png")
-            options.put("currency", "INR")
-            options.put("amount", amount)
-            options.put("order_Id", orderId)
-//            options.put("method", paymentMethod);
-            val preFill = JSONObject()
-            preFill.put("email", "kprithvi26@gmail.com")
-            preFill.put("contact", "8968666401")
-            options.put("prefill", preFill)
-            options.put("theme", "#F9AC59")
-//            options.put("callback_url", callbaclUrl)
-            options.put("key", BuildConfig.RAZORPAY_KEY);
-//            options.put("method", JSONObject().put("upi", true))
+    /*    private fun startPaymentFromRazorPay(
+            amount: Double,
+            orderId: String,
+        ) {
+            val checkout = Checkout()
+            checkout.setKeyID(BuildConfig.RAZORPAY_KEY)
+            try {
+                val options = JSONObject()
+    //            if (paymentMethod == "upi") {
+    //                if (validateUPI(upiEditText?.text.toString())) {
+    //                    options.put("vpa", upiEditText?.text.toString())
+    //                } else {
+    //                    "UPI ID is not valid".showSnackBar(this)
+    //                    return
+    //                }
+    //            }
+                options.put("name", "Paul Merchants")
+                options.put("description", "RefNo..")
+                options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png")
+                options.put("currency", "INR")
+                options.put("amount", amount)
+                options.put("order_Id", orderId)
+    //            options.put("method", paymentMethod);
+                val preFill = JSONObject()
+                preFill.put("email", "kprithvi26@gmail.com")
+                preFill.put("contact", "8968666401")
+                options.put("prefill", preFill)
+                options.put("theme", "#F9AC59")
+    //            options.put("callback_url", callbaclUrl)
+                options.put("key", BuildConfig.RAZORPAY_KEY);
+    //            options.put("method", JSONObject().put("upi", true))
 
-            Log.d(TAG, "startPaymentFromRazorPay: .......${options.toString()}")
-            checkout.open(requireActivity(), options)
+                Log.d(TAG, "startPaymentFromRazorPay: .......${options.toString()}")
+                checkout.open(requireActivity(), options)
 
-        } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Error in payment: " + e.message, Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Error in payment: " + e.message, Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }*/
 
     fun setAmount(amount: String) {
         quickPayPopupBinding.payingAMountText.text = "Pay INR $amount"

@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
+import com.paulmerchants.gold.common.Constants.AMOUNT_PAYABLE
 import com.paulmerchants.gold.databinding.LayoutLoanEmiProceedToPayBinding
 import com.paulmerchants.gold.utility.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 class ProceedToPay :
     BaseFragment<LayoutLoanEmiProceedToPayBinding>(LayoutLoanEmiProceedToPayBinding::inflate) {
     private var bbpsHeaderVale: String? = null
-
+    private var amountToPay: Double? = 0.0
     override fun LayoutLoanEmiProceedToPayBinding.initialize() {
 
     }
@@ -27,13 +28,16 @@ class ProceedToPay :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bbpsHeaderVale = arguments?.getString(Constants.BBPS_HEADER, "")
-        Log.d("TAGHeader", "onCreate: $bbpsHeaderVale")
-
+        amountToPay = arguments?.getDouble(AMOUNT_PAYABLE)
+        Log.d(
+            "TAGHeader",
+            "onCreate--------------amountToPay----------$amountToPay--------: $bbpsHeaderVale"
+        )
     }
 
     override fun onStart() {
         super.onStart()
-        var  proceedBtn = "1"
+        var proceedBtn = "1"
         var bhmValue = true
         var walletValue = true
         var creditValue = true
@@ -46,9 +50,9 @@ class ProceedToPay :
             addNewUpiTv.setOnClickListener {
 
             }
-           val headerBundle  =  Bundle().apply {
-               putString(Constants.BBPS_HEADER,bbpsHeaderVale)
-           }
+            val headerBundle = Bundle().apply {
+                putString(Constants.BBPS_HEADER, bbpsHeaderVale)
+            }
             headerLoan.titlePageTv.setText(bbpsHeaderVale.toString())
             Log.d("TAG", "onResume: $bhmValue")
 
@@ -71,7 +75,10 @@ class ProceedToPay :
                     arrowDowmBhmIv.setImageResource(R.drawable.cross_icon)
                     upiMethodParent.show()
                     verifyUpiBtn.setOnClickListener {
-                        showCustomDialogOTPVerify(requireContext(),"OTP send to the number ending with *4555")
+                        showCustomDialogOTPVerify(
+                            requireContext(),
+                            "OTP send to the number ending with *4555"
+                        )
                         addNewUpiTv.hide()
                         selectUpiIdParent.show()
                         upiCardTv.show()
@@ -79,7 +86,7 @@ class ProceedToPay :
                         upiMethodParent.hide()
                         arrowDowmBhmIv.setImageResource(R.drawable.arrow_down_black)
                         bhmUpiParent.setBackgroundResource(R.drawable.card_sky_rect_6)
-                        }
+                    }
 
 
 //                    upiMethodParent.startAnimation(
@@ -139,23 +146,23 @@ class ProceedToPay :
 
 
             arrowDownCreditIv.setOnClickListener {
-                if (creditValue){
-                arrowDownCreditIv.setImageResource(R.drawable.cross_icon)
-                creditDebitParent.setBackgroundResource(R.drawable.rect_opem_loans)
-                creditCardParent.show()
-                //wallet
-                walletMethodParent.hide()
-                walletParent.setBackgroundResource(R.drawable.card_sky_rect_6)
-                arrowDownWalletIv.setImageResource(R.drawable.arrow_down_black)
-                //upi
-                upiMethodParent.hide()
-                bhmUpiParent.setBackgroundResource(R.drawable.card_sky_rect_6)
-                arrowDowmBhmIv.setImageResource(R.drawable.arrow_down_black)
+                if (creditValue) {
+                    arrowDownCreditIv.setImageResource(R.drawable.cross_icon)
+                    creditDebitParent.setBackgroundResource(R.drawable.rect_opem_loans)
+                    creditCardParent.show()
+                    //wallet
+                    walletMethodParent.hide()
+                    walletParent.setBackgroundResource(R.drawable.card_sky_rect_6)
+                    arrowDownWalletIv.setImageResource(R.drawable.arrow_down_black)
+                    //upi
+                    upiMethodParent.hide()
+                    bhmUpiParent.setBackgroundResource(R.drawable.card_sky_rect_6)
+                    arrowDowmBhmIv.setImageResource(R.drawable.arrow_down_black)
                     addCardBtn.setOnClickListener {
-                        findNavController().navigate(R.id.addCardFrag,headerBundle)
+                        findNavController().navigate(R.id.addCardFrag, headerBundle)
                     }
                     creditValue = false
-                }else{
+                } else {
                     creditCardParent.hide()
                     creditCardParent.startAnimation(
                         AnimationUtils.loadAnimation(
@@ -171,28 +178,27 @@ class ProceedToPay :
 
 
             proceedToPayBtn.setOnClickListener {
-                if(proceedBtn == "1"){
+                if (proceedBtn == "1") {
                     paymentModeTv.show()
                     paymentModeCardTv.show()
                     preferredModeParent.hide()
                     otherModeParent.hide()
                     otpFill.otpParent.show()
                     proceedBtn = "3"
-                }else if(proceedBtn == "2"){
+                } else if (proceedBtn == "2") {
                     proceedToPayParent.hide()
                     preferredModeParent.hide()
                     otherModeParent.hide()
                     timeCountTv.show()
                     openApplicationTv.show()
                     lifecycleScope.launch {
-                     delay(1000)
-                     findNavController().navigate(R.id.paymentConfirmed,headerBundle)
+                        delay(1000)
+                        findNavController().navigate(R.id.paymentConfirmed, headerBundle)
 
-                 }
+                    }
 
-                }
-                else if (proceedBtn == "3"){
-                    findNavController().navigate(R.id.paymentConfirmed,headerBundle)
+                } else if (proceedBtn == "3") {
+                    findNavController().navigate(R.id.paymentConfirmed, headerBundle)
                 }
 
             }

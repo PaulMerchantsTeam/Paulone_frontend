@@ -51,10 +51,9 @@ class HomeScreenFrag :
     lateinit var navController: NavController
     private val moreToComeAdapter = MoreToComeAdapter()
 
-    val bannerList = listOf(
+    private val bannerList = listOf(
         MoreToComeModel(R.drawable.banner_sample, 1),
-        MoreToComeModel(R.drawable.banner_sample, 2),
-        MoreToComeModel(R.drawable.banner_sample, 3)
+        MoreToComeModel(R.drawable.banner_paying_bills, 2),
     )
 
     //    private val homeSweetBillsAdapter = HomeSweetBillsAdapter()
@@ -70,7 +69,6 @@ class HomeScreenFrag :
 
     override fun onStart() {
         super.onStart()
-        (activity as MainActivity).commonViewModel.getTxnHistory((activity as MainActivity).appSharedPref)
         Log.d(
             TAG,
             "onStart: .......MOBILE-----....${
@@ -250,7 +248,7 @@ class HomeScreenFrag :
             )
         }
         binding.searchProfileParent.notImage.setOnClickListener {
-            findNavController().navigate(R.id.action_homeScreenFrag_to_notificationsScreenFrag)
+            findNavController().navigate(R.id.transactionFrag)
         }
     }
 

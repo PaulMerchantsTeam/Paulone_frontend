@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/splash_screen_two">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/enterPhoneNumMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/screen_start_margin"
+        android:paddingEnd="@dimen/screen_end_margin"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25">
+
+        <TextView
+            android:id="@+id/pleaseTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:lineSpacingExtra="@dimen/_3sdp"
+            android:text="Login"
+            android:textColor="@color/splash_screen_three"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.567"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/etPhoenNum"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_11sdp"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:inputType="number"
+            android:maxLength="10"
+            android:text="8968059147"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/etTv"
+            app:layout_constraintTop_toBottomOf="@+id/pleaseTv" />
+
+        <!--    <View-->
+        <!--        android:layout_width="@dimen/_2sdp"-->
+        <!--        android:layout_height="0dp"-->
+        <!--        android:layout_marginStart="@dimen/_2sdp"-->
+        <!--        android:layout_marginTop="@dimen/_3sdp"-->
+        <!--        android:layout_marginEnd="@dimen/_5sdp"-->
+        <!--        android:layout_marginBottom="@dimen/_3sdp"-->
+        <!--        android:background="@color/view_color"-->
+        <!--        android:orientation="vertical"-->
+        <!--        app:layout_constraintBottom_toBottomOf="@+id/etPhoenNum"-->
+        <!--        app:layout_constraintEnd_toStartOf="@+id/etPhoenNum"-->
+        <!--        app:layout_constraintStart_toEndOf="@+id/etTv"-->
+        <!--        app:layout_constraintTop_toTopOf="@+id/etPhoenNum" />-->
+
+        <TextView
+            android:id="@+id/etTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/str_91"
+            android:textColor="@color/splash_screen_three"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/etPhoenNum"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/etPhoenNum"
+            app:layout_constraintVertical_bias="0.5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

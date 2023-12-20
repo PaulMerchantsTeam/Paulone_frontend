@@ -70,7 +70,7 @@ class GoldLoanOverViewAdapterProd(
             if (isShowCustomPay == true) {
                 binding.clickPayParent.show()
             }
-            binding.selectPrecard.setOnClickListener {
+            binding.clickPayParent.setOnClickListener {
                 if (!isSelected) {
                     binding.selectPrecard.setBackgroundColor(
                         ContextCompat.getColor(

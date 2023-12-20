@@ -30,7 +30,7 @@ import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
-import com.razorpay.Checkout
+//import com.razorpay.Checkout
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -127,7 +127,7 @@ class LogoutDialog : BottomSheetDialogFragment() {
             it?.let {
                 if (it.statusCode == "200") {
                     (activity as MainActivity).amount = it.data.amount
-                    startPaymentFromRazorPay(it.data.amount * 100, it.data.orderId)
+//                    startPaymentFromRazorPay(it.data.amount * 100, it.data.orderId)
                     dismiss()
                 }
             }
@@ -135,47 +135,6 @@ class LogoutDialog : BottomSheetDialogFragment() {
 
     }
 
-
-    private fun startPaymentFromRazorPay(
-        amount: Double,
-        orderId: String,
-    ) {
-        val checkout = Checkout()
-        checkout.setKeyID(BuildConfig.RAZORPAY_KEY)
-        try {
-            val options = JSONObject()
-//            if (paymentMethod == "upi") {
-//                if (validateUPI(upiEditText?.text.toString())) {
-//                    options.put("vpa", upiEditText?.text.toString())
-//                } else {
-//                    "UPI ID is not valid".showSnackBar(this)
-//                    return
-//                }
-//            }
-            options.put("name", "Paul Merchants")
-            options.put("description", "RefNo..")
-            options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png")
-            options.put("currency", "INR")
-            options.put("amount", amount)
-            options.put("order_Id", orderId)
-//            options.put("method", paymentMethod);
-            val preFill = JSONObject()
-            preFill.put("email", "kprithvi26@gmail.com")
-            preFill.put("contact", "8968666401")
-            options.put("prefill", preFill)
-            options.put("theme", "#F9AC59")
-//            options.put("callback_url", callbaclUrl)
-            options.put("key", BuildConfig.RAZORPAY_KEY);
-//            options.put("method", JSONObject().put("upi", true))
-
-            Log.d(TAG, "startPaymentFromRazorPay: .......${options.toString()}")
-            checkout.open(requireActivity(), options)
-
-        } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Error in payment: " + e.message, Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

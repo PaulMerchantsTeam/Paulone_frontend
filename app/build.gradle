@@ -89,6 +89,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-config-ktx:21.0.2'
 
     implementation 'com.itextpdf:itextpdf:5.5.10'
+    implementation 'com.razorpay:customui:3.9.11'
 
     def lifecycle_version = "2.4.0"
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -126,13 +127,15 @@ dependencies {
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
     //RazorPay
-    implementation 'com.razorpay:checkout:1.6.36'
+//    implementation 'com.razorpay:checkout:1.6.36'
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.6.0"
     implementation "com.squareup.retrofit2:converter-gson:2.6.0"
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+
+
 
 //    // Retrofit
 //    implementation 'com.squareup.retrofit2:retrofit:2.9.0'

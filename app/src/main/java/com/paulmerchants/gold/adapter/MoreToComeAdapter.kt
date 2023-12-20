@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.paulmerchants.gold.databinding.ItemMoreToComeBinding
 import com.paulmerchants.gold.model.MoreToComeModel
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 
 class MoreToComeAdapter :
     ListAdapter<MoreToComeModel, MoreToComeAdapter.GoldLoanOverViewHolder>(DIFF_CALLBACK) {
@@ -40,6 +41,9 @@ class MoreToComeAdapter :
         fun bindLast(item: MoreToComeModel) {
             binding.apply {
                 Glide.with(binding.root.context).load(item.bannerImage).into(ivBanner)
+            }
+            binding.ivBanner.setOnClickListener {
+                "Coming Soon..".showSnackBar()
             }
         }
     }

@@ -106,7 +106,6 @@
         android:layout_height="wrap_content"
         android:text="@string/change_underln"
         android:visibility="gone"
-
         android:textColor="@color/blue_light"
         app:layout_constraintBottom_toBottomOf="@+id/prepaidCard"
         app:layout_constraintEnd_toEndOf="@+id/prefPyModeTv"
@@ -118,9 +117,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"
         android:layout_marginHorizontal="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="16dp"
         android:background="@color/view_line"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/prepaidCard" />
 

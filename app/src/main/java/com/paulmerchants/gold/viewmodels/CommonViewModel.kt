@@ -247,27 +247,6 @@ class CommonViewModel @Inject constructor(
 
         }
 
-    fun getTxnHistory(appSharedPref: AppSharedPref?) =
-        viewModelScope.launch {
-            retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
-                    return apiParams.txnHistory(
-                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
-                        appSharedPref?.getStringValue(CUSTOMER_ID).toString()
-                    )
-                }
-
-                override fun success(response: Response<RespCommon>) {
-                    Log.d("TAG", "success: ..getTxnHistory....${response.body()}")
-                }
-
-                override fun error(message: String) {
-                    super.error(message)
-                    Log.d("TAG", "error: ......$message")
-                }
-            })
-
-        }
 
     fun updatePaymentStatus(
         appSharedPref: AppSharedPref?,

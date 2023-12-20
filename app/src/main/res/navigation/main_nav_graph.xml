@@ -250,4 +250,14 @@
         android:name="com.paulmerchants.gold.ui.btmsheetDg.LogoutDialog"
         android:label="LogoutDialog"
         tools:layout="@layout/logout_dialog" />
+    <fragment
+        android:id="@+id/transactionFrag"
+        android:name="com.paulmerchants.gold.ui.others.TransactionFrag"
+        android:label="TransactionFrag"
+        tools:layout="@layout/all_txn_frag" />
+    <fragment
+        android:id="@+id/paymentModesFragNew"
+        tools:layout="@layout/payments_mode_new"
+        android:name="com.paulmerchants.gold.ui.others.PaymentModesFragNew"
+        android:label="PaymentModesFragNew" />
 </navigation>

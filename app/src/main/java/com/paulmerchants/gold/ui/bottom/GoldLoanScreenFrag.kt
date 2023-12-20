@@ -10,9 +10,12 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.GoldLoanOverViewAdapterProd
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
+import com.paulmerchants.gold.common.Constants.IS_FROM_ALL_IN_ONE_GO
 import com.paulmerchants.gold.databinding.GoldLoanScreenFragmentBinding
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
+import com.paulmerchants.gold.model.newmodel.PayAll
+import com.paulmerchants.gold.model.newmodel.PayAllnOneGoDataTobeSent
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hide
@@ -28,6 +31,7 @@ class GoldLoanScreenFrag :
     BaseFragment<GoldLoanScreenFragmentBinding>(GoldLoanScreenFragmentBinding::inflate) {
     private var amount: Int = 0
     private val commonViewModel: CommonViewModel by viewModels()
+    private var listPayAll: ArrayList<PayAll> = arrayListOf()
     private val lastStatementAdapter =
         GoldLoanOverViewAdapterProd(::optionsClicked, ::payNowClicked, ::viewDetails)
 
@@ -41,11 +45,26 @@ class GoldLoanScreenFrag :
 
     private fun optionsClicked(actionItem: RespGetLoanOutStandingItem, isSelect: Boolean) {
         Log.d("TAG", "optionsClicked: .............${actionItem.OutStanding}")
-        actionItem.OutStanding?.let { totalAmount(it, isSelect) }
+        actionItem.OutStanding?.let { totalAmount(actionItem, it, isSelect) }
     }
 
-    private fun totalAmount(rupees: Int, isSelect: Boolean) {
-        if (isSelect) amount += rupees else amount -= rupees
+    private fun totalAmount(
+        actionItem: RespGetLoanOutStandingItem,
+        rupees: Int,
+        isSelect: Boolean,
+    ) {
+        if (isSelect) {
+            amount += rupees
+            listPayAll.add(PayAll(actionItem.AcNo.toString(), actionItem.OutStanding?.toDouble()))
+        } else {
+            amount -= rupees
+            listPayAll.remove(
+                PayAll(
+                    actionItem.AcNo.toString(),
+                    actionItem.OutStanding?.toDouble()
+                )
+            )
+        }
         Log.d("TAG", "totalAmount: ........$amount")
         if (amount > 0) {
             binding.ttlAmountTv.show()
@@ -55,26 +74,44 @@ class GoldLoanScreenFrag :
             binding.ttlAmountTv.hide()
             binding.ttlAmountNumTv.hide()
         }
+        Log.d("TAG", "totalAmount: ....................listPayAll-----------$listPayAll")
     }
 
     private fun viewDetails(actionItem: RespGetLoanOutStandingItem) {
-        if (actionItem.IsClosed == false) {
-            val bundle = Bundle().apply {
-                putParcelable(Constants.LOAN_OVERVIEW, actionItem)
-            }
-            findNavController().navigate(R.id.pmlGoldLoan, bundle)
-        } else {
-            val bundle = Bundle().apply {
-                putParcelable(Constants.LOAN_OVERVIEW, actionItem)
-            }
-            findNavController().navigate(R.id.loanStatementFrag, bundle)
-        }
+//        if (actionItem.IsClosed == false) {
+//            val bundle = Bundle().apply {
+//                putParcelable(Constants.LOAN_OVERVIEW, actionItem)
+//            }
+//            findNavController().navigate(R.id.pmlGoldLoan, bundle)
+//        } else {
+//            val bundle = Bundle().apply {
+//                putParcelable(Constants.LOAN_OVERVIEW, actionItem)
+//            }
+//            findNavController().navigate(R.id.loanStatementFrag, bundle)
+//        }
 
     }
 
     private fun payNowClicked(actionItem: RespGetLoanOutStandingItem) {
         if (actionItem.IsClosed == false) {
-            findNavController().navigate(R.id.paymentModesFrag)
+            val bundle = Bundle().apply {
+//                actionItem.OutStanding?.toDouble()?.let {
+//                    putDouble(
+//                        "AMOUNT_PAYABLE",
+//                        it
+//                    )
+//                }
+//                putString(Constants.CUST_ACC, actionItem.AcNo.toString())
+//                putBoolean(IS_FROM_ALL_IN_ONE_GO, true)
+                putParcelable(
+                    Constants.PAY_ALL_IN_GO_DATA, PayAllnOneGoDataTobeSent(
+                        amount.toDouble(),
+                        listPayAll, true
+                    )
+                )
+            }
+            findNavController().navigate(R.id.paymentModesFragNew, bundle)
+//            findNavController().navigate(R.id.paymentModesFrag)
         }
     }
 
@@ -126,7 +163,18 @@ class GoldLoanScreenFrag :
 
         binding.payAllBtn.setOnClickListener {
             if (amount > 0) {
-                findNavController().navigate(R.id.paymentModesFrag)
+                val bundle = Bundle().apply {
+                    putParcelable(
+                        Constants.PAY_ALL_IN_GO_DATA, PayAllnOneGoDataTobeSent(
+                            amount.toDouble(),
+                            listPayAll, true
+                        )
+                    )
+//                    putDouble("AMOUNT_PAYABLE", amount.toDouble())
+//                    putString(Constants.CUST_ACC, "182222222222222")
+//                    putBoolean(IS_FROM_ALL_IN_ONE_GO, true)
+                }
+                findNavController().navigate(R.id.paymentModesFragNew, bundle)
             } else {
                 lastStatementAdapter.isShowSelctOption(true)
                 lastStatementAdapter.notifyDataSetChanged()

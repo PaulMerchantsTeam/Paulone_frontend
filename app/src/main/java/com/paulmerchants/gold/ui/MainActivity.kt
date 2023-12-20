@@ -66,9 +66,9 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
         )
         if (AppUtility.isUsbDebuggingEnabled(this)) {
-            Toast.makeText(this, "DEBUG_MODE_ENABLED", Toast.LENGTH_SHORT).show()
+            Log.i("TAG","DEBUG_MODE_ENABLED")
         } else {
-            Toast.makeText(this, "NO_DEBUG_MODE_ENABLED", Toast.LENGTH_SHORT).show()
+            Log.i("TAG", "NO_DEBUG_MODE_ENABLED")
         }
         secureFiles = SecureFiles()
 
@@ -210,7 +210,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
                     razorpay_signature = statusData.paymentData?.signature.toString(),
                     custId = appSharedPref?.getStringValue(Constants.CUSTOMER_ID).toString(),
                     amount = amount,
-                    contactCount = 0, description ="desc_payment"
+                    contactCount = 0, description = "desc_payment"
                 )
             }
         } else {

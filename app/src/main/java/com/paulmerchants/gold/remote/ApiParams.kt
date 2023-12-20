@@ -13,10 +13,12 @@ import com.paulmerchants.gold.model.newmodel.ReqComplaintRaise
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
 import com.paulmerchants.gold.model.newmodel.ReqGetLoanStatement
+import com.paulmerchants.gold.model.newmodel.ReqPayAlInOnGo
 import com.paulmerchants.gold.model.newmodel.ReqResetPin
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
+import com.paulmerchants.gold.model.newmodel.RespTxnHistory
 import okhttp3.ResponseBody
 import retrofit2.Response
 
@@ -117,6 +119,24 @@ interface ApiParams {
         @Body deviceDetailsDTO: DeviceDetailsDTO,
     ): Response<*>
 
+    @POST("payments/payment/{amount}/{contactCount}/{companyName}/{currency}/{description}")   //RespLoanDueDate
+    suspend fun updatePaymentStatusAllInOneGo(
+        @Header("Authorization") auth: String,
+        @Path("amount") amount: Double?,
+        @Path("contactCount") contactCount: Int,
+        @Path("companyName") companyName: String,
+        @Path("currency") currency: String,
+        @Path("description") description: String,
+        @Query("status") status: String,
+        @Query("razorpay_payment_id") razorpayPaymentId: String,
+        @Query("razorpay_order_id") razorpayOrderId: String,
+        @Query("razorpay_signature") razorpaySignature: String,
+        @Query("custId") custId: String,
+        @Query("makerId") makerId: String,
+        @Query("macID") macID: String,
+        @Body payAllInOnGo: ReqPayAlInOnGo,
+    ): Response<*>
+
     /**
      *    @RequestParam("acNo") String acNo,
     @RequestParam("makerId") String makerId,
@@ -200,7 +220,7 @@ interface ApiParams {
     suspend fun txnHistory(
         @Header("Authorization") auth: String,
         @Path("custId") custId: String,
-    ): Response<RespCommon>
+    ): Response<RespTxnHistory>
 
     @GET("/branch/search-by-branch-name/Paul Merchants")   //
     suspend fun searchBranch(

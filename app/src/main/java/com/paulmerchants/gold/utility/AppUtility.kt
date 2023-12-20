@@ -74,6 +74,8 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 import javax.crypto.BadPaddingException
 import javax.crypto.Cipher
 import javax.crypto.IllegalBlockSizeException
@@ -88,6 +90,20 @@ Note: These tags are need to be set under the TextView.
  */
 
 object AppUtility {
+
+    fun validateUPI(upi: String): Boolean {
+        val upiPatt = Pattern.compile("^[0-9A-Za-z.-]{2,256}@[A-Za-z]{2,64}$")
+
+        // Handling the empty string
+        if (upi.isEmpty()) {
+            return false
+        }
+
+        // Matching the UPI and regular expression
+        val matcher: Matcher = upiPatt.matcher(upi)
+        return matcher.matches()
+    }
+
     private lateinit var dialog: AlertDialog
 
     fun ShimmerFrameLayout.showShimmer() {

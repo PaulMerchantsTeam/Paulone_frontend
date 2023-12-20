@@ -42,6 +42,7 @@ class AuthViewModel @Inject constructor(
     var isCustomerExist = MutableLiveData<Boolean>()
     var isOtpVerify = MutableLiveData<Boolean>()
     var isMPinSet = MutableLiveData<Boolean>()
+    val verifyOtp =MutableLiveData<ResponseGetOtp>()
 
     fun getCustomer(appSharedPref: AppSharedPref?, mobileNum: String, context: Context) =
         viewModelScope.launch {
@@ -159,6 +160,7 @@ class AuthViewModel @Inject constructor(
                             if (it.statusCode == "200") {
                                 appSharedPref?.putStringValue(CUST_MOBILE, mobileNum)
                                 isOtpVerify.postValue(true)
+                                verifyOtp.value =response.body()
 
                             } else {
                                 "${it.statusCode}: ${it.message}".showSnackBar()

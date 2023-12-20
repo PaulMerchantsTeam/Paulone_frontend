@@ -31,6 +31,7 @@ import com.paulmerchants.gold.databinding.PhoneAuthFragmentBinding
 import com.paulmerchants.gold.utility.*
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.diffColorText
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants.IS_LOGOUT
 import com.paulmerchants.gold.viewmodels.AuthViewModel
 import com.paulmerchants.gold.viewmodels.SplashViewModel
@@ -109,7 +110,7 @@ class PhoenNumVerifiactionFragment :
                     binding.signUpParentMain.etName.text.isNotEmpty() && binding.signUpParentMain.etEmailId.text.isNotEmpty() && binding.signUpParentMain.mpinOneEt.text.isNotEmpty() && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinFourEt.text.isNotEmpty() && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty() && binding.signUpParentMain.termsCb.isChecked
                 }"
             )
-            if ((binding.signUpParentMain.etName.text.isNotEmpty() && binding.signUpParentMain.etEmailId.text.isNotEmpty() && binding.signUpParentMain.mpinOneEt.text.isNotEmpty() && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinFourEt.text.isNotEmpty() && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty()) && binding.signUpParentMain.termsCb.isChecked) {
+            if ((binding.signUpParentMain.etName.text.isNotEmpty() && binding.signUpParentMain.mpinOneEt.text.isNotEmpty() && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinFourEt.text.isNotEmpty() && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty()) && binding.signUpParentMain.termsCb.isChecked) {
                 val confirmPin =
                     (binding.signUpParentMain.mpinOneConfirmEt.text.toString() + binding.signUpParentMain.mpinConfirmTwoEt.text.toString() + binding.signUpParentMain.mpinConfirmThreeEt.text.toString() + binding.signUpParentMain.mpinConfirmFourEt.text.toString())
                 val mPin =
@@ -122,9 +123,8 @@ class PhoenNumVerifiactionFragment :
                     requireContext(),
                     binding.signUpParentMain.etEmailId.text.toString()
                 )
-
             } else {
-
+                "Please fill require details".showSnackBar()
             }
         }
         if ((activity as MainActivity).appSharedPref?.getBooleanValue(OTP_VERIFIED) == true) {
@@ -169,7 +169,15 @@ class PhoenNumVerifiactionFragment :
                 hideAndShowProgressView(true)
             }
         }
+        authViewModel.verifyOtp.observe(viewLifecycleOwner) {
+            it?.let {
+                if (!it.userExist) {
+//                        hideAndShowSignUpScreen()
+                } else {
 
+                }
+            }
+        }
         authViewModel.isOtpVerify.observe(viewLifecycleOwner) {
             it?.let {
                 hideAndShowProgressView(false)

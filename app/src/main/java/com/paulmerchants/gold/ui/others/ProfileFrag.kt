@@ -113,7 +113,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             }
 
             101 -> {
-                findNavController().navigate(R.id.menuScreenFrag)
+                findNavController().navigate(R.id.transactionFrag)
             }
 
             103 -> {

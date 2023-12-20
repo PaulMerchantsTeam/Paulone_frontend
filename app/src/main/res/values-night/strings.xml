@@ -19,4 +19,5 @@
     <string name="others">Others</string>
     <string name="credit_score">Credit Score</string>
     <string name="intrst_due_date">Interest Due Date\n</string>
+    <string name="pay_through_upi">Pay through UPI</string>
 </resources>

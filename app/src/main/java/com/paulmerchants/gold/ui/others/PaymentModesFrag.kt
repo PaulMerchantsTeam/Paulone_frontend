@@ -1,9 +1,11 @@
 package com.paulmerchants.gold.ui.others
 
+import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.PaymentModeAdapter
 import com.paulmerchants.gold.common.BaseFragment
+import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.common.PayMethod
 import com.paulmerchants.gold.databinding.PaymentModesBinding
 import com.paulmerchants.gold.model.PayModes
@@ -18,13 +20,16 @@ class PaymentModesFrag : BaseFragment<PaymentModesBinding>(PaymentModesBinding::
     private val payModeAdapterUpi = PaymentModeAdapter(::pyNowButtonClicked)
     private val payModeAdapterWallet = PaymentModeAdapter(::pyNowButtonClicked)
     private val payModeAdapterDebCreditCard = PaymentModeAdapter(::pyNowButtonClicked)
-
+    private var amountToPay: Double? = 0.0
     private fun pyNowButtonClicked(payModes: PayModes) {
 
     }
 
     override fun PaymentModesBinding.initialize() {
+        amountToPay = arguments?.getDouble(Constants.AMOUNT_PAYABLE)
+        Log.e("TAGGGGGGG", "initialize: -------$amountToPay")
         modifyHeaders()
+
     }
 
     override fun onStart() {
@@ -51,7 +56,7 @@ class PaymentModesFrag : BaseFragment<PaymentModesBinding>(PaymentModesBinding::
     private fun setUpi() {
         val list = listOf(
             PayModes(
-                PayMethod.BHIM.id, getString(R.string.add_new_upi), R.drawable.bhm_img, ""
+                PayMethod.BHIM.id, getString(R.string.pay_through_upi), R.drawable.bhm_img, ""
             )
         )
         payModeAdapterUpi.submitList(list)
