@@ -30,6 +30,7 @@ import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
+import com.paulmerchants.gold.viewmodels.ProfileViewModel
 //import com.razorpay.Checkout
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
@@ -53,12 +54,9 @@ import org.json.JSONObject
 
 @AndroidEntryPoint
 class LogoutDialog : BottomSheetDialogFragment() {
-    private var paymentResultListener: PaymentResultWithDataListener? = null
-
-    private var dueLoans: GetPendingInrstDueRespItem? = null
+    private val profileViewModel: ProfileViewModel by viewModels()
     lateinit var quickPayPopupBinding: LogoutDialogBinding
-    val TAG = "QuickPayDialog"
-    private var actualLoan: Double? = 0.000
+    val TAG = "LogoutDialog"
 
 
 //    // Method to set the listener
@@ -94,47 +92,24 @@ class LogoutDialog : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dueLoans = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) arguments?.getParcelable(
-            Constants.DUE_LOAN_DATA, GetPendingInrstDueRespItem::class.java
-        ) else arguments?.getParcelable<GetPendingInrstDueRespItem>(Constants.DUE_LOAN_DATA) as GetPendingInrstDueRespItem
-        Log.d(
-            TAG, "onCreate:---dueDays-${dueLoans?.DueDate}\n-----amount---${dueLoans?.InterestDue} "
-        )
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        quickPayPopupBinding.quixPayParentBtn.setOnClickListener {
-
-
-        }
-    }
-
-    private fun createOrder(amount: Double) {
-        Log.d(TAG, "createOrder: ......$amount")
-        (activity as MainActivity).commonViewModel.createOrder(
-            (activity as MainActivity).appSharedPref,
-            reqCreateOrder = ReqCreateOrder(
-                amount = amount,
-                currency = "INR",
-                custId = (activity as MainActivity).appSharedPref?.getStringValue(CUSTOMER_ID)
-                    .toString(),
-                notes = Notes("n_1_test", "n_2_test"),
-                receipt = "rec__",
+        quickPayPopupBinding.loginParentBtn.setOnClickListener {
+            profileViewModel.logout(
+                findNavController(),
+                appSharedPref = (activity as MainActivity).appSharedPref
             )
-        )
-        (activity as MainActivity).commonViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it.statusCode == "200") {
-                    (activity as MainActivity).amount = it.data.amount
-//                    startPaymentFromRazorPay(it.data.amount * 100, it.data.orderId)
-                    dismiss()
-                }
-            }
+            dismiss()
+        }
+
+        quickPayPopupBinding.cancelDgBtn.setOnClickListener {
+            dismiss()
         }
 
     }
-
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -156,8 +131,7 @@ class LogoutDialog : BottomSheetDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        (activity as MainActivity).commonViewModel.responseCreateOrder.removeObservers(this)
-        (activity as MainActivity).commonViewModel.responseCreateOrder.postValue(null)
+
     }
 
     override fun setStyle(style: Int, theme: Int) {

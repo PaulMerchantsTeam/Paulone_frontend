@@ -21,7 +21,8 @@
             motion:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="54dp"
             android:id="@+id/signUpBtn"
-            android:layout_marginEnd="24dp" />
+            android:layout_marginEnd="24dp"
+            motion:layout_constraintBottom_toBottomOf="parent" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">

@@ -65,7 +65,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         payAlllInOneGo =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) arguments?.getParcelable(
                 Constants.PAY_ALL_IN_GO_DATA, PayAllnOneGoDataTobeSent::class.java
-            ) else arguments?.getParcelable<PayAllnOneGoDataTobeSent>(Constants.PAY_ALL_IN_GO_DATA) as PayAllnOneGoDataTobeSent
+            ) else arguments?.getParcelable<PayAllnOneGoDataTobeSent>(Constants.PAY_ALL_IN_GO_DATA) as PayAllnOneGoDataTobeSent?
         Log.e("TAGGGGGGG", "initialize: -customerAcc-----------$payAlllInOneGo------$amountToPay")
         modifyHeaders()
     }
@@ -73,7 +73,12 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
     override fun onStart() {
         super.onStart()
-        binding.amountPaidTv.text = "${getString(R.string.Rs)}$amountToPay"
+        if (amountToPay != 0.0) {
+            binding.amountPaidTv.text = "${getString(R.string.Rs)}$amountToPay"
+        } else {
+            binding.amountPaidTv.text = "${getString(R.string.Rs)}${payAlllInOneGo?.amount ?: 0}"
+            amountToPay = payAlllInOneGo?.amount
+        }
         var proceedBtn = "1"
         var bhmValue = true
         var walletValue = true
@@ -446,12 +451,22 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                                                 "${p1.data}-----${p1.paymentId}"
                                     )
                                     toggleWebViewVisibility(View.GONE)
-                                    (activity as MainActivity).appSharedPref?.let {
-                                        updatePaymentStatusToServer(
-                                            it,
-                                            StatusPayment("captured", p1)
-                                        )
+                                    if (payAlllInOneGo != null) {
+                                        (activity as MainActivity).appSharedPref?.let {
+                                            updatePaymentStatusToServerToAllInOneGo(
+                                                it,
+                                                StatusPayment("captured", p1)
+                                            )
+                                        }
+                                    } else {
+                                        (activity as MainActivity).appSharedPref?.let {
+                                            updatePaymentStatusToServer(
+                                                it,
+                                                StatusPayment("captured", p1)
+                                            )
+                                        }
                                     }
+
 //                                    dialog.setTitle("Payment Successful")
 //                                    dialog.setMessage(it.data.toString())
 //                                    dialog.show()
@@ -461,13 +476,23 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                             override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
                                 p2?.let {
                                     toggleWebViewVisibility(View.GONE)
-                                    (activity as MainActivity).appSharedPref?.let {
+                                    if (payAlllInOneGo != null) {
+                                        (activity as MainActivity).appSharedPref?.let {
+                                            updatePaymentStatusToServerToAllInOneGo(
+                                                it,
+                                                StatusPayment("not_captured", p2)
+                                            )
+                                        }
+                                    } else {
+                                        (activity as MainActivity).appSharedPref?.let {
 
-                                        updatePaymentStatusToServer(
-                                            it,
-                                            StatusPayment("not_captured", p2)
-                                        )
+                                            updatePaymentStatusToServer(
+                                                it,
+                                                StatusPayment("not_captured", p2)
+                                            )
+                                        }
                                     }
+
 //                                    dialog.setTitle("Payment Failed")
 //                                    dialog.setMessage(it.data.toString())
 //                                    dialog.show()
@@ -510,6 +535,35 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                     contactCount = 0, description = "desc_payment",
                     account = customerAcc.toString()
                 )
+            }
+        } else {
+            "Amount: Some thing went wrong".showSnackBar()
+        }
+    }
+
+    private fun updatePaymentStatusToServerToAllInOneGo(
+        appSharedPref: AppSharedPref,
+        statusData: StatusPayment,
+    ) {
+        Log.d(TAG, "updatePaymentStatusToServer: $amountToPay....$statusData")
+        if (amountToPay != null) {
+            amountToPay?.let {
+                payAlllInOneGo?.payAll?.let { payAllGo ->
+                    paymentViewModel.updatePaymentStatusAllInOneGo(
+                        findNavController(),
+                        appSharedPref = appSharedPref,
+                        status = statusData.status,
+                        razorpay_payment_id = statusData.paymentData?.paymentId.toString(),
+                        razorpay_order_id = statusData.paymentData?.orderId.toString(),
+                        razorpay_signature = statusData.paymentData?.signature.toString(),
+                        custId = appSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
+                            .toString(),
+                        amount = amountToPay,
+                        contactCount = 0,
+                        description = "desc_payment",
+                        listOfPaullINOneGo = payAllGo
+                    )
+                }
             }
         } else {
             "Amount: Some thing went wrong".showSnackBar()

@@ -59,6 +59,12 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
         profileViewModel.getRespCustomersDetailsLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 binding.nameUserTv.text = it.DisplayName ?: "NA"
+                it.DisplayName?.let {
+                    (activity as MainActivity).appSharedPref?.putStringValue(
+                        Constants.CUSTOMER_NAME,
+                        it
+                    )
+                }
                 binding.emailUserIv.text = it.MailingAddress ?: "NA"
                 binding.userNumTv.text = it.MobileNo ?: "NA"
 //                Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
@@ -150,10 +156,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
         when (menuServices.serviceId) {
             105 -> {
                 Log.d("TAG", "onMenuServiceClickedTitle: logoutClicked")
-                profileViewModel.logout(
-                    findNavController(),
-                    appSharedPref = (activity as MainActivity).appSharedPref
-                )
+
             }
         }
     }

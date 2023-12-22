@@ -8,6 +8,8 @@ object Constants {
     const val LOAN_OVERVIEW = "LOAN_OVERVIEW"
     const val BBPS_TYPE = "BBPS_TYPE"
     const val BBPS_HEADER = "BBPS_HEADER"
+    const val LOGIN_WITH_MPIN = "LOGIN_WITH_MPIN"
+
 
     const val SHARED_PREF_FILE = "${BuildConfig.VERSION_NAME}_${BuildConfig.VERSION_CODE}_app"
 

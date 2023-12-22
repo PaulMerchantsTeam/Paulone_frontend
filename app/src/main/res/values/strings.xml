@@ -376,6 +376,7 @@
     <string name="transfer_type">Transfer type</string>
     <string name="transaction_id_cap">Transaction ID</string>
     <string name="pay_through_upi">Pay through UPI</string>
+    <string name="all_transaction">All Transaction</string>
     <string-array name="month">
         <item>January</item>
         <item>February</item>

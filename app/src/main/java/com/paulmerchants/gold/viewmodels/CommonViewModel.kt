@@ -76,18 +76,18 @@ class CommonViewModel @Inject constructor(
     var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
     private val secureFiles: SecureFiles = SecureFiles()
     val responseCreateOrder = MutableLiveData<RespCreateOrder?>()
-    val placesLive = MutableLiveData<MutableList<Place>?>()
+//    val placesLive = MutableLiveData<MutableList<Place>?>()
 
     val respPaymentUpdate = MutableLiveData<RespUpdatePaymentStatus?>()
 
-    init {
-        val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 60
-        }
-        remoteConfig.setConfigSettingsAsync(configSettings)
-        remoteConfig.setDefaultsAsync(R.xml.places)
-        loadData()
-    }
+//    init {
+//        val configSettings = remoteConfigSettings {
+//            minimumFetchIntervalInSeconds = 60
+//        }
+//        remoteConfig.setConfigSettingsAsync(configSettings)
+//        remoteConfig.setDefaultsAsync(R.xml.places)
+//        loadData()
+//    }
 
     /* fun getLogin() = viewModelScope.launch {
          Log.d("TAG", "getLogin: //../........")
@@ -603,48 +603,48 @@ class CommonViewModel @Inject constructor(
         timer?.start()
     }
 
-    fun filterLocation(region: String?) {
-        Log.d("TAG", "filterLocation: $region")
-        when (region) {
-            "ch", "chan", "chand", "chandi", "chandig", "chandigarh", "Chandigarh" -> {
-                val ch = listOfLocation?.filter {
-                    it.city == "ch"
-                }
-                placesLive.postValue(ch as MutableList<Place>?)
-            }
+//    fun filterLocation(region: String?) {
+//        Log.d("TAG", "filterLocation: $region")
+//        when (region) {
+//            "ch", "chan", "chand", "chandi", "chandig", "chandigarh", "Chandigarh" -> {
+//                val ch = listOfLocation?.filter {
+//                    it.city == "ch"
+//                }
+//                placesLive.postValue(ch as MutableList<Place>?)
+//            }
+//
+//            "pb", "punjab", "panjab", "pun", "punj" -> {
+//                val pb = listOfLocation?.filter {
+//                    it.city == "pb"
+//                }
+//                placesLive.postValue(pb as MutableList<Place>?)
+//            }
+//
+//            else -> {
+//                placesLive.postValue(listOfLocation as MutableList<Place>?)
+//            }
+//        }
+//    }
 
-            "pb", "punjab", "panjab", "pun", "punj" -> {
-                val pb = listOfLocation?.filter {
-                    it.city == "pb"
-                }
-                placesLive.postValue(pb as MutableList<Place>?)
-            }
-
-            else -> {
-                placesLive.postValue(listOfLocation as MutableList<Place>?)
-            }
-        }
-    }
-
-    fun loadData() {
-        remoteConfig.fetchAndActivate().addOnCompleteListener { it ->
-            if (it.isSuccessful) {
-                val updated = it.result
-                Log.d("loadData", ": $updated")
-                val data = remoteConfig.getString("places")
-                Log.d("loadData", data)
-                val gson = Gson()
-                remoteDataList = gson.fromJson(data, Array<Place>::class.java).toMutableList()
-                listOfLocation = remoteDataList
-                placesLive.postValue(remoteDataList as MutableList<Place>)
-
-//                placesLive.postValue(remoteDataList)
-                Log.d("datalist", remoteDataList.toString())
-            } else {
-                Log.d("loadData", "Else:")
-            }
-        }
-    }
+//    fun loadData() {
+//        remoteConfig.fetchAndActivate().addOnCompleteListener { it ->
+//            if (it.isSuccessful) {
+//                val updated = it.result
+//                Log.d("loadData", ": $updated")
+//                val data = remoteConfig.getString("places")
+//                Log.d("loadData", data)
+//                val gson = Gson()
+//                remoteDataList = gson.fromJson(data, Array<Place>::class.java).toMutableList()
+//                listOfLocation = remoteDataList
+//                placesLive.postValue(remoteDataList as MutableList<Place>)
+//
+////                placesLive.postValue(remoteDataList)
+//                Log.d("datalist", remoteDataList.toString())
+//            } else {
+//                Log.d("loadData", "Else:")
+//            }
+//        }
+//    }
 
 }
 

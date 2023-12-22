@@ -44,14 +44,13 @@
         app:layout_constraintTop_toBottomOf="@+id/quickPay" />
 
 
-
     <View
         android:id="@+id/view4"
         android:layout_width="0dp"
         android:layout_height="@dimen/_1sdp"
-        android:visibility="gone"
         android:layout_marginTop="@dimen/_21sdp"
         android:background="@color/view_line"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/upcomDTv"
         app:layout_constraintStart_toStartOf="@+id/goldLoanNumTv"
         app:layout_constraintTop_toBottomOf="@+id/goldLoanNumTv" />
@@ -59,13 +58,13 @@
     <TextView
         android:id="@+id/prefPyModeTv"
         android:layout_width="0dp"
-        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_13sdp"
         android:fontFamily="@font/poppins_bold"
         android:text="Preferred Payment Mode"
         android:textColor="@color/splash_screen_one"
         android:textSize="@dimen/_10ssp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/view4"
         app:layout_constraintStart_toStartOf="@+id/view4"
         app:layout_constraintTop_toBottomOf="@+id/view4" />
@@ -77,22 +76,15 @@
         android:layout_marginTop="@dimen/_5sdp"
         android:drawableStart="@drawable/paul_pay_small"
         android:drawablePadding="@dimen/_8sdp"
-        android:visibility="gone"
-
         android:fontFamily="@font/poppins_semi_bold"
+
         android:gravity="center_vertical"
         android:text="Paulpay prepaid card"
         android:textColor="@color/splash_screen_three"
         android:textSize="@dimen/_10ssp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/prefPyModeTv"
         app:layout_constraintTop_toBottomOf="@+id/prefPyModeTv" />
-
-
-
-
-
-
-
 
 
     <!--    <com.airbnb.lottie.LottieAnimationView-->
@@ -111,11 +103,11 @@
         android:id="@+id/constraintLayout8"
         android:layout_width="match_parent"
         android:layout_height="32dp"
-        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginStart="@dimen/_31sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_31sdp"
         android:background="@drawable/yellow_half_8"
-        app:layout_constraintBottom_toTopOf="@+id/quixPayParentBtn"
+        app:layout_constraintBottom_toTopOf="@+id/loginParentBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/upcomDTv">
@@ -133,7 +125,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/quixPayParentBtn"
+        android:id="@+id/loginParentBtn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_80sdp"
         android:background="@color/splash_screen_one"

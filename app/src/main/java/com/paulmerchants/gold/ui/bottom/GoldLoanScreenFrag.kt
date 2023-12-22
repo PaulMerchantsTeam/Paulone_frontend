@@ -10,6 +10,7 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.GoldLoanOverViewAdapterProd
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
+import com.paulmerchants.gold.common.Constants.AMOUNT_PAYABLE
 import com.paulmerchants.gold.common.Constants.IS_FROM_ALL_IN_ONE_GO
 import com.paulmerchants.gold.databinding.GoldLoanScreenFragmentBinding
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
@@ -95,23 +96,15 @@ class GoldLoanScreenFrag :
     private fun payNowClicked(actionItem: RespGetLoanOutStandingItem) {
         if (actionItem.IsClosed == false) {
             val bundle = Bundle().apply {
-//                actionItem.OutStanding?.toDouble()?.let {
-//                    putDouble(
-//                        "AMOUNT_PAYABLE",
-//                        it
-//                    )
-//                }
-//                putString(Constants.CUST_ACC, actionItem.AcNo.toString())
-//                putBoolean(IS_FROM_ALL_IN_ONE_GO, true)
-                putParcelable(
-                    Constants.PAY_ALL_IN_GO_DATA, PayAllnOneGoDataTobeSent(
-                        amount.toDouble(),
-                        listPayAll, true
+                actionItem.OutStanding?.toDouble()?.let {
+                    putDouble(
+                        AMOUNT_PAYABLE,
+                        it
                     )
-                )
+                }
+                putString(Constants.CUST_ACC, actionItem.AcNo.toString())
             }
             findNavController().navigate(R.id.paymentModesFragNew, bundle)
-//            findNavController().navigate(R.id.paymentModesFrag)
         }
     }
 

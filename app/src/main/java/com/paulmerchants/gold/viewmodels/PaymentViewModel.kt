@@ -111,7 +111,7 @@ class PaymentViewModel @Inject constructor(
         account: String,
     ) = viewModelScope.launch {
 
-        retrofitSetup.callApi(false, object : CallHandler<Response<*>> {
+        retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
                 return apiParams.updatePaymentStatus(
                     "Bearer ${appSharedPref?.getStringValue(Constants.JWT_TOKEN).toString()}",
@@ -188,7 +188,7 @@ class PaymentViewModel @Inject constructor(
         listOfPaullINOneGo: List<PayAll>,
     ) = viewModelScope.launch {
 
-        retrofitSetup.callApi(false, object : CallHandler<Response<*>> {
+        retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
                 return apiParams.updatePaymentStatusAllInOneGo(
                     "Bearer ${appSharedPref?.getStringValue(Constants.JWT_TOKEN).toString()}",

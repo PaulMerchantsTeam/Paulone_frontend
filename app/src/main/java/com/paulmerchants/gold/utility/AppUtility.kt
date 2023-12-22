@@ -3,6 +3,7 @@ package com.paulmerchants.gold.utility
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BlurMaskFilter
@@ -12,6 +13,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -90,6 +92,23 @@ Note: These tags are need to be set under the TextView.
  */
 
 object AppUtility {
+    fun dialer(context: Context, number: String) {
+        val intent = Intent()
+        intent.action = Intent.ACTION_DIAL
+        intent.data = Uri.parse("tel: $number")
+        context.startActivity(intent)
+    }
+
+    fun formatDateFromMilliSec(milliSeconds: Long): String? {
+        // Create a DateFormatter object for displaying date in specified format.
+        val formatter = SimpleDateFormat("dd MMM, yyyy")
+//        HH:mm, dd MMMM, yyyy
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = milliSeconds
+        return formatter.format(calendar.time)
+    }
 
     fun validateUPI(upi: String): Boolean {
         val upiPatt = Pattern.compile("^[0-9A-Za-z.-]{2,256}@[A-Za-z]{2,64}$")

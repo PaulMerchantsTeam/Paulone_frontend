@@ -13,11 +13,14 @@ import com.paulmerchants.gold.model.newmodel.ReqComplaintRaise
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
 import com.paulmerchants.gold.model.newmodel.ReqGetLoanStatement
+import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.ReqPayAlInOnGo
 import com.paulmerchants.gold.model.newmodel.ReqResetPin
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
+import com.paulmerchants.gold.model.newmodel.RespAllBranch
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
+import com.paulmerchants.gold.model.newmodel.RespLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.RespTxnHistory
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -35,6 +38,12 @@ interface ApiParams {
     suspend fun getLogin(
         @Body login: LoginReqNew,
     ): Response<LoginNewResp>
+
+    @POST("api/login_mpin")
+    suspend fun loginWithMpin(
+        @Header("Authorization") Authorization: String,
+        @Body login: ReqLoginWithMpin,
+    ): Response<RespLoginWithMpin>
 
 
     @POST("auth/logout")
@@ -213,13 +222,19 @@ interface ApiParams {
     @GET("branch/all")   //
     suspend fun fetchAllBranch(
         @Header("Authorization") auth: String,
-    ): Response<RespCommon>
+        @Query("pageNumber") pageNumber: Int,
+        @Query("pageSize") pageSize: Int,
+        @Query("sortBy") sortBy: String ="branchId",
+        @Query("sortDir") sortDir: String ="asc",
+    ): Response<RespAllBranch>
 
 
     @POST("payments/transaction-history/{custId}")   //
     suspend fun txnHistory(
         @Header("Authorization") auth: String,
         @Path("custId") custId: String,
+        @Query("pageNumber") pageNumber: Int,
+        @Query("pageSize") pageSize: Int,
     ): Response<RespTxnHistory>
 
     @GET("/branch/search-by-branch-name/Paul Merchants")   //

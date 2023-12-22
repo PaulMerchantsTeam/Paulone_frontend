@@ -28,6 +28,7 @@ import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.common.Constants.OTP_VERIFIED
 import com.paulmerchants.gold.common.Constants.SIGNUP_DONE
 import com.paulmerchants.gold.databinding.PhoneAuthFragmentBinding
+import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
 import com.paulmerchants.gold.utility.*
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.diffColorText
@@ -172,9 +173,10 @@ class PhoenNumVerifiactionFragment :
         authViewModel.verifyOtp.observe(viewLifecycleOwner) {
             it?.let {
                 if (!it.userExist) {
-//                        hideAndShowSignUpScreen()
+                    hideAndShowSignUpScreen()
                 } else {
-
+                    findNavController().popBackStack(R.id.phoenNumVerifiactionFragment, true)
+                    findNavController().navigate(R.id.loginScreenFrag)
                 }
             }
         }
@@ -193,7 +195,7 @@ class PhoenNumVerifiactionFragment :
                 }
                 isOtpVerified = true
                 (activity as MainActivity).appSharedPref?.putBoolean(OTP_VERIFIED, isOtpVerified)
-                hideAndShowSignUpScreen()
+
             }
         }
 
@@ -296,12 +298,20 @@ class PhoenNumVerifiactionFragment :
             }
         }
 
-        binding.signUpParentMain.alreadyHaveAccTv.setOnClickListener {
-            //TODO: LoginScreen
+        authViewModel.getTokenResp.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.code() == 200) {
+                    if (binding.etPhoenNum.text.isNotEmpty()) {
+                        authViewModel.getCustomer(
+                            (activity as MainActivity).appSharedPref,
+                            binding.etPhoenNum.text.toString(),
+                            requireContext()
+                        )
+                    }
+                }
+            }
         }
-
     }
-
 
     private fun hideAndShowNumInputView() {
         (activity as MainActivity).mViewModel.timer?.cancel()
@@ -365,11 +375,11 @@ class PhoenNumVerifiactionFragment :
             "",
             binding.signUpParentMain.createAccTitleTv
         )
-        diffColorText(
-            getString(R.string.already_have_an_acc),
-            getString(R.string.log_in),
-            binding.signUpParentMain.alreadyHaveAccTv
-        )
+//        diffColorText(
+//            getString(R.string.already_have_an_acc),
+//            getString(R.string.log_in),
+//            binding.signUpParentMain.alreadyHaveAccTv
+//        )
     }
 
 

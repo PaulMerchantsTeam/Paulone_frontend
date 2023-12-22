@@ -1,40 +1,43 @@
 package com.paulmerchants.gold.adapter
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.paulmerchants.gold.databinding.ItemLocationAddBinding
-import com.paulmerchants.gold.place.Place
+import com.paulmerchants.gold.model.newmodel.PmlBranch
 
 class MapLocationAdapter(
-    private val OnLocationClicked: (Place) -> Unit,
-) :
-    ListAdapter<Place, MapLocationAdapter.MapLocationViewHolder>(DIFF_CALLBACK) {
-
+    private val OnLocationClicked: (PmlBranch) -> Unit,
+    private val onMarkLocation: (PmlBranch) -> Unit,
+) : PagingDataAdapter<PmlBranch, MapLocationAdapter.MapLocationViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = MapLocationViewHolder(
         ItemLocationAddBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
     override fun onBindViewHolder(holder: MapLocationViewHolder, position: Int) {
-        holder.bind(getItem(position), OnLocationClicked)
+        getItem(position)?.let { holder.bind(it, OnLocationClicked,onMarkLocation) }
     }
 
     companion object {
         private val DIFF_CALLBACK =
-            object : DiffUtil.ItemCallback<Place>() {
+            object : DiffUtil.ItemCallback<PmlBranch>() {
                 override fun areItemsTheSame(
-                    oldItem: Place,
-                    newItem: Place,
+                    oldItem: PmlBranch,
+                    newItem: PmlBranch,
                 ): Boolean =
-                    oldItem.name == newItem.name
+                    oldItem.branchId == newItem.branchId
 
                 override fun areContentsTheSame(
-                    oldItem: Place,
-                    newItem: Place,
+                    oldItem: PmlBranch,
+                    newItem: PmlBranch,
                 ): Boolean =
                     oldItem == newItem
             }
@@ -43,13 +46,16 @@ class MapLocationAdapter(
     inner class MapLocationViewHolder(private val binding: ItemLocationAddBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(place: Place, OnLocationClicked: (Place) -> Unit) {
+        fun bind(pmlBranch: PmlBranch, OnLocationClicked: (PmlBranch) -> Unit,onMarkLocation: (PmlBranch) -> Unit) {
             binding.apply {
-                addressLocTv.text = place.name
-                distanceFromHereTv.text = "3 Kms"
+                addressLocTv.text = pmlBranch.branchName
+                distanceFromHereTv.text = "Check location"
+            }
+            binding.checkLocation.setOnClickListener {
+                OnLocationClicked(pmlBranch)
             }
             binding.root.setOnClickListener {
-                OnLocationClicked(place)
+                onMarkLocation(pmlBranch)
             }
         }
     }

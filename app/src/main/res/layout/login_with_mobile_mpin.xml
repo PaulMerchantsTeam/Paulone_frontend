@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25">
+        app:layout_constraintVertical_bias="0.16000003">
 
         <TextView
             android:id="@+id/pleaseTv"
@@ -27,7 +27,7 @@
             android:lineSpacingExtra="@dimen/_3sdp"
             android:text="Login"
             android:textColor="@color/splash_screen_three"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_25ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.567"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,10 +39,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_11sdp"
             android:backgroundTint="@color/view_color"
+            android:enabled="false"
             android:fontFamily="@font/poppins_semi_bold"
             android:inputType="number"
             android:maxLength="10"
-            android:text="8968059147"
             android:textColor="@color/splash_screen_one"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
             android:textSize="@dimen/_12ssp"
@@ -77,6 +77,187 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/etPhoenNum"
             app:layout_constraintVertical_bias="0.5" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/setUpMPinTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/poppins_bold"
+            android:lineSpacingExtra="@dimen/_3sdp"
+            android:text="@string/m_pin"
+            android:textColor="@color/splash_screen_three"
+            android:textSize="@dimen/_13ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/etTv"
+            app:layout_constraintTop_toBottomOf="@+id/etPhoenNum" />
+
+        <EditText
+            android:id="@+id/pinOneEt"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/pinTwoEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/setUpMPinTv" />
+
+        <EditText
+            android:id="@+id/pinTwoEt"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/pinOneEt"
+            app:layout_constraintEnd_toStartOf="@+id/pinThreeEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/pinOneEt"
+            app:layout_constraintTop_toTopOf="@+id/pinOneEt" />
+
+
+        <EditText
+            android:id="@+id/pinThreeEt"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/pinTwoEt"
+            app:layout_constraintEnd_toStartOf="@+id/pinFourEt"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/pinTwoEt"
+            app:layout_constraintTop_toTopOf="@+id/pinTwoEt" />
+
+        <EditText
+            android:id="@+id/pinFourEt"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/view_color"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="@color/splash_screen_one"
+            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/pinThreeEt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/pinThreeEt"
+            app:layout_constraintTop_toTopOf="@+id/pinThreeEt" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signUpBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/splash_screen_one"
+        android:text="@string/log_in"
+        android:textAllCaps="false"
+        android:textColor="@color/yellow_main"
+        android:textSize="@dimen/_9ssp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enterPhoneNumMain" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/color_prim_one_40"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/materialTextView"
+        app:layout_constraintEnd_toStartOf="@+id/materialTextView"
+        app:layout_constraintTop_toTopOf="@+id/materialTextView" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/color_prim_one_40"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/materialTextView"
+        app:layout_constraintStart_toEndOf="@+id/materialTextView"
+        app:layout_constraintTop_toTopOf="@+id/materialTextView" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/materialTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_23sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center"
+        android:padding="@dimen/_3sdp"
+        android:text="or"
+        android:textAlignment="gravity"
+        android:textSize="@dimen/_11ssp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpBtn" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/googleSignInTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_18sdp"
+        android:background="@drawable/rec_back_btn"
+        android:drawableStart="@drawable/google_svg"
+        android:drawablePadding="@dimen/_14sdp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:gravity="center_vertical"
+        android:padding="@dimen/_5sdp"
+        android:paddingStart="@dimen/_23sdp"
+        android:paddingTop="@dimen/_14sdp"
+        android:paddingEnd="@dimen/_53sdp"
+        android:paddingBottom="@dimen/_14sdp"
+        android:text="@string/cont_with_google"
+        android:textAlignment="gravity"
+        android:textColor="@color/splash_screen_one"
+        android:textSize="@dimen/_9ssp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/loginWithDifferentAccTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:lineSpacingExtra="@dimen/_3sdp"
+        android:text="Login with different account"
+        android:textColor="@color/splash_screen_three"
+        android:textSize="@dimen/_10ssp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/googleSignInTv"
+        app:layout_constraintStart_toStartOf="@+id/googleSignInTv"
+        app:layout_constraintTop_toBottomOf="@+id/googleSignInTv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,8 @@ import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants.LOGIN_DONE
+import com.paulmerchants.gold.common.Constants.LOGIN_WITH_MPIN
+import com.paulmerchants.gold.common.Constants.OTP_VERIFIED
 import com.paulmerchants.gold.common.Constants.SIGNUP_DONE
 import com.paulmerchants.gold.common.Constants.SPLASH_SCRN_VISITED
 import com.paulmerchants.gold.databinding.SplashFragmentBinding
@@ -31,13 +33,21 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
     override fun SplashFragmentBinding.initialize() {
         AppUtility.changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
 
-        if ((activity as MainActivity).appSharedPref?.getBooleanValue(SIGNUP_DONE) == true || (activity as MainActivity).appSharedPref?.getBooleanValue(
-                LOGIN_DONE
+        if ((activity as MainActivity).appSharedPref?.getBooleanValue(LOGIN_WITH_MPIN) == true
+            || (activity as MainActivity).appSharedPref?.getBooleanValue(
+                SIGNUP_DONE
             ) == true
         ) {
             findNavController().popBackStack(R.id.splashFragment, true)
             findNavController().navigate(
-                R.id.homeScreenFrag,
+                R.id.loginScreenFrag,
+                null,
+                (activity as MainActivity).navOption
+            )
+        } else if ((activity as MainActivity).appSharedPref?.getBooleanValue(OTP_VERIFIED) == true) {
+            findNavController().popBackStack(R.id.splashFragment, true)
+            findNavController().navigate(
+                R.id.loginScreenFrag,
                 null,
                 (activity as MainActivity).navOption
             )

@@ -257,7 +257,12 @@
         tools:layout="@layout/all_txn_frag" />
     <fragment
         android:id="@+id/paymentModesFragNew"
-        tools:layout="@layout/payments_mode_new"
         android:name="com.paulmerchants.gold.ui.others.PaymentModesFragNew"
-        android:label="PaymentModesFragNew" />
+        android:label="PaymentModesFragNew"
+        tools:layout="@layout/payments_mode_new" />
+    <fragment
+        android:id="@+id/loginScreenFrag"
+        android:name="com.paulmerchants.gold.ui.auth.LoginScreenFrag"
+        android:label="LoginScreenFrag"
+        tools:layout="@layout/login_with_mobile_mpin" />
 </navigation>

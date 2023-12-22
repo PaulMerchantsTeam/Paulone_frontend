@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
@@ -24,6 +23,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -42,14 +43,17 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MapLocationAdapter
 import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.databinding.ActivityMapBinding
+import com.paulmerchants.gold.model.newmodel.PmlBranch
 import com.paulmerchants.gold.place.BitmapHelper
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import com.paulmerchants.gold.viewmodels.MapViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapReadyCallback,
@@ -57,20 +61,26 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
     override fun getViewBinding() = ActivityMapBinding.inflate(layoutInflater)
     private var cityName: String = ""
-    private val mapLocationAdapter = MapLocationAdapter(::OnLocationClicked)
+    private val mapLocationAdapter = MapLocationAdapter(::OnLocationClicked, ::onMarkLocation)
+    private val places: ArrayList<com.paulmerchants.gold.place.Place> = arrayListOf()
     private val mapViewModel: MapViewModel by viewModels()
-    private fun OnLocationClicked(place: com.paulmerchants.gold.place.Place) {
-        val pm22 = LatLng(place.lat, place.lng)
+
+
+    private fun onMarkLocation(pmlBranch: PmlBranch) {
+        val pm22 = LatLng(pmlBranch.branchLat.toDouble(), pmlBranch.branchLng.toDouble())
         Log.d(TAG, "addMarkers: $pm22")
         map?.addMarker(
             MarkerOptions()
-                .position(place.position)
-                .title(place.title)
+                .position(pm22)
+                .title(pmlBranch.branchCity)
         )
         map?.resetMinMaxZoomPreference()
         map?.moveCamera(CameraUpdateFactory.newLatLng(pm22))
+    }
+
+    private fun OnLocationClicked(pmlBranch: PmlBranch) {
         val geoUri =
-            "geo:${place.lat},${place.lng}?z=15&q=${place.lat},${place.lng}(Paul Merchants)"
+            "geo:${pmlBranch.branchLat.toDouble()},${pmlBranch.branchLng.toDouble()}?z=15&q=${pmlBranch.branchLat.toDouble()},${pmlBranch.branchLng.toDouble()}(Paul Merchants)"
         val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
         startActivity(mapIntent)
     }
@@ -106,16 +116,48 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
         appSharedPref = AppSharedPref()
         appSharedPref.start(this)
-
-        mapViewModel.getBranchLocation(appSharedPref)
-
-        mViewModel.placesLive.observe(this) {
-            it?.let {
-                Log.d(TAG, "onCreate: .....${it.size}")
-                setupLocationsTile(it)
-                addMarkers(it)
+        lifecycleScope.launch {
+            try {
+                mapViewModel.getBranchWithPaging(appSharedPref).collectLatest { data ->
+                    Log.d(TAG, "onCreate: ..dattttttttt........}")
+                    showDataToRv(data)
+                }
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
             }
         }
+
+
+//
+//        mViewModel.placesLive.observe(this) {
+//            it?.let {
+//                Log.d(TAG, "onCreate: .....${it.size}")
+//                setupLocationsTile(it)
+//                addMarkers(it)
+//            }
+//        }
+        /*
+                mapViewModel.branchLocation.observe(this) {
+                    it?.let {
+                        Log.d(TAG, "onCreate: .....${it.body()?.data?.size}")
+                        it.body()?.data?.let {
+                            for (i in it) {
+                                places.add(
+                                    com.paulmerchants.gold.place.Place(
+                                        i.branchName,
+                                        i.branchLat.toDouble(),
+                                        i.branchLng.toDouble(),
+                                        i.branchAddress,
+                                        i.branchCity
+                                    )
+                                )
+                            }
+                        }
+                        setupLocationsTile(places)
+                        addMarkers(places)
+                    }
+                }
+        */
         binding.headerMap.apply {
             titlePageTv.text = getString(R.string.locate_us_near_u)
         }
@@ -162,8 +204,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
                 for (prediction in predictions) {
                     Log.i("Places API", prediction.getFullText(null).toString())
                 }
-            }
-            .addOnFailureListener { exception: Exception ->
+            }.addOnFailureListener { exception: Exception ->
                 // Handle the exception here
                 Log.e("Places API", exception.message, exception)
             }
@@ -180,11 +221,15 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         // [END_EXCLUDE]
     }
 
+    private fun showDataToRv(data: PagingData<PmlBranch>) {
+        mapLocationAdapter.submitData(lifecycle, data)
+        binding.rvPmLocation.adapter = mapLocationAdapter
+        addMarkers(data)
+    }
+
     override fun onStart() {
         super.onStart()
         AppUtility.changeStatusBarWithReqdColor(this, R.color.splash_screen_two)
-
-
 
         binding.searchCity.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -195,7 +240,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
                 if (p0 != null) {
                     Log.d(TAG, "onTextChanged: ........$p0")
-                    mViewModel.filterLocation(p0.toString())
+//                    mViewModel.filterLocation(p0.toString())
                 }
             }
 
@@ -210,17 +255,17 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         BitmapHelper.vectorToBitmap(this, R.drawable.gold_logo, color)
     }
 
-    private fun addMarkers(places: MutableList<com.paulmerchants.gold.place.Place>) {
-
-        for (i in places) {
-            val pm22 = LatLng(i.lat, i.lng)
+    private fun addMarkers(places: PagingData<PmlBranch>) {
+        places.map { i ->
+            val pm22 = LatLng(i.branchLat.toDouble(), i.branchLng.toDouble())
             Log.d(TAG, "addMarkers: $pm22")
             map?.addMarker(
                 MarkerOptions()
                     .position(pm22)
-                    .title("Paul Merchants")
-            )
+                    .title("Paul Merchants: ${i.branchAddress}")
+            )!!
         }
+
 
     }
 
@@ -280,43 +325,44 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
     // [START maps_current_place_on_map_ready]
     override fun onMapReady(map: GoogleMap) {
         this.map = map
-        val pm22 = LatLng(
-            30.737825,
-            76.7753962
-        )
-        val pmMp = LatLng(
-            23.183592463587168, 75.87766528732615
-        )
-        val pmKarnatka = LatLng(
-            13.145759284981244, 77.63917863544266
-        )
-        val pmTelangana = LatLng(
-            17.773004934599374, 78.63262546429902
-        )
-        map.addMarker(
-            MarkerOptions()
-                .position(pm22)
-                .title("Paul Merchants")
-        )
-        map.addMarker(
-            MarkerOptions()
-                .position(pmMp)
-                .title("Royal Ratan Tower, U G-1, 7, Mahatma Gandhi Rd, Indore, Madhya Pradesh 452001")
-        )
-        map.addMarker(
-            MarkerOptions()
-                .position(pmKarnatka)
-                .title("Liberty Plaza, 5&6 Upper Ground Floor, Himayatnagar, Hyderabad, Telangana 500029")
-        )
-        map.addMarker(
-            MarkerOptions()
-                .position(pmTelangana)
-                .title("70, 4th Block, 2nd Floor 27th Cross, 9th Main Rd, Jayanagara, Bengaluru, Karnataka 560041")
-        )
+
+//        val pm22 = LatLng(
+//            30.737825,
+//            76.7753962
+//        )
+//        val pmMp = LatLng(
+//            23.183592463587168, 75.87766528732615
+//        )
+//        val pmKarnatka = LatLng(
+//            13.145759284981244, 77.63917863544266
+//        )
+//        val pmTelangana = LatLng(
+//            17.773004934599374, 78.63262546429902
+//        )
+//        map.addMarker(
+//            MarkerOptions()
+//                .position(pm22)
+//                .title("Paul Merchants")
+//        )
+//        map.addMarker(
+//            MarkerOptions()
+//                .position(pmMp)
+//                .title("Royal Ratan Tower, U G-1, 7, Mahatma Gandhi Rd, Indore, Madhya Pradesh 452001")
+//        )
+//        map.addMarker(
+//            MarkerOptions()
+//                .position(pmKarnatka)
+//                .title("Liberty Plaza, 5&6 Upper Ground Floor, Himayatnagar, Hyderabad, Telangana 500029")
+//        )
+//        map.addMarker(
+//            MarkerOptions()
+//                .position(pmTelangana)
+//                .title("70, 4th Block, 2nd Floor 27th Cross, 9th Main Rd, Jayanagara, Bengaluru, Karnataka 560041")
+//        )
 
 //        addMarkers(map)
         // [START_EXCLUDE silent]
-        map.moveCamera(CameraUpdateFactory.newLatLng(pm22))
+//        map.moveCamera(CameraUpdateFactory.newLatLng(pm22))
 
         // [START_EXCLUDE]
         // [START map_current_place_set_info_window_adapter]
@@ -357,10 +403,10 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
     }
 
-    private fun setupLocationsTile(place: List<com.paulmerchants.gold.place.Place>) {
-        mapLocationAdapter.submitList(place)
-        binding.rvPmLocation.adapter = mapLocationAdapter
-    }
+//    private fun setupLocationsTile(place: List<com.paulmerchants.gold.place.Place>) {
+//        mapLocationAdapter.submitList(place)
+//        binding.rvPmLocation.adapter = mapLocationAdapter
+//    }
 
     // [START maps_current_place_get_device_location]
     @SuppressLint("MissingPermission")
@@ -448,7 +494,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
                 cityName = addresses[0]?.locality.toString()
                 Log.d("CityName", "$cityName")
                 if (count == 1) {
-                    mViewModel.filterLocation(cityName)
+//                    mViewModel.filterLocation(cityName)
                     count++
                 } else {
                     return@requestLocationUpdates
