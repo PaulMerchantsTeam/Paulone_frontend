@@ -19,6 +19,7 @@ import com.paulmerchants.gold.model.newmodel.PayAll
 import com.paulmerchants.gold.model.newmodel.PayAllnOneGoDataTobeSent
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
@@ -194,19 +195,26 @@ class GoldLoanScreenFrag :
         Log.d("TAG", "setUiFoOpenGoldLoans: $open")
 
         for (i in open) {
-            if (i.OutStanding != null) {
-                totalAmount += i.OutStanding
+            if (i.InterestDue != null) {
+                totalAmount += i.InterestDue
             }
         }
         AppUtility.diffColorText(
             "You have taken up ",
             "${open.size}",
-            " active loans. And they total upto ",
+            " active loans. And they total interest due up to ",
             "INR $totalAmount", "", "", binding.goldLoanParentMain.lonOverDesc
         )
 
-        "You have taken up ${open.size} active loans. And they total upto INR $totalAmount"
-        setData(open as ArrayList<RespGetLoanOutStandingItem>)
+        "You have taken up ${open.size} active loans. And they total interest due up to INR $totalAmount"
+        val notZeroInterestData = open.filter { it.InterestDue != 0 }
+        if (notZeroInterestData.isNotEmpty()) {
+            binding.constraintLayout12.show()
+            setData(notZeroInterestData as ArrayList<RespGetLoanOutStandingItem>)
+        } else {
+            binding.constraintLayout12.hide()
+            "No Pending Due".showSnackBar()
+        }
 
     }
 

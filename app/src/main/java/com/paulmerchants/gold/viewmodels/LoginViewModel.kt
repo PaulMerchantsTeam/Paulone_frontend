@@ -69,6 +69,7 @@ class LoginViewModel @Inject constructor(
                         if (response.body()?.statusCode == "200") {
                             if (response.body()?.data == true) {  //user exist with valid credential..
                                 "${response.body()?.message}".showSnackBar()
+                                navController.popBackStack(R.id.loginScreenFrag, true)
                                 navController.navigate(R.id.homeScreenFrag)
                                 appSharedPref?.putBoolean(LOGIN_WITH_MPIN, true)
                             } else {

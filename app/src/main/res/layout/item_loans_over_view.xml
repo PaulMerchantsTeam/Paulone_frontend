@@ -45,11 +45,10 @@
             style="@style/text_10_semi_bold_sky_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/final_due_paid"
+            android:text="@string/due_date"
             app:layout_constraintBottom_toTopOf="@+id/outStandValueTv"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.8
-"
+            app:layout_constraintHorizontal_bias="0.7"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -117,7 +116,7 @@
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/intDueAmountTv"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintHorizontal_bias="0.78"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -136,6 +135,7 @@
             android:id="@+id/clickPayParent"
             android:layout_width="@dimen/_17sdp"
             android:layout_height="@dimen/_17sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:background="@drawable/rec_back_btn"
             android:clickable="true"
             android:focusable="true"

@@ -21,6 +21,7 @@ object Constants {
     const val OTP_VERIFIED = "OTP_VERIFIED"
     const val AMOUNT_PAYABLE ="AMOUNT_PAYABLE"
     const val CUST_ACC ="CUST_ACC"
+    const val IS_CUSTOM_AMOUNT ="IS_CUSTOM_AMOUNT"
     const val IS_FROM_ALL_IN_ONE_GO ="IS_FROM_ALL_IN_ONE_GO"
 
 

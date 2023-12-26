@@ -11,3 +11,10 @@ data class RespCommon(
     @SerializedName("errorMessage") val errorMessage: String
     )
 //{"responseType":"E","errorMessage":"JWT Token has expired","status":"FAILURE","statusCode":"401"}
+
+/**
+ *
+ * "OutStanding": 11000
+ * +,
+"InterestDue": 0,
+ */

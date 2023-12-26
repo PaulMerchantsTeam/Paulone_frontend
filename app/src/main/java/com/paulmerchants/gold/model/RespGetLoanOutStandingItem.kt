@@ -9,6 +9,7 @@ data class RespGetLoanOutStandingItem(
     @SerializedName("AcNo") val AcNo: Long,
     @SerializedName("ClosedDate") val ClosedDate: String?,
     @SerializedName("DueDate") val DueDate: String,
+    @SerializedName("InterestDue") val InterestDue: Int?,
     @SerializedName("Fine") val Fine: Int,
     @SerializedName("InterestPeriod") val InterestPeriod: Int,
     @SerializedName("IsClosed") val IsClosed: Boolean?,

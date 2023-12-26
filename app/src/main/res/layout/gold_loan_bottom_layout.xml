@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingStart="@dimen/screen_start_margin"
     android:paddingEnd="@dimen/screen_end_margin">
 
@@ -65,6 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_32sdp"
         android:layout_marginTop="@dimen/_30sdp"
+        android:visibility="gone"
         android:background="@drawable/rec_search_"
         android:drawableStart="@drawable/search"
         android:drawablePadding="@dimen/_14sdp"

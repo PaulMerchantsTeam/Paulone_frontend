@@ -109,6 +109,7 @@ class PaymentViewModel @Inject constructor(
         currency: String = "INR",
         description: String,
         account: String,
+        isCustom: Boolean,
     ) = viewModelScope.launch {
 
         retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
@@ -128,7 +129,8 @@ class PaymentViewModel @Inject constructor(
                     acNo = account,
                     makerId = "12545as",
                     macID = Build.ID,
-                    deviceDetailsDTO = AppUtility.getDeviceDetails()
+                    deviceDetailsDTO = AppUtility.getDeviceDetails(),
+                    isCustom = isCustom
                 )
             }
 

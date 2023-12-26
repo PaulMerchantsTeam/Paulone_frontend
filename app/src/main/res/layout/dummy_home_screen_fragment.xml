@@ -101,12 +101,24 @@
                     app:layout_constraintStart_toEndOf="@+id/upcomingTitleTv"
                     app:layout_constraintTop_toTopOf="@+id/upcomingTitleTv" />
 
+                <include
+                    android:id="@+id/noIntHaveParent"
+                    layout="@layout/no_interst_due_found_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/upcomingTitleTv" />
 
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/shimmmerParent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

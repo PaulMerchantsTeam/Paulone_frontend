@@ -492,7 +492,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
                 geocoder.getFromLocation(location.latitude, location.longitude, 1)
             if (addresses != null && addresses.isNotEmpty()) {
                 cityName = addresses[0]?.locality.toString()
-                Log.d("CityName", "$cityName")
+//                Log.d("CityName", "$cityName")
                 if (count == 1) {
 //                    mViewModel.filterLocation(cityName)
                     count++

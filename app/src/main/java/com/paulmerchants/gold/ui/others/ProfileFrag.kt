@@ -133,9 +133,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             }
 
             105 -> {
-                findNavController().navigate(R.id.phoenNumVerifiactionFragment)
-                findNavController().navigateUp()
-//                AppSharedPref.clearSharedPref()
+
             }
 
             else -> {
@@ -155,7 +153,9 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
     private fun onMenuServiceClickedTitle(menuServices: MenuServices) {
         when (menuServices.serviceId) {
             105 -> {
-                Log.d("TAG", "onMenuServiceClickedTitle: logoutClicked")
+                findNavController().navigate(
+                    R.id.logoutDialog
+                )
 
             }
         }

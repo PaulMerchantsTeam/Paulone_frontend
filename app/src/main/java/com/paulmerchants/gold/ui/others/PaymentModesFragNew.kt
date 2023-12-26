@@ -51,6 +51,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
     private var payAlllInOneGo: PayAllnOneGoDataTobeSent? = null
     private var amountToPay: Double? = 0.0
     private var customerAcc: String? = null
+    private var isCustomPay: Boolean? = false
     private var payload = JSONObject()
     private lateinit var razorpay: Razorpay
     private lateinit var banksListAdapter: ArrayAdapter<String>
@@ -62,6 +63,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
     override fun PaymentsModeNewBinding.initialize() {
         amountToPay = arguments?.getDouble(Constants.AMOUNT_PAYABLE)
         customerAcc = arguments?.getString(Constants.CUST_ACC)
+        isCustomPay = arguments?.getBoolean(Constants.IS_CUSTOM_AMOUNT)
         payAlllInOneGo =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) arguments?.getParcelable(
                 Constants.PAY_ALL_IN_GO_DATA, PayAllnOneGoDataTobeSent::class.java
@@ -459,10 +461,12 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                                             )
                                         }
                                     } else {
+
                                         (activity as MainActivity).appSharedPref?.let {
                                             updatePaymentStatusToServer(
                                                 it,
-                                                StatusPayment("captured", p1)
+                                                StatusPayment("captured", p1),
+                                                isCustomPay ?: false
                                             )
                                         }
                                     }
@@ -488,7 +492,8 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
                                             updatePaymentStatusToServer(
                                                 it,
-                                                StatusPayment("not_captured", p2)
+                                                StatusPayment("not_captured", p2),
+                                                isCustomPay ?: false
                                             )
                                         }
                                     }
@@ -514,10 +519,10 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         }
     }
 
-
     private fun updatePaymentStatusToServer(
         appSharedPref: AppSharedPref,
         statusData: StatusPayment,
+        isCustom: Boolean,
     ) {
         Log.d(TAG, "updatePaymentStatusToServer: $amountToPay....$statusData")
         if (customerAcc != null && amountToPay != null) {
@@ -533,7 +538,8 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                         .toString(),
                     amount = amountToPay,
                     contactCount = 0, description = "desc_payment",
-                    account = customerAcc.toString()
+                    account = customerAcc.toString(),
+                    isCustom = isCustom
                 )
             }
         } else {
@@ -644,7 +650,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             }
 
             override fun onError(p0: String?) {
-                Toast.makeText(requireContext(), p0, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), p0?:"Some thing went wrong..", Toast.LENGTH_LONG).show()
             }
         })
         razorpay.setWebView(binding.webview)

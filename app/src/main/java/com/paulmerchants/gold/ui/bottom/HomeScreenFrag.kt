@@ -24,6 +24,7 @@ import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.MoreToComeModel
 import com.paulmerchants.gold.model.OurServices
 import com.paulmerchants.gold.model.PrepaidCardModel
+import com.paulmerchants.gold.model.RespGetLoanOutStanding
 import com.paulmerchants.gold.model.newmodel.StatusPayment
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.ui.MainActivity
@@ -517,6 +518,8 @@ class HomeScreenFrag :
 //        )
 //        if (!(activity as MainActivity).commonViewModel.isCalled) {
         (activity as MainActivity).commonViewModel.getPendingInterestDues((activity as MainActivity).appSharedPref)
+        (activity as MainActivity).commonViewModel.getLoanOutstanding((activity as MainActivity).appSharedPref)
+
 //            (activity as MainActivity).commonViewModel.isCalled = true
 //        }
         (activity as MainActivity).commonViewModel.getPendingInterestDuesLiveData.observe(
@@ -525,11 +528,24 @@ class HomeScreenFrag :
             it?.let {
                 (activity as MainActivity).commonViewModel.notZero =
                     it.filter { it.InterestDue != 0.0000 }
-                upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
-                binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
+                if ((activity as MainActivity).commonViewModel.notZero.isNotEmpty()) {
+                    upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
+                    binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
+                    binding.rvUpcomingDueLoans.show()
+                } else {
+                    binding.noIntHaveParent.root.show()
+                }
+//                setLoanOverView()
                 binding.shimmmerParent.hideShim()
-                binding.rvUpcomingDueLoans.show()
-                setLoanOverView()
+
+            }
+        }
+
+        (activity as MainActivity).commonViewModel.getRespGetLoanOutStandingLiveData.observe(
+            viewLifecycleOwner
+        ) {
+            it?.let {
+                setLoanOverView(it)
             }
         }
 //        val dueLoans1 = DueLoans(1, 4, 6000)
@@ -547,8 +563,8 @@ class HomeScreenFrag :
         )
     }
 
-    private fun setLoanOverView() {
-        var totalAmount = 0.0
+    private fun setLoanOverView(resp: RespGetLoanOutStanding) {
+        var totalAmount = 0
         binding.apply {
 //            loanOverViewCardParent.cardParent.setBackgroundColor(R.drawable.new_user_card_grad)
 
@@ -557,10 +573,15 @@ class HomeScreenFrag :
 //                findNavController().navigate(R.id.applyLoanForNewUser)
 //            }            android:text="You are having 4 active loans totalling upto"
             loanOverViewCardParent.youHaveTotalLoanTv.text =
-                "You are having ${(activity as MainActivity).commonViewModel.notZero.size} active loans totalling upto"
-            for (i in (activity as MainActivity).commonViewModel.notZero) {
-                totalAmount += (i.InterestDue - i.RebateAmount)
+                "You are having ${resp.size} active loans totalling interest due upto"
+            for (i in resp) {
+                i.InterestDue?.let {
+                    totalAmount += it
+                }
             }
+//            if (totalAmount == 0) {
+//
+//            }
             Log.d(TAG, "setLoanOverView: ......${totalAmount}")
             loanOverViewCardParent.totalLoanAmountTv.text = "INR $totalAmount"
             loanOverViewCardParent.viewLoanBtn.setOnClickListener {

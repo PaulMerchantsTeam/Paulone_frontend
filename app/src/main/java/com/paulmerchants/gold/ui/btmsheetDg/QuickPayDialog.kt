@@ -20,6 +20,7 @@ import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.common.Constants.CUST_ACC
+import com.paulmerchants.gold.common.Constants.IS_CUSTOM_AMOUNT
 import com.paulmerchants.gold.databinding.QuickPayPopupBinding
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.newmodel.Notes
@@ -134,6 +135,7 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                                 quickPayPopupBinding.customPayEt.text.toString().toDouble()
                             )
                             putString(CUST_ACC, dueLoans?.AcNo.toString())
+                            putBoolean(IS_CUSTOM_AMOUNT, true)
                         }
                         findNavController().navigate(R.id.paymentModesFragNew, bundle)
 //                        createOrder(
@@ -153,12 +155,11 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                     val bundle = Bundle().apply {
                         putDouble("AMOUNT_PAYABLE", it1)
                         putString(CUST_ACC, dueLoans?.AcNo.toString())
+                        putBoolean(IS_CUSTOM_AMOUNT, true)
                     }
                     findNavController().navigate(R.id.paymentModesFragNew, bundle)
 //                    createOrder(it1)
                 }
-
-//
             }
 
         }

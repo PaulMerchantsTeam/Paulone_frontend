@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">Gold</string>
+    <string name="app_name">Paul One</string>
     <string name="powered_by">Powered By</string>
     <string name="track_your_dues_and_bills">Track your dues and bills like never before. We bring punctuality in your life</string>
     <string name="next">Next</string>
@@ -12,7 +12,7 @@
     <string name="we_dont_just_ask">We don’t just ask for money. Claim amazing rewards by being a punctual customer </string>
     <string name="proceed">Proceed</string>
     <string name="proceed_to_pay">Proceed to Pay</string>
-    <string name="welocome_to_paul_gold">Welcome to Paul Gold,\n we are happy to serve you!!</string>
+    <string name="welocome_to_paul_gold">Welcome to Paul One,\n we are happy to serve you!!</string>
     <string name="please_enter_phone">Please enter your phone number</string>
     <string name="str_91">+91</string>
     <string name="please_fill_the_otp">Please fill the OTP sent to the given number</string>
@@ -179,7 +179,7 @@
     <string name="card_num">Card Number</string>
     <string name="expdatehint">Expiry Date (MM/YY)</string>
     <string name="cvv">CVV</string>
-    <string name="by_adding_a_card">"By adding this card, you agree to allow Paul Gold to use it for future payments "</string>
+    <string name="by_adding_a_card">"By adding this card, you agree to allow Paul One to use it for future payments "</string>
     <string name="save_card">Save Card</string>
 
 
@@ -312,7 +312,7 @@
     <string name="chag_yr_pin">Change your pin</string>
     <string name="view_score">View Scores</string>
     <string name="by_continue"><![CDATA[By continuing, I authorize Paul merchants to send this information to CIRF via a private and secured service to fetch my credit report & agree to both of their terms and conditions.]]></string>
-    <string name="i_authorise">"I authorize use of credit reports by Paul Merchants to offer personalized credit products from partner banks on Paul Gold. (Optional) "</string>
+    <string name="i_authorise">"I authorize use of credit reports by Paul Merchants to offer personalized credit products from partner banks on Paul One. (Optional) "</string>
     <string name="continue_one">Continue</string>
     <string name="your_credit_activity">Your Credit Activity</string>
     <string name="as_of_the_various_credit_sources">as of the various credit sources</string>

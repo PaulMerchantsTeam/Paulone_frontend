@@ -279,7 +279,8 @@ class CommonViewModel @Inject constructor(
                     acNo = dueLoanSelected?.AcNo.toString(),
                     makerId = "12545as",
                     macID = Build.ID,
-                    deviceDetailsDTO = AppUtility.getDeviceDetails()
+                    deviceDetailsDTO = AppUtility.getDeviceDetails(),
+                    isCustom = false
                 )
             }
 

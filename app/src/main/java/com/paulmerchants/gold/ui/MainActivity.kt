@@ -186,7 +186,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
             "onPaymentSuccess: ......$p0........${p1?.orderId}.....${p1?.paymentId}------${p1?.signature}"
         )
 //        commonViewModel.paymentData.postValue(StatusPayment(true, p1))
-        updatePaymentStatusToServer(StatusPayment("captured", p1))
+//        updatePaymentStatusToServer(StatusPayment("captured", p1))
     }
 
     override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
@@ -195,28 +195,28 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
             "onPaymentError: -----------$p0.---$p1...${p2?.orderId}.....${p2?.paymentId}------${p2?.signature}"
         )
 //      commonViewModel.paymentData.postValue(StatusPayment(false, p2))
-        updatePaymentStatusToServer(StatusPayment("not_captured", p2))
+//        updatePaymentStatusToServer(StatusPayment("not_captured", p2))
     }
 
-    private fun updatePaymentStatusToServer(statusData: StatusPayment) {
-        Log.d(TAG, "updatePaymentStatusToServer: $amount....$statusData")
-        if (amount != null) {
-            amount?.let {
-                commonViewModel.updatePaymentStatus(
-                    appSharedPref = appSharedPref,
-                    status = statusData.status,
-                    razorpay_payment_id = statusData.paymentData?.paymentId.toString(),
-                    razorpay_order_id = statusData.paymentData?.orderId.toString(),
-                    razorpay_signature = statusData.paymentData?.signature.toString(),
-                    custId = appSharedPref?.getStringValue(Constants.CUSTOMER_ID).toString(),
-                    amount = amount,
-                    contactCount = 0, description = "desc_payment"
-                )
-            }
-        } else {
-            "Amount: Some thing went wrong".showSnackBar()
-        }
-    }
+//    private fun updatePaymentStatusToServer(statusData: StatusPayment) {
+//        Log.d(TAG, "updatePaymentStatusToServer: $amount....$statusData")
+//        if (amount != null) {
+//            amount?.let {
+//                commonViewModel.updatePaymentStatus(
+//                    appSharedPref = appSharedPref,
+//                    status = statusData.status,
+//                    razorpay_payment_id = statusData.paymentData?.paymentId.toString(),
+//                    razorpay_order_id = statusData.paymentData?.orderId.toString(),
+//                    razorpay_signature = statusData.paymentData?.signature.toString(),
+//                    custId = appSharedPref?.getStringValue(Constants.CUSTOMER_ID).toString(),
+//                    amount = amount,
+//                    contactCount = 0, description = "desc_payment"
+//                )
+//            }
+//        } else {
+//            "Amount: Some thing went wrong".showSnackBar()
+//        }
+//    }
 
 
 }

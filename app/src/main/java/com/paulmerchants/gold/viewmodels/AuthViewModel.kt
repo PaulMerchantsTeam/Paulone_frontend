@@ -46,6 +46,7 @@ class AuthViewModel @Inject constructor(
     var isOtpVerify = MutableLiveData<Boolean>()
     var isMPinSet = MutableLiveData<Boolean>()
     val verifyOtp = MutableLiveData<ResponseGetOtp>()
+    var enteredMobileTemp: String = ""
     val getTokenResp = MutableLiveData<Response<LoginNewResp>>()
     fun getCustomer(appSharedPref: AppSharedPref?, mobileNum: String, context: Context) =
         viewModelScope.launch {
@@ -80,7 +81,7 @@ class AuthViewModel @Inject constructor(
                                 )
                                 if (respCutomer[0].Status == true) {
                                     if (appSharedPref != null) {
-                                        getOtp(appSharedPref, mobileNum, context)
+                                        getOtp(appSharedPref, mobileNum)
                                     }
                                     isCustomerExist.postValue(true)
                                     Log.d(
@@ -124,14 +125,14 @@ class AuthViewModel @Inject constructor(
             })
         }
 
-    fun getOtp(appSharedPref: AppSharedPref, mobileNum: String, context: Context) =
+    fun getOtp(appSharedPref: AppSharedPref?, mobileNum: String) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
                     return apiParams.getOtp(
 
-                        "Bearer ${appSharedPref.getStringValue(JWT_TOKEN).toString()}",
+                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
                         ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails()),
                     )
                 }

@@ -99,7 +99,7 @@ class GoldLoanOverViewAdapterProd(
 //                        clickPayParent.show()
 
                         outStaTitleTv.text =
-                            binding.root.context.getString(R.string.intrst_due_date)
+                            binding.root.context.getString(R.string.due_date)
                         outStandValueTv.text =
                             AppUtility.getDateFormat(actionItem.DueDate)?.trim().toString()
                         val duedate = AppUtility.numberOfDaysWrtCurrent(actionItem.DueDate)
@@ -116,7 +116,13 @@ class GoldLoanOverViewAdapterProd(
                                 overDueDaysTv.text = "Overdue by $duedate days"
                             }
                         }
-                        intDueAmountTv.text = "INR ${actionItem.OutStanding.toString()}"
+//                        actionItem.InterestDue?.let {
+//                            intDueAmountTv.text = "INR ${actionItem.OutStanding?.plus(it)}"
+//                        }
+
+                        intDueAmountTv.text = "INR ${actionItem.InterestDue}"
+
+
                         binding.loanClosedBtn.apply {
                             text = binding.root.context.getString(R.string.pay_now)
                             setTextColor(

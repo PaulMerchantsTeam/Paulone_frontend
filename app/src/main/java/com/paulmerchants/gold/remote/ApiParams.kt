@@ -125,6 +125,7 @@ interface ApiParams {
         @Query("acNo") acNo: String,
         @Query("makerId") makerId: String,
         @Query("macID") macID: String,
+        @Query("isCustom") isCustom: Boolean,
         @Body deviceDetailsDTO: DeviceDetailsDTO,
     ): Response<*>
 
@@ -224,8 +225,8 @@ interface ApiParams {
         @Header("Authorization") auth: String,
         @Query("pageNumber") pageNumber: Int,
         @Query("pageSize") pageSize: Int,
-        @Query("sortBy") sortBy: String ="branchId",
-        @Query("sortDir") sortDir: String ="asc",
+        @Query("sortBy") sortBy: String = "branchId",
+        @Query("sortDir") sortDir: String = "asc",
     ): Response<RespAllBranch>
 
 

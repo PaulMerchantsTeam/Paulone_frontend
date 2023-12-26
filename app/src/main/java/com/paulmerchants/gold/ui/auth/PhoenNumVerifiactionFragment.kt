@@ -290,11 +290,18 @@ class PhoenNumVerifiactionFragment :
             }
 
         })
+
+        //Send Otp Again...
         binding.didnotReceiveTv.setOnClickListener {
             if (!isResendEnabled) {
                 return@setOnClickListener
             } else {
-                //TODO code for resend OTP Option
+                if (binding.etPhoenNum.text.toString().isNotEmpty()) {
+                    authViewModel.getOtp(
+                        appSharedPref = (activity as MainActivity).appSharedPref,
+                        binding.etPhoenNum.text.toString()
+                    )
+                }
             }
         }
 
@@ -449,6 +456,8 @@ class PhoenNumVerifiactionFragment :
     }
 
     private fun hideAndShowOtpView() {
+        authViewModel.enteredMobileTemp = binding.etPhoenNum.text.toString()
+        Log.d("TAG", "hideAndShowOtpView: ..............${authViewModel.enteredMobileTemp}")
         binding.apply {
             proceedAuthBtn.apply {
                 disableButton(requireContext())
