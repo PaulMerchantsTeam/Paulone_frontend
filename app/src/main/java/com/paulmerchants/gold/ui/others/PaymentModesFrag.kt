@@ -9,6 +9,7 @@ import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.common.PayMethod
 import com.paulmerchants.gold.databinding.PaymentModesBinding
 import com.paulmerchants.gold.model.PayModes
+import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -106,7 +107,7 @@ class PaymentModesFrag : BaseFragment<PaymentModesBinding>(PaymentModesBinding::
                 }
                 titlePageTv.text = getString(R.string.pay_modes)
                 endIconIv.setImageResource(R.drawable.quest_circle)
-                endIconIv.show()
+                endIconIv.hide()
             }
         }
     }

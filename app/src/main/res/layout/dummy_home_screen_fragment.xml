@@ -80,7 +80,7 @@
                     android:layout_marginStart="@dimen/screen_start_margin"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:lineSpacingExtra="@dimen/_3sdp"
-                    android:text="UPCOMING"
+                    android:text="UPCOMING DUES"
                     android:textColor="@color/splash_screen_three"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

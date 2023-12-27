@@ -367,7 +367,8 @@ fun RecyclerView.setServicesUi(
         104,
         context.getString(R.string.anything_fr_us),
         context.getString(R.string.give_us_fdbck),
-        context.getString(R.string.raise_a_complaint)
+        ""
+//        context.getString(R.string.raise_a_complaint)
     )
     val service5 = MenuServices(
         105,
@@ -376,7 +377,7 @@ fun RecyclerView.setServicesUi(
         ""
     )
 
-    val listService = listOf(service1, service2, service3, service4, service5)
+    val listService = listOf(service1, service2, service4, service5)
     menuServiceAdapter.submitList(listService)
     this.adapter = menuServiceAdapter
 }

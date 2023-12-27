@@ -533,9 +533,13 @@
                             android:layout_margin="@dimen/_6sdp"
                             android:background="@drawable/edit_text_rect"
                             android:hint="Enter here"
+                            android:inputType="textEmailAddress"
+                            android:digits="abcdefghijklmnopqrstuvwxyz@#$_1234567890 ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             android:paddingHorizontal="@dimen/_4sdp"
+                            android:cursorVisible="true"
+
                             android:textColor="@color/splash_screen_one"
-                            android:textCursorDrawable="@color/splash_screen_one"
+                            android:textCursorDrawable="@drawable/custom_edit_text_cursor"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/addUpiTv" />
