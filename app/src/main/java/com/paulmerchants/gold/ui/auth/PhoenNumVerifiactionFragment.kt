@@ -80,6 +80,45 @@ class PhoenNumVerifiactionFragment :
         authViewModel.isFrmLogout = arguments?.getBoolean(IS_LOGOUT, false)
     }
 
+    private fun isValidate(): Boolean {
+        val confirmPin =
+            (binding.signUpParentMain.mpinOneConfirmEt.text.toString() + binding.signUpParentMain.mpinConfirmTwoEt.text.toString() + binding.signUpParentMain.mpinConfirmThreeEt.text.toString() + binding.signUpParentMain.mpinConfirmFourEt.text.toString())
+        val mPin =
+            (binding.signUpParentMain.mpinOneEt.text.toString() + binding.signUpParentMain.mpinTwoEt.text.toString() + binding.signUpParentMain.mpinThreeEt.text.toString() + binding.signUpParentMain.mpinFourEt.text.toString())
+        return when {
+            confirmPin == mPin -> {
+                "M-Pin Mismatched ".showSnackBar()
+                false
+            }
+
+            binding.signUpParentMain.mpinOneEt.text.isEmpty()
+                    || binding.signUpParentMain.mpinTwoEt.text.isEmpty()
+                    || binding.signUpParentMain.mpinThreeEt.text.isEmpty()
+                    || binding.signUpParentMain.mpinFourEt.text.isNotEmpty() -> {
+                "Please enter M-Pin".showSnackBar()
+                false
+            }
+
+            binding.signUpParentMain.mpinOneConfirmEt.text.isEmpty()
+                    || binding.signUpParentMain.mpinConfirmTwoEt.text.isEmpty()
+                    || binding.signUpParentMain.mpinConfirmThreeEt.text.isEmpty()
+                    || binding.signUpParentMain.mpinConfirmFourEt.text.isEmpty()
+
+            -> {
+                "Please enter Confirm M-Pin".showSnackBar()
+                false
+            }
+
+            !binding.signUpParentMain.termsCb.isChecked -> {
+                "Please accept Terms and Conditions".showSnackBar()
+                false
+            }
+
+            else -> true
+        }
+    }
+
+
     override fun onStart() {
         super.onStart()
         val backStack = findNavController().backQueue
@@ -111,7 +150,7 @@ class PhoenNumVerifiactionFragment :
                     binding.signUpParentMain.etName.text.isNotEmpty() && binding.signUpParentMain.etEmailId.text.isNotEmpty() && binding.signUpParentMain.mpinOneEt.text.isNotEmpty() && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinFourEt.text.isNotEmpty() && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty() && binding.signUpParentMain.termsCb.isChecked
                 }"
             )
-            if ((binding.signUpParentMain.etName.text.isNotEmpty() && binding.signUpParentMain.mpinOneEt.text.isNotEmpty() && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinFourEt.text.isNotEmpty() && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty()) && binding.signUpParentMain.termsCb.isChecked) {
+            if (isValidate()) {
                 val confirmPin =
                     (binding.signUpParentMain.mpinOneConfirmEt.text.toString() + binding.signUpParentMain.mpinConfirmTwoEt.text.toString() + binding.signUpParentMain.mpinConfirmThreeEt.text.toString() + binding.signUpParentMain.mpinConfirmFourEt.text.toString())
                 val mPin =
@@ -124,8 +163,6 @@ class PhoenNumVerifiactionFragment :
                     requireContext(),
                     binding.signUpParentMain.etEmailId.text.toString()
                 )
-            } else {
-                "Please fill require details".showSnackBar()
             }
         }
         if ((activity as MainActivity).appSharedPref?.getBooleanValue(OTP_VERIFIED) == true) {
@@ -149,7 +186,7 @@ class PhoenNumVerifiactionFragment :
             }
         } else {
             diffColorText(
-                "Welcome to Paul Gold,\nwe are",
+                "Welcome to Paul One,\nwe are",
                 "happy",
                 "to serve you!!",
                 "",
@@ -334,8 +371,8 @@ class PhoenNumVerifiactionFragment :
     }
 
     private fun hideAndShowSignUpScreen() {
-        (activity as MainActivity).mViewModel.timer?.cancel()
-        (activity as MainActivity).mViewModel.countNum.postValue(0L)
+        authViewModel.timer?.cancel()
+        authViewModel.countNum.postValue(0L)
         binding.fillOtpParent.hideView()
         binding.signUpParentMain.root.show()
         customizeText()
@@ -455,6 +492,12 @@ class PhoenNumVerifiactionFragment :
         }
     }
 
+    //Handle--Configuration...
+    override fun onPause() {
+        super.onPause()
+        authViewModel.isCalledApi = false
+    }
+
     private fun hideAndShowOtpView() {
         authViewModel.enteredMobileTemp = binding.etPhoenNum.text.toString()
         Log.d("TAG", "hideAndShowOtpView: ..............${authViewModel.enteredMobileTemp}")
@@ -472,26 +515,25 @@ class PhoenNumVerifiactionFragment :
             "+91${binding.etPhoenNum.text}. <u>${getString(R.string.change_q)}</u>",
             binding.pleaseOtpTv
         )
-        (activity as MainActivity).mViewModel.timerStart(30000)
-        (activity as MainActivity).mViewModel.countNum.observe(viewLifecycleOwner) {
-            it?.let {
-                var count = "$it"
-                if (it < 10) {
-                    count = "0$it"
-                }
-                Log.d("TAG", "hideAndShowOtpView: $it") //Didn’t receive? 00:30
-                if (it == 0L) {
-                    isResendEnabled = true
-                    binding.didnotReceiveTv.setTColor(
-                        "${getString(R.string.send_again)}",
-                        requireContext(),
-                        R.color.splash_screen_one
-                    )
-                } else {
-                    diffColorText("Didn’t receive?", "00:$count", binding.didnotReceiveTv)
-                }
-
+        if (authViewModel.isCalledApi) {
+            authViewModel.timerStart()
+        }
+        authViewModel.countStr.observe(viewLifecycleOwner) {
+            /**
+             * 2 Mins
+             * 120sec---1:12
+             */
+            if (it == "00") {
+                isResendEnabled = true
+                binding.didnotReceiveTv.setTColor(
+                    "${getString(R.string.send_again)}",
+                    requireContext(),
+                    R.color.splash_screen_one
+                )
+            } else {
+                diffColorText("Didn’t receive?", it, binding.didnotReceiveTv)
             }
+
         }
     }
 

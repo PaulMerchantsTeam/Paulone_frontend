@@ -53,8 +53,18 @@ class HomeScreenFrag :
     private val moreToComeAdapter = MoreToComeAdapter()
 
     private val bannerList = listOf(
-        MoreToComeModel(R.drawable.banner_sample, 1),
-        MoreToComeModel(R.drawable.banner_paying_bills, 2),
+        MoreToComeModel(
+            R.drawable.one_place_to_iv,
+            1,
+            "One place\n to pay bills",
+            "Rent, Electricity, Mobile Bill & more"
+        ),
+        MoreToComeModel(
+            R.drawable.no_more_delay_pay,
+            2,
+            "No more delay\n in paying bills",
+            "Get timely notifications of payments"
+        ),
     )
 
     //    private val homeSweetBillsAdapter = HomeSweetBillsAdapter()
@@ -573,7 +583,7 @@ class HomeScreenFrag :
 //                findNavController().navigate(R.id.applyLoanForNewUser)
 //            }            android:text="You are having 4 active loans totalling upto"
             loanOverViewCardParent.youHaveTotalLoanTv.text =
-                "You are having ${resp.size} active loans totalling interest due upto"
+                "You are having ${resp.size} active loans totalling interest due up to"
             for (i in resp) {
                 i.InterestDue?.let {
                     totalAmount += it

@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,6 +37,9 @@ import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.MenuServices
 import com.paulmerchants.gold.model.Notifications
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
+import com.paulmerchants.gold.viewmodels.AuthViewModel
+import com.paulmerchants.gold.viewmodels.ProfileViewModel
 
 
 fun ImageView.startCustomAnimation(drawable: Int) {
@@ -172,7 +176,14 @@ fun RecyclerView.setNotificationDummy() {
 }
 
 
-fun Fragment.showCustomDialogOTPVerify(context: Context, title: String = "") {
+fun Fragment.showCustomDialogOTPVerify(
+    mobile:String,
+    appSharedPref: AppSharedPref?,
+    type: Int = 0,
+    context: Context,
+    title: String = "",
+    viewModel: ViewModel,
+) {
     val dialogBinding =
         OtpFillLayoutDialogBinding.inflate(this.layoutInflater)
 
@@ -182,7 +193,9 @@ fun Fragment.showCustomDialogOTPVerify(context: Context, title: String = "") {
         setView(dialogBinding.root)
         setCancelable(false)
     }.show()
+
     dialogBinding.verifyOtpBtn.setOnClickListener {
+//        (viewModel as ProfileViewModel).verifyOtp(appSharedPref,mobile,)
         customDialog.dismiss()
         //verify Otp
     }
@@ -336,7 +349,7 @@ fun RecyclerView.setServicesUi(
         100,
         context.getString(R.string.privac_settings),
         context.getString(R.string.chag_yr_pin),
-        ""
+        context.getString(R.string.reset_yr_pin)
     )
     val service2 = MenuServices(
         101,

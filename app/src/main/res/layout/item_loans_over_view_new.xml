@@ -146,6 +146,7 @@
         android:background="@drawable/rec_back_btn"
         android:paddingStart="@dimen/screen_start_margin"
         android:paddingTop="@dimen/_8sdp"
+        android:visibility="gone"
         android:paddingEnd="@dimen/_18sdp"
         android:paddingBottom="@dimen/_11sdp"
         android:text="@string/view_details"

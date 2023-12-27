@@ -21,4 +21,5 @@
     <string name="intrst_due_date">Interest Due Date\n</string>
     <string name="pay_through_upi">Pay through UPI</string>
     <string name="all_transaction">All Transaction</string>
+    <string name="login_with_different_account"><u>Login with different account</u></string>
 </resources>

@@ -26,7 +26,7 @@ class EditProfileScreenFrag :
 
     private fun handleClicks() {
         binding.verifyPanCardBtn.setOnClickListener {
-            showCustomDialogOTPVerify(requireContext())
+//            showCustomDialogOTPVerify(context=requireContext())
         }
         binding.hearderEditProf.backIv.setOnClickListener {
             findNavController().navigateUp()

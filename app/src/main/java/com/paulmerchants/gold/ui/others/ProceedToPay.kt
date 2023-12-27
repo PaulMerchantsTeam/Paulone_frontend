@@ -75,10 +75,10 @@ class ProceedToPay :
                     arrowDowmBhmIv.setImageResource(R.drawable.cross_icon)
                     upiMethodParent.show()
                     verifyUpiBtn.setOnClickListener {
-                        showCustomDialogOTPVerify(
-                            requireContext(),
-                            "OTP send to the number ending with *4555"
-                        )
+//                        showCustomDialogOTPVerify(
+//                            context =requireContext(),
+//                           title =  "OTP send to the number ending with *4555"
+//                        )
                         addNewUpiTv.hide()
                         selectUpiIdParent.show()
                         upiCardTv.show()

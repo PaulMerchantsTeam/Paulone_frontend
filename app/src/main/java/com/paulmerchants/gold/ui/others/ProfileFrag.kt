@@ -7,15 +7,20 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
+import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
 import com.paulmerchants.gold.databinding.ProfileLayoutBinding
+import com.paulmerchants.gold.enums.ScreenType
 import com.paulmerchants.gold.model.MenuServices
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.Constants
+import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.setServicesUi
+import com.paulmerchants.gold.utility.showCustomDialogOTPVerify
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import com.paulmerchants.gold.viewmodels.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -142,8 +147,52 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
         }
     }
 
+    fun showCustomDialogOTPVerify(
+        mobile: String,
+        appSharedPref: AppSharedPref?,
+        type: Int = 0,
+        title: String = "",
+    ) {
+        val dialogBinding =
+            OtpFillLayoutDialogBinding.inflate(this.layoutInflater)
+
+        val customDialog =
+            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme).create()
+        customDialog.apply {
+            setView(dialogBinding.root)
+            setCancelable(false)
+        }.show()
+
+        dialogBinding.verifyOtpBtn.setOnClickListener {
+//        (viewModel as ProfileViewModel).verifyOtp(appSharedPref,mobile,)
+            customDialog.dismiss()
+            //verify Otp
+        }
+        dialogBinding.cancelDgBtn.setOnClickListener {
+            customDialog.dismiss()
+            //verify Otp
+        }
+    }
+
     private fun onMenuServiceClickedTwo(menuServices: MenuServices) {
         when (menuServices.serviceId) {
+            100 -> {
+                showCustomDialogOTPVerify(
+                    (activity as MainActivity).appSharedPref?.getStringValue(
+                        CUST_MOBILE
+                    ).toString(),
+                    (activity as MainActivity).appSharedPref,
+                    context = requireContext(),
+                    title = "OTP send to the number ${
+                        (activity as MainActivity).appSharedPref?.getStringValue(
+                            CUST_MOBILE
+                        )
+                    }",
+                    type = ScreenType.PROFILE_SCREEN.type,
+                    viewModel = profileViewModel
+                )
+            }
+
             104 -> {
                 findNavController().navigate(R.id.raiseComplaintFrag)
             }

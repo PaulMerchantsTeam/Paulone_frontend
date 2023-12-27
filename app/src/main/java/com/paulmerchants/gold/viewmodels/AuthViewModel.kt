@@ -1,6 +1,7 @@
 package com.paulmerchants.gold.viewmodels
 
 import android.content.Context
+import android.os.CountDownTimer
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -40,6 +41,7 @@ class AuthViewModel @Inject constructor(
 ) : ViewModel() {
     //    val pass = "FU510N@pro"
 //    val userId = "pml"
+    var isCalledApi = true  //true initially when activity or fragmnet launch ..this is to handle the ui configuration changes...
     var isFrmLogout: Boolean? = false
     var isStartAnim = MutableLiveData<Boolean>()
     var isCustomerExist = MutableLiveData<Boolean>()
@@ -48,6 +50,43 @@ class AuthViewModel @Inject constructor(
     val verifyOtp = MutableLiveData<ResponseGetOtp>()
     var enteredMobileTemp: String = ""
     val getTokenResp = MutableLiveData<Response<LoginNewResp>>()
+
+    var timer: CountDownTimer? = null
+    val countNum = MutableLiveData<Long>()
+    val countStr = MutableLiveData<String>()
+
+    fun timerStart(millis: Long = 120000L) {
+        timer = object : CountDownTimer(millis, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+
+
+                var count = "${millisUntilFinished / 1000}"
+                val inSecond = millisUntilFinished / 1000
+                if (inSecond < 10) {
+                    count = "00:0$inSecond"
+                } else if (inSecond > 60) {
+                    count = if (inSecond - 60 < 10) {
+                        "1:0${inSecond - 60}"
+                    } else {
+                        "1:${inSecond - 60}"
+                    }
+                } else if (inSecond < 60) {
+                    count = "00:$inSecond"
+                }
+                Log.d("TAG", "hideAndShowOtpView: $count") //Didn’t receive? 00:30
+
+                countNum.postValue(millisUntilFinished / 1000)
+                countStr.postValue(count)
+            }
+
+            override fun onFinish() {
+                countNum.postValue(0)
+                countStr.postValue("00")
+            }
+        }
+        timer?.start()
+    }
+
     fun getCustomer(appSharedPref: AppSharedPref?, mobileNum: String, context: Context) =
         viewModelScope.launch {
 
@@ -100,11 +139,11 @@ class AuthViewModel @Inject constructor(
                                         CUSTOMER_NAME, respCutomer[0].CustName.toString()
                                     )
                                 } else {
-                                    Toast.makeText(
-                                        context,
-                                        "Error: Status = ${respCutomer[0].Status}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    "No active Gold loan found for this number".showSnackBar()
+                                    Log.i(
+                                        "Auth_ViewModel",
+                                        "Error: Status = ${respCutomer[0].Status}"
+                                    )
                                 }
                             }
                         } catch (e: Exception) {
@@ -210,9 +249,8 @@ class AuthViewModel @Inject constructor(
                                 isOtpVerify.postValue(true)
                                 verifyOtp.value = response.body()
 
-
                             } else {
-                                "${it.statusCode}: ${it.message}".showSnackBar()
+                                "${it.message}".showSnackBar()
                             }
                         }
                     }

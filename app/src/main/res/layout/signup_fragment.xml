@@ -62,7 +62,6 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:paddingBottom="@dimen/_13sdp"
-                    app:layoutDescription="@xml/signup_fragment_xml_constraintlayout2_scene"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
@@ -84,8 +83,8 @@
                         android:id="@+id/etName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:enabled="false"
                         android:backgroundTint="@color/view_color"
+                        android:enabled="false"
                         android:fontFamily="@font/poppins_semi_bold"
                         android:inputType="textPersonName"
                         android:textColor="@color/splash_screen_one"
@@ -115,7 +114,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/view_color"
                         android:fontFamily="@font/poppins_semi_bold"
-                        android:hint="@string/optional"
+                        android:hint="abc@gmail.com"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/splash_screen_one"
                         android:textCursorDrawable="@drawable/custom_edit_text_cursor"
@@ -350,8 +349,8 @@
                         android:id="@+id/view"
                         android:layout_width="@dimen/_70sdp"
                         android:layout_height="@dimen/_1sdp"
-                        android:visibility="gone"
                         android:background="@color/color_prim_one_40"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@+id/materialTextView"
                         app:layout_constraintEnd_toStartOf="@+id/materialTextView"
                         app:layout_constraintTop_toTopOf="@+id/materialTextView" />
@@ -360,8 +359,8 @@
                         android:id="@+id/view2"
                         android:layout_width="@dimen/_70sdp"
                         android:layout_height="@dimen/_1sdp"
-                        android:visibility="gone"
                         android:background="@color/color_prim_one_40"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@+id/materialTextView"
                         app:layout_constraintStart_toEndOf="@+id/materialTextView"
                         app:layout_constraintTop_toTopOf="@+id/materialTextView" />
@@ -375,9 +374,9 @@
                         android:gravity="center"
                         android:padding="@dimen/_3sdp"
                         android:text="or"
-                        android:visibility="gone"
                         android:textAlignment="gravity"
                         android:textSize="@dimen/_11ssp"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
@@ -409,21 +408,21 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
 
-<!--                    <com.google.android.material.textview.MaterialTextView-->
-<!--                        android:id="@+id/alreadyHaveAccTv"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="@dimen/_16sdp"-->
-<!--                        android:fontFamily="@font/poppins_bold"-->
-<!--                        android:lineSpacingExtra="@dimen/_3sdp"-->
-<!--                        android:text="@string/already_have_an_acc"-->
-<!--                        android:textColor="@color/splash_screen_three"-->
-<!--                        android:textSize="@dimen/_10ssp"-->
-<!--                        android:visibility="gone"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintEnd_toEndOf="@+id/googleSignInTv"-->
-<!--                        app:layout_constraintStart_toStartOf="@+id/googleSignInTv"-->
-<!--                        app:layout_constraintTop_toBottomOf="@+id/googleSignInTv" />-->
+                    <!--                    <com.google.android.material.textview.MaterialTextView-->
+                    <!--                        android:id="@+id/alreadyHaveAccTv"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_marginTop="@dimen/_16sdp"-->
+                    <!--                        android:fontFamily="@font/poppins_bold"-->
+                    <!--                        android:lineSpacingExtra="@dimen/_3sdp"-->
+                    <!--                        android:text="@string/already_have_an_acc"-->
+                    <!--                        android:textColor="@color/splash_screen_three"-->
+                    <!--                        android:textSize="@dimen/_10ssp"-->
+                    <!--                        android:visibility="gone"-->
+                    <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                    <!--                        app:layout_constraintEnd_toEndOf="@+id/googleSignInTv"-->
+                    <!--                        app:layout_constraintStart_toStartOf="@+id/googleSignInTv"-->
+                    <!--                        app:layout_constraintTop_toBottomOf="@+id/googleSignInTv" />-->
                 </androidx.constraintlayout.motion.widget.MotionLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 

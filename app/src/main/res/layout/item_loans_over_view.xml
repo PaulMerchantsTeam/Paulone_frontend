@@ -172,6 +172,7 @@
         android:paddingStart="@dimen/screen_start_margin"
         android:paddingTop="@dimen/_8sdp"
         android:paddingEnd="@dimen/_18sdp"
+        android:visibility="gone"
         android:paddingBottom="@dimen/_11sdp"
         android:text="@string/view_details"
         app:layout_constraintBottom_toBottomOf="@+id/loanClosedBtn"

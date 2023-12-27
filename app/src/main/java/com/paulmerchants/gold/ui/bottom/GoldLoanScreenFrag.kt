@@ -46,8 +46,8 @@ class GoldLoanScreenFrag :
     }
 
     private fun optionsClicked(actionItem: RespGetLoanOutStandingItem, isSelect: Boolean) {
-        Log.d("TAG", "optionsClicked: .............${actionItem.OutStanding}")
-        actionItem.OutStanding?.let { totalAmount(actionItem, it, isSelect) }
+        Log.d("TAG", "optionsClicked: .............${actionItem.InterestDue}")
+        actionItem.InterestDue?.let { totalAmount(actionItem, it, isSelect) }
     }
 
     private fun totalAmount(
@@ -57,13 +57,13 @@ class GoldLoanScreenFrag :
     ) {
         if (isSelect) {
             amount += rupees
-            listPayAll.add(PayAll(actionItem.AcNo.toString(), actionItem.OutStanding?.toDouble()))
+            listPayAll.add(PayAll(actionItem.AcNo.toString(), actionItem.InterestDue?.toDouble()))
         } else {
             amount -= rupees
             listPayAll.remove(
                 PayAll(
                     actionItem.AcNo.toString(),
-                    actionItem.OutStanding?.toDouble()
+                    actionItem.InterestDue?.toDouble()
                 )
             )
         }
@@ -97,7 +97,7 @@ class GoldLoanScreenFrag :
     private fun payNowClicked(actionItem: RespGetLoanOutStandingItem) {
         if (actionItem.IsClosed == false) {
             val bundle = Bundle().apply {
-                actionItem.OutStanding?.toDouble()?.let {
+                actionItem.InterestDue?.toDouble()?.let {
                     putDouble(
                         AMOUNT_PAYABLE,
                         it
@@ -139,7 +139,9 @@ class GoldLoanScreenFrag :
                 binding.ttlAmountNumTv.text = "INR 0"
             }
         }
-        commonViewModel.getLoanOutstanding((activity as MainActivity).appSharedPref)
+        if (commonViewModel.isCalled) {
+            commonViewModel.getLoanOutstanding((activity as MainActivity).appSharedPref)
+        }
         commonViewModel.getRespGetLoanOutStandingLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.size != 0) {
@@ -179,6 +181,11 @@ class GoldLoanScreenFrag :
 
     private fun hideViews() {
         binding.constraintLayout12.hide()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        commonViewModel.isCalled = false
     }
 
     private fun setUiForClosedGoldLoans() {

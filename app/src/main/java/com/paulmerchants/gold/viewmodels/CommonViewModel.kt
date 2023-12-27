@@ -45,6 +45,7 @@ import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
 import com.paulmerchants.gold.utility.decryptKey
+import com.paulmerchants.gold.utility.setTColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -55,7 +56,7 @@ class CommonViewModel @Inject constructor(
     private val retrofitSetup: RetrofitSetup,
     private val apiParams: ApiParams,
 ) : ViewModel() {
-    var isCalled: Boolean = false
+    var isCalled: Boolean = true
     val paymentData = MutableLiveData<StatusPayment?>()
     var dueLoanSelected: GetPendingInrstDueRespItem? = null
     var respGetLoanOutStanding = ArrayList<RespGetLoanOutStandingItem>()
@@ -72,6 +73,7 @@ class CommonViewModel @Inject constructor(
     val getRespLoanRenewalProcessLiveData = MutableLiveData<RespLoanRenewalProcess>()
     var timer: CountDownTimer? = null
     val countNum = MutableLiveData<Long>()
+    val countStr = MutableLiveData<String>()
     var isStartAnim = MutableLiveData<Boolean>()
     var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
     private val secureFiles: SecureFiles = SecureFiles()
@@ -261,7 +263,6 @@ class CommonViewModel @Inject constructor(
         currency: String = "INR",
         description: String,
     ) = viewModelScope.launch {
-
         retrofitSetup.callApi(false, object : CallHandler<Response<*>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
                 return apiParams.updatePaymentStatus(
@@ -591,18 +592,7 @@ class CommonViewModel @Inject constructor(
     }
 
 
-    fun timerStart(millis: Long) {
-        timer = object : CountDownTimer(millis, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                countNum.postValue(millisUntilFinished / 1000)
-            }
 
-            override fun onFinish() {
-                countNum.postValue(0)
-            }
-        }
-        timer?.start()
-    }
 
 //    fun filterLocation(region: String?) {
 //        Log.d("TAG", "filterLocation: $region")
