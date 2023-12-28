@@ -116,33 +116,41 @@ class QuickPayDialog : BottomSheetDialogFragment() {
         quickPayPopupBinding.quixPayParentBtn.setOnClickListener {
             if (quickPayPopupBinding.customPayRadio.isChecked) {
                 actualLoan?.let {
-                    if (quickPayPopupBinding.customPayEt.text.toString().toDouble() > it) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Amount Due: ${
-                                dueLoans?.RebateAmount?.let {
-                                    dueLoans?.InterestDue?.minus(
-                                        it
-                                    )
-                                }
-                            }\nPlease fill valid amount",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        val bundle = Bundle().apply {
-                            putDouble(
-                                "AMOUNT_PAYABLE",
-                                quickPayPopupBinding.customPayEt.text.toString().toDouble()
-                            )
-                            putString(CUST_ACC, dueLoans?.AcNo.toString())
-                            putBoolean(IS_CUSTOM_AMOUNT, true)
-                        }
-                        findNavController().navigate(R.id.paymentModesFragNew, bundle)
+                    if (quickPayPopupBinding.customPayEt.text.isNotEmpty()) {
+                        if (quickPayPopupBinding.customPayEt.text.toString().toDouble() > it) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Amount Due: ${
+                                    dueLoans?.RebateAmount?.let {
+                                        dueLoans?.InterestDue?.minus(
+                                            it
+                                        )
+                                    }
+                                }\nPlease fill valid amount",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            val bundle = Bundle().apply {
+                                putDouble(
+                                    "AMOUNT_PAYABLE",
+                                    quickPayPopupBinding.customPayEt.text.toString().toDouble()
+                                )
+                                putString(CUST_ACC, dueLoans?.AcNo.toString())
+                                putBoolean(IS_CUSTOM_AMOUNT, true)
+                            }
+                            findNavController().navigate(R.id.paymentModesFragNew, bundle)
 //                        createOrder(
 //                            quickPayPopupBinding.customPayEt.text.toString().toDouble()
 //                        )
 //                        dismiss()
 //                        findNavController().navigate(R.id.quickPayMainFrag)
+                        }
+                    } else{
+                        Toast.makeText(
+                            requireContext(),
+                            "Amount cannot be empty",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             } else {
@@ -169,6 +177,7 @@ class QuickPayDialog : BottomSheetDialogFragment() {
         quickPayPopupBinding.apply {
             fullPayRadio.text =
                 "Pay INR ${dueLoans?.RebateAmount?.let { dueLoans?.InterestDue?.minus(it) }} fully"
+            goldLoanNumTv.text = "Gold Loan - xxxx${dueLoans?.AcNo.toString().takeLast(4)}"
         }
         onCLickRadio()
     }

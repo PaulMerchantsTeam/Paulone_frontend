@@ -1,8 +1,10 @@
 package com.paulmerchants.gold.ui.others
 
 import android.app.AlertDialog
-import android.content.DialogInterface
+import android.opengl.Visibility
 import android.os.Build
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,8 @@ import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
+import androidx.constraintlayout.motion.widget.Key.VISIBILITY
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.BuildConfig
@@ -17,7 +21,6 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.PaymentsModeNewBinding
-import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.newmodel.Notes
 import com.paulmerchants.gold.model.newmodel.PayAllnOneGoDataTobeSent
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
@@ -70,6 +73,26 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             ) else arguments?.getParcelable<PayAllnOneGoDataTobeSent>(Constants.PAY_ALL_IN_GO_DATA) as PayAllnOneGoDataTobeSent?
         Log.e("TAGGGGGGG", "initialize: -customerAcc-----------$payAlllInOneGo------$amountToPay")
         modifyHeaders()
+        /*binding.enterExpireDateEt.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, start: Int, removed: Int, added: Int) {
+                if (start == 1 && start+added == 2 && p0?.contains('/') == false) {
+                    binding.enterExpireDateEt.setText("$p0/")
+                    Toast.makeText(context, "${binding.enterExpireDateEt.text}......11", Toast.LENGTH_SHORT).show()
+
+                } else if (start == 3 && start-removed == 2 && p0?.contains('/') == true) {
+                    binding.enterExpireDateEt.setText(p0.toString().replace("/", ""))
+                    Toast.makeText(context, "${binding.enterExpireDateEt.text}....2", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })*/
+
+
+
+
     }
 
 
@@ -97,6 +120,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 }
             }
         }
+
 
 
         paymentViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
@@ -672,6 +696,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
     private fun payWithDebitCard() {
         basePayload()
+
 //        var cardNumberString = debitCardNumber?.text.toString()
 //        cardNumberString = cardNumberString.replace("\\s".toRegex(), "")
         payload.put("method", "card")
@@ -684,6 +709,10 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         )
         payload.put("card[cvv]", binding.enterCvvEt.text.toString())
         payload.put("card[name]", binding.enterNameOnCardEt.text.toString())
+
+
+
+
     }
 
 
@@ -769,7 +798,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 }
                 titlePageTv.text = getString(R.string.pay_modes)
                 endIconIv.setImageResource(R.drawable.quest_circle)
-                endIconIv.show()
+                endIconIv.hide()
             }
         }
     }

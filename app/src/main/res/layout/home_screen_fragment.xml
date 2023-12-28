@@ -70,7 +70,7 @@
                     android:layout_marginTop="@dimen/_24sdp"
                     android:fontFamily="@font/poppins_bold"
                     android:lineSpacingExtra="@dimen/_5sdp"
-                    android:text="UPCOMING"
+                    android:text="UPCOMING DUES"
                     android:textColor="@color/splash_screen_three"
                     android:textSize="@dimen/_16ssp"
                     app:layout_constraintStart_toStartOf="parent"

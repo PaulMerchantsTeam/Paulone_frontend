@@ -1,5 +1,8 @@
 package com.paulmerchants.gold.ui.others
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,14 +14,19 @@ import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
 import com.paulmerchants.gold.databinding.ProfileLayoutBinding
+import com.paulmerchants.gold.enums.ScreenType
 import com.paulmerchants.gold.model.MenuServices
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
 import com.paulmerchants.gold.utility.Constants.IS_RESET_MPIN
@@ -142,6 +150,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                 val changePinBundle = Bundle().apply {
                     putInt("ProfileChangePin", headerValue)
                 }
+
                 findNavController().navigate(R.id.resetMPinFrag)
             }
 
@@ -154,6 +163,10 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             }
 
             104 -> {
+
+                startActivity( Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")))
+
+
 //playStore
 
 
