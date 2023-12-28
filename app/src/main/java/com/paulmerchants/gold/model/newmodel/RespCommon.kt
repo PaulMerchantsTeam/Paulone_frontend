@@ -8,8 +8,8 @@ data class RespCommon(
     @SerializedName("response_message") val response_message: String,
     @SerializedName("status") val status: String,
     @SerializedName("statusCode") val statusCode: String,
-    @SerializedName("errorMessage") val errorMessage: String
-    )
+    @SerializedName("errorMessage") val errorMessage: String,
+)
 //{"responseType":"E","errorMessage":"JWT Token has expired","status":"FAILURE","statusCode":"401"}
 
 /**

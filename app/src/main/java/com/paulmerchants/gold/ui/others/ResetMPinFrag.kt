@@ -2,6 +2,7 @@ package com.paulmerchants.gold.ui.others
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
@@ -14,6 +15,7 @@ import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.CreditScoreScreenBinding
 import com.paulmerchants.gold.databinding.ResetCardPinBinding
 import com.paulmerchants.gold.databinding.ResetMPinBinding
+import com.paulmerchants.gold.model.newmodel.ReqResetForgetPin
 import com.paulmerchants.gold.model.newmodel.ReqResetPin
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
@@ -21,9 +23,11 @@ import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
+import com.paulmerchants.gold.utility.Constants.IS_RESET_MPIN
 import com.paulmerchants.gold.utility.disableButton
 import com.paulmerchants.gold.utility.enableButton
 import com.paulmerchants.gold.utility.hide
+import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.utility.showResetPinSuccessDialog
 import com.paulmerchants.gold.viewmodels.ResetMpinViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,18 +37,53 @@ import dagger.hilt.android.AndroidEntryPoint
 class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) {
 
     private val resetMpinViewModel: ResetMpinViewModel by viewModels()
+    private var isForReset: Boolean? = false
+    private val TAG = this.javaClass.name
 
     override fun ResetMPinBinding.initialize() {
-
+        isForReset = arguments?.getBoolean(IS_RESET_MPIN) ?: false
+        Log.d(TAG, "initialize:-=--$isForReset ")
     }
 
     override fun onStart() {
         super.onStart()
         modifyHeaders()
+        if (isForReset == true) {
+            binding.apply {
+                titleWelcomTv.text = getString(R.string.reset_yr_pin)
+                setUpMPinTv.hide()
+                pinCurrOneEt.hide()
+                pinCurrTwoEt.hide()
+                pinCurrThreeEt.hide()
+                pinCurrFourEt.hide()
+            }
+        } else {
+            binding.apply {
+                titleWelcomTv.text = getString(R.string.chag_yr_pin)
+                setUpMPinTv.show()
+                pinCurrOneEt.show()
+                pinCurrTwoEt.show()
+                pinCurrThreeEt.show()
+                pinCurrFourEt.show()
+            }
+
+        }
         focusAllEt()
         setActionCust()
 
         resetMpinViewModel.responseResetPin.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.isSuccessful) {
+                    if (it.body()?.status == "SUCCESS") {
+                        "${it.body()?.message}".showSnackBar()
+                        findNavController().navigateUp()
+                    } else {
+                        "${it.body()?.message}".showSnackBar()
+                    }
+                }
+            }
+        }
+        resetMpinViewModel.responseResetForgetPin.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.isSuccessful) {
                     if (it.body()?.status == "SUCCESS") {
@@ -77,28 +116,63 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
                 binding.pinFourCnfEt.text.isNotEmpty()
     }
 
+    private fun validateAllFieldForReset(): Boolean {
+        return binding.pinOneNewEt.text.isNotEmpty() &&
+                binding.pinTwoNewEt.text.isNotEmpty() &&
+                binding.pinThreeNewEt.text.isNotEmpty() &&
+                binding.pinFourNewEt.text.isNotEmpty() &&
+                binding.pinOneCnfEt.text.isNotEmpty() &&
+                binding.pinTwoCnfEt.text.isNotEmpty() &&
+                binding.pinThreeCnfEt.text.isNotEmpty() &&
+                binding.pinFourCnfEt.text.isNotEmpty()
+    }
+
     private fun setActionCust() {
         binding.proceedAuthBtn.setOnClickListener {
-            if (validateAllField()) {
-                if ("${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}" ==
-                    "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}"
-                ) {
-                    resetMpinViewModel.resetMpin(
-                        (activity as MainActivity).appSharedPref,
-                        ReqResetPin(
-                            "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
-                            "${binding.pinCurrOneEt.text}${binding.pinCurrTwoEt.text}${binding.pinCurrThreeEt.text}${binding.pinCurrFourEt.text}",
-                            (activity as MainActivity).appSharedPref?.getStringValue(CUST_MOBILE)
-                                .toString(),  //static for testing
-                            "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
-                            AppUtility.getDeviceDetails()
+            if (isForReset == true) {
+                if (validateAllFieldForReset()) {
+                    if ("${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}" ==
+                        "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}"
+                    ) {
+                        resetMpinViewModel.resetForgetMpin(
+                            (activity as MainActivity).appSharedPref,
+                            ReqResetForgetPin(
+                                confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
+                                mobileNo = (activity as MainActivity).appSharedPref?.getStringValue(
+                                    CUST_MOBILE
+                                ).toString(),
+                                newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
+                                AppUtility.getDeviceDetails()
+                            )
                         )
-                    )
+                    } else {
+                        "New M-Pin and Confirm M-Pin mismatched".showSnackBar()
+                    }
                 } else {
-                    "New M-Pin and Confirm M-Pin mismatched".showSnackBar()
+                    "Please fill all fields".showSnackBar()
                 }
             } else {
-                "Please fill all fields".showSnackBar()
+                if (validateAllField()) {
+                    if ("${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}" ==
+                        "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}"
+                    ) {
+                        resetMpinViewModel.changeMpin(
+                            (activity as MainActivity).appSharedPref,
+                            ReqResetPin(
+                                "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
+                                "${binding.pinCurrOneEt.text}${binding.pinCurrTwoEt.text}${binding.pinCurrThreeEt.text}${binding.pinCurrFourEt.text}",
+                                (activity as MainActivity).appSharedPref?.getStringValue(CUST_MOBILE)
+                                    .toString(),  //static for testing
+                                "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
+                                AppUtility.getDeviceDetails()
+                            )
+                        )
+                    } else {
+                        "New M-Pin and Confirm M-Pin mismatched".showSnackBar()
+                    }
+                } else {
+                    "Please fill all fields".showSnackBar()
+                }
             }
         }
     }
@@ -110,6 +184,11 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
     }
 
     private fun modifyHeaders() {
+        binding.backIv.setOnClickListener {
+            findNavController().popBackStack(R.id.resetMPinFrag, true)
+            findNavController().popBackStack(R.id.profileFrag, true)
+            findNavController().navigate(R.id.profileFrag)
+        }
 
     }
 
@@ -328,6 +407,7 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
 
                 R.id.pinOneNewEt -> {
                     if (text.length == 1) {
+
 //                                    binding.signUpBtn.enableButton(requireContext())
                         nextView?.requestFocus()
                     } else {
@@ -355,9 +435,11 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
 
                 R.id.pinFourNewEt -> {
                     if (text.length == 1) {
+                        binding.proceedAuthBtn.enableButton(requireContext())
 //                                    binding.signUpBtn.enableButton(requireContext())
                         nextView?.requestFocus()
                     } else {
+                        binding.proceedAuthBtn.disableButton(requireContext())
 //                                    binding.signUpBtn.disableButton(requireContext())
                     }
 
@@ -392,9 +474,11 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
 
                 R.id.pinFourCnfEt -> {
                     if (text.length == 1) {
+                        binding.proceedAuthBtn.enableButton(requireContext())
 //                                    binding.signUpBtn.enableButton(requireContext())
                         nextView?.requestFocus()
                     } else {
+                        binding.proceedAuthBtn.disableButton(requireContext())
 //                                    binding.signUpBtn.disableButton(requireContext())
                     }
 

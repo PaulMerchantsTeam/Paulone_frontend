@@ -190,7 +190,6 @@ class HomeScreenFrag :
     }
 
     private fun setProfileUi() {
-        (activity as MainActivity).appSharedPref?.putStringValue(Constants.CUSTOMER_NAME, "User")
         val userFirstName =
             AppUtility.getFirstName(
                 (activity as MainActivity).appSharedPref?.getStringValue(
@@ -198,8 +197,16 @@ class HomeScreenFrag :
                 )
             )
         Log.d(TAG, "setProfileUi: ...............$userFirstName")
-        binding.searchProfileParent.userName.text = "Hey ${userFirstName ?: "User"}"
-        binding.searchProfileParent.firtLetterUser.text = "${userFirstName?.first() ?: "U"}"
+        binding.searchProfileParent.userName.text = "Hey ${
+            (activity as MainActivity).appSharedPref?.getStringValue(
+                Constants.CUSTOMER_NAME,
+            )?.substringBefore(" ")
+        }"
+        binding.searchProfileParent.firtLetterUser.text = "${
+            (activity as MainActivity).appSharedPref?.getStringValue(
+                Constants.CUSTOMER_NAME,
+            )?.first() ?: "U"
+        }"
         (activity as MainActivity).commonViewModel.isStartAnim.observe(viewLifecycleOwner) {
             it?.let {
                 if (it) {

@@ -8,4 +8,5 @@ object Constants {
     const val CUSTOMER_NAME = "CUSTOMER_NAME"
     const val CUST_MOBILE = "CUST_MOBILE"
     const val IS_LOGOUT = "IS_LOGOUT"
+    const val IS_RESET_MPIN = "IS_RESET_MPIN"
 }

@@ -1,12 +1,9 @@
 package com.paulmerchants.gold.ui.others
 
-import androidx.navigation.fragment.findNavController
-import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.RegisterComplaintBinding
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
-import com.paulmerchants.gold.utility.showCustomDialogOTPVerify
 import dagger.hilt.android.AndroidEntryPoint
 
 

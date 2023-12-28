@@ -18,4 +18,6 @@ data class Data(
     @SerializedName("requestId") val requestId: String,
     @SerializedName("response_message") val response_message: String,
     @SerializedName("status") val status: String,
+    @SerializedName("mobileNo") val mobileNo: String,
+    @SerializedName("otp") val otp: String,
 )

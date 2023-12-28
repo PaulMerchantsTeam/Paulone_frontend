@@ -12,11 +12,14 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
+import com.paulmerchants.gold.model.ReqCustomerOtpNew
 import com.paulmerchants.gold.model.RequestLogin
 import com.paulmerchants.gold.model.RespCustomersDetails
 import com.paulmerchants.gold.model.RespLogin
+import com.paulmerchants.gold.model.ResponseGetOtp
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
+import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
 import com.paulmerchants.gold.model.newmodel.ReqResetPin
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
@@ -41,14 +44,15 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val retrofitSetup: RetrofitSetup,
 ) : ViewModel() {
+    var isCalled: Boolean = true
     private val TAG = this.javaClass.name
+    val verifyOtp = MutableLiveData<ResponseGetOtp>()
 
     init {
         Log.d(TAG, ": init_$TAG")
     }
 
     val getRespCustomersDetailsLiveData = MutableLiveData<RespCustomersDetails>()
-
 
     fun getCustomerDetails(appSharedPref: AppSharedPref) = viewModelScope.launch {
         retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
@@ -125,11 +129,11 @@ class ProfileViewModel @Inject constructor(
 //                                navController.clearBackStack(i.id)
                             }
                             val bundle = Bundle().apply {
-                                putBoolean(IS_LOGOUT,true)
+                                putBoolean(IS_LOGOUT, true)
                             }
                             navController.popBackStack(R.id.homeScreenFrag, true)
                             navController.popBackStack(R.id.profileFrag, true)
-                            navController.navigate(R.id.phoenNumVerifiactionFragment,bundle)
+                            navController.navigate(R.id.phoenNumVerifiactionFragment, bundle)
                             "${response.body()?.message}".showSnackBar()
                         } else {
                             "${response.body()?.message}".showSnackBar()
@@ -146,5 +150,66 @@ class ProfileViewModel @Inject constructor(
             })
         }
 
+    fun getOtp(appSharedPref: AppSharedPref?, mobileNum: String) =
+        viewModelScope.launch {
 
+            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
+                    return apiParams.getOtp(
+
+                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails()),
+                    )
+                }
+
+                override fun success(response: Response<ResponseGetOtp>) {
+
+//                    val decryptData = decryptKey(
+//                        BuildConfig.SECRET_KEY_GEN, response.body()?.data
+//                    )
+
+
+                }
+
+
+                override fun error(message: String) {
+                    super.error(message)
+                    Log.d("TAG", "error: ......$message")
+                }
+            })
+        }
+
+    fun verifyOtp(appSharedPref: AppSharedPref?, mobileNum: String, otp: String) =
+        viewModelScope.launch {
+            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
+                    return apiParams.verifyOtp(
+                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails()),
+                    )
+                }
+
+                override fun success(response: Response<ResponseGetOtp>) {
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            if (it.statusCode == "200") {
+                                appSharedPref?.putStringValue(Constants.CUST_MOBILE, mobileNum)
+                                verifyOtp.value = response.body()
+
+                            } else {
+                                "${it.message}".showSnackBar()
+                            }
+                        }
+                    }
+
+
+                }
+
+
+                override fun error(message: String) {
+                    super.error(message)
+                    Log.d("TAG", "error: ......$message")
+                }
+            })
+        }
 }

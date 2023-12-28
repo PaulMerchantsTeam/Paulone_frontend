@@ -176,34 +176,34 @@ fun RecyclerView.setNotificationDummy() {
 }
 
 
-fun Fragment.showCustomDialogOTPVerify(
-    mobile:String,
-    appSharedPref: AppSharedPref?,
-    type: Int = 0,
-    context: Context,
-    title: String = "",
-    viewModel: ViewModel,
-) {
-    val dialogBinding =
-        OtpFillLayoutDialogBinding.inflate(this.layoutInflater)
-
-    val customDialog =
-        MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme).create()
-    customDialog.apply {
-        setView(dialogBinding.root)
-        setCancelable(false)
-    }.show()
-
-    dialogBinding.verifyOtpBtn.setOnClickListener {
-//        (viewModel as ProfileViewModel).verifyOtp(appSharedPref,mobile,)
-        customDialog.dismiss()
-        //verify Otp
-    }
-    dialogBinding.cancelDgBtn.setOnClickListener {
-        customDialog.dismiss()
-        //verify Otp
-    }
-}
+//fun Fragment.showCustomDialogOTPVerify(
+//    mobile:String,
+//    appSharedPref: AppSharedPref?,
+//    type: Int = 0,
+//    context: Context,
+//    title: String = "",
+//    viewModel: ViewModel,
+//) {
+//    val dialogBinding =
+//        OtpFillLayoutDialogBinding.inflate(this.layoutInflater)
+//
+//    val customDialog =
+//        MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme).create()
+//    customDialog.apply {
+//        setView(dialogBinding.root)
+//        setCancelable(false)
+//    }.show()
+//
+//    dialogBinding.verifyOtpBtn.setOnClickListener {
+////        (viewModel as ProfileViewModel).verifyOtp(appSharedPref,mobile,)
+//        customDialog.dismiss()
+//        //verify Otp
+//    }
+//    dialogBinding.cancelDgBtn.setOnClickListener {
+//        customDialog.dismiss()
+//        //verify Otp
+//    }
+//}
 
 /*fun RecyclerView.setUiOnLastTransaction() {
     val lastStatemnetAdapter = LastStatemnetAdapter()

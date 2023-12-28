@@ -15,12 +15,14 @@ import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
 import com.paulmerchants.gold.model.newmodel.ReqGetLoanStatement
 import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.ReqPayAlInOnGo
+import com.paulmerchants.gold.model.newmodel.ReqResetForgetPin
 import com.paulmerchants.gold.model.newmodel.ReqResetPin
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespAllBranch
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
 import com.paulmerchants.gold.model.newmodel.RespLoginWithMpin
+import com.paulmerchants.gold.model.newmodel.RespResetFogetMpin
 import com.paulmerchants.gold.model.newmodel.RespTxnHistory
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -75,11 +77,17 @@ interface ApiParams {
         @Body reqSetMPin: ReqSetMPin,
     ): Response<RespSetMpin>
 
-    @POST("api/reset-mpin")
+    @POST("api/reset-mpin") //change Mpin
     suspend fun reSetMPin(
         @Header("Authorization") Authorization: String,
         @Body reqResetPin: ReqResetPin,
     ): Response<RespCommon>
+
+    @POST("api/forget-mpin")
+    suspend fun resetOrForgetMpin(
+        @Header("Authorization") Authorization: String,
+        @Body reqResetPin: ReqResetForgetPin,
+    ): Response<RespResetFogetMpin>
 
 
     @POST("api/get-pending-interest-dues") // GetPendingInrstDueResp

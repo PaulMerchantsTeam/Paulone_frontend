@@ -6,7 +6,6 @@ import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.EditProfileLayoutBinding
-import com.paulmerchants.gold.utility.showCustomDialogOTPVerify
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
