@@ -5,6 +5,7 @@ import com.paulmerchants.gold.model.ReqCustomerOtpNew
 import com.paulmerchants.gold.model.ReqSetMPin
 import com.paulmerchants.gold.model.RespSetMpin
 import com.paulmerchants.gold.model.ResponseGetOtp
+import com.paulmerchants.gold.model.ResponseVerifyOtp
 import com.paulmerchants.gold.model.newmodel.DeviceDetailsDTO
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
@@ -69,7 +70,12 @@ interface ApiParams {
     suspend fun verifyOtp(
         @Header("Authorization") Authorization: String,
         @Body reqCustomerOtpNew: ReqCustomerOtpNew,
-    ): Response<ResponseGetOtp>
+    ): Response<ResponseVerifyOtp>
+
+    /**
+     * {"status":"SUCCESS","statusCode":"200","message":"Successfully Validate Your OTP: 9196",
+     * "userExist":true,"data":false,"response_message":"Request Processed Successfully"}
+     */
 
     @POST("api/signup")
     suspend fun setMPin(

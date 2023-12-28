@@ -1,14 +1,18 @@
 package com.paulmerchants.gold.ui.bottom
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MoreToComeAdapter
@@ -29,6 +33,7 @@ import com.paulmerchants.gold.model.newmodel.StatusPayment
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.colorList
 import com.paulmerchants.gold.utility.AppUtility.hideShim
 import com.paulmerchants.gold.utility.AppUtility.showShimmer
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
@@ -39,6 +44,7 @@ import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.utility.startCustomAnimation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import java.util.Objects
 
 
 @AndroidEntryPoint
@@ -66,11 +72,7 @@ class HomeScreenFrag :
             "Get timely notifications of payments"
         ),
     )
-
-    //    private val homeSweetBillsAdapter = HomeSweetBillsAdapter()
-    //    private val homeSweetBillsAdapter = HomeSweetBillsAdapter()
     private val TAG = "HomeScreenFrag"
-
     override fun DummyHomeScreenFragmentBinding.initialize() {
         navController = findNavController()
         secureFiles = SecureFiles()
@@ -80,6 +82,7 @@ class HomeScreenFrag :
 
     override fun onStart() {
         super.onStart()
+        binding.searchProfileParent.root.setCardBackgroundColor(requireContext().colorList(R.color.splash_screen_three))
         Log.d(
             TAG,
             "onStart: .......MOBILE-----....${
@@ -127,6 +130,13 @@ class HomeScreenFrag :
                 }
             }
         }
+        binding.swiperefresh.setOnRefreshListener(object : SwipeRefreshLayout.OnRefreshListener {
+            override fun onRefresh() {
+                Log.i(TAG, "onRefresh: ....called")
+                setUpComingDueLoans()
+            }
+
+        })
 
     }
 
@@ -552,6 +562,7 @@ class HomeScreenFrag :
                 } else {
                     binding.noIntHaveParent.root.show()
                 }
+                binding.swiperefresh.isRefreshing = false
 //                setLoanOverView()
                 binding.shimmmerParent.hideShim()
 

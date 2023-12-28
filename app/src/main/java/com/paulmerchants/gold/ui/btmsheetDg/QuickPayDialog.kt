@@ -145,7 +145,7 @@ class QuickPayDialog : BottomSheetDialogFragment() {
 //                        dismiss()
 //                        findNavController().navigate(R.id.quickPayMainFrag)
                         }
-                    } else{
+                    } else {
                         Toast.makeText(
                             requireContext(),
                             "Amount cannot be empty",
@@ -163,7 +163,7 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                     val bundle = Bundle().apply {
                         putDouble("AMOUNT_PAYABLE", it1)
                         putString(CUST_ACC, dueLoans?.AcNo.toString())
-                        putBoolean(IS_CUSTOM_AMOUNT, true)
+                        putBoolean(IS_CUSTOM_AMOUNT, false)
                     }
                     findNavController().navigate(R.id.paymentModesFragNew, bundle)
 //                    createOrder(it1)

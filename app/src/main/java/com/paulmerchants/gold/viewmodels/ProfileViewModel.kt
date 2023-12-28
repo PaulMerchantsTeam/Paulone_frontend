@@ -17,6 +17,7 @@ import com.paulmerchants.gold.model.RequestLogin
 import com.paulmerchants.gold.model.RespCustomersDetails
 import com.paulmerchants.gold.model.RespLogin
 import com.paulmerchants.gold.model.ResponseGetOtp
+import com.paulmerchants.gold.model.ResponseVerifyOtp
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
@@ -32,6 +33,7 @@ import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.AUTH_STATUS
+import com.paulmerchants.gold.utility.Constants.CUSTOMER_FULL_DATA
 import com.paulmerchants.gold.utility.Constants.IS_LOGOUT
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
 import com.paulmerchants.gold.utility.decryptKey
@@ -46,7 +48,7 @@ class ProfileViewModel @Inject constructor(
 ) : ViewModel() {
     var isCalled: Boolean = true
     private val TAG = this.javaClass.name
-    val verifyOtp = MutableLiveData<ResponseGetOtp>()
+    val verifyOtp = MutableLiveData<ResponseVerifyOtp>()
 
     init {
         Log.d(TAG, ": init_$TAG")
@@ -77,6 +79,10 @@ class ProfileViewModel @Inject constructor(
                             Log.d("Response", plainTextResponse)
                             val decryptData = decryptKey(
                                 BuildConfig.SECRET_KEY_GEN, plainTextResponse
+                            )
+                            appSharedPref.putStringValue(
+                                CUSTOMER_FULL_DATA,
+                                decryptData.toString()
                             )
                             println("decrypt-----$decryptData")
                             val respPending: RespCustomersDetails? =
@@ -181,15 +187,15 @@ class ProfileViewModel @Inject constructor(
 
     fun verifyOtp(appSharedPref: AppSharedPref?, mobileNum: String, otp: String) =
         viewModelScope.launch {
-            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
+            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseVerifyOtp>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseVerifyOtp> {
                     return apiParams.verifyOtp(
                         "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
                         ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails()),
                     )
                 }
 
-                override fun success(response: Response<ResponseGetOtp>) {
+                override fun success(response: Response<ResponseVerifyOtp>) {
                     if (response.isSuccessful) {
                         response.body()?.let {
                             if (it.statusCode == "200") {

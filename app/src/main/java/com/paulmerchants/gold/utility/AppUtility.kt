@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BlurMaskFilter
@@ -13,6 +14,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -39,9 +41,7 @@ import com.google.gson.Gson
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
 import com.itextpdf.text.Image
-import com.itextpdf.text.PageSize
 import com.itextpdf.text.Rectangle
-import com.itextpdf.text.pdf.PdfContentByte
 import com.itextpdf.text.pdf.PdfWriter
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
@@ -57,11 +57,8 @@ import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLogin
 import com.paulmerchants.gold.model.newmodel.DeviceDetailsDTO
 import com.paulmerchants.gold.ui.MainActivity
-import com.paulmerchants.gold.utility.AppUtility.convertStringToJson
 import com.paulmerchants.gold.utility.AppUtility.getCurrentDate
-import com.paulmerchants.gold.utility.AppUtility.getDateWithOrdinals
 import org.bouncycastle.jce.provider.BouncyCastleProvider
-import org.w3c.dom.Text
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -84,6 +81,7 @@ import javax.crypto.IllegalBlockSizeException
 import javax.crypto.NoSuchPaddingException
 import javax.crypto.ShortBufferException
 import javax.crypto.spec.SecretKeySpec
+
 
 /**
  * android:background=”?android:attr/selectableItemBackground”: this creates ripple effect with border.
@@ -453,6 +451,19 @@ object AppUtility {
             println("The number of days difference is: $daysDifference")
             return daysDifference
         }
+    }
+    fun Context.colorList(id: Int): ColorStateList {
+        return ColorStateList.valueOf(ContextCompat.getColor(this, id))
+    }
+
+    fun addDrawableGradient(layout: View) {
+        val gd = GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(0xFF616261.toInt(),
+                0xFF131313.toInt()
+            )
+        )
+        gd.cornerRadius = 0f
+        layout.setBackgroundDrawable(gd)
     }
 
 

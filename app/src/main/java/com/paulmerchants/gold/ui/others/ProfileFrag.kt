@@ -23,11 +23,13 @@ import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
 import com.paulmerchants.gold.databinding.ProfileLayoutBinding
 import com.paulmerchants.gold.enums.ScreenType
 import com.paulmerchants.gold.model.MenuServices
+import com.paulmerchants.gold.model.RespCustomersDetails
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.Constants
+import com.paulmerchants.gold.utility.Constants.CUSTOMER_FULL_DATA
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
 import com.paulmerchants.gold.utility.Constants.IS_RESET_MPIN
 import com.paulmerchants.gold.utility.disableButton
@@ -71,7 +73,26 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                 "STACK__COUNT_NAME: ...${i.id}..--------.${i.destination.displayName}"
             )
         }
-        if (profileViewModel.isCalled) {
+        if ((activity as MainActivity).appSharedPref?.getStringValue(CUSTOMER_FULL_DATA)
+                ?.isNotEmpty() == true
+        ) {
+            val decryptData =
+                (activity as MainActivity).appSharedPref?.getStringValue(CUSTOMER_FULL_DATA)
+            val respPending: RespCustomersDetails? =
+                AppUtility.convertStringToJson(decryptData.toString())
+            respPending?.let {
+                binding.nameUserTv.text = it.DisplayName ?: "NA"
+                it.DisplayName?.let {
+                    (activity as MainActivity).appSharedPref?.putStringValue(
+                        Constants.CUSTOMER_NAME,
+                        it
+                    )
+                }
+                binding.emailUserIv.text = it.MailingAddress ?: "NA"
+                binding.userNumTv.text = it.MobileNo ?: "NA"
+//                Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
+            }
+        } else {
             (activity as MainActivity).appSharedPref?.let { profileViewModel.getCustomerDetails(it) }
         }
         profileViewModel.getRespCustomersDetailsLiveData.observe(viewLifecycleOwner) {
@@ -164,7 +185,12 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
 
             104 -> {
 
-                startActivity( Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")))
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")
+                    )
+                )
 
 
 //playStore

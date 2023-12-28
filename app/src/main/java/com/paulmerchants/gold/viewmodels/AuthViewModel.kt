@@ -13,6 +13,7 @@ import com.paulmerchants.gold.model.ReqSetMPin
 import com.paulmerchants.gold.model.RespGetCustomer
 import com.paulmerchants.gold.model.RespSetMpin
 import com.paulmerchants.gold.model.ResponseGetOtp
+import com.paulmerchants.gold.model.ResponseVerifyOtp
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
@@ -47,7 +48,7 @@ class AuthViewModel @Inject constructor(
     var isCustomerExist = MutableLiveData<Boolean>()
     var isOtpVerify = MutableLiveData<Boolean>()
     var isMPinSet = MutableLiveData<Boolean>()
-    val verifyOtp = MutableLiveData<ResponseGetOtp>()
+    val verifyOtp = MutableLiveData<ResponseVerifyOtp>()
     var enteredMobileTemp: String = ""
     val getTokenResp = MutableLiveData<Response<LoginNewResp>>()
 
@@ -233,15 +234,15 @@ class AuthViewModel @Inject constructor(
 
     fun verifyOtp(appSharedPref: AppSharedPref?, mobileNum: String, otp: String, context: Context) =
         viewModelScope.launch {
-            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
+            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseVerifyOtp>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseVerifyOtp> {
                     return apiParams.verifyOtp(
                         "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
                         ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails()),
                     )
                 }
 
-                override fun success(response: Response<ResponseGetOtp>) {
+                override fun success(response: Response<ResponseVerifyOtp>) {
                     if (response.isSuccessful) {
                         response.body()?.let {
                             if (it.statusCode == "200") {
@@ -257,7 +258,6 @@ class AuthViewModel @Inject constructor(
 
 
                 }
-
 
                 override fun error(message: String) {
                     super.error(message)
