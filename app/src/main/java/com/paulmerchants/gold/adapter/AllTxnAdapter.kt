@@ -45,6 +45,7 @@ class AllTxnAdapter :
                 binding.transReferIdTv.text =
                     "Amount: ${binding.root.context.getString(R.string.Rs)} ${item.amount}\n" +
                             "Customer Id: ${item.custId}\n" +
+                            "Transaction Id: ${item.paymentId?:""}\n" +
                             "Receipt Id:  ${item.receiptId}\n" +
                             "Date: ${AppUtility.formatDateFromMilliSec(item.createdAt)}"
                 binding.statusTv.text = "Status: ${item.status}"

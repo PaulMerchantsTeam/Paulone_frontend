@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/splash_screen_two"
     android:layout_height="match_parent">
 
     <ScrollView
@@ -43,6 +44,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/white"
                     android:paddingVertical="@dimen/_20sdp">
 
                     <com.google.android.material.textview.MaterialTextView
@@ -570,6 +572,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_6sdp"
                         android:visibility="gone"
+                        android:layout_margin="@dimen/_2sdp"
+
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -585,6 +589,8 @@
                             android:layout_marginTop="@dimen/_19sdp"
                             android:layout_marginEnd="@dimen/screen_start_margin"
                             android:hint="Name on Card"
+                            android:textColorHint="@color/gray_2"
+                            app:boxStrokeColor="@color/gray_2"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
 
@@ -596,7 +602,7 @@
                                 style="@style/text_14_medium_sky"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:digits="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
+                                android:digits="qwertyuiopasdfghjklzxcvbnm QWERTYUIOPASDFGHJKLZXCVBNM"
                                 android:inputType="textPersonName"
                                 android:textColor="@color/splash_screen_one" />
 
@@ -611,6 +617,8 @@
                             android:layout_marginTop="@dimen/_19sdp"
                             android:layout_marginEnd="@dimen/screen_start_margin"
                             android:hint="Card Number"
+                            android:textColorHint="@color/gray_2"
+                            app:boxStrokeColor="@color/gray_2"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
 
@@ -624,7 +632,7 @@
                                 android:layout_height="wrap_content"
                                 android:digits="0123456789"
                                 android:inputType="number"
-                                android:maxLength="16"
+                                android:maxLength="19"
                                 android:textColor="@color/splash_screen_one" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -636,8 +644,9 @@
                             android:layout_marginStart="@dimen/screen_start_margin"
                             android:layout_marginTop="@dimen/_19sdp"
                             android:layout_marginEnd="@dimen/_23sdp"
-                            android:hint="Expiry Month-Year(0224)"
-
+                            android:hint="Expiry Month-Year(02/24)"
+                            android:textColorHint="@color/gray_2"
+                            app:boxStrokeColor="@color/gray_2"
                             app:layout_constraintEnd_toStartOf="@+id/cvvEt"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/CardNumEt">
@@ -663,6 +672,9 @@
                             android:layout_marginTop="@dimen/_19sdp"
                             android:layout_marginEnd="@dimen/screen_start_margin"
                             android:hint="CVV"
+                            android:textColorHint="@color/gray_2"
+                            app:boxStrokeColor="@color/gray_2"
+
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/CardNumEt">
 
@@ -687,7 +699,6 @@
                             android:layout_marginStart="@dimen/screen_start_margin"
                             android:layout_marginTop="@dimen/_19sdp"
                             android:layout_marginEnd="@dimen/_36sdp"
-
                             android:text="@string/by_adding_this"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
