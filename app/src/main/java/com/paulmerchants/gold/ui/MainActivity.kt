@@ -123,6 +123,8 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
 //                        navigate(R.id.homeScreenFrag)
 //                    }
                     true
+
+
                 }
 
                 R.id.goldLoanScreenFrag -> {

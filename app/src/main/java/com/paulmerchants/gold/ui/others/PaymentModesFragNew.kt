@@ -1,9 +1,11 @@
 package com.paulmerchants.gold.ui.others
 
+import android.R.attr.editable
 import android.app.AlertDialog
-import android.opengl.Visibility
 import android.os.Build
+import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,8 +14,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
-import androidx.constraintlayout.motion.widget.Key.VISIBILITY
-import androidx.core.widget.addTextChangedListener
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.BuildConfig
@@ -42,6 +43,7 @@ import com.razorpay.ValidationListener
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONArray
 import org.json.JSONObject
+
 
 /**
  * https://razorpay.com/docs/payments/payment-methods/upi/google-pay/custom-integration/
@@ -96,8 +98,10 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
     }
 
 
+
     override fun onStart() {
         super.onStart()
+
         if (amountToPay != 0.0) {
             binding.amountPaidTv.text = "${getString(R.string.Rs)}$amountToPay"
         } else {
@@ -121,7 +125,69 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             }
         }
 
+        binding.enterCardNumEt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Not needed for formatting
+            }
 
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val currentText = s.toString().replace("\\s".toRegex(), "")
+                val formattedText = buildString {
+                    currentText.chunked(4).forEachIndexed { index, chunk ->
+                        if (index != 0) append(" ")
+                        append(chunk)
+                    }
+                }
+                if (s.toString() != formattedText) {
+                    binding.enterCardNumEt.setText(formattedText)
+                    binding.enterCardNumEt.setSelection(formattedText.length)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // Not needed for formatting
+            }
+        })
+
+        binding.enterExpireDateEt.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(editable: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+/*
+                if (s?.length == 2 && before == 0) { // Assuming MM/YYYY format
+                    binding.enterExpireDateEt.setText(String.format("%s/", s))
+                    binding.enterExpireDateEt.setSelection(binding.enterExpireDateEt.text?.length ?: 0)
+                }*/
+
+                val input = s?.toString()?.replace("\\s".toRegex(), "") ?: ""
+
+                if (input.length <= 4) {
+                    val monthPart = input.take(2).toIntOrNull() ?: 0
+                    val yearPart = input.takeLast(2).toIntOrNull() ?: 0
+
+                    val isValidMonth = monthPart in 1..12
+//                    val isValidYear = yearPart in 24..40
+                    val formattedText = when {
+                        input.length == 3 && input[2] != '/' -> "${input.take(2)}/${input.drop(2)}"
+                        input.length == 1 && monthPart in 2..9 -> "0$input/"
+                        input.length == 2 && monthPart > 12 -> "1"
+                        else -> input
+                    }
+                    if (input != formattedText) {
+                        binding.enterExpireDateEt.setText(formattedText)
+                        binding.enterExpireDateEt.setSelection(formattedText.length)
+                    }
+                    if (!(isValidMonth)) {
+                        binding.enterExpireDateEt.error = "Invalid expiry date"
+                    }
+                }
+
+            }
+        })
+        Log.d(TAG, "onStart: ${binding.enterExpireDateEt.text}")
 
         paymentViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
             it?.let {
@@ -175,6 +241,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             amountToPay?.let { it1 -> createOrder(it1) }
         }
         binding.payDebitCredit.setOnClickListener {
+
             if (isValidate()) {
                 payWithDebitCard()
                 amountToPay?.let { it1 -> createOrder(it1) }
@@ -360,6 +427,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         }
     }
 
+
     private fun isValidate(): Boolean {
         return when {
             binding.enterNameOnCardEt.text?.isEmpty() == true && binding.enterCardNumEt.text?.isEmpty() == true
@@ -367,28 +435,23 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 "Please fill all card details".showSnackBar()
                 false
             }
-
             binding.enterNameOnCardEt.text?.isEmpty() == true -> {
                 "Please enter card holder name".showSnackBar()
                 false
             }
-
             binding.enterCardNumEt.text?.isEmpty() == true -> {
                 "Please enter card number".showSnackBar()
                 false
             }
-
-            binding.enterCardNumEt.text?.length != 16 -> {
+            binding.enterCardNumEt.text?.length != 19 -> {
                 "Please enter valid card number".showSnackBar()
                 false
             }
-
             binding.enterExpireDateEt.text?.isEmpty() == true -> {
                 "Please enter expiry month-date".showSnackBar()
                 false
             }
-
-            binding.enterExpireDateEt.text?.length != 4 -> {
+            binding.enterExpireDateEt.text?.length != 5 -> {
                 "Please enter valid expiry date in format".showSnackBar()
                 false
             }
@@ -699,8 +762,9 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
 //        var cardNumberString = debitCardNumber?.text.toString()
 //        cardNumberString = cardNumberString.replace("\\s".toRegex(), "")
+       
         payload.put("method", "card")
-        payload.put("card[number]", binding.enterCardNumEt.text.toString()) //4111111111111111
+        payload.put("card[number]", binding.enterCardNumEt.text.toString().replace("\\s".toRegex(), "")) //4111111111111111
         payload.put(
             "card[expiry_month]", binding.enterExpireDateEt.text.toString().substring(0, 2)
         )

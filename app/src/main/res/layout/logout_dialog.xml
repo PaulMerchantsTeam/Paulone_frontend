@@ -23,7 +23,9 @@
         android:id="@+id/cancelDgBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_8sdp"
+
+        android:layout_marginEnd="@dimen/screen_start_margin"
+
         android:src="@drawable/x_circle"
         app:layout_constraintBottom_toBottomOf="@+id/quickPay"
         app:layout_constraintEnd_toEndOf="parent"
@@ -106,6 +108,7 @@
         android:layout_marginStart="@dimen/_31sdp"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_31sdp"
+        android:visibility="invisible"
         android:background="@drawable/yellow_half_8"
         app:layout_constraintBottom_toTopOf="@+id/loginParentBtn"
         app:layout_constraintEnd_toEndOf="parent"

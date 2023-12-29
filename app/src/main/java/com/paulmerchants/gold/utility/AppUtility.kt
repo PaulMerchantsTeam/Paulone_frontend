@@ -43,7 +43,9 @@ import com.google.gson.Gson
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
 import com.itextpdf.text.Image
+import com.itextpdf.text.PageSize
 import com.itextpdf.text.Rectangle
+import com.itextpdf.text.pdf.PdfContentByte
 import com.itextpdf.text.pdf.PdfWriter
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
@@ -59,8 +61,12 @@ import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLogin
 import com.paulmerchants.gold.model.newmodel.DeviceDetailsDTO
 import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.utility.AppUtility.convertStringToJson
+import com.paulmerchants.gold.utility.AppUtility.formatDateFromMilliSec
 import com.paulmerchants.gold.utility.AppUtility.getCurrentDate
+import com.paulmerchants.gold.utility.AppUtility.getDateWithOrdinals
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.w3c.dom.Text
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -84,7 +90,6 @@ import javax.crypto.NoSuchPaddingException
 import javax.crypto.ShortBufferException
 import javax.crypto.spec.SecretKeySpec
 
-
 /**
  * android:background=”?android:attr/selectableItemBackground”: this creates ripple effect with border.
 android:background=”?android:attr/selectableItemBackgroundBorderless”: this creates ripple effect without border.
@@ -101,7 +106,7 @@ object AppUtility {
 
     fun formatDateFromMilliSec(milliSeconds: Long): String? {
         // Create a DateFormatter object for displaying date in specified format.
-        val formatter = SimpleDateFormat("dd MMM, yyyy")
+        val formatter = SimpleDateFormat("HH:mm aa, dd MMM, yyyy")
 //        HH:mm, dd MMMM, yyyy
 
         // Create a calendar object that will convert the date and time value in milliseconds to date.
