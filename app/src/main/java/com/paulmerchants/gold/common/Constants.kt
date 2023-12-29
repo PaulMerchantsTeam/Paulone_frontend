@@ -8,6 +8,7 @@ object Constants {
     const val LOAN_OVERVIEW = "LOAN_OVERVIEW"
     const val BBPS_TYPE = "BBPS_TYPE"
     const val BBPS_HEADER = "BBPS_HEADER"
+    const val PAYMENT_STATUS = "PAYMENT_STATUS"
     const val LOGIN_WITH_MPIN = "LOGIN_WITH_MPIN"
 
 

@@ -184,6 +184,7 @@
                             android:layout_margin="@dimen/_6sdp"
                             android:background="@drawable/edit_text_rect"
                             android:hint="Enter here"
+                            android:textColorHint="@color/gray_2"
                             android:cursorVisible="true"
                             android:inputType="textEmailAddress"
                             android:digits="abcdefghijklmnopqrstuvwxyz@#$_1234567890 ABCDEFGHIJKLMNOPQRSTUVWXYZ"
