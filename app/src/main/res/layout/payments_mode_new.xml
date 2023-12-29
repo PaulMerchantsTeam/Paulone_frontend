@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/splash_screen_two"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/splash_screen_two">
 
     <ScrollView
         android:id="@+id/clOuter"
@@ -183,10 +183,10 @@
                             android:layout_height="@dimen/_27sdp"
                             android:layout_margin="@dimen/_6sdp"
                             android:background="@drawable/edit_text_rect"
-                            android:hint="Enter here"
                             android:cursorVisible="true"
-                            android:inputType="textEmailAddress"
                             android:digits="abcdefghijklmnopqrstuvwxyz@#$_1234567890 ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                            android:hint="Enter here"
+                            android:inputType="textEmailAddress"
                             android:paddingHorizontal="@dimen/_4sdp"
                             android:textColor="@color/splash_screen_one"
                             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
@@ -570,10 +570,9 @@
                         android:id="@+id/creditCardParent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_2sdp"
                         android:layout_marginTop="@dimen/_6sdp"
                         android:visibility="gone"
-                        android:layout_margin="@dimen/_2sdp"
-
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -700,6 +699,7 @@
                             android:layout_marginTop="@dimen/_19sdp"
                             android:layout_marginEnd="@dimen/_36sdp"
                             android:text="@string/by_adding_this"
+                            android:visibility="gone"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/expireDateEt" />

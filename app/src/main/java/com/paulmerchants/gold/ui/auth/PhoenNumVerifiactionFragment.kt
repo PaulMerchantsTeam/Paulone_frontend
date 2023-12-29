@@ -299,6 +299,7 @@ class PhoenNumVerifiactionFragment :
                 //change Num
                 //show Num Input Ui, hide otp layout
                 authViewModel.isCustomerExist.postValue(false)
+                authViewModel.timer?.cancel()
                 isMobileEntered = false
                 hideAndShowNumInputView()
             }

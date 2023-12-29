@@ -22,6 +22,7 @@ import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespAllBranch
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
+import com.paulmerchants.gold.model.newmodel.RespGetCustomer
 import com.paulmerchants.gold.model.newmodel.RespLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.RespResetFogetMpin
 import com.paulmerchants.gold.model.newmodel.RespSearchBranch
@@ -192,7 +193,7 @@ interface ApiParams {
     suspend fun getCustomerDetails(
         @Header("Authorization") auth: String,
         @Body reqpendingInterstDueNew: ReqpendingInterstDueNew,
-    ): Response<RespCommon>
+    ): Response<RespGetCustomer>
 
     /**
      *̄----------ResPaymentDone     -----------------

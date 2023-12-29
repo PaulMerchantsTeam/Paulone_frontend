@@ -774,9 +774,6 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         payload.put("card[cvv]", binding.enterCvvEt.text.toString())
         payload.put("card[name]", binding.enterNameOnCardEt.text.toString())
 
-
-
-
     }
 
 
