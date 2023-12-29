@@ -378,6 +378,11 @@
     <string name="pay_through_upi">Pay through UPI</string>
     <string name="all_transaction">All Transaction</string>
     <string name="login_with_different_account"><u>Login with different account</u></string>
+    <string name="upcoming_dues">UPCOMING DUES</string>
+    <string name="your_loyalty_our_royalty">(Your loyalty, our royalty)</string>
+    <string name="loan_overview_cap">LOAN OVERVIEW</string>
+    <string name="loan_tracking_made_easier_for_you">(Loan tracking made easier for you)</string>
+    <string name="do_you_want_to_close_this_app">Do you want to close this app?</string>
     <string-array name="month">
         <item>January</item>
         <item>February</item>

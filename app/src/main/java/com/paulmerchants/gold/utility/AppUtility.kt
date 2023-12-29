@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BlurMaskFilter
 import android.graphics.Canvas
@@ -25,6 +26,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.PixelCopy
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.FrameLayout
@@ -395,32 +397,73 @@ object AppUtility {
         snakbar.show()
     }
 
+    // Helper function to convert dp to pixels
+    fun convertDpToPx(dp: Int): Int {
+        val scale = Resources.getSystem().displayMetrics.density
+        return (dp * scale + 0.5f).toInt()
+    }
+
+
     /**
      *
      * Show Snack Bar
      * **/
+    /*   fun String?.showSnackBar() = try {
+           var msg = this
+   //    if (msg?.contains("Unable to resolve host") == true || msg?.contains(
+   //            "Failed to connect", true
+   //        ) == true
+   //    ) msg = MainActivity.context.get()?.getString(R.string.internet_not_connected)
+           Snackbar.make(
+               (MainActivity.context.get() as Activity).findViewById(android.R.id.content),
+               msg ?: "Something went wrong.",
+               Snackbar.LENGTH_LONG
+           ).apply {
+               setBackgroundTint(
+                   ContextCompat.getColor(
+                       (MainActivity.context.get() as Activity), R.color.splash_screen_three
+                   )
+               )
+               animationMode = Snackbar.ANIMATION_MODE_SLIDE
+               setTextColor(
+                   ContextCompat.getColor(
+                       (MainActivity.context.get() as Activity), R.color.white
+                   )
+               )
+               view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = 5
+               show()
+           }
+
+
+       } catch (e: Exception) {
+           e.printStackTrace()
+       }*/
+
     fun String?.showSnackBar() = try {
-        var msg = this
-//    if (msg?.contains("Unable to resolve host") == true || msg?.contains(
-//            "Failed to connect", true
-//        ) == true
-//    ) msg = MainActivity.context.get()?.getString(R.string.internet_not_connected)
-        Snackbar.make(
-            (MainActivity.context.get() as Activity).findViewById(android.R.id.content),
-            msg ?: "Something went wrong.",
+        val msg = this ?: "Something went wrong."
+        val activity = MainActivity.context.get() as Activity
+
+        val snackbar = Snackbar.make(
+            activity.findViewById(android.R.id.content),
+            msg,
             Snackbar.LENGTH_LONG
-        ).apply {
-            setBackgroundTint(
-                ContextCompat.getColor(
-                    (MainActivity.context.get() as Activity), R.color.splash_screen_three
-                )
-            )
-            animationMode = Snackbar.ANIMATION_MODE_SLIDE
-            setTextColor(
-                ContextCompat.getColor(
-                    (MainActivity.context.get() as Activity), R.color.white
-                )
-            )
+        )
+
+        // Customize Snackbar layout to show at the top
+        val params = snackbar.view.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP
+        params.setMargins(
+            convertDpToPx(20),
+            convertDpToPx(35),
+            convertDpToPx(20),
+            0
+        ) // Adjust top margin as needed
+        snackbar.view.layoutParams = params
+
+        snackbar.apply {
+            setBackgroundTint(ContextCompat.getColor(activity, R.color.splash_screen_three))
+            animationMode = Snackbar.ANIMATION_MODE_FADE
+            setTextColor(ContextCompat.getColor(activity, R.color.white))
             view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = 5
             show()
         }
@@ -452,18 +495,22 @@ object AppUtility {
             return daysDifference
         }
     }
+
     fun Context.colorList(id: Int): ColorStateList {
         return ColorStateList.valueOf(ContextCompat.getColor(this, id))
     }
 
-    fun addDrawableGradient(layout: View) {
-        val gd = GradientDrawable(
-            GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(0xFF616261.toInt(),
-                0xFF131313.toInt()
-            )
+    fun addDrawableGradient(context: Context, layout: View, colors: IntArray) {
+        // Create a GradientDrawable for the gradient background
+        val gradientDrawable = GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM, // Set your gradient orientation
+            colors
         )
-        gd.cornerRadius = 0f
-        layout.setBackgroundDrawable(gd)
+        // Optionally, set gradient corners and other properties
+//        gradientDrawable.cornerRadius = resources.getDimension(R.dimen._6sdp) // Set corner radius
+
+        // Set the created GradientDrawable as the background of the MaterialCardView
+        layout.background = gradientDrawable
     }
 
 

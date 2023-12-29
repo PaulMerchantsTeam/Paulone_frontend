@@ -13,6 +13,7 @@ import com.paulmerchants.gold.model.newmodel.PmlBranch
 import com.paulmerchants.gold.model.newmodel.RespAllBranch
 import com.paulmerchants.gold.networks.RetrofitSetup
 import com.paulmerchants.gold.pagingdata.LocationPagingSource
+import com.paulmerchants.gold.pagingdata.SearchLocationPagingSource
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,6 +39,20 @@ class MapViewModel @Inject constructor(
         val pager = Pager(config = PagingConfig(10, enablePlaceholders = false)) {
             LocationPagingSource(
                 apiParams,
+                "Bearer ${appSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.JWT_TOKEN)}"
+            )
+        }.flow.cachedIn(viewModelScope)
+        return pager
+    }
+
+    fun searchBranchWithPaging(
+        branchName: String,
+        appSharedPref: AppSharedPref,
+    ): Flow<PagingData<PmlBranch>> {
+        val pager = Pager(config = PagingConfig(10, enablePlaceholders = false)) {
+            SearchLocationPagingSource(
+                apiParams,
+                branchName,
                 "Bearer ${appSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.JWT_TOKEN)}"
             )
         }.flow.cachedIn(viewModelScope)

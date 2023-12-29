@@ -8,6 +8,7 @@
     app:cardCornerRadius="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parentTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/splash_screen_two"

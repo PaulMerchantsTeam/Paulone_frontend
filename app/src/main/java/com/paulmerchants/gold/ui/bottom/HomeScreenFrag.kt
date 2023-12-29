@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -82,7 +83,25 @@ class HomeScreenFrag :
 
     override fun onStart() {
         super.onStart()
-        binding.searchProfileParent.root.setCardBackgroundColor(requireContext().colorList(R.color.splash_screen_three))
+        AppUtility.addDrawableGradient(
+            requireContext(), binding.searchProfileParent.parentTop, intArrayOf(
+                // Define your gradient colors here
+                requireContext().getColor(R.color.safron),
+                requireContext().getColor(R.color.white),
+                requireContext().getColor(R.color.pantone)
+            )
+        )
+        // This callback will only be called when MyFragment is at least Started.
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) { /* enabled by default */
+                override fun handleOnBackPressed() {
+                    // Handle the back button event
+                    Log.d("TAG", "handleOnBackPressed: ..........pressed")
+                    findNavController().navigate(R.id.appCloseDialog)
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+
         Log.d(
             TAG,
             "onStart: .......MOBILE-----....${
@@ -96,7 +115,6 @@ class HomeScreenFrag :
             }"
         )
 
-//        commonViewModel.getLogin(secureFiles)
         setProfileUi()
         setUpComingDueLoans()
 

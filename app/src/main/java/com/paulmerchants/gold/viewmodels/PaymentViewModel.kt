@@ -161,7 +161,7 @@ class PaymentViewModel @Inject constructor(
                         getLogin2(appSharedPref)
                     }
                 } else {
-
+                    "Some thing went wrong..try again later".showSnackBar()
                 }
                 AppUtility.hideProgressBar()
             }
@@ -237,7 +237,7 @@ class PaymentViewModel @Inject constructor(
                         getLogin2(appSharedPref)
                     }
                 } else {
-
+                    "Some thing went wrong..try again later".showSnackBar()
                 }
                 AppUtility.hideProgressBar()
             }

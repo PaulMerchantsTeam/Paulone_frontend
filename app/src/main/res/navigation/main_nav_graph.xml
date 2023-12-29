@@ -265,4 +265,8 @@
         android:name="com.paulmerchants.gold.ui.auth.LoginScreenFrag"
         android:label="LoginScreenFrag"
         tools:layout="@layout/login_with_mobile_mpin" />
+    <dialog
+        android:id="@+id/appCloseDialog"
+        android:name="com.paulmerchants.gold.ui.btmsheetDg.AppCloseDialog"
+        android:label="AppCloseDialog" />
 </navigation>

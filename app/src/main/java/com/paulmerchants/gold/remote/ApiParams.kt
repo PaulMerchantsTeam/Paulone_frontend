@@ -24,6 +24,7 @@ import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
 import com.paulmerchants.gold.model.newmodel.RespLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.RespResetFogetMpin
+import com.paulmerchants.gold.model.newmodel.RespSearchBranch
 import com.paulmerchants.gold.model.newmodel.RespTxnHistory
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -242,6 +243,16 @@ interface ApiParams {
         @Query("sortBy") sortBy: String = "branchId",
         @Query("sortDir") sortDir: String = "asc",
     ): Response<RespAllBranch>
+
+    @GET("branch/search-by-branch-name/{branchName}")   //
+    suspend fun searchByBranchName(
+        @Header("Authorization") auth: String,
+        @Path("branchName") branchName: String,
+        @Query("pageNumber") pageNumber: Int,
+        @Query("pageSize") pageSize: Int,
+        @Query("sortBy") sortBy: String = "branchName",
+        @Query("sortDir") sortDir: String = "asc",
+    ): Response<RespSearchBranch>
 
 
     @POST("payments/transaction-history/{custId}")   //

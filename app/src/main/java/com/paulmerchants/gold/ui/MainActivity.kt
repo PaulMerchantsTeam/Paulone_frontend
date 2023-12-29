@@ -66,7 +66,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
         )
         if (AppUtility.isUsbDebuggingEnabled(this)) {
-            Log.i("TAG","DEBUG_MODE_ENABLED")
+            Log.i("TAG", "DEBUG_MODE_ENABLED")
         } else {
             Log.i("TAG", "NO_DEBUG_MODE_ENABLED")
         }
@@ -87,8 +87,12 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
             .setPopExitAnim(R.anim.slide_out_right).build()
         binding.bottomNavigationView.itemIconTintList = null
         binding.bottomNavigationView.setupWithNavController(navController)
+
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             Log.d("TAG", "onCreate:${destination.displayName} ")
+
+
             if (
                 destination.id == R.id.mainScreenFrag ||
                 destination.id == R.id.homeScreenFrag ||
@@ -103,9 +107,21 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
             }
         }
         binding.bottomNavigationView.setOnItemSelectedListener {
+            val homeDestinationId = R.id.homeScreenFrag
+            val currentBackStackEntry = navController.currentBackStackEntry
+            val backStackIds = currentBackStackEntry?.destination?.id
             when (it.itemId) {
                 R.id.homeScreenFrag -> {
-                    navController.navigate(R.id.homeScreenFrag, null, navOptionLeft)
+                    if (backStackIds != null && backStackIds == homeDestinationId) {
+                        // If the home destination is already on the back stack, pop the back stack
+                        navController.popBackStack(homeDestinationId, false)
+                    } else {
+                        // If the home destination is not on the back stack, navigate to it
+                        navController.navigate(homeDestinationId)
+                    }
+//                    navController.apply {
+//                        navigate(R.id.homeScreenFrag)
+//                    }
                     true
                 }
 

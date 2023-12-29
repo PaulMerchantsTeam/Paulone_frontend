@@ -27,6 +27,7 @@ import com.paulmerchants.gold.model.newmodel.Notes
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
@@ -130,15 +131,27 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            val bundle = Bundle().apply {
-                                putDouble(
-                                    "AMOUNT_PAYABLE",
-                                    quickPayPopupBinding.customPayEt.text.toString().toDouble()
-                                )
-                                putString(CUST_ACC, dueLoans?.AcNo.toString())
-                                putBoolean(IS_CUSTOM_AMOUNT, true)
+                            /**
+                             * // Your code when input is not empty, not zero, and not just multiple zeros
+                            // This condition will handle inputs like "000", "0000", etc., excluding just zeros
+                            // trimStart('0') removes leading zeros to check if there's a non-zero digit
+                             */
+                            if (quickPayPopupBinding.customPayEt.text.toString()
+                                    .isNotEmpty() && quickPayPopupBinding.customPayEt.text.toString() != "0" &&
+                                quickPayPopupBinding.customPayEt.text.trimStart('0') != ""
+                            ) {
+                                val bundle = Bundle().apply {
+                                    putDouble(
+                                        "AMOUNT_PAYABLE",
+                                        quickPayPopupBinding.customPayEt.text.toString().toDouble()
+                                    )
+                                    putString(CUST_ACC, dueLoans?.AcNo.toString())
+                                    putBoolean(IS_CUSTOM_AMOUNT, true)
+                                }
+                                findNavController().navigate(R.id.paymentModesFragNew, bundle)
+                            } else {
+                                "Please enter valid amount.".showSnackBar()
                             }
-                            findNavController().navigate(R.id.paymentModesFragNew, bundle)
 //                        createOrder(
 //                            quickPayPopupBinding.customPayEt.text.toString().toDouble()
 //                        )

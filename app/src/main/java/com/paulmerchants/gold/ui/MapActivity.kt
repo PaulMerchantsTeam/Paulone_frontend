@@ -237,10 +237,22 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+                Log.d(TAG, "onTextChanged: .......$p0")
                 if (p0 != null) {
                     Log.d(TAG, "onTextChanged: ........$p0")
-//                    mViewModel.filterLocation(p0.toString())
+                    lifecycleScope.launch {
+                        try {
+                            mapViewModel.searchBranchWithPaging(p0.toString(), appSharedPref)
+                                .collectLatest { data ->
+                                    Log.d(TAG, "onCreate: ..dattttttttt........}")
+                                    showDataToRv(data)
+                                }
+                        } catch (e: java.lang.Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                } else {
+
                 }
             }
 
