@@ -50,9 +50,9 @@ import org.json.JSONObject
  * https://razorpay.com/docs/payments/payment-methods/upi/supported-apps?search-string=PhonePe
  */
 
+
 @AndroidEntryPoint
 class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNewBinding::inflate) {
-
     private var payAlllInOneGo: PayAllnOneGoDataTobeSent? = null
     private var amountToPay: Double? = 0.0
     private var customerAcc: String? = null
@@ -91,17 +91,10 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 }
             }
         })*/
-
-
-
-
     }
-
-
 
     override fun onStart() {
         super.onStart()
-
         if (amountToPay != 0.0) {
             binding.amountPaidTv.text = "${getString(R.string.Rs)}$amountToPay"
         } else {
@@ -114,22 +107,26 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         var creditValue = true
         var netBanking = true
         initRazorpay()
-
         paymentViewModel.respPaymentUpdate.observe(viewLifecycleOwner) {
             it?.let {
+                Log.d(TAG, "ojnnnnnn: /.................${it.status}")
+
                 if (it.status == "200") {
                     Log.d(TAG, "ojnnnnnn: /.................$it")
                     findNavController().navigateUp()
+                    /*val paymentStatus = Bundle().apply {
+                        putParcelable(Constants.PAYMENT_STATUS,it)
+                    }*/
+//                    findNavController().navigate(R.id.transactionDoneScreenFrag)
+
 //                    (activity as MainActivity).commonViewModel.getPendingInterestDues((activity as MainActivity)?.appSharedPref)
                 }
             }
         }
-
         binding.enterCardNumEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // Not needed for formatting
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val currentText = s.toString().replace("\\s".toRegex(), "")
                 val formattedText = buildString {
@@ -143,12 +140,10 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                     binding.enterCardNumEt.setSelection(formattedText.length)
                 }
             }
-
             override fun afterTextChanged(s: Editable?) {
                 // Not needed for formatting
             }
         })
-
         binding.enterExpireDateEt.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {
             }
@@ -188,7 +183,6 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             }
         })
         Log.d(TAG, "onStart: ${binding.enterExpireDateEt.text}")
-
         paymentViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.statusCode == "200") {
@@ -223,20 +217,15 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 }
             }
         }
-
         binding.spinnerNetBanking.setOnClickListener {
             if (this::bankDialog.isInitialized) bankDialog.show()
         }
-
         binding.spinnerWallet.setOnClickListener {
             if (this::walletDialog.isInitialized) walletDialog.show()
         }
-
-
         binding.PayNetBanking.setOnClickListener {
             amountToPay?.let { it1 -> createOrder(it1) }
         }
-
         binding.PayWallet.setOnClickListener {
             amountToPay?.let { it1 -> createOrder(it1) }
         }
@@ -247,7 +236,6 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 amountToPay?.let { it1 -> createOrder(it1) }
             }
         }
-
         binding.gPayTv.setOnClickListener {
             upiIntentGooglePay()
             amountToPay?.let { it1 -> createOrder(it1) }
@@ -260,12 +248,10 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             upiIntentPaytm()
             amountToPay?.let { it1 -> createOrder(it1) }
         }
-
         binding.otherApps.setOnClickListener {
             otherIntent()
             amountToPay?.let { it1 -> createOrder(it1) }
         }
-
         binding.apply {
             bhmUpiParent.setOnClickListener {
                 if (bhmValue) {
@@ -425,6 +411,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 }
             }
         }
+
     }
 
 

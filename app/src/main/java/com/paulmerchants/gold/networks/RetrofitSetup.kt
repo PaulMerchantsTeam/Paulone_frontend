@@ -9,11 +9,15 @@ import android.view.LayoutInflater
 import com.paulmerchants.gold.databinding.ProgressLayoutBinding
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.ui.MainActivity
-
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Response
@@ -74,17 +78,20 @@ class RetrofitSetup @Inject constructor(private val apiParams: ApiParams) {
                                 callHandler.success(response as T)
 //                                response.message().showSnackBar()
                             }
-                            /*
 
-                              404 ->{
-                                  callHandler.success(response as T)
-                              }
 
-                              500 ->{     callHandler.success(response as T)
+                            404 -> {
+                                callHandler.success(response as T)
+                            }
 
-                              }403 ->{
-                              callHandler.success(response as T)
-                          }*/
+                            500 -> {
+                                callHandler.success(response as T)
+
+                            }
+
+                            403 -> {
+                                callHandler.success(response as T)
+                            }
 
 
                             else -> response.errorBody()?.string().let {
