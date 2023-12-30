@@ -32,7 +32,7 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
     override fun onStart() {
         super.onStart()
         binding.neddSuppMenuCard.setOnClickListener {
-            AppUtility.dialer(requireContext(), "180000000565")
+            AppUtility.dialer(requireContext(), "18001371333")
         }
         modifyHeaders()
 

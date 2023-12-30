@@ -338,6 +338,7 @@ class PhoenNumVerifiactionFragment :
                         appSharedPref = (activity as MainActivity).appSharedPref,
                         binding.etPhoenNum.text.toString()
                     )
+                    authViewModel.timerStart()
                 }
             }
         }

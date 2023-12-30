@@ -80,6 +80,10 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
                     } else {
                         "${it.body()?.message}".showSnackBar()
                     }
+
+                }
+                else{
+                    "${it.body()?.message}".showSnackBar()
                 }
             }
         }
