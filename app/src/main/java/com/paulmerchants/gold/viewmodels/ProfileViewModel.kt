@@ -24,6 +24,8 @@ import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
 import com.paulmerchants.gold.model.newmodel.ReqResetPin
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
+import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
+import com.paulmerchants.gold.model.newmodel.RespGetCustomer
 import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.networks.RetrofitSetup
 import com.paulmerchants.gold.remote.ApiParams
@@ -34,6 +36,8 @@ import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.AUTH_STATUS
 import com.paulmerchants.gold.utility.Constants.CUSTOMER_FULL_DATA
+import com.paulmerchants.gold.utility.Constants.CUST_EMAIL
+import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
 import com.paulmerchants.gold.utility.Constants.IS_LOGOUT
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
 import com.paulmerchants.gold.utility.decryptKey
@@ -50,15 +54,16 @@ class ProfileViewModel @Inject constructor(
     private val TAG = this.javaClass.name
     val verifyOtp = MutableLiveData<ResponseVerifyOtp>()
 
+
     init {
         Log.d(TAG, ": init_$TAG")
     }
 
-    val getRespCustomersDetailsLiveData = MutableLiveData<RespCustomersDetails>()
+    val getRespCustomersDetailsLiveData = MutableLiveData<RespCustomCustomerDetail>()
 
     fun getCustomerDetails(appSharedPref: AppSharedPref) = viewModelScope.launch {
-        retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
-            override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
+        retrofitSetup.callApi(true, object : CallHandler<Response<RespGetCustomer>> {
+            override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetCustomer> {
                 return apiParams.getCustomerDetails(
                     "Bearer ${appSharedPref.getStringValue(JWT_TOKEN).toString()}",
                     ReqpendingInterstDueNew(
@@ -68,11 +73,11 @@ class ProfileViewModel @Inject constructor(
                 )
             }
 
-            override fun success(response: Response<RespCommon>) {
+            override fun success(response: Response<RespGetCustomer>) {
                 try {
                     // Get the plain text response
                     if (response.isSuccessful) {
-                        val plainTextResponse = response.body()?.data
+                        val plainTextResponse = response.body()?.data?.apiResponse
 
                         // Do something with the plain text response
                         if (plainTextResponse != null) {
@@ -80,16 +85,24 @@ class ProfileViewModel @Inject constructor(
                             val decryptData = decryptKey(
                                 BuildConfig.SECRET_KEY_GEN, plainTextResponse
                             )
-                            appSharedPref.putStringValue(
-                                CUSTOMER_FULL_DATA,
-                                decryptData.toString()
-                            )
+
                             println("decrypt-----$decryptData")
                             val respPending: RespCustomersDetails? =
                                 AppUtility.convertStringToJson(decryptData.toString())
 //                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
                             respPending?.let { resp ->
-                                getRespCustomersDetailsLiveData.value = resp
+                                appSharedPref.putStringValue(
+                                    CUSTOMER_FULL_DATA,
+                                    decryptData.toString()
+                                )
+                                appSharedPref.putStringValue(
+                                    CUST_EMAIL,
+                                    response.body()?.data?.email.toString()
+                                )
+                                getRespCustomersDetailsLiveData.value = RespCustomCustomerDetail(
+                                    resp,
+                                    response.body()?.data?.email.toString()
+                                )
                             }
                             println("Str_To_Json------$respPending")
                         }

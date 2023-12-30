@@ -57,6 +57,7 @@ class CommonViewModel @Inject constructor(
     private val apiParams: ApiParams,
 ) : ViewModel() {
     var isCalled: Boolean = true
+    var isCalledGoldLoanScreen: Boolean = true
     val paymentData = MutableLiveData<StatusPayment?>()
     var dueLoanSelected: GetPendingInrstDueRespItem? = null
     var respGetLoanOutStanding = ArrayList<RespGetLoanOutStandingItem>()

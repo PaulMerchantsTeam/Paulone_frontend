@@ -88,24 +88,26 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                         it
                     )
                 }
-                binding.emailUserIv.text = it.MailingAddress ?: "NA"
+                binding.emailUserIv.text =
+                    (activity as MainActivity).appSharedPref?.getStringValue(Constants.CUST_EMAIL)
                 binding.userNumTv.text = it.MobileNo ?: "NA"
-//                Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
+//              Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
             }
         } else {
             (activity as MainActivity).appSharedPref?.let { profileViewModel.getCustomerDetails(it) }
         }
         profileViewModel.getRespCustomersDetailsLiveData.observe(viewLifecycleOwner) {
             it?.let {
-                binding.nameUserTv.text = it.DisplayName ?: "NA"
-                it.DisplayName?.let {
+                binding.nameUserTv.text = "Name: ${it.respGetCustomer.DisplayName ?: "NA"}"
+                it.respGetCustomer.DisplayName?.let {
                     (activity as MainActivity).appSharedPref?.putStringValue(
                         Constants.CUSTOMER_NAME,
                         it
                     )
                 }
-                binding.emailUserIv.text = it.MailingAddress ?: "NA"
-                binding.userNumTv.text = it.MobileNo ?: "NA"
+                binding.emailUserIv.text =
+                    "Email Id: ${it.respGetCustomer.MailingAddress ?: it.emailIdNew}"
+                binding.userNumTv.text = "Mobile: ${it.respGetCustomer.MobileNo ?: "NA"}"
 //                Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
             }
         }

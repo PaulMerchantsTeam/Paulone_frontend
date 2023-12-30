@@ -83,14 +83,14 @@ class HomeScreenFrag :
 
     override fun onStart() {
         super.onStart()
-        AppUtility.addDrawableGradient(
-            requireContext(), binding.searchProfileParent.parentTop, intArrayOf(
-                // Define your gradient colors here
-                requireContext().getColor(R.color.safron),
-                requireContext().getColor(R.color.white),
-                requireContext().getColor(R.color.pantone)
-            )
-        )
+//        AppUtility.addDrawableGradient(
+//            requireContext(), binding.searchProfileParent.parentTop, intArrayOf(
+//                // Define your gradient colors here
+//                requireContext().getColor(R.color.safron),
+//                requireContext().getColor(R.color.white),
+//                requireContext().getColor(R.color.pantone)
+//            )
+//        )
         // This callback will only be called when MyFragment is at least Started.
         val callback: OnBackPressedCallback =
             object : OnBackPressedCallback(true) { /* enabled by default */

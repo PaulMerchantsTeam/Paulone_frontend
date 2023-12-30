@@ -197,8 +197,12 @@ class PhoenNumVerifiactionFragment :
         }
         authViewModel.isCustomerExist.observe(viewLifecycleOwner) {
             it?.let {
-                hideAndShowOtpView()
-                isMobileEntered = true
+                if (it) {
+                    hideAndShowOtpView()
+                    isMobileEntered = true
+                } else {
+                    //hide..process start again
+                }
             }
         }
         authViewModel.isMPinSet.observe(viewLifecycleOwner) {
@@ -294,6 +298,8 @@ class PhoenNumVerifiactionFragment :
             binding.pleaseOtpTv.setOnClickListener {
                 //change Num
                 //show Num Input Ui, hide otp layout
+                authViewModel.isCustomerExist.postValue(false)
+                authViewModel.timer?.cancel()
                 isMobileEntered = false
                 hideAndShowNumInputView()
             }
