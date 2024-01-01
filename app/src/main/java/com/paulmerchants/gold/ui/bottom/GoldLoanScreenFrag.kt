@@ -44,7 +44,13 @@ class GoldLoanScreenFrag :
 
     private fun optionsClicked(actionItem: RespGetLoanOutStandingItem, isSelect: Boolean) {
         Log.d("TAG", "optionsClicked: .............${actionItem.InterestDue}")
-        actionItem.InterestDue?.let { totalAmount(actionItem, it, isSelect) }
+        actionItem.InterestDue?.let {
+            totalAmount(
+                actionItem,
+                it - actionItem.RebateAmount,
+                isSelect
+            )
+        }
     }
 
     private fun totalAmount(
@@ -54,13 +60,18 @@ class GoldLoanScreenFrag :
     ) {
         if (isSelect) {
             amount += rupees
-            listPayAll.add(PayAll(actionItem.AcNo.toString(), actionItem.InterestDue?.toDouble()))
+            listPayAll.add(
+                PayAll(
+                    actionItem.AcNo.toString(),
+                    actionItem.InterestDue?.toDouble()?.minus(actionItem.RebateAmount)
+                )
+            )
         } else {
             amount -= rupees
             listPayAll.remove(
                 PayAll(
                     actionItem.AcNo.toString(),
-                    actionItem.InterestDue?.toDouble()
+                    actionItem.InterestDue?.toDouble()?.minus(actionItem.RebateAmount)
                 )
             )
         }
@@ -97,13 +108,25 @@ class GoldLoanScreenFrag :
                 actionItem.InterestDue?.toDouble()?.let {
                     putDouble(
                         AMOUNT_PAYABLE,
-                        it
+                        it - actionItem.RebateAmount
                     )
                 }
                 putString(Constants.CUST_ACC, actionItem.AcNo.toString())
             }
+            goldScreenViewModel.isCalledGoldLoanScreen = true
             findNavController().navigate(R.id.paymentModesFragNew, bundle)
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("TAG", "onStop: ......")
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("TAG", "onDestroy: /////")
     }
 
     override fun onStart() {
@@ -168,6 +191,7 @@ class GoldLoanScreenFrag :
 //                    putString(Constants.CUST_ACC, "182222222222222")
 //                    putBoolean(IS_FROM_ALL_IN_ONE_GO, true)
                     }
+                    goldScreenViewModel.isCalledGoldLoanScreen = true
                     findNavController().navigate(R.id.paymentModesFragNew, bundle)
                 } else {
                     lastStatementAdapter.isShowSelctOption(true)
@@ -204,7 +228,7 @@ class GoldLoanScreenFrag :
 
         for (i in open) {
             if (i.InterestDue != null) {
-                totalAmount += i.InterestDue
+                totalAmount += (i.InterestDue - i.RebateAmount)
             }
         }
         AppUtility.diffColorText(

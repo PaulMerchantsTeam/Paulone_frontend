@@ -31,6 +31,7 @@ import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.TAG
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.Constants.PAYMENT_ID
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.PaymentViewModel
@@ -107,26 +108,45 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         var creditValue = true
         var netBanking = true
         initRazorpay()
+
         paymentViewModel.respPaymentUpdate.observe(viewLifecycleOwner) {
             it?.let {
                 Log.d(TAG, "ojnnnnnn: /.................${it.status}")
 
-                if (it.status == "200") {
-                    Log.d(TAG, "ojnnnnnn: /.................$it")
-                    findNavController().navigateUp()
-                    /*val paymentStatus = Bundle().apply {
-                        putParcelable(Constants.PAYMENT_STATUS,it)
-                    }*/
+//                if (it.status == "200") {
+                Log.d(TAG, "ojnnnnnn: /.................$it")
+                val bundle = Bundle().apply {
+                    putString(PAYMENT_ID, it.data.paymentId)
+                }
+                findNavController().navigateUp()
+//                    findNavController().popBackStack(R.id.paymentModesFragNew, true)
+//                    findNavController().navigate(R.id.paidReceiptFrag, bundle)
+                /*val paymentStatus = Bundle().apply {
+                    putParcelable(Constants.PAYMENT_STATUS,it)
+                }*/
 //                    findNavController().navigate(R.id.transactionDoneScreenFrag)
 
 //                    (activity as MainActivity).commonViewModel.getPendingInterestDues((activity as MainActivity)?.appSharedPref)
-                }
+//                }
             }
         }
+
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) { /* enabled by default */
+                override fun handleOnBackPressed() {
+                    // Handle the back button event
+                    Log.d("TAG", "handleOnBackPressed: ..........pressed")
+                    findNavController().navigate(R.id.paymentCloseDialog)
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+
+
         binding.enterCardNumEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // Not needed for formatting
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val currentText = s.toString().replace("\\s".toRegex(), "")
                 val formattedText = buildString {
@@ -140,6 +160,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                     binding.enterCardNumEt.setSelection(formattedText.length)
                 }
             }
+
             override fun afterTextChanged(s: Editable?) {
                 // Not needed for formatting
             }
@@ -151,11 +172,11 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-/*
-                if (s?.length == 2 && before == 0) { // Assuming MM/YYYY format
-                    binding.enterExpireDateEt.setText(String.format("%s/", s))
-                    binding.enterExpireDateEt.setSelection(binding.enterExpireDateEt.text?.length ?: 0)
-                }*/
+                /*
+                                if (s?.length == 2 && before == 0) { // Assuming MM/YYYY format
+                                    binding.enterExpireDateEt.setText(String.format("%s/", s))
+                                    binding.enterExpireDateEt.setSelection(binding.enterExpireDateEt.text?.length ?: 0)
+                                }*/
 
                 val input = s?.toString()?.replace("\\s".toRegex(), "") ?: ""
 
@@ -422,22 +443,27 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 "Please fill all card details".showSnackBar()
                 false
             }
+
             binding.enterNameOnCardEt.text?.isEmpty() == true -> {
                 "Please enter card holder name".showSnackBar()
                 false
             }
+
             binding.enterCardNumEt.text?.isEmpty() == true -> {
                 "Please enter card number".showSnackBar()
                 false
             }
+
             binding.enterCardNumEt.text?.length != 19 -> {
                 "Please enter valid card number".showSnackBar()
                 false
             }
+
             binding.enterExpireDateEt.text?.isEmpty() == true -> {
                 "Please enter expiry month-date".showSnackBar()
                 false
             }
+
             binding.enterExpireDateEt.text?.length != 5 -> {
                 "Please enter valid expiry date in format".showSnackBar()
                 false
@@ -535,12 +561,12 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                                             )
                                         }
                                     } else {
-
                                         (activity as MainActivity).appSharedPref?.let {
                                             updatePaymentStatusToServer(
                                                 it,
                                                 StatusPayment("captured", p1),
-                                                isCustomPay ?: false
+                                                false
+//                                                isCustomPay ?: false
                                             )
                                         }
                                     }
@@ -567,7 +593,8 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                                             updatePaymentStatusToServer(
                                                 it,
                                                 StatusPayment("not_captured", p2),
-                                                isCustomPay ?: false
+                                                false
+//                                                isCustomPay ?: false
                                             )
                                         }
                                     }
@@ -724,7 +751,8 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             }
 
             override fun onError(p0: String?) {
-                Toast.makeText(requireContext(), p0?:"Some thing went wrong..", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), p0 ?: "Some thing went wrong..", Toast.LENGTH_LONG)
+                    .show()
             }
         })
         razorpay.setWebView(binding.webview)
@@ -749,9 +777,12 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
 //        var cardNumberString = debitCardNumber?.text.toString()
 //        cardNumberString = cardNumberString.replace("\\s".toRegex(), "")
-       
+
         payload.put("method", "card")
-        payload.put("card[number]", binding.enterCardNumEt.text.toString().replace("\\s".toRegex(), "")) //4111111111111111
+        payload.put(
+            "card[number]",
+            binding.enterCardNumEt.text.toString().replace("\\s".toRegex(), "")
+        ) //4111111111111111
         payload.put(
             "card[expiry_month]", binding.enterExpireDateEt.text.toString().substring(0, 2)
         )
@@ -842,7 +873,8 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         binding.apply {
             binding.headerBillMore.apply {
                 backIv.setOnClickListener {
-                    findNavController().navigateUp()
+                    findNavController().popBackStack(R.id.homeScreenFrag, true)
+                    findNavController().navigate(R.id.homeScreenFrag)
                 }
                 titlePageTv.text = getString(R.string.pay_modes)
                 endIconIv.setImageResource(R.drawable.quest_circle)

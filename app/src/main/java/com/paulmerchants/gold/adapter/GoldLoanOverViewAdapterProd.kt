@@ -120,7 +120,8 @@ class GoldLoanOverViewAdapterProd(
 //                            intDueAmountTv.text = "INR ${actionItem.OutStanding?.plus(it)}"
 //                        }
 
-                        intDueAmountTv.text = "INR ${actionItem.InterestDue}"
+                        intDueAmountTv.text =
+                            "INR ${actionItem.InterestDue?.minus(actionItem.RebateAmount)}"
 
 
                         binding.loanClosedBtn.apply {

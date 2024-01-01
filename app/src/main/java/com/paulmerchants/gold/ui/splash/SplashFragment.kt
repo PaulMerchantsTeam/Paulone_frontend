@@ -33,10 +33,32 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
     override fun SplashFragmentBinding.initialize() {
         AppUtility.changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
 
+        Log.d(
+            TAG,
+            "initialize: ..1.......${
+                (activity as MainActivity).appSharedPref?.getBooleanValue(
+                    LOGIN_WITH_MPIN
+                )
+            }"
+                    + "\ninitialize: ......2...${
+                (activity as MainActivity).appSharedPref?.getBooleanValue(
+                    SIGNUP_DONE
+                )
+            }"
+                    + "\ninitialize: .....3....${
+                (activity as MainActivity).appSharedPref?.getBooleanValue(
+                    OTP_VERIFIED
+                )
+            }"
+                    + "\ninitialize: ......4...${
+                (activity as MainActivity).appSharedPref?.getBooleanValue(
+                    SPLASH_SCRN_VISITED
+                )
+            }"
+        )
+
         if ((activity as MainActivity).appSharedPref?.getBooleanValue(LOGIN_WITH_MPIN) == true
-            || (activity as MainActivity).appSharedPref?.getBooleanValue(
-                SIGNUP_DONE
-            ) == true
+            || (activity as MainActivity).appSharedPref?.getBooleanValue(SIGNUP_DONE) == true
         ) {
             findNavController().popBackStack(R.id.splashFragment, true)
             findNavController().navigate(
@@ -47,7 +69,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         } else if ((activity as MainActivity).appSharedPref?.getBooleanValue(OTP_VERIFIED) == true) {
             findNavController().popBackStack(R.id.splashFragment, true)
             findNavController().navigate(
-                R.id.loginScreenFrag,
+                R.id.phoenNumVerifiactionFragment,
                 null,
                 (activity as MainActivity).navOption
             )

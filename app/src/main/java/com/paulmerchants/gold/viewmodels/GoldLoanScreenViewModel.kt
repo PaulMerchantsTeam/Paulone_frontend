@@ -46,6 +46,12 @@ class GoldLoanScreenViewModel @Inject constructor(
     init {
         Log.d(TAG, ": init_$TAG")
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        isCalledGoldLoanScreen = false
+    }
+
     fun getLoanOutstanding(appSharedPref: AppSharedPref?) = viewModelScope.launch {
 
         retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {

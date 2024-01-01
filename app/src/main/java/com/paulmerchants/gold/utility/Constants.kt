@@ -11,4 +11,5 @@ object Constants {
     const val CUSTOMER_FULL_DATA = "CUSTOMER_FULL_DATA"
     const val IS_LOGOUT = "IS_LOGOUT"
     const val IS_RESET_MPIN = "IS_RESET_MPIN"
+    const val PAYMENT_ID = "PAYMENT_ID"
 }

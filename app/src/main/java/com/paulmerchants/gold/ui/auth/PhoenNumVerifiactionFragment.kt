@@ -82,11 +82,13 @@ class PhoenNumVerifiactionFragment :
 
     private fun isValidate(): Boolean {
         val confirmPin =
-            (binding.signUpParentMain.mpinOneConfirmEt.text.toString() + binding.signUpParentMain.mpinConfirmTwoEt.text.toString() + binding.signUpParentMain.mpinConfirmThreeEt.text.toString() + binding.signUpParentMain.mpinConfirmFourEt.text.toString())
+            (binding.signUpParentMain.mpinOneConfirmEt.text.toString() + binding.signUpParentMain.mpinConfirmTwoEt.text.toString()
+                    + binding.signUpParentMain.mpinConfirmThreeEt.text.toString() + binding.signUpParentMain.mpinConfirmFourEt.text.toString())
         val mPin =
-            (binding.signUpParentMain.mpinOneEt.text.toString() + binding.signUpParentMain.mpinTwoEt.text.toString() + binding.signUpParentMain.mpinThreeEt.text.toString() + binding.signUpParentMain.mpinFourEt.text.toString())
+            (binding.signUpParentMain.mpinOneEt.text.toString() + binding.signUpParentMain.mpinTwoEt.text.toString()
+                    + binding.signUpParentMain.mpinThreeEt.text.toString() + binding.signUpParentMain.mpinFourEt.text.toString())
         return when {
-            confirmPin == mPin -> {
+            confirmPin != mPin -> {
                 "M-Pin Mismatched ".showSnackBar()
                 false
             }
@@ -94,7 +96,7 @@ class PhoenNumVerifiactionFragment :
             binding.signUpParentMain.mpinOneEt.text.isEmpty()
                     || binding.signUpParentMain.mpinTwoEt.text.isEmpty()
                     || binding.signUpParentMain.mpinThreeEt.text.isEmpty()
-                    || binding.signUpParentMain.mpinFourEt.text.isNotEmpty() -> {
+                    || binding.signUpParentMain.mpinFourEt.text.isEmpty() -> {
                 "Please enter M-Pin".showSnackBar()
                 false
             }

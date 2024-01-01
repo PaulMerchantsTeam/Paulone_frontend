@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
             android:fontFamily="@font/poppins_bold"
-            android:text="Rs 3500"
+            android:text="Rs 0000"
             android:textColor="@color/splash_screen_one"
             android:textSize="@dimen/_22ssp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,12 +43,12 @@
             app:layout_constraintTop_toBottomOf="@+id/amountPaid" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/materialTextView6"
+            android:id="@+id/statusPaymnet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/poppins_bold"
-            android:text="Success!"
+            android:text="Status!"
             android:textColor="@color/splash_screen_three"
             android:textSize="@dimen/_16ssp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -61,12 +61,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Feb 1st, 2023 at 7:30 pm"
+            android:text="Feb 1st, 2024 at 00:00 pm"
             android:textColor="@color/view_line_dark"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialTextView6" />
+            app:layout_constraintTop_toBottomOf="@+id/statusPaymnet" />
 
         <View
             android:id="@+id/viewSep"
@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="3454654378112"
+                android:text="----"
                 android:textColor="@color/splash_screen_one"
                 android:textSize="@dimen/_11ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -148,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="3454654378112"
+                android:text="----"
                 android:textColor="@color/splash_screen_one"
                 android:textSize="@dimen/_11ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -185,7 +185,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="3454654378112"
+                android:text="----"
                 android:textColor="@color/splash_screen_one"
                 android:textSize="@dimen/_11ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -223,7 +223,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Yashpal Arora - Paulpay prepaid card"
+                android:text="----"
                 android:textColor="@color/splash_screen_one"
                 android:textSize="@dimen/_11ssp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -239,6 +239,7 @@
                 android:text="xxxx xxxx xxxx 4536"
                 android:textColor="@color/view_line_dark"
                 android:textSize="@dimen/_10ssp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/paidFromNameTv" />
 
@@ -260,6 +261,7 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:fontFamily="@font/poppins_semi_bold"
                 android:text="@string/paid_to"
+                android:visibility="gone"
                 android:textColor="@color/splash_screen_three"
                 android:textSize="@dimen/_11ssp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -270,6 +272,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/paidToNameTv"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
@@ -289,6 +292,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:text="xxxx xxxx xxxx 4536"
                 android:textColor="@color/view_line_dark"
+                android:visibility="gone"
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/paidToNameTv" />

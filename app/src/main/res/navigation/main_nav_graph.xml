@@ -270,4 +270,12 @@
         android:id="@+id/appCloseDialog"
         android:name="com.paulmerchants.gold.ui.btmsheetDg.AppCloseDialog"
         android:label="AppCloseDialog" />
+    <dialog
+        android:id="@+id/paymentCloseDialog"
+        android:name="com.paulmerchants.gold.ui.btmsheetDg.PaymentCloseDialog"
+        android:label="PaymentCloseDialog" />
+    <fragment
+        android:id="@+id/paidReceiptFrag"
+        android:name="com.paulmerchants.gold.ui.others.PaidReceiptFrag"
+        android:label="PaidReceiptFrag" />
 </navigation>

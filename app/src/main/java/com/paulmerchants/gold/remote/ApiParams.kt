@@ -24,6 +24,7 @@ import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
 import com.paulmerchants.gold.model.newmodel.RespGetCustomer
 import com.paulmerchants.gold.model.newmodel.RespLoginWithMpin
+import com.paulmerchants.gold.model.newmodel.RespPaidSingleReceipt
 import com.paulmerchants.gold.model.newmodel.RespResetFogetMpin
 import com.paulmerchants.gold.model.newmodel.RespSearchBranch
 import com.paulmerchants.gold.model.newmodel.RespTxnHistory
@@ -263,6 +264,12 @@ interface ApiParams {
         @Query("pageNumber") pageNumber: Int,
         @Query("pageSize") pageSize: Int,
     ): Response<RespTxnHistory>
+
+    @GET("payments/transaction-receipts/{paymentId}")   //
+    suspend fun getPaidReceipt(
+        @Header("Authorization") auth: String,
+        @Path("paymentId") paymentId: String,
+    ): Response<RespPaidSingleReceipt>
 
     @GET("/branch/search-by-branch-name/Paul Merchants")   //
     suspend fun searchBranch(

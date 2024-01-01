@@ -17,6 +17,7 @@ data class RespGetLoanOutStandingItem(
     @SerializedName("OpeningAmount") val OpeningAmount: Int?,
     @SerializedName("OutStanding") val OutStanding: Int?,
     @SerializedName("ProductName") val ProductName: String,
+    @SerializedName("RebateAmount") val RebateAmount: Int,
 ) : Parcelable
 
 /**

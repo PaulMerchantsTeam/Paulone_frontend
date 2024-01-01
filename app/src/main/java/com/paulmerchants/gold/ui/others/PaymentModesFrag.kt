@@ -30,7 +30,6 @@ class PaymentModesFrag : BaseFragment<PaymentModesBinding>(PaymentModesBinding::
         amountToPay = arguments?.getDouble(Constants.AMOUNT_PAYABLE)
         Log.e("TAGGGGGGG", "initialize: -------$amountToPay")
         modifyHeaders()
-
     }
 
     override fun onStart() {

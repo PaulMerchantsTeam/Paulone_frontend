@@ -107,7 +107,7 @@ class PaymentViewModel @Inject constructor(
         contactCount: Int,
         companyName: String = "PAUL MERCHANTS",
         currency: String = "INR",
-        description: String,
+        description: String = "desc_payment",
         account: String,
         isCustom: Boolean,
     ) = viewModelScope.launch {
@@ -145,7 +145,7 @@ class PaymentViewModel @Inject constructor(
                         )
                         respSuccess?.message.showSnackBar()
                         respPaymentUpdate.value = respSuccess
-                        navController.navigateUp()
+//                        navController.navigateUp()
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -186,7 +186,7 @@ class PaymentViewModel @Inject constructor(
         contactCount: Int,
         companyName: String = "PAUL MERCHANTS",
         currency: String = "INR",
-        description: String,
+        description: String = "descriptionPayment",
         listOfPaullINOneGo: List<PayAll>,
     ) = viewModelScope.launch {
 

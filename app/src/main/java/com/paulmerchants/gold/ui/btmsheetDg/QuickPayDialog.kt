@@ -55,7 +55,6 @@ import org.json.JSONObject
 
 @AndroidEntryPoint
 class QuickPayDialog : BottomSheetDialogFragment() {
-    private var paymentResultListener: PaymentResultWithDataListener? = null
 
     private var dueLoans: GetPendingInrstDueRespItem? = null
     lateinit var quickPayPopupBinding: QuickPayPopupBinding

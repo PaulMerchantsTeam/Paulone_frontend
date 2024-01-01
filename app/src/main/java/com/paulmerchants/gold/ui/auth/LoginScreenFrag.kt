@@ -14,6 +14,7 @@ import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.LoginWithMobileMpinBinding
 import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
 import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
 import com.paulmerchants.gold.utility.disableButton
 import com.paulmerchants.gold.utility.enableButton

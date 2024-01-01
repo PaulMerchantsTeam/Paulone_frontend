@@ -42,7 +42,8 @@ class AuthViewModel @Inject constructor(
 ) : ViewModel() {
     //    val pass = "FU510N@pro"
 //    val userId = "pml"
-    var isCalledApi = true  //true initially when activity or fragmnet launch ..this is to handle the ui configuration changes...
+    var isCalledApi =
+        true  //true initially when activity or fragmnet launch ..this is to handle the ui configuration changes...
     var isFrmLogout: Boolean? = false
     var isStartAnim = MutableLiveData<Boolean>()
     var isCustomerExist = MutableLiveData<Boolean>()
@@ -65,7 +66,9 @@ class AuthViewModel @Inject constructor(
                 val inSecond = millisUntilFinished / 1000
                 if (inSecond < 10) {
                     count = "00:0$inSecond"
-                } else if (inSecond > 60) {
+                } else if (inSecond == 120L) {
+                    count = "2:00"
+                } else if (inSecond > 60L) {
                     count = if (inSecond - 60 < 10) {
                         "1:0${inSecond - 60}"
                     } else {
@@ -302,7 +305,7 @@ class AuthViewModel @Inject constructor(
                         if (it.statusCode == "200") {
                             isMPinSet.postValue(true)
                         } else {
-                            Toast.makeText(context, it.response_message, Toast.LENGTH_SHORT).show()
+                            "${it.errorMessage}".showSnackBar()
                         }
                     }
                 }
