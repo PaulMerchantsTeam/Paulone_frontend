@@ -35,11 +35,9 @@ class ResetMpinViewModel @Inject constructor(
     private val TAG = this.javaClass.name
     val responseResetPin = MutableLiveData<Response<RespCommon>>()
     val responseResetForgetPin = MutableLiveData<Response<RespResetFogetMpin>>()
-
     init {
         Log.d(TAG, ": init_$TAG")
     }
-
     fun changeMpin(appSharedPref: AppSharedPref?, reqResetPin: ReqResetPin) =
         viewModelScope.launch {
             Log.d("TAG", "getLogin: //../........")
@@ -50,7 +48,6 @@ class ResetMpinViewModel @Inject constructor(
                         reqResetPin
                     )
                 }
-
                 override fun success(response: Response<RespCommon>) {
                     Log.d("TAG", "success: ......$response")
                     responseResetPin.value = response
