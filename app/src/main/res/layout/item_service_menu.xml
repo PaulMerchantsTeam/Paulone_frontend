@@ -9,7 +9,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/titleServiceTv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:fontFamily="@font/poppins_bold"
@@ -21,7 +21,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/serviceOne"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_8sdp"
         android:drawableEnd="@drawable/arrow_right_black"
@@ -44,7 +44,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/serviceTwo"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_9sdp"
         android:background="?android:attr/selectableItemBackground"
