@@ -63,7 +63,7 @@
                         android:id="@+id/amountPaidTv"
                         style="@style/text_11_semi_bold_black"
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
+                        android:layout_height="@dimen/_20sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:text="INR 2500"
                         android:textColor="@color/splash_screen_one"
