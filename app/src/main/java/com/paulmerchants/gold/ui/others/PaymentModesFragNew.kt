@@ -31,6 +31,7 @@ import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.TAG
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.Constants.CUST_EMAIL
 import com.paulmerchants.gold.utility.Constants.PAYMENT_ID
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
@@ -118,9 +119,9 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 val bundle = Bundle().apply {
                     putString(PAYMENT_ID, it.data.paymentId)
                 }
-                findNavController().navigateUp()
-//                    findNavController().popBackStack(R.id.paymentModesFragNew, true)
-//                    findNavController().navigate(R.id.paidReceiptFrag, bundle)
+//                findNavController().navigateUp()
+                findNavController().popBackStack(R.id.paymentModesFragNew, true)
+                findNavController().navigate(R.id.paidReceiptFrag, bundle)
                 /*val paymentStatus = Bundle().apply {
                     putParcelable(Constants.PAYMENT_STATUS,it)
                 }*/
@@ -553,23 +554,28 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                                                 "${p1.data}-----${p1.paymentId}"
                                     )
                                     toggleWebViewVisibility(View.GONE)
-                                    if (payAlllInOneGo != null) {
-                                        (activity as MainActivity).appSharedPref?.let {
-                                            updatePaymentStatusToServerToAllInOneGo(
-                                                it,
-                                                StatusPayment("captured", p1)
-                                            )
+                                    if (p1.paymentId != null) {
+                                        if (payAlllInOneGo != null) {
+                                            (activity as MainActivity).appSharedPref?.let {
+                                                updatePaymentStatusToServerToAllInOneGo(
+                                                    it,
+                                                    StatusPayment("captured", p1)
+                                                )
+                                            }
+                                        } else {
+                                            (activity as MainActivity).appSharedPref?.let {
+                                                updatePaymentStatusToServer(
+                                                    it,
+                                                    StatusPayment("captured", p1),
+                                                    false
+//                                                isCustomPay ?: false
+                                                )
+                                            }
                                         }
                                     } else {
-                                        (activity as MainActivity).appSharedPref?.let {
-                                            updatePaymentStatusToServer(
-                                                it,
-                                                StatusPayment("captured", p1),
-                                                false
-//                                                isCustomPay ?: false
-                                            )
-                                        }
+                                        "Unable to initiate the payment\nplease try again later".showSnackBar()
                                     }
+
 
 //                                    dialog.setTitle("Payment Successful")
 //                                    dialog.setMessage(it.data.toString())
@@ -578,30 +584,34 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                             }
 
                             override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
-                                p2?.let {
-                                    toggleWebViewVisibility(View.GONE)
-                                    if (payAlllInOneGo != null) {
-                                        (activity as MainActivity).appSharedPref?.let {
-                                            updatePaymentStatusToServerToAllInOneGo(
-                                                it,
-                                                StatusPayment("not_captured", p2)
-                                            )
-                                        }
-                                    } else {
-                                        (activity as MainActivity).appSharedPref?.let {
+                                toggleWebViewVisibility(View.GONE)
+                                if (p2?.paymentId != null) {
+                                    p2.let {
+                                        if (payAlllInOneGo != null) {
+                                            (activity as MainActivity).appSharedPref?.let {
+                                                updatePaymentStatusToServerToAllInOneGo(
+                                                    it,
+                                                    StatusPayment("not_captured", p2)
+                                                )
+                                            }
+                                        } else {
+                                            (activity as MainActivity).appSharedPref?.let {
 
-                                            updatePaymentStatusToServer(
-                                                it,
-                                                StatusPayment("not_captured", p2),
-                                                false
+                                                updatePaymentStatusToServer(
+                                                    it,
+                                                    StatusPayment("not_captured", p2),
+                                                    false
 //                                                isCustomPay ?: false
-                                            )
+                                                )
+                                            }
                                         }
-                                    }
 
 //                                    dialog.setTitle("Payment Failed")
 //                                    dialog.setMessage(it.data.toString())
 //                                    dialog.show()
+                                    }
+                                } else {
+                                    "Unable to initiate the payment\nplease try again later".showSnackBar()
                                 }
                             }
 
@@ -862,8 +872,10 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 "contact",
                 (activity as MainActivity).appSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUST_MOBILE)
             )
-            payload.put("email", "a@a.com")
-
+            payload.put(
+                "email",
+                "pmldevspace@gmail.com"
+            )
         } catch (e: Exception) {
             e.printStackTrace()
         }

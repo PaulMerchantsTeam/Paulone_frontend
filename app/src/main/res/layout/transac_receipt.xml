@@ -8,7 +8,6 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content">
 
         <include
@@ -18,284 +17,294 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/amountPaid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Rs 0000"
-            android:textColor="@color/splash_screen_one"
-            android:textSize="@dimen/_22ssp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headerMain" />
-
-        <ImageView
-            android:id="@+id/paymentConfirmIv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:src="@drawable/pay_confirm_tick_icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/amountPaid" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/statusPaymnet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Status!"
-            android:textColor="@color/splash_screen_three"
-            android:textSize="@dimen/_16ssp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/paymentConfirmIv" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/dateOfTrans"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Feb 1st, 2024 at 00:00 pm"
-            android:textColor="@color/view_line_dark"
-            android:textSize="@dimen/_10ssp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/statusPaymnet" />
-
-        <View
-            android:id="@+id/viewSep"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_marginTop="@dimen/_24sdp"
-            android:background="@color/view_color_line"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateOfTrans" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/details"
+            android:id="@+id/parentTxn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/screen_start_margin"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:background="@drawable/rec_black_8"
-            android:padding="@dimen/screen_start_margin"
+            android:layout_marginTop="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/viewSep">
+            app:layout_constraintTop_toBottomOf="@+id/headerMain">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/transIdTv"
+                android:id="@+id/amountPaid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_semi_bold"
-                android:text="@string/transaction_id_cap"
-                android:textColor="@color/splash_screen_three"
-                android:textSize="@dimen/_11ssp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Rs 0000"
+                android:textColor="@color/splash_screen_one"
+                android:textSize="@dimen/_22ssp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/transIdNumTv"
+            <ImageView
+                android:id="@+id/paymentConfirmIv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:fontFamily="@font/poppins_bold"
-                android:text="----"
-                android:textColor="@color/splash_screen_one"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/transIdTv" />
-
-            <View
-                android:id="@+id/viewTrans"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:background="@color/black"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:src="@drawable/pay_confirm_tick_icon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/transIdNumTv" />
-
+                app:layout_constraintTop_toBottomOf="@+id/amountPaid" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/traTypeTv"
+                android:id="@+id/statusPaymnet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:fontFamily="@font/poppins_semi_bold"
-                android:text="@string/transfer_type"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Status!"
                 android:textColor="@color/splash_screen_three"
-                android:textSize="@dimen/_11ssp"
+                android:textSize="@dimen/_16ssp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewTrans" />
-
+                app:layout_constraintTop_toBottomOf="@+id/paymentConfirmIv" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/transTypeTv"
+                android:id="@+id/dateOfTrans"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
-                android:fontFamily="@font/poppins_bold"
-                android:text="----"
-                android:textColor="@color/splash_screen_one"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/traTypeTv" />
-
-            <View
-                android:id="@+id/viewTransType"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:background="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/transTypeTv" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/refTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:fontFamily="@font/poppins_semi_bold"
-                android:text="@string/reference_no"
-                android:textColor="@color/splash_screen_three"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewTransType" />
-
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/viewRefNumTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:fontFamily="@font/poppins_bold"
-                android:text="----"
-                android:textColor="@color/splash_screen_one"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/refTv" />
-
-            <View
-                android:id="@+id/viewRef"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:background="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewRefNumTv" />
-
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/paidFromTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:fontFamily="@font/poppins_semi_bold"
-                android:text="@string/paid_from"
-                android:textColor="@color/splash_screen_three"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewRef" />
-
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/paidFromNameTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:fontFamily="@font/poppins_bold"
-                android:text="----"
-                android:textColor="@color/splash_screen_one"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/paidFromTv" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/cardNumTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:text="xxxx xxxx xxxx 4536"
+                android:text="Feb 1st, 2024 at 00:00 pm"
                 android:textColor="@color/view_line_dark"
                 android:textSize="@dimen/_10ssp"
-                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/paidFromNameTv" />
+                app:layout_constraintTop_toBottomOf="@+id/statusPaymnet" />
 
             <View
-                android:id="@+id/viewPaid"
-                android:layout_width="0dp"
+                android:id="@+id/viewSep"
+                android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:background="@color/black"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:background="@color/view_color_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardNumTv" />
+                app:layout_constraintTop_toBottomOf="@+id/dateOfTrans" />
 
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/paidToTv"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/details"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:fontFamily="@font/poppins_semi_bold"
-                android:text="@string/paid_to"
-                android:visibility="gone"
-                android:textColor="@color/splash_screen_three"
-                android:textSize="@dimen/_11ssp"
+                android:layout_marginHorizontal="@dimen/screen_start_margin"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:background="@drawable/rec_black_8"
+                android:padding="@dimen/screen_start_margin"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewPaid" />
+                app:layout_constraintTop_toBottomOf="@+id/viewSep">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/transIdTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:text="@string/transaction_id_cap"
+                    android:textColor="@color/splash_screen_three"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/paidToNameTv"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Supermart - HDFC Bank ltd"
-                android:textColor="@color/splash_screen_one"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/paidToTv" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/transIdNumTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="----"
+                    android:textColor="@color/splash_screen_one"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/transIdTv" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/paidToCardNumTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:text="xxxx xxxx xxxx 4536"
-                android:textColor="@color/view_line_dark"
-                android:visibility="gone"
-                android:textSize="@dimen/_10ssp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/paidToNameTv" />
+                <View
+                    android:id="@+id/viewTrans"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:background="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/transIdNumTv" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/emailTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:text="@string/email_id"
+                    android:textColor="@color/splash_screen_three"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viewTrans" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/transTypeTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="----"
+                    android:textColor="@color/splash_screen_one"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/emailTv" />
+
+                <View
+                    android:id="@+id/viewTransType"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:background="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/transTypeTv" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/contactDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:text="@string/mobile_number"
+                    android:textColor="@color/splash_screen_three"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viewTransType" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/viewRefNumTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="----"
+                    android:textColor="@color/splash_screen_one"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/contactDetails" />
+
+                <View
+                    android:id="@+id/viewRef"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:background="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viewRefNumTv" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/paidFromTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:text="@string/paid_from"
+                    android:textColor="@color/splash_screen_three"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viewRef" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/paidFromNameTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="----"
+                    android:textColor="@color/splash_screen_one"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/paidFromTv" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/cardNumTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="xxxx xxxx xxxx 4536"
+                    android:textColor="@color/view_line_dark"
+                    android:textSize="@dimen/_10ssp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/paidFromNameTv" />
+
+                <View
+                    android:id="@+id/viewPaid"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:background="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardNumTv" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/paidToTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:text="@string/paid_to"
+                    android:textColor="@color/splash_screen_three"
+                    android:textSize="@dimen/_11ssp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viewPaid" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/paidToNameTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Supermart - HDFC Bank ltd"
+                    android:textColor="@color/splash_screen_one"
+                    android:textSize="@dimen/_11ssp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/paidToTv" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/paidToCardNumTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="xxxx xxxx xxxx 4536"
+                    android:textColor="@color/view_line_dark"
+                    android:textSize="@dimen/_10ssp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/paidToNameTv" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -314,7 +323,7 @@
             android:textColor="@color/red_txt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/details" />
+            app:layout_constraintTop_toBottomOf="@+id/parentTxn" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/shareTv"

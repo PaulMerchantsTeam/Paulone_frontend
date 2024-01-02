@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.ui.others
 
+import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,8 @@ import com.paulmerchants.gold.model.newmodel.Transactions
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.MapActivity
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.viewmodels.TxnViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -23,7 +26,18 @@ import kotlinx.coroutines.launch
 class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::inflate) {
 
     private val txnViewModel: TxnViewModel by viewModels()
-    private val allTxnAdapter = AllTxnAdapter()
+    private val allTxnAdapter = AllTxnAdapter(::showTxn)
+
+    private fun showTxn(transactions: Transactions) {
+        if (transactions.paymentId != null) {
+            val bundle = Bundle().apply {
+                putString(Constants.PAYMENT_ID, transactions.paymentId)
+            }
+            findNavController().navigate(R.id.paidReceiptFrag, bundle)
+        } else {
+            "Transaction not found".showSnackBar()
+        }
+    }
 
     override fun AllTxnFragBinding.initialize() {
 

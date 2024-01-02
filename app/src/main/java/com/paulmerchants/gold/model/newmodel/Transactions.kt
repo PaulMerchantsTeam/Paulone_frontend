@@ -9,7 +9,7 @@ data class Transactions(
     @SerializedName("custId") val custId: String,
     @SerializedName("id") val id: Int,
     @SerializedName("orderId") val orderId: String,
-    @SerializedName("paymentId") val paymentId: String,
+    @SerializedName("paymentId") val paymentId: String?,
     @SerializedName("processFlag") val processFlag: Int,
     @SerializedName("receiptId") val receiptId: String,
     @SerializedName("requestId") val requestId: String,

@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.databinding.ItemTxnLayoutBinding
 import com.paulmerchants.gold.model.newmodel.Transactions
 import com.paulmerchants.gold.utility.AppUtility
 
-class AllTxnAdapter :
+class AllTxnAdapter(private val showTxn: (Transactions) -> Unit) :
     PagingDataAdapter<Transactions, AllTxnAdapter.AllTxnAdapter>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = AllTxnAdapter(
@@ -20,7 +19,7 @@ class AllTxnAdapter :
     )
 
     override fun onBindViewHolder(holder: AllTxnAdapter, position: Int) {
-        getItem(position)?.let { holder.bindLast(it) }
+        getItem(position)?.let { holder.bindLast(it,showTxn) }
     }
 
     companion object {
@@ -40,7 +39,7 @@ class AllTxnAdapter :
     inner class AllTxnAdapter(private val binding: ItemTxnLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindLast(item: Transactions) {
+        fun bindLast(item: Transactions, showTxn: (Transactions) -> Unit) {
             binding.apply {
                 binding.transReferIdTv.text =
                     "Amount: ${binding.root.context.getString(R.string.Rs)} ${item.amount}\n" +
@@ -49,6 +48,9 @@ class AllTxnAdapter :
                             "Receipt Id:  ${item.receiptId}\n" +
                             "Date: ${AppUtility.formatDateFromMilliSec(item.createdAt)}"
                 binding.statusTv.text = "Status: ${item.status}"
+            }
+            binding.parentTxn.setOnClickListener{
+                showTxn(item)
             }
         }
     }

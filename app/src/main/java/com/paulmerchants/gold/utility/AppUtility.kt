@@ -2,6 +2,7 @@ package com.paulmerchants.gold.utility
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -22,6 +23,9 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.provider.Settings
+import android.text.TextUtils
+import android.text.format.DateFormat
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.PixelCopy
@@ -33,6 +37,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -70,6 +75,7 @@ import org.w3c.dom.Text
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.io.UnsupportedEncodingException
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
@@ -77,6 +83,7 @@ import java.security.Security
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
+import java.util.ArrayList
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -106,9 +113,8 @@ object AppUtility {
 
     fun formatDateFromMilliSec(milliSeconds: Long): String? {
         // Create a DateFormatter object for displaying date in specified format.
-        val formatter = SimpleDateFormat("HH:mm aa, dd MMM, yyyy")
+        val formatter = SimpleDateFormat("HH:mm aa, dd MMM, yyyy", Locale.getDefault())
 //        HH:mm, dd MMMM, yyyy
-
         // Create a calendar object that will convert the date and time value in milliseconds to date.
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = milliSeconds
@@ -361,6 +367,70 @@ object AppUtility {
         val outputDate = date?.let { outputFormat.format(it) }
         println("Converted date: $outputDate")
         return outputDate
+    }
+
+    fun takeScreenShot(view: View, context: Context) {
+
+        //This is used to provide file name with Date a format
+        val date = Date()
+        val format: CharSequence = DateFormat.format("MM-dd-yyyy_hh:mm:ss", date)
+
+        //It will make sure to store file to given below Directory and If the file Directory dosen't exist then it will create it.
+        try {
+            val mainDir = File(
+                context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "FilShare"
+            )
+            if (!mainDir.exists()) {
+                val mkdir = mainDir.mkdir()
+            }
+
+            //Providing file name along with Bitmap to capture screenview
+            val path = "$mainDir/qrcode-$format.jpeg"
+            view.isDrawingCacheEnabled = true
+            val bitmap: Bitmap? = Bitmap.createBitmap(view.drawingCache)
+            view.isDrawingCacheEnabled = false
+
+            //This logic is used to save file at given location with the given filename and compress the Image Quality.
+            val imageFile = File(path)
+            val fileOutputStream = FileOutputStream(imageFile)
+            bitmap?.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream)
+            fileOutputStream.flush()
+            fileOutputStream.close()
+
+            //Create New Method to take ScreenShot with the imageFile.
+            shareScreenShot(imageFile, context)
+        } catch (e: IOException) {
+            Log.d("TAG", e.message!!)
+
+        }
+    }
+
+    private fun shareScreenShot(imageFile: File, context: Context) {
+
+        //Using sub-class of Content provider
+        val uri: Uri = FileProvider.getUriForFile(
+            context,
+            BuildConfig.APPLICATION_ID.toString() + ".provider",
+            imageFile
+        )
+
+        //Explicit intent
+        val intent = Intent()
+        intent.action = Intent.ACTION_SEND
+        intent.type = "image/*"
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // temp permission for receiving app to read this file
+        val mArrayList: ArrayList<String> = ArrayList<String>()
+        mArrayList.add("Paul One:")
+        mArrayList.add("App - https://play.google.com/store/apps/details?id=com.paulmerchants.gold")
+        intent.putExtra(Intent.EXTRA_TEXT, TextUtils.join("\n", mArrayList))
+        intent.putExtra(Intent.EXTRA_STREAM, uri)
+
+        //It will show the application which are available to share Image; else Toast message will throw.
+        try {
+            context.startActivity(Intent.createChooser(intent, "Share With"))
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(context, "No App Available", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun getDateFormat(date: String): String? {

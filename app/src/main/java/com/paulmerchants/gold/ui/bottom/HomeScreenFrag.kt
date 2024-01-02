@@ -622,7 +622,7 @@ class HomeScreenFrag :
                 "You are having ${resp.size} active loans totalling interest due up to"
             for (i in resp) {
                 i.InterestDue?.let {
-                  totalAmount += it - i.RebateAmount
+                    totalAmount += it - i.RebateAmount
                 }
             }
 //            if (totalAmount == 0) {

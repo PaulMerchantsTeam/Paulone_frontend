@@ -221,7 +221,7 @@ class PaymentViewModel @Inject constructor(
                         )
                         respSuccess?.message.showSnackBar()
                         respPaymentUpdate.value = respSuccess
-                        navController.navigateUp()
+//                        navController.navigateUp()
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }

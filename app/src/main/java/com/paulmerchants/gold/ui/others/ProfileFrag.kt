@@ -91,6 +91,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                 binding.emailUserIv.text =
                     (activity as MainActivity).appSharedPref?.getStringValue(Constants.CUST_EMAIL)
                 binding.userNumTv.text = it.MobileNo ?: "NA"
+                binding.addressTv.text = "Address: ${it.MailingAddress ?: "NA"}"
 //              Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
             }
         } else {
@@ -105,9 +106,16 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                         it
                     )
                 }
-                binding.emailUserIv.text =
-                    "Email Id: ${it.respGetCustomer.MailingAddress ?: it.emailIdNew}"
+                if (it.respGetCustomer.Email == "") {
+                    binding.emailUserIv.text =
+                        "Email Id: ${it.emailIdNew}"
+                } else {
+                    binding.emailUserIv.text =
+                        "Email Id: ${it.respGetCustomer.Email ?: "NA"}"
+                }
+
                 binding.userNumTv.text = "Mobile: ${it.respGetCustomer.MobileNo ?: "NA"}"
+                binding.addressTv.text = "Address: ${it.respGetCustomer.MailingAddress ?: "NA"}"
 //                Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
             }
         }
@@ -236,11 +244,13 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                     otp = "${dialogBinding.otpOneEt.text}${dialogBinding.otpTwoEt.text}" +
                             "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}"
                 )
-                customDialog?.dismiss()
             } else {
                 "Please fill Otp".showSnackBar()
             }
             //verify Otp
+        }
+        dialogBinding.didnotReceiveTv.setOnClickListener {
+
         }
         dialogBinding.cancelDgBtn.setOnClickListener {
             customDialog?.dismiss()

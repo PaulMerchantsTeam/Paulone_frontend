@@ -107,25 +107,28 @@
     <TextView
         android:id="@+id/didnotReceiveTv"
         android:layout_width="0dp"
+        android:padding="@dimen/_5sdp"
+        android:background="?android:attr/selectableItemBackground"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:fontFamily="@font/poppins_semi_bold"
         android:gravity="center"
-        android:visibility="gone"
         android:lineSpacingExtra="@dimen/_5sdp"
         android:paddingStart="@dimen/_17sdp"
-        android:textColor="@color/view_color"
+        android:text="@string/send_again"
+        android:textColor="@color/splash_screen_one"
         android:textSize="@dimen/_9ssp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="@+id/otpFourEt"
-        app:layout_constraintStart_toStartOf="@+id/otpOneEt"
         app:layout_constraintTop_toBottomOf="@+id/otpFourEt" />
+
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/verifyOtpBtn"
         style="@style/text_10_semi_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_35sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_25sdp"
         android:background="@drawable/rec_one_yellow_btn_9"
         android:paddingHorizontal="@dimen/_17sdp"

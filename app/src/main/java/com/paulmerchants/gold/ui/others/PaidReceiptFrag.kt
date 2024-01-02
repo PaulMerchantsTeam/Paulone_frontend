@@ -1,6 +1,7 @@
 package com.paulmerchants.gold.ui.others
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
@@ -26,6 +27,7 @@ class PaidReceiptFrag :
 
     override fun TransacReceiptBinding.initialize() {
         paymentId = arguments?.getString(PAYMENT_ID)
+        Log.d("TAG", "initialize: ..........$paymentId")
     }
 
 
@@ -44,15 +46,31 @@ class PaidReceiptFrag :
         }
 
         binding.phoneQueryTv.setOnClickListener {
-
+            AppUtility.dialer(requireContext(), "18001371333")
         }
+
         binding.shareTv.setOnClickListener {
-
+            try {
+                AppUtility.takeScreenShot(binding.parentTxn, requireContext())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
+
         binding.downlaodBtn.setOnClickListener {
-
+            val screenBitmap =
+                AppUtility.getScreenBitmap(binding.parentTxn, R.color.white)
+            val pdfWidth = 500f
+            val pdfHeight = 800f
+            AppUtility.saveAsPdf(
+                requireContext(),
+                pdfWidth,
+                pdfHeight,
+                screenBitmap,
+                R.color.white
+            )
         }
-        binding.headerMain.titlePageTv.text =""
+        binding.headerMain.titlePageTv.text = ""
         binding.headerMain.backIv.setOnClickListener {
             findNavController().popBackStack(R.id.paidReceiptFrag, true)
             findNavController().navigate(R.id.homeScreenFrag)
@@ -61,14 +79,18 @@ class PaidReceiptFrag :
 
     private fun setData(it: RespPaidSingleReceipt) {
         binding.apply {
-            amountPaid.text = it.data.amount.toString()
-            paymentConfirmIv.setImageResource(R.drawable.pay_confirm_tick_icon)
+            amountPaid.text = "${getString(R.string.Rs)}${it.data.amount}"
+            if (it.data.captured) {
+                paymentConfirmIv.setImageResource(R.drawable.pay_confirm_tick_icon)
+            } else {
+                paymentConfirmIv.setImageResource(R.drawable.baseline_error)
+            }
             statusPaymnet.text = if (it.data.captured) "SUCCESS!" else "FAIL!"
             dateOfTrans.text = AppUtility.formatDateFromMilliSec(it.data.created_at).toString()
             transIdNumTv.text = it.data.id
-//            transTypeTv.text = ""
-//            viewRefNumTv.text = ""
-//            paidFromNameTv.text = it.data.method
+            paidFromNameTv.text = it.data.method
+            transTypeTv.text = it.data.email
+            viewRefNumTv.text = it.data.contact
 //            cardNumTv.text = ""
 //            paidToNameTv.text = ""
 //            paidToCardNumTv.text = ""
