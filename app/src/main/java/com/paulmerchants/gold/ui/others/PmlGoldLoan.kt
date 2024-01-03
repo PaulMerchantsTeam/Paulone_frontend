@@ -63,12 +63,12 @@ class PmlGoldLoan : BaseFragment<PmlGoldLoanBinding>(PmlGoldLoanBinding::inflate
                 "${AppUtility.getDateFormat(loanOutStanding?.OpenDate.toString())}"
             loanStartedDateTv2.text = closedDate
             loanOutStanding?.OpeningAmount?.let {
-                linearProgressIndicator.max = it
+                linearProgressIndicator.max = it.toInt()
             }
             val left =
                 loanOutStanding?.OutStanding?.let { loanOutStanding.OpeningAmount?.minus(it) }
             if (left != null) {
-                linearProgressIndicator.progress = left
+                linearProgressIndicator.progress = left.toInt()
                 paidAmountLoanTV.text = "Paid - INR $left"
                 //for pg icon ....set Some Logic to render at any position
             } else {

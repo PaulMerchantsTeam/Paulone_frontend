@@ -35,6 +35,9 @@ class ResetMpinViewModel @Inject constructor(
     private val TAG = this.javaClass.name
     val responseResetPin = MutableLiveData<Response<RespCommon>>()
     val responseResetForgetPin = MutableLiveData<Response<RespResetFogetMpin>>()
+
+
+
     init {
         Log.d(TAG, ": init_$TAG")
     }

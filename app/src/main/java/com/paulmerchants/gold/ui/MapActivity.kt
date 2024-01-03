@@ -171,6 +171,19 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
             lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION)
             cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION)
         }
+
+        binding.viewAllLocation.setOnClickListener {
+            lifecycleScope.launch {
+                try {
+                    mapViewModel.getBranchWithPaging(appSharedPref).collectLatest { data ->
+                        Log.d(TAG, "onCreate: ..dattttttttt........}")
+                        showDataToRv(data)
+                    }
+                } catch (e: java.lang.Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
         // [END maps_current_place_on_create_save_instance_state]
         // [END_EXCLUDE]
 

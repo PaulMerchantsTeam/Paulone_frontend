@@ -1,6 +1,7 @@
 package com.paulmerchants.gold.ui.others
 
 import android.content.ActivityNotFoundException
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -125,10 +126,13 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             it?.let {
                 if (it.statusCode == "200") {
                     Log.e("TAG", "onStart: .=======${it.data}")
+                    customDialog?.dismiss()
                     val bundle = Bundle().apply {
                         putBoolean(IS_RESET_MPIN, true)
                     }
                     findNavController().navigate(R.id.resetMPinFrag, bundle)
+                    profileViewModel.timer?.cancel()
+                    profileViewModel.countStr.postValue("")
                 } else {
                     Log.e("TAG", "onStart: .=======${it.data}")
                 }
@@ -233,6 +237,28 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             setView(dialogBinding.root)
             setCancelable(false)
         }?.show()
+        profileViewModel.countStr.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it == "00") {
+                    dialogBinding.didnotReceiveTv.text = getString(R.string.send_again)
+                    dialogBinding.didnotReceiveTv.setOnClickListener {
+                        (activity as MainActivity).appSharedPref?.getStringValue(
+                            CUST_MOBILE
+                        )?.let {
+                            profileViewModel.getOtp(
+                                (activity as MainActivity).appSharedPref,
+                                it
+                            )
+                        }
+                    }
+                } else {
+                    dialogBinding.didnotReceiveTv.text = "Didn't receive OTP? $it"
+                }
+            }
+        }
+        customDialog?.setOnDismissListener { dgInterface ->
+            profileViewModel.timer?.cancel()
+        }
 
         dialogBinding.verifyOtpBtn.setOnClickListener {
             if (dialogBinding.otpOneEt.text.isNotEmpty() && dialogBinding.otpTwoEt.text.isNotEmpty() &&
@@ -249,11 +275,10 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             }
             //verify Otp
         }
-        dialogBinding.didnotReceiveTv.setOnClickListener {
 
-        }
         dialogBinding.cancelDgBtn.setOnClickListener {
             customDialog?.dismiss()
+            profileViewModel.timer?.cancel()
             //cancel Otp
         }
     }

@@ -23,17 +23,17 @@ android {
         applicationId "com.paulmerchants.gold"
         minSdk 23
         targetSdk 33
-        versionCode 1
-        versionName "1.0.0_gold"
+        versionCode 2
+        versionName "1.0.1_gold"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            debuggable true
-            minifyEnabled false
-            shrinkResources = false
+//            debuggable true
+            minifyEnabled true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
 //            buildConfigField "String", "RAZORPAY_KEY", "\"rzp_test_sC3pnynLq27dfw\""
@@ -43,7 +43,6 @@ android {
 
             buildConfigField "String", "PASSWORD", "\"FU510N@pro\""
             buildConfigField "String", "USERNAME", "\"pml\""
-
 
             buildConfigField "String", "SECRET_KEY", "\"MobApp#L0AnDeT@ils#SeCUretechpool*20&23\""
             buildConfigField "String", "SECRET_KEY_GEN", "\"09C427004E85E561ED607E0038946EBF\""
@@ -60,8 +59,8 @@ android {
 //            buildConfigField "String", "USERNAME", "\"/ERCVzcMkkl4h1IDVSf1FA==\""
             buildConfigField "String", "PASSWORD", "\"FU510N@pro\""
             buildConfigField "String", "USERNAME", "\"pml\""
-            buildConfigField "String", "RAZORPAY_KEY", "\"rzp_test_sC3pnynLq27dfw\""
-//            buildConfigField "String", "RAZORPAY_KEY", "\"rzp_live_me6vHPlVFbR2rA\""
+//            buildConfigField "String", "RAZORPAY_KEY", "\"rzp_test_sC3pnynLq27dfw\""
+            buildConfigField "String", "RAZORPAY_KEY", "\"rzp_live_me6vHPlVFbR2rA\""
         }
         benchmark {
             signingConfig signingConfigs.debug

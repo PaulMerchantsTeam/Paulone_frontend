@@ -45,11 +45,19 @@ class GoldLoanScreenFrag :
     private fun optionsClicked(actionItem: RespGetLoanOutStandingItem, isSelect: Boolean) {
         Log.d("TAG", "optionsClicked: .............${actionItem.InterestDue}")
         actionItem.InterestDue?.let {
-            totalAmount(
-                actionItem,
-                it - actionItem.RebateAmount,
-                isSelect
-            )
+            if (actionItem.RebateAmount != null) {
+                totalAmount(
+                    actionItem,
+                    (it - actionItem.RebateAmount).toInt(),
+                    isSelect
+                )
+            } else {
+                totalAmount(
+                    actionItem,
+                    it.toInt(),
+                    isSelect
+                )
+            }
         }
     }
 
@@ -60,20 +68,42 @@ class GoldLoanScreenFrag :
     ) {
         if (isSelect) {
             amount += rupees
-            listPayAll.add(
-                PayAll(
-                    actionItem.AcNo.toString(),
-                    actionItem.InterestDue?.toDouble()?.minus(actionItem.RebateAmount)
+            if (actionItem.RebateAmount != null) {
+                listPayAll.add(
+                    PayAll(
+                        actionItem.AcNo.toString(),
+                        actionItem.RebateAmount.let { actionItem.InterestDue?.minus(it) }
+                    )
                 )
-            )
+            } else {
+                listPayAll.add(
+                    PayAll(
+                        actionItem.AcNo.toString(),
+                        actionItem.InterestDue
+                    )
+                )
+            }
+
         } else {
             amount -= rupees
-            listPayAll.remove(
-                PayAll(
-                    actionItem.AcNo.toString(),
-                    actionItem.InterestDue?.toDouble()?.minus(actionItem.RebateAmount)
+            if (actionItem.RebateAmount != null) {
+                listPayAll.remove(
+                    PayAll(
+                        actionItem.AcNo.toString(),
+                        actionItem.RebateAmount.let {
+                            actionItem.InterestDue?.minus(it)
+                        }
+                    )
                 )
-            )
+            } else {
+                listPayAll.remove(
+                    PayAll(
+                        actionItem.AcNo.toString(),
+                        actionItem.InterestDue
+                    )
+                )
+            }
+
         }
         Log.d("TAG", "totalAmount: ........$amount")
         if (amount > 0) {
@@ -106,10 +136,18 @@ class GoldLoanScreenFrag :
         if (actionItem.IsClosed == false) {
             val bundle = Bundle().apply {
                 actionItem.InterestDue?.toDouble()?.let {
-                    putDouble(
-                        AMOUNT_PAYABLE,
-                        it - actionItem.RebateAmount
-                    )
+                    if (actionItem.RebateAmount != null) {
+                        putDouble(
+                            AMOUNT_PAYABLE,
+                            it - actionItem.RebateAmount
+                        )
+                    } else {
+                        putDouble(
+                            AMOUNT_PAYABLE,
+                            it
+                        )
+                    }
+
                 }
                 putString(Constants.CUST_ACC, actionItem.AcNo.toString())
             }
@@ -222,13 +260,17 @@ class GoldLoanScreenFrag :
 
     private fun setUiFoOpenGoldLoans() {
 //        binding.goldLoanParentMain.rvLoanOverViewMain.setGoldLoanOverView(1)
-        var totalAmount = 0
+        var totalAmount = 0.0
         val open = goldScreenViewModel.respGetLoanOutStanding.filter { it.IsClosed == false }
         Log.d("TAG", "setUiFoOpenGoldLoans: $open")
 
         for (i in open) {
             if (i.InterestDue != null) {
-                totalAmount += (i.InterestDue - i.RebateAmount)
+                totalAmount += if (i.RebateAmount != null) {
+                    (i.InterestDue - i.RebateAmount)
+                } else {
+                    i.InterestDue
+                }
             }
         }
         AppUtility.diffColorText(
@@ -239,7 +281,7 @@ class GoldLoanScreenFrag :
         )
 
         "You have taken up ${open.size} active loans. And they total interest due up to INR $totalAmount"
-        val notZeroInterestData = open.filter { it.InterestDue != 0 }
+        val notZeroInterestData = open.filter { it.InterestDue != 0.0 }
         if (notZeroInterestData.isNotEmpty()) {
             binding.constraintLayout12.show()
             setData(notZeroInterestData as ArrayList<RespGetLoanOutStandingItem>)

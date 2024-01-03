@@ -81,12 +81,28 @@
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
             android:textSize="@dimen/_14ssp"
             app:autoShowKeyboard="true"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:queryHint="@string/search"
             app:searchIcon="@drawable/search" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/viewAllLocation"
+            android:layout_width="0dp"
+            android:background="?actionBarItemBackground"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:drawableEnd="@drawable/arrow_down_black"
+            android:drawablePadding="@dimen/_10sdp"
+            android:fontFamily="@font/poppins_regular"
+            android:paddingVertical="@dimen/_6sdp"
+            android:text="View All Location"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchCity" />
 
         <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
@@ -134,6 +150,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:listitem="@layout/item_location_add" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

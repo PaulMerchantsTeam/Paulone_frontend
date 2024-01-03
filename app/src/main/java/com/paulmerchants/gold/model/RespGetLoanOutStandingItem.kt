@@ -9,15 +9,15 @@ data class RespGetLoanOutStandingItem(
     @SerializedName("AcNo") val AcNo: Long,
     @SerializedName("ClosedDate") val ClosedDate: String?,
     @SerializedName("DueDate") val DueDate: String,
-    @SerializedName("InterestDue") val InterestDue: Int?,
+    @SerializedName("InterestDue") val InterestDue: Double?,
     @SerializedName("Fine") val Fine: Int,
     @SerializedName("InterestPeriod") val InterestPeriod: Int,
     @SerializedName("IsClosed") val IsClosed: Boolean?,
     @SerializedName("OpenDate") val OpenDate: String,
-    @SerializedName("OpeningAmount") val OpeningAmount: Int?,
-    @SerializedName("OutStanding") val OutStanding: Int?,
+    @SerializedName("OpeningAmount") val OpeningAmount: Double?,
+    @SerializedName("OutStanding") val OutStanding: Double?,
     @SerializedName("ProductName") val ProductName: String,
-    @SerializedName("RebateAmount") val RebateAmount: Int,
+    @SerializedName("RebateAmount") val RebateAmount: Double?,
 ) : Parcelable
 
 /**

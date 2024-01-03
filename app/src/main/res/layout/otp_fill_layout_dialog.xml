@@ -110,7 +110,7 @@
         android:padding="@dimen/_5sdp"
         android:background="?android:attr/selectableItemBackground"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:fontFamily="@font/poppins_semi_bold"
         android:gravity="center"
         android:lineSpacingExtra="@dimen/_5sdp"

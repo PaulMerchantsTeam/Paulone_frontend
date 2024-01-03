@@ -120,10 +120,11 @@ class GoldLoanOverViewAdapterProd(
 //                            intDueAmountTv.text = "INR ${actionItem.OutStanding?.plus(it)}"
 //                        }
 
-                        intDueAmountTv.text =
-                            "INR ${actionItem.InterestDue?.minus(actionItem.RebateAmount)}"
-
-
+                        intDueAmountTv.text = if (actionItem.RebateAmount != null) {
+                            "INR ${actionItem.RebateAmount.let { actionItem.InterestDue?.minus(it) }}"
+                        } else {
+                            "INR ${actionItem.InterestDue}"
+                        }
                         binding.loanClosedBtn.apply {
                             text = binding.root.context.getString(R.string.pay_now)
                             setTextColor(

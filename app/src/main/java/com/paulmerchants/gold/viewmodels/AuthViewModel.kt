@@ -271,7 +271,6 @@ class AuthViewModel @Inject constructor(
 
     fun setMpin(
         appSharedPref: AppSharedPref?,
-        mobileNum: String,
         confirmMPin: String,
         setUpMPin: String,
         context: Context,
@@ -288,7 +287,9 @@ class AuthViewModel @Inject constructor(
                         fullName = appSharedPref?.getStringValue(
                             CUSTOMER_NAME
                         ).toString(),
-                        mobileNo = mobileNum,
+                        mobileNo = appSharedPref?.getStringValue(
+                            CUST_MOBILE
+                        ).toString(),
                         setUpMPin = setUpMPin,
                         termsAndCondition = true,
                         deviceDetailsDTO = AppUtility.getDeviceDetails()

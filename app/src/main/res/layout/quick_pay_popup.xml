@@ -62,9 +62,9 @@
         android:id="@+id/view4"
         android:layout_width="0dp"
         android:layout_height="@dimen/_1sdp"
-        android:visibility="gone"
         android:layout_marginTop="@dimen/_21sdp"
         android:background="@color/view_line"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/upcomDTv"
         app:layout_constraintStart_toStartOf="@+id/goldLoanNumTv"
         app:layout_constraintTop_toBottomOf="@+id/goldLoanNumTv" />
@@ -72,13 +72,13 @@
     <TextView
         android:id="@+id/prefPyModeTv"
         android:layout_width="0dp"
-        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_13sdp"
         android:fontFamily="@font/poppins_bold"
         android:text="Preferred Payment Mode"
         android:textColor="@color/splash_screen_one"
         android:textSize="@dimen/_10ssp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/view4"
         app:layout_constraintStart_toStartOf="@+id/view4"
         app:layout_constraintTop_toBottomOf="@+id/view4" />
@@ -90,13 +90,13 @@
         android:layout_marginTop="@dimen/_5sdp"
         android:drawableStart="@drawable/paul_pay_small"
         android:drawablePadding="@dimen/_8sdp"
-        android:visibility="gone"
-
         android:fontFamily="@font/poppins_semi_bold"
+
         android:gravity="center_vertical"
         android:text="Paulpay prepaid card"
         android:textColor="@color/splash_screen_three"
         android:textSize="@dimen/_10ssp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/prefPyModeTv"
         app:layout_constraintTop_toBottomOf="@+id/prefPyModeTv" />
 
@@ -105,8 +105,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/change_underln"
-        android:visibility="gone"
         android:textColor="@color/blue_light"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/prepaidCard"
         app:layout_constraintEnd_toEndOf="@+id/prefPyModeTv"
         app:layout_constraintTop_toTopOf="@+id/prepaidCard" />
@@ -176,6 +176,7 @@
                 android:buttonTint="@color/splash_screen_one"
                 android:text="Pay custom - "
                 android:textColor="@color/splash_screen_three"
+                android:visibility="gone"
                 app:useMaterialThemeColors="false" />
 
         </RadioGroup>
@@ -187,9 +188,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_115sdp"
             android:backgroundTint="@color/black"
+            android:digits="0123456789"
             android:hint="(INR XXXX)"
             android:inputType="number"
-            android:digits="0123456789"
             android:maxLength="10"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
             android:visibility="gone"

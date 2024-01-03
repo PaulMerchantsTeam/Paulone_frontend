@@ -73,30 +73,34 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
 
         resetMpinViewModel.responseResetPin.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.isSuccessful) {
-                    if (it.body()?.status == "SUCCESS") {
-                        "${it.body()?.message}".showSnackBar()
-                        findNavController().navigateUp()
-                    } else {
-                        "${it.body()?.message}".showSnackBar()
-                    }
-
-                }
-                else{
+//                if (it.isSuccessful) {
+                if (it.body()?.statusCode == "200") {
+                    "${it.body()?.message}".showSnackBar()
+                    findNavController().popBackStack(R.id.resetMPinFrag, true)
+                    findNavController().popBackStack(R.id.profileFrag, true)
+                    findNavController().navigate(R.id.profileFrag)
+                } else {
                     "${it.body()?.message}".showSnackBar()
                 }
+
+//                }
+//                else{
+//                    "${it.body()?.message}".showSnackBar()
+//                }
             }
         }
         resetMpinViewModel.responseResetForgetPin.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.isSuccessful) {
-                    if (it.body()?.status == "SUCCESS") {
-                        "${it.body()?.message}".showSnackBar()
-                        findNavController().navigateUp()
-                    } else {
-                        "${it.body()?.message}".showSnackBar()
-                    }
+//                if (it.isSuccessful) {
+                if (it.body()?.statusCode == "200") {
+                    "${it.body()?.message}".showSnackBar()
+                    findNavController().popBackStack(R.id.resetMPinFrag, true)
+                    findNavController().popBackStack(R.id.profileFrag, true)
+                    findNavController().navigate(R.id.profileFrag)
+                } else {
+                    "${it.body()?.message}".showSnackBar()
                 }
+//                }
             }
         }
     }

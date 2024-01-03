@@ -106,11 +106,16 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 lifecycleScope.launch {
                     delay(600)
                     (activity as MainActivity).appSharedPref?.putBoolean(SPLASH_SCRN_VISITED, true)
-                    findNavController().navigate(
-                        R.id.phoenNumVerifiactionFragment,
-                        null,
-                        (activity as MainActivity).navOption
-                    )
+                    val homeDestinationId = R.id.phoenNumVerifiactionFragment
+                    val currentBackStackEntry = findNavController().currentBackStackEntry
+                    val backStackIds = currentBackStackEntry?.destination?.id
+                    if (backStackIds != null && backStackIds == homeDestinationId) {
+                        // If the home destination is already on the back stack, pop the back stack
+                        findNavController().popBackStack(homeDestinationId, false)
+                    } else {
+                        // If the home destination is not on the back stack, navigate to it
+                        findNavController().navigate(homeDestinationId)
+                    }
                 }
                 return
             }

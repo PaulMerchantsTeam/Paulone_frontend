@@ -2,6 +2,12 @@ package com.paulmerchants.gold.model.newmodel
 
 import com.google.gson.annotations.SerializedName
 
+
+data class PaidDto(
+    @SerializedName("accNo") val accNo: String?,
+    @SerializedName("paymentDetailsDTO") val paymentDetailsDTO: SingleReceipt,
+)
+
 data class SingleReceipt(
     @SerializedName("acquirer_data") val acquirer_data: String,
     @SerializedName("amount") val amount: Int,

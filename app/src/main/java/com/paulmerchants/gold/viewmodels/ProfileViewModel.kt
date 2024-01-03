@@ -2,6 +2,7 @@ package com.paulmerchants.gold.viewmodels
 
 import android.content.Context
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -54,12 +55,50 @@ class ProfileViewModel @Inject constructor(
     private val TAG = this.javaClass.name
     val verifyOtp = MutableLiveData<ResponseVerifyOtp>()
 
+    var timer: CountDownTimer? = null
+    val countNum = MutableLiveData<Long>()
+    val countStr = MutableLiveData<String>()
 
     init {
         Log.d(TAG, ": init_$TAG")
     }
 
     val getRespCustomersDetailsLiveData = MutableLiveData<RespCustomCustomerDetail>()
+
+    fun timerStart(millis: Long = 120000L) {
+        timer = object : CountDownTimer(millis, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+
+
+                var count = "${millisUntilFinished / 1000}"
+                val inSecond = millisUntilFinished / 1000
+                if (inSecond < 10) {
+                    count = "00:0$inSecond"
+                } else if (inSecond == 120L) {
+                    count = "2:00"
+                } else if (inSecond > 60L) {
+                    count = if (inSecond - 60 < 10) {
+                        "1:0${inSecond - 60}"
+                    } else {
+                        "1:${inSecond - 60}"
+                    }
+                } else if (inSecond < 60) {
+                    count = "00:$inSecond"
+                } else {
+                    count = ""
+                }
+                Log.d("TAG", "hideAndShowOtpView: $count") //Didn’t receive? 00:30
+                countNum.postValue(millisUntilFinished / 1000)
+                countStr.postValue(count)
+            }
+
+            override fun onFinish() {
+                countNum.postValue(0)
+                countStr.postValue("00")
+            }
+        }
+        timer?.start()
+    }
 
     fun getCustomerDetails(appSharedPref: AppSharedPref) = viewModelScope.launch {
         retrofitSetup.callApi(true, object : CallHandler<Response<RespGetCustomer>> {
@@ -182,7 +221,11 @@ class ProfileViewModel @Inject constructor(
                 }
 
                 override fun success(response: Response<ResponseGetOtp>) {
-
+                    if (response.isSuccessful) {
+                        timerStart()
+                    } else {
+                        "Some thing went wrong..".showSnackBar()
+                    }
 //                    val decryptData = decryptKey(
 //                        BuildConfig.SECRET_KEY_GEN, response.body()?.data
 //                    )
@@ -212,7 +255,7 @@ class ProfileViewModel @Inject constructor(
                     if (response.isSuccessful) {
                         response.body()?.let {
                             if (it.statusCode == "200") {
-                                appSharedPref?.putStringValue(Constants.CUST_MOBILE, mobileNum)
+                                appSharedPref?.putStringValue(CUST_MOBILE, mobileNum)
                                 verifyOtp.value = response.body()
 
                             } else {

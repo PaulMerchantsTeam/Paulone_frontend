@@ -86,7 +86,7 @@ interface ApiParams {
         @Body reqSetMPin: ReqSetMPin,
     ): Response<RespSetMpin>
 
-    @POST("api/reset-mpin") //change Mpin
+    @POST("api/change-mpin") //change Mpin
     suspend fun reSetMPin(
         @Header("Authorization") Authorization: String,
         @Body reqResetPin: ReqResetPin,

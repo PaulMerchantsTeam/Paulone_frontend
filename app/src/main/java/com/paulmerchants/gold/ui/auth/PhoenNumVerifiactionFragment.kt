@@ -158,12 +158,11 @@ class PhoenNumVerifiactionFragment :
                 val mPin =
                     (binding.signUpParentMain.mpinOneEt.text.toString() + binding.signUpParentMain.mpinTwoEt.text.toString() + binding.signUpParentMain.mpinThreeEt.text.toString() + binding.signUpParentMain.mpinFourEt.text.toString())
                 authViewModel.setMpin(
-                    (activity as MainActivity).appSharedPref,
-                    binding.etPhoenNum.text.toString(),
-                    confirmPin,
-                    mPin,
-                    requireContext(),
-                    binding.signUpParentMain.etEmailId.text.toString()
+                    appSharedPref = (activity as MainActivity).appSharedPref,
+                    confirmMPin = confirmPin,
+                    setUpMPin = mPin,
+                    context = requireContext(),
+                    email = binding.signUpParentMain.etEmailId.text.toString()
                 )
             }
         }
@@ -302,6 +301,7 @@ class PhoenNumVerifiactionFragment :
                 //show Num Input Ui, hide otp layout
                 authViewModel.isCustomerExist.postValue(false)
                 authViewModel.timer?.cancel()
+                authViewModel.isCalledApi = true
                 isMobileEntered = false
                 hideAndShowNumInputView()
             }
@@ -396,10 +396,10 @@ class PhoenNumVerifiactionFragment :
                     }
                 }
             }
-        binding.signUpParentMain.googleSignInTv.setOnClickListener {
-            //flow_remaining...
-            googleSignUpScreen()
-        }
+//        binding.signUpParentMain.googleSignInTv.setOnClickListener {
+//            //flow_remaining...
+//            googleSignUpScreen()
+//        }
 
     }
 
@@ -524,6 +524,7 @@ class PhoenNumVerifiactionFragment :
             "+91${binding.etPhoenNum.text}. <u>${getString(R.string.change_q)}</u>",
             binding.pleaseOtpTv
         )
+        Log.d("TAG", "hideAndShowOtpView: .....o=vdfghgf......${authViewModel.isCalledApi}")
         if (authViewModel.isCalledApi) {
             authViewModel.timerStart()
         }
@@ -532,6 +533,8 @@ class PhoenNumVerifiactionFragment :
              * 2 Mins
              * 120sec---1:12
              */
+            Log.d("TAG", "hideAndShowOtpView: jsafjhfdshfjsf-----------------$it")
+
             if (it == "00") {
                 isResendEnabled = true
                 binding.didnotReceiveTv.setTColor(

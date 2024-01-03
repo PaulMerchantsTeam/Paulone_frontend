@@ -79,18 +79,20 @@ class PaidReceiptFrag :
 
     private fun setData(it: RespPaidSingleReceipt) {
         binding.apply {
-            amountPaid.text = "${getString(R.string.Rs)}${it.data.amount}"
-            if (it.data.captured) {
+            amountPaid.text = "${getString(R.string.Rs)}${it.data.paymentDetailsDTO.amount}"
+            if (it.data.paymentDetailsDTO.captured) {
                 paymentConfirmIv.setImageResource(R.drawable.pay_confirm_tick_icon)
             } else {
                 paymentConfirmIv.setImageResource(R.drawable.baseline_error)
             }
-            statusPaymnet.text = if (it.data.captured) "SUCCESS!" else "FAIL!"
-            dateOfTrans.text = AppUtility.formatDateFromMilliSec(it.data.created_at).toString()
-            transIdNumTv.text = it.data.id
-            paidFromNameTv.text = it.data.method
-            transTypeTv.text = it.data.email
-            viewRefNumTv.text = it.data.contact
+            statusPaymnet.text = if (it.data.paymentDetailsDTO.captured) "SUCCESS!" else "FAIL!"
+            dateOfTrans.text =
+                AppUtility.formatDateFromMilliSec(it.data.paymentDetailsDTO.created_at).toString()
+            transIdNumTv.text = it.data.paymentDetailsDTO.id
+            paidFromNameTv.text = it.data.paymentDetailsDTO.method
+            transTypeTv.text = it.data.paymentDetailsDTO.email
+            viewRefNumTv.text = it.data.paymentDetailsDTO.contact
+            paidToNameTv.text = it.data.accNo
 //            cardNumTv.text = ""
 //            paidToNameTv.text = ""
 //            paidToCardNumTv.text = ""

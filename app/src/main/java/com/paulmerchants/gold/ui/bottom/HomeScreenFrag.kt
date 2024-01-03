@@ -1,7 +1,12 @@
 package com.paulmerchants.gold.ui.bottom
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MoreToComeAdapter
@@ -23,6 +29,8 @@ import com.paulmerchants.gold.adapter.UpcomingLoanNewuserAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants.DUE_LOAN_DATA
 import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
+import com.paulmerchants.gold.databinding.NoInternetDgBinding
+import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
 import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
@@ -36,15 +44,19 @@ import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.colorList
 import com.paulmerchants.gold.utility.AppUtility.hideShim
+import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
 import com.paulmerchants.gold.utility.AppUtility.showShimmer
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
+import com.paulmerchants.gold.utility.InternetUtils
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.setUiOnHomeSweetHomeBills
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.utility.startCustomAnimation
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Objects
 
 
@@ -58,6 +70,9 @@ class HomeScreenFrag :
     private lateinit var secureFiles: SecureFiles
     lateinit var navController: NavController
     private val moreToComeAdapter = MoreToComeAdapter()
+    private lateinit var connectivityManager: ConnectivityManager
+    private lateinit var networkCallback: ConnectivityManager.NetworkCallback
+    private var customDialog: androidx.appcompat.app.AlertDialog? = null
 
     private val bannerList = listOf(
         MoreToComeModel(
@@ -116,10 +131,16 @@ class HomeScreenFrag :
         )
 
         setProfileUi()
-        setUpComingDueLoans()
+        // Get the system service for connectivity
+        connectivityManager =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        // Set up the network callback
+        setUpNetworkCallback()
+//        setUpComingDueLoans()
 
 //        startAnimationOnIcon()
-        setUiOnHomeSweetHomeBills()
+//        setUiOnHomeSweetHomeBills()
 //        handleRechargeAndBillUi()
 //        setPrepaidCardUi()
 //        setAddCardView()
@@ -151,13 +172,53 @@ class HomeScreenFrag :
         binding.swiperefresh.setOnRefreshListener(object : SwipeRefreshLayout.OnRefreshListener {
             override fun onRefresh() {
                 Log.i(TAG, "onRefresh: ....called")
-                setUpComingDueLoans()
+
+                if (InternetUtils.isNetworkAvailable(requireContext())) {
+                    setUpComingDueLoans()
+                } else {
+                    lifecycleScope.launch {
+                        noInternetDialog()
+                    }
+                    binding.swiperefresh.isRefreshing = false
+                }
             }
 
         })
 
+
     }
 
+
+    private fun setUpNetworkCallback() {
+        networkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                // Network connection is available, perform actions here
+                // For example:
+                // fetchData()
+                Log.d(TAG, "onAvailable: ...........internet")
+                lifecycleScope.launch {
+                    setUpComingDueLoans()
+                }
+            }
+
+            override fun onLost(network: Network) {
+                // Network connection is lost, handle accordingly
+                // For example:
+                // showNoInternetMessage()
+                Log.d(TAG, "onLost: ..................")
+                lifecycleScope.launch {
+                    noInternetDialog()
+                }
+            }
+        }
+
+        // Register the network callback
+        val networkRequest = NetworkRequest.Builder()
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .build()
+
+        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+    }
 
     //Remove Observer...
     override fun onStop() {
@@ -174,6 +235,11 @@ class HomeScreenFrag :
         (activity as MainActivity).commonViewModel.isStartAnim.postValue(null)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Unregister the network callback to avoid memory leaks
+        connectivityManager.unregisterNetworkCallback(networkCallback)
+    }
 //    private fun showHideLoadinf() {
 //        binding.shimmmerParent.startShimmer()
 //        binding.shimmmerParent.hideShimmer()
@@ -194,16 +260,28 @@ class HomeScreenFrag :
     }
 
     private fun onPayDueClicked(dueLoans: GetPendingInrstDueRespItem) {
-        (activity as MainActivity).commonViewModel.dueLoanSelected = dueLoans
-        val bundle = Bundle().apply {
-            putParcelable(DUE_LOAN_DATA, dueLoans)
-        }
+        if (InternetUtils.isNetworkAvailable(requireContext())) {
+            (activity as MainActivity).commonViewModel.dueLoanSelected = dueLoans
+            val bundle = Bundle().apply {
+                putParcelable(DUE_LOAN_DATA, dueLoans)
+            }
 //        val quickPayDialog = QuickPayDialog()
 //        quickPayDialog.setPaymentResultListener(this)
-        findNavController().navigate(
-            R.id.quickPayDialog, bundle
-        )
+            findNavController().navigate(
+                R.id.quickPayDialog, bundle
+            )
+        } else {
+            noInternetDialog()
+        }
+
     }
+
+    /**
+     * if (InternetUtils.isNetworkAvailable(requireContext())) {
+     *   } else {
+     *   noInternetDialog()
+     *   }
+     */
 
     private fun onClicked(prepaidCardModel: PrepaidCardModel) {
         findNavController().navigate(R.id.pcFrag)
@@ -235,13 +313,13 @@ class HomeScreenFrag :
                 Constants.CUSTOMER_NAME,
             )?.first() ?: "U"
         }"
-        (activity as MainActivity).commonViewModel.isStartAnim.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it) {
-                    animateHintEditText()
-                }
-            }
-        }
+//        (activity as MainActivity).commonViewModel.isStartAnim.observe(viewLifecycleOwner) {
+//            it?.let {
+//                if (it) {
+//                    animateHintEditText()
+//                }
+//            }
+//        }
 
         binding.searchProfileParent.apply {
             searchView.setOnClickListener {
@@ -289,24 +367,34 @@ class HomeScreenFrag :
 
     private fun profileHandle() {
         binding.searchProfileParent.profileIv.setOnClickListener {
-            findNavController().navigate(
-                R.id.profileFrag
-            )
+            if (InternetUtils.isNetworkAvailable(requireContext())) {
+                findNavController().navigate(
+                    R.id.profileFrag
+                )
+            } else {
+                noInternetDialog()
+            }
+
         }
         binding.searchProfileParent.notImage.setOnClickListener {
-            findNavController().navigate(R.id.transactionFrag)
+            if (InternetUtils.isNetworkAvailable(requireContext())) {
+                findNavController().navigate(R.id.transactionFrag)
+            } else {
+                noInternetDialog()
+            }
+
         }
     }
 
-    private fun handleRechargeAndBillUi() {
-        /**
+   /* private fun handleRechargeAndBillUi() {
+        *//**
          * initially hide ---home_sweet_home, financial_Security,transit_window ,back_top
          * |-----flow----|
          * on ... more click
          * hide own parent icon  and change behaviour too
          * show---home_sweet_home, financial_Security,transit_window ,back_top
          *
-         */
+         *//*
         binding.allPaymnetActionParent.moreParent.setOnClickListener {
             binding.allPaymnetActionParent.billsNRechargerParent.hide()
             binding.allPaymnetActionParent.forMoreParentAllAction.show()
@@ -391,32 +479,32 @@ class HomeScreenFrag :
 
         }
 
-    }
+    }*/
 
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume: ...............")
-        binding.searchProfileParent.searchView.show()
-        (activity as MainActivity).commonViewModel.isStartAnim.postValue(true)
-
-        binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(
-            requireContext(), R.anim.slide_down_to_mid
-        ).apply {
-            this.start()
-        })
+//        binding.searchProfileParent.searchView.show()
+//        (activity as MainActivity).commonViewModel.isStartAnim.postValue(true)
+//
+//        binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(
+//            requireContext(), R.anim.slide_down_to_mid
+//        ).apply {
+//            this.start()
+//        })
 
     }
 
     override fun onPause() {
         super.onPause()
         Log.d(TAG, "onPause: ...........")
-        (activity as MainActivity).commonViewModel.isStartAnim.postValue(false)
-        binding.searchProfileParent.searchView.clearAnimation()
-        binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(
-            requireContext(), R.anim.slide_down_to_mid
-        ).apply {
-            this.cancel()
-        })
+//        (activity as MainActivity).commonViewModel.isStartAnim.postValue(false)
+//        binding.searchProfileParent.searchView.clearAnimation()
+//        binding.searchProfileParent.searchView.startAnimation(AnimationUtils.loadAnimation(
+//            requireContext(), R.anim.slide_down_to_mid
+//        ).apply {
+//            this.cancel()
+//        })
 
     }
 
@@ -438,7 +526,7 @@ class HomeScreenFrag :
         */
 
 
-    private fun animateHintEditText() {
+   /* private fun animateHintEditText() {
         val strList = listOf(
             getString(R.string.search_fr_bills),
             getString(R.string.search_fr_credit),
@@ -505,10 +593,10 @@ class HomeScreenFrag :
             (activity as MainActivity).commonViewModel.isStartAnim.postValue(true)
         }
 
-    }
+    }*/
 
 
-    private fun startAnimationOnIcon() {
+ /*   private fun startAnimationOnIcon() {
         binding.allPaymnetActionParent.apply {
             goldIv.startCustomAnimation(R.drawable.anim_gold_icon)
             dthIV.startCustomAnimation(R.drawable.anim_dth_service_icon)
@@ -526,9 +614,9 @@ class HomeScreenFrag :
             metroCardIv.startCustomAnimation(R.drawable.anim_metro_card)
 
         }
-    }
+    }*/
 
-    private fun setUpComingOurServices() {
+  /*  private fun setUpComingOurServices() {
         val ourServices1 = OurServices(
             R.drawable.gold_loan_hand, getString(R.string.gold_n_loans), R.color.yellow_main
         )
@@ -546,7 +634,7 @@ class HomeScreenFrag :
         binding.rvUpcomingDueLoans.adapter = upcomingNewUserAdapter
 
     }
-
+*/
     private fun setUpComingDueLoans() {
         binding.shimmmerParent.showShimmer()
 //        val currentDate = AppUtility.getCurrentDate()
@@ -603,14 +691,14 @@ class HomeScreenFrag :
 //        binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
     }
 
-    private fun setUiOnHomeSweetHomeBills() {
+   /* private fun setUiOnHomeSweetHomeBills() {
         binding.allPaymnetActionParent.homeSweetHomBillsRv.setUiOnHomeSweetHomeBills(
             requireContext(), ::onBillClicked
         )
-    }
+    }*/
 
     private fun setLoanOverView(resp: RespGetLoanOutStanding) {
-        var totalAmount = 0
+        var totalAmount = 0.0
         binding.apply {
 //            loanOverViewCardParent.cardParent.setBackgroundColor(R.drawable.new_user_card_grad)
 
@@ -622,7 +710,11 @@ class HomeScreenFrag :
                 "You are having ${resp.size} active loans totalling interest due up to"
             for (i in resp) {
                 i.InterestDue?.let {
-                    totalAmount += it - i.RebateAmount
+                    totalAmount += if (i.RebateAmount != null) {
+                        (it - i.RebateAmount)
+                    } else {
+                        it
+                    }
                 }
             }
 //            if (totalAmount == 0) {
@@ -641,17 +733,19 @@ class HomeScreenFrag :
         binding.loanOverViewCardParent.root.show()
     }
 
-    private fun setAddCardView() {
+/*    private fun setAddCardView() {
         binding.apply {
             addCardBtn.setOnClickListener {
                 findNavController().navigate(R.id.addUpiCard)
             }
         }
-    }
+    }*/
+/*
 
     private fun onBillClicked(actionItem: ActionItem) {
         AppUtility.onBillClicked(actionItem, findNavController())
     }
+*/
 
 
 }

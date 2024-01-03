@@ -43,6 +43,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.itextpdf.text.BaseColor
@@ -55,6 +56,7 @@ import com.itextpdf.text.pdf.PdfWriter
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
+import com.paulmerchants.gold.databinding.NoInternetDgBinding
 import com.paulmerchants.gold.databinding.ProgressLayoutBinding
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.GetPendingInrstDueResp
@@ -104,6 +106,32 @@ Note: These tags are need to be set under the TextView.
  */
 
 object AppUtility {
+
+
+    fun Fragment.noInternetDialog() {
+        val dialogBinding =
+            NoInternetDgBinding.inflate(layoutInflater)
+        val customDialog =
+            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme).create()
+        customDialog.apply {
+            setView(dialogBinding.root)
+            setCancelable(false)
+        }.show()
+        customDialog.setOnDismissListener { dgInterface ->
+
+        }
+
+        dialogBinding.verifyOtpBtn.setOnClickListener {
+            customDialog.dismiss()
+            //verify Otp
+        }
+
+        dialogBinding.cancelDgBtn.setOnClickListener {
+            customDialog.dismiss()
+            //cancel Otp
+        }
+    }
+
     fun dialer(context: Context, number: String) {
         val intent = Intent()
         intent.action = Intent.ACTION_DIAL
