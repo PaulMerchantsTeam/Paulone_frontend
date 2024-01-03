@@ -9,34 +9,44 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
+import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.paulmerchants.gold.MainNavGraphDirections
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.databinding.ActivityMainBinding
 import com.paulmerchants.gold.databinding.HeaderLayoutBinding
-import com.paulmerchants.gold.model.newmodel.StatusPayment
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
-import com.paulmerchants.gold.utility.AppUtility.showSnackBar
-import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
+import kotlin.time.Duration.Companion.seconds
 
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
     PaymentResultWithDataListener {
-
+    private lateinit var appUpdateManager: AppUpdateManager
+    private val updateType = AppUpdateType.IMMEDIATE
     lateinit var navOption: NavOptions
     lateinit var navOptionLeft: NavOptions
     lateinit var navOptionTop: NavOptions
@@ -59,12 +69,17 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
         appSharedPref = AppSharedPref()
         appSharedPref?.start(this)
         context = WeakReference(this)
+        appUpdateManager = AppUpdateManagerFactory.create(this)
 //        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         AppUtility.changeStatusBarWithReqdColor(this, R.color.splash_screen_two)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
         )
+        checkForAppUpdate()
+        if (updateType == AppUpdateType.FLEXIBLE) {
+            appUpdateManager.registerListener(installUpdateListener)
+        }
         if (AppUtility.isUsbDebuggingEnabled(this)) {
             Log.i("TAG", "DEBUG_MODE_ENABLED")
         } else {
@@ -170,9 +185,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
 
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
+
 
     fun changeHeader(hBinding: HeaderLayoutBinding, title: String, endIcon: Int) {
         hBinding.apply {
@@ -236,7 +249,65 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
 //        }
 //    }
 
+    private val installUpdateListener = InstallStateUpdatedListener { state ->
+        if (state.installStatus() == InstallStatus.DOWNLOADED) {
+            Toast.makeText(applicationContext, "Download Successful.", Toast.LENGTH_SHORT).show()
+            lifecycleScope.launch {
+                delay(5.seconds)
+                appUpdateManager.completeUpdate()
+            }
+        }
+    }
+override fun onResume() {
+    super.onResume()
+    if (updateType == AppUpdateType.IMMEDIATE) {
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+            if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                appUpdateManager.startUpdateFlowForResult(
+                    info,
+                    updateType,
+                    this,
+                    123
+                )
+            }
+        }
+    }
 
 }
+    private fun checkForAppUpdate() {
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+            val isUpdateAvailabe = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+            val isUpdateAllowed = when (updateType) {
+                AppUpdateType.FLEXIBLE -> info.isFlexibleUpdateAllowed
+                AppUpdateType.IMMEDIATE -> info.isImmediateUpdateAllowed
+                else -> false
+            }
+
+            if (isUpdateAvailabe && isUpdateAllowed) {
+                appUpdateManager.startUpdateFlowForResult(
+                    info,
+                    updateType,
+                    this,
+                    123
+                )
+            }
+
+
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 123) {
+            if (resultCode != RESULT_OK) {
+                Log.d("TAG", "onActivityResult: .......Something went wrong")
+            } else {
+
+            }
+        }
+
+    }
+}
+
 
 const val TAG = "MAIN_ACTIVITY"
