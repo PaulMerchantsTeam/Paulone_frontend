@@ -193,5 +193,6 @@ dependencies {
     implementation 'javax.activation:javax.activation-api:1.2.0'
     implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
 
-
+//app Update
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
 }
