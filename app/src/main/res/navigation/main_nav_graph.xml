@@ -112,7 +112,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/homeScreenFrag"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/menuScreenFrag"
@@ -278,4 +278,8 @@
         android:id="@+id/paidReceiptFrag"
         android:name="com.paulmerchants.gold.ui.others.PaidReceiptFrag"
         android:label="PaidReceiptFrag" />
+    <dialog
+        android:id="@+id/resetMpinDialog"
+        android:name="com.paulmerchants.gold.ui.btmsheetDg.ResetMpinDialog"
+        android:label="ResetMpinDialog" />
 </navigation>

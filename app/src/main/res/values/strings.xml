@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Paul One</string>
     <string name="powered_by">Powered By</string>
     <string name="track_your_dues_and_bills">Track your dues and bills like never before. We bring punctuality in your life</string>
@@ -26,7 +26,7 @@
     <string name="full_name">Full Name</string>
     <string name="email_id">Email ID</string>
     <string name="set_up_mpin">Set Up a M-Pin</string>
-    <string name="by_creating_the_account">By creating the account, I accept to the Terms and Conditions.</string>
+    <string name="by_creating_the_account">By creating the account, I accept to the</string>
     <string name="sign_up">Sign Up</string>
     <string name="cont_with_google">Continue with google</string>
     <string name="already_have_an_acc">Already have an account?</string>
@@ -383,6 +383,12 @@
     <string name="loan_overview_cap">LOAN OVERVIEW</string>
     <string name="loan_tracking_made_easier_for_you">(Loan tracking made easier for you)</string>
     <string name="do_you_want_to_close_this_app">Do you want to close this app?</string>
+    <string name="forget_m_pin"><u>Forget M-Pin</u></string>
+    <string name="about_us">About Us</string>
+    <string name="status">Status:</string>
+    <string name="privacy_policy_"><b><u>Privacy &amp; Policy</u></b></string>
+    <string name="t_and_c"> and <b><u>Terms &amp; Conditions</u></b></string>
+
     <string-array name="month">
         <item>January</item>
         <item>February</item>

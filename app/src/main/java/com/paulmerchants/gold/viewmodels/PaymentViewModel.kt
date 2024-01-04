@@ -34,6 +34,8 @@ class PaymentViewModel @Inject constructor(
     private val retrofitSetup: RetrofitSetup,
 ) : ViewModel() {
     private val TAG = this.javaClass.name
+
+    var isCalled = true
     val responseCreateOrder = MutableLiveData<RespCreateOrder?>()
     val tokenExpiredResp = MutableLiveData<RespCommon?>()
     val respPaymentUpdate = MutableLiveData<RespUpdatePaymentStatus?>()

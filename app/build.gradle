@@ -23,8 +23,8 @@ android {
         applicationId "com.paulmerchants.gold"
         minSdk 23
         targetSdk 33
-        versionCode 2
-        versionName "1.0.1_gold"
+        versionCode 4
+        versionName "1.0.3_gold"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -46,6 +46,8 @@ android {
 
             buildConfigField "String", "SECRET_KEY", "\"MobApp#L0AnDeT@ils#SeCUretechpool*20&23\""
             buildConfigField "String", "SECRET_KEY_GEN", "\"09C427004E85E561ED607E0038946EBF\""
+            buildConfigField "String", "PRIVACY_POLICY", "\"https://prod.paulgold.in/paulgoldv01/conditions/privacy-policy\""
+            buildConfigField "String", "TERMS_CONDITION", "\"https://prod.paulgold.in/paulgoldv01/conditions/terms-conditions\""
         }
         debug {
 //            buildConfigField "String", "BASE_URL", "\"http://180.179.213.203:8020/api/\""
@@ -61,6 +63,8 @@ android {
             buildConfigField "String", "USERNAME", "\"pml\""
 //            buildConfigField "String", "RAZORPAY_KEY", "\"rzp_test_sC3pnynLq27dfw\""
             buildConfigField "String", "RAZORPAY_KEY", "\"rzp_live_me6vHPlVFbR2rA\""
+            buildConfigField "String", "PRIVACY_POLICY", "\"https://www.globedu.in/gifty-app/api/user/privacy-policy\""
+            buildConfigField "String", "TERMS_CONDITION", "\"https://www.globedu.in/gifty-app/api/user/terms-conditions\""
         }
         benchmark {
             signingConfig signingConfigs.debug
@@ -93,7 +97,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx:20.1.2'
     implementation 'com.google.firebase:firebase-crashlytics-ktx:18.3.6'
     implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
-    implementation 'com.google.firebase:firebase-auth-ktx:21.2.0'
     implementation 'com.google.firebase:firebase-perf-ktx:20.3.1'
     implementation 'com.google.firebase:firebase-config:21.0.2'
     implementation 'com.google.firebase:firebase-messaging:23.0.3'
@@ -133,7 +136,7 @@ dependencies {
     //encrypted shared Preferences
     implementation("androidx.security:security-crypto:1.0.0")
 
-
+//    implementation 'com.google.android.gms:play-services-safetynet:18.0.1'
     //refresh
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")

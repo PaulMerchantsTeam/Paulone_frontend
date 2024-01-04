@@ -72,7 +72,6 @@ class HomeScreenFrag :
     private val moreToComeAdapter = MoreToComeAdapter()
     private lateinit var connectivityManager: ConnectivityManager
     private lateinit var networkCallback: ConnectivityManager.NetworkCallback
-    private var customDialog: androidx.appcompat.app.AlertDialog? = null
 
     private val bannerList = listOf(
         MoreToComeModel(
@@ -386,15 +385,16 @@ class HomeScreenFrag :
         }
     }
 
-   /* private fun handleRechargeAndBillUi() {
-        *//**
-         * initially hide ---home_sweet_home, financial_Security,transit_window ,back_top
-         * |-----flow----|
-         * on ... more click
-         * hide own parent icon  and change behaviour too
-         * show---home_sweet_home, financial_Security,transit_window ,back_top
-         *
-         *//*
+    /* private fun handleRechargeAndBillUi() {
+         */
+    /**
+     * initially hide ---home_sweet_home, financial_Security,transit_window ,back_top
+     * |-----flow----|
+     * on ... more click
+     * hide own parent icon  and change behaviour too
+     * show---home_sweet_home, financial_Security,transit_window ,back_top
+     *
+     *//*
         binding.allPaymnetActionParent.moreParent.setOnClickListener {
             binding.allPaymnetActionParent.billsNRechargerParent.hide()
             binding.allPaymnetActionParent.forMoreParentAllAction.show()
@@ -526,115 +526,115 @@ class HomeScreenFrag :
         */
 
 
-   /* private fun animateHintEditText() {
-        val strList = listOf(
-            getString(R.string.search_fr_bills),
-            getString(R.string.search_fr_credit),
-            getString(R.string.search_fr_upcoming_dues),
-            getString(R.string.search_for_loans),
-        )
-        lifecycleScope.launchWhenResumed {
-            delay(1000)
-            binding.searchProfileParent.searchView.hint = strList[0]
-            binding.searchProfileParent.searchView.startAnimation(
-                AnimationUtils.loadAnimation(
-                    requireContext(), R.anim.slide_down_to_mid
-                )
-            )
-            delay(1000)
-            binding.searchProfileParent.searchView.startAnimation(
-                AnimationUtils.loadAnimation(
-                    requireContext(), R.anim.slide_mid_to_up
-                )
-            )
-            delay(1000)
-            binding.searchProfileParent.searchView.hint = strList[1]
-            binding.searchProfileParent.searchView.startAnimation(
-                AnimationUtils.loadAnimation(
-                    requireContext(), R.anim.slide_down_to_mid
-                )
-            )
-            delay(1000)
-            binding.searchProfileParent.searchView.startAnimation(
-                AnimationUtils.loadAnimation(
-                    requireContext(), R.anim.slide_mid_to_up
-                )
-            )
-            delay(1000)
-            binding.searchProfileParent.searchView.hint = strList[2]
-            binding.searchProfileParent.searchView.startAnimation(
-                AnimationUtils.loadAnimation(
-                    requireContext(), R.anim.slide_down_to_mid
-                )
-            )
-            delay(1000)
-            binding.searchProfileParent.searchView.startAnimation(
-                AnimationUtils.loadAnimation(
-                    requireContext(), R.anim.slide_mid_to_up
-                )
-            )
+    /* private fun animateHintEditText() {
+         val strList = listOf(
+             getString(R.string.search_fr_bills),
+             getString(R.string.search_fr_credit),
+             getString(R.string.search_fr_upcoming_dues),
+             getString(R.string.search_for_loans),
+         )
+         lifecycleScope.launchWhenResumed {
+             delay(1000)
+             binding.searchProfileParent.searchView.hint = strList[0]
+             binding.searchProfileParent.searchView.startAnimation(
+                 AnimationUtils.loadAnimation(
+                     requireContext(), R.anim.slide_down_to_mid
+                 )
+             )
+             delay(1000)
+             binding.searchProfileParent.searchView.startAnimation(
+                 AnimationUtils.loadAnimation(
+                     requireContext(), R.anim.slide_mid_to_up
+                 )
+             )
+             delay(1000)
+             binding.searchProfileParent.searchView.hint = strList[1]
+             binding.searchProfileParent.searchView.startAnimation(
+                 AnimationUtils.loadAnimation(
+                     requireContext(), R.anim.slide_down_to_mid
+                 )
+             )
+             delay(1000)
+             binding.searchProfileParent.searchView.startAnimation(
+                 AnimationUtils.loadAnimation(
+                     requireContext(), R.anim.slide_mid_to_up
+                 )
+             )
+             delay(1000)
+             binding.searchProfileParent.searchView.hint = strList[2]
+             binding.searchProfileParent.searchView.startAnimation(
+                 AnimationUtils.loadAnimation(
+                     requireContext(), R.anim.slide_down_to_mid
+                 )
+             )
+             delay(1000)
+             binding.searchProfileParent.searchView.startAnimation(
+                 AnimationUtils.loadAnimation(
+                     requireContext(), R.anim.slide_mid_to_up
+                 )
+             )
 
 
-            delay(1000)
-            binding.searchProfileParent.searchView.hint = strList[3]
-            binding.searchProfileParent.searchView.startAnimation(
-                AnimationUtils.loadAnimation(
-                    requireContext(), R.anim.slide_down_to_mid
-                )
-            )
-            delay(1000)
-            binding.searchProfileParent.searchView.startAnimation(
-                AnimationUtils.loadAnimation(
-                    requireContext(), R.anim.slide_mid_to_up
-                )
-            )
+             delay(1000)
+             binding.searchProfileParent.searchView.hint = strList[3]
+             binding.searchProfileParent.searchView.startAnimation(
+                 AnimationUtils.loadAnimation(
+                     requireContext(), R.anim.slide_down_to_mid
+                 )
+             )
+             delay(1000)
+             binding.searchProfileParent.searchView.startAnimation(
+                 AnimationUtils.loadAnimation(
+                     requireContext(), R.anim.slide_mid_to_up
+                 )
+             )
 
-            delay(1000)
-            (activity as MainActivity).commonViewModel.isStartAnim.postValue(true)
-        }
+             delay(1000)
+             (activity as MainActivity).commonViewModel.isStartAnim.postValue(true)
+         }
 
-    }*/
+     }*/
 
 
- /*   private fun startAnimationOnIcon() {
-        binding.allPaymnetActionParent.apply {
-            goldIv.startCustomAnimation(R.drawable.anim_gold_icon)
-            dthIV.startCustomAnimation(R.drawable.anim_dth_service_icon)
-            elecIv.startCustomAnimation(R.drawable.anim_elec_icon)
-            boradBandIv.startCustomAnimation(R.drawable.anim_broadband_icon)
-            mobileIv.startCustomAnimation(R.drawable.anim_mobile_icon)
-            mob2Iv.startCustomAnimation(R.drawable.anim_mobile_icon)
-            mobPostIv.startCustomAnimation(R.drawable.anim_post_paid_icon)
-            ottIv.startCustomAnimation(R.drawable.anim_ott_icon)
-            dthIV2.startCustomAnimation(R.drawable.anim_dth_service_icon)
-            isuranceIv.startCustomAnimation(R.drawable.anim_insurance_icon)
-            mucipalIv.startCustomAnimation(R.drawable.anim_munciple_tax)
-            fastIv.startCustomAnimation(R.drawable.anim_fastag_icon)
-            challanIv.startCustomAnimation(R.drawable.anim_challan_icon)
-            metroCardIv.startCustomAnimation(R.drawable.anim_metro_card)
+    /*   private fun startAnimationOnIcon() {
+           binding.allPaymnetActionParent.apply {
+               goldIv.startCustomAnimation(R.drawable.anim_gold_icon)
+               dthIV.startCustomAnimation(R.drawable.anim_dth_service_icon)
+               elecIv.startCustomAnimation(R.drawable.anim_elec_icon)
+               boradBandIv.startCustomAnimation(R.drawable.anim_broadband_icon)
+               mobileIv.startCustomAnimation(R.drawable.anim_mobile_icon)
+               mob2Iv.startCustomAnimation(R.drawable.anim_mobile_icon)
+               mobPostIv.startCustomAnimation(R.drawable.anim_post_paid_icon)
+               ottIv.startCustomAnimation(R.drawable.anim_ott_icon)
+               dthIV2.startCustomAnimation(R.drawable.anim_dth_service_icon)
+               isuranceIv.startCustomAnimation(R.drawable.anim_insurance_icon)
+               mucipalIv.startCustomAnimation(R.drawable.anim_munciple_tax)
+               fastIv.startCustomAnimation(R.drawable.anim_fastag_icon)
+               challanIv.startCustomAnimation(R.drawable.anim_challan_icon)
+               metroCardIv.startCustomAnimation(R.drawable.anim_metro_card)
 
-        }
-    }*/
+           }
+       }*/
 
-  /*  private fun setUpComingOurServices() {
-        val ourServices1 = OurServices(
-            R.drawable.gold_loan_hand, getString(R.string.gold_n_loans), R.color.yellow_main
-        )
-        val ourServices2 = OurServices(
-            R.drawable.hand_prepaid_card, getString(R.string.prepaid_n_cards), R.color.green_main
-        )
-        val ourServices3 = OurServices(
-            R.drawable.hand_invoice, getString(R.string.bills_n_payment), R.color.sky_blue_main
-        )
-        val ourServices4 = OurServices(
-            R.drawable.hand_digital_gold, getString(R.string.digital_n_gold), R.color.orange_main
-        )
-        val serviceList = listOf(ourServices1, ourServices2, ourServices3, ourServices4)
-        upcomingNewUserAdapter.submitList(serviceList)
-        binding.rvUpcomingDueLoans.adapter = upcomingNewUserAdapter
+    /*  private fun setUpComingOurServices() {
+          val ourServices1 = OurServices(
+              R.drawable.gold_loan_hand, getString(R.string.gold_n_loans), R.color.yellow_main
+          )
+          val ourServices2 = OurServices(
+              R.drawable.hand_prepaid_card, getString(R.string.prepaid_n_cards), R.color.green_main
+          )
+          val ourServices3 = OurServices(
+              R.drawable.hand_invoice, getString(R.string.bills_n_payment), R.color.sky_blue_main
+          )
+          val ourServices4 = OurServices(
+              R.drawable.hand_digital_gold, getString(R.string.digital_n_gold), R.color.orange_main
+          )
+          val serviceList = listOf(ourServices1, ourServices2, ourServices3, ourServices4)
+          upcomingNewUserAdapter.submitList(serviceList)
+          binding.rvUpcomingDueLoans.adapter = upcomingNewUserAdapter
 
-    }
-*/
+      }
+  */
     private fun setUpComingDueLoans() {
         binding.shimmmerParent.showShimmer()
 //        val currentDate = AppUtility.getCurrentDate()
@@ -660,7 +660,11 @@ class HomeScreenFrag :
         ) {
             it?.let {
                 (activity as MainActivity).commonViewModel.notZero =
-                    it.filter { it.InterestDue != 0.0000 }
+                    it.filter { it.payableAmount != 0.0000 }
+                Log.i(
+                    TAG,
+                    "setUpComingDueLoans: ${(activity as MainActivity).commonViewModel.notZero}"
+                )
                 if ((activity as MainActivity).commonViewModel.notZero.isNotEmpty()) {
                     upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
                     binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
@@ -691,11 +695,11 @@ class HomeScreenFrag :
 //        binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
     }
 
-   /* private fun setUiOnHomeSweetHomeBills() {
-        binding.allPaymnetActionParent.homeSweetHomBillsRv.setUiOnHomeSweetHomeBills(
-            requireContext(), ::onBillClicked
-        )
-    }*/
+    /* private fun setUiOnHomeSweetHomeBills() {
+         binding.allPaymnetActionParent.homeSweetHomBillsRv.setUiOnHomeSweetHomeBills(
+             requireContext(), ::onBillClicked
+         )
+     }*/
 
     private fun setLoanOverView(resp: RespGetLoanOutStanding) {
         var totalAmount = 0.0
@@ -709,12 +713,8 @@ class HomeScreenFrag :
             loanOverViewCardParent.youHaveTotalLoanTv.text =
                 "You are having ${resp.size} active loans totalling interest due up to"
             for (i in resp) {
-                i.InterestDue?.let {
-                    totalAmount += if (i.RebateAmount != null) {
-                        (it - i.RebateAmount)
-                    } else {
-                        it
-                    }
+                i.payableAmount?.let {
+                    totalAmount += i.payableAmount
                 }
             }
 //            if (totalAmount == 0) {
@@ -733,19 +733,19 @@ class HomeScreenFrag :
         binding.loanOverViewCardParent.root.show()
     }
 
-/*    private fun setAddCardView() {
-        binding.apply {
-            addCardBtn.setOnClickListener {
-                findNavController().navigate(R.id.addUpiCard)
+    /*    private fun setAddCardView() {
+            binding.apply {
+                addCardBtn.setOnClickListener {
+                    findNavController().navigate(R.id.addUpiCard)
+                }
             }
-        }
-    }*/
-/*
+        }*/
+    /*
 
-    private fun onBillClicked(actionItem: ActionItem) {
-        AppUtility.onBillClicked(actionItem, findNavController())
-    }
-*/
+        private fun onBillClicked(actionItem: ActionItem) {
+            AppUtility.onBillClicked(actionItem, findNavController())
+        }
+    */
 
 
 }

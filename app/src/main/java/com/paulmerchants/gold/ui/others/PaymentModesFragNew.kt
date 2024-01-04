@@ -103,13 +103,13 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             binding.amountPaidTv.text = "${getString(R.string.Rs)}${payAlllInOneGo?.amount ?: 0}"
             amountToPay = payAlllInOneGo?.amount
         }
-        var proceedBtn = "1"
         var bhmValue = true
         var walletValue = true
         var creditValue = true
         var netBanking = true
-        initRazorpay()
-
+        if (paymentViewModel.isCalled) {
+            initRazorpay()
+        }
         paymentViewModel.respPaymentUpdate.observe(viewLifecycleOwner) {
             it?.let {
                 Log.d(TAG, "ojnnnnnn: /.................${it.status}")
@@ -252,7 +252,6 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             amountToPay?.let { it1 -> createOrder(it1) }
         }
         binding.payDebitCredit.setOnClickListener {
-
             if (isValidate()) {
                 payWithDebitCard()
                 amountToPay?.let { it1 -> createOrder(it1) }
@@ -368,9 +367,10 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                     walletValue = true
                 }
             }
-            creditDebitParent.setOnClickListener {
+            nbTv.setOnClickListener {
                 if (creditValue) {
-                    arrowDownCreditIv.setImageResource(R.drawable.cross_icon)
+                    nbTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.cross_icon, 0)
+//                    arrowDownCreditIv.setImageResource(R.drawable.cross_icon)
                     creditDebitParent.setBackgroundResource(R.drawable.rect_opem_loans)
                     creditCardParent.show()
                     //wallet
@@ -393,7 +393,13 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                             requireContext(), R.anim.slide_up
                         )
                     )
-                    arrowDownCreditIv.setImageResource(R.drawable.arrow_down_black)
+//                    arrowDownCreditIv.setImageResource(R.drawable.arrow_down_black)
+                    nbTv.setCompoundDrawablesWithIntrinsicBounds(
+                        0,
+                        0,
+                        R.drawable.arrow_down_black,
+                        0
+                    )
                     creditDebitParent.setBackgroundResource(R.drawable.card_sky_rect_6)
                     creditValue = true
                 }
@@ -477,6 +483,11 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
             else -> true
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        toggleWebViewVisibility(View.GONE)
     }
 
     private fun createOrder(amount: Double) {
@@ -585,34 +596,34 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
                             override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
                                 toggleWebViewVisibility(View.GONE)
-                                if (p2?.paymentId != null) {
-                                    p2.let {
-                                        if (payAlllInOneGo != null) {
-                                            (activity as MainActivity).appSharedPref?.let {
-                                                updatePaymentStatusToServerToAllInOneGo(
-                                                    it,
-                                                    StatusPayment("not_captured", p2)
-                                                )
-                                            }
-                                        } else {
-                                            (activity as MainActivity).appSharedPref?.let {
-
-                                                updatePaymentStatusToServer(
-                                                    it,
-                                                    StatusPayment("not_captured", p2),
-                                                    false
-//                                                isCustomPay ?: false
-                                                )
-                                            }
+//                                if (p2?.paymentId != null) {
+                                p2.let {
+                                    if (payAlllInOneGo != null) {
+                                        (activity as MainActivity).appSharedPref?.let {
+                                            updatePaymentStatusToServerToAllInOneGo(
+                                                it,
+                                                StatusPayment("not_captured", p2)
+                                            )
                                         }
+                                    } else {
+                                        (activity as MainActivity).appSharedPref?.let {
+
+                                            updatePaymentStatusToServer(
+                                                it,
+                                                StatusPayment("not_captured", p2),
+                                                false
+//                                                isCustomPay ?: false
+                                            )
+                                        }
+                                    }
 
 //                                    dialog.setTitle("Payment Failed")
 //                                    dialog.setMessage(it.data.toString())
 //                                    dialog.show()
-                                    }
-                                } else {
-                                    "Unable to initiate the payment\nplease try again later".showSnackBar()
                                 }
+//                                } else {
+//                                    "Unable to initiate the payment\nplease try again later".showSnackBar()
+//                                }
                             }
 
                         })

@@ -3,6 +3,7 @@ package com.paulmerchants.gold.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +20,7 @@ class AllTxnAdapter(private val showTxn: (Transactions) -> Unit) :
     )
 
     override fun onBindViewHolder(holder: AllTxnAdapter, position: Int) {
-        getItem(position)?.let { holder.bindLast(it,showTxn) }
+        getItem(position)?.let { holder.bindLast(it, showTxn) }
     }
 
     companion object {
@@ -44,12 +45,30 @@ class AllTxnAdapter(private val showTxn: (Transactions) -> Unit) :
                 binding.transReferIdTv.text =
                     "Amount: ${binding.root.context.getString(R.string.Rs)} ${item.amount}\n" +
                             "Customer Id: ${item.custId}\n" +
-                            "Transaction Id: ${item.paymentId?:""}\n" +
+                            "Transaction Id: ${item.paymentId ?: ""}\n" +
                             "Receipt Id:  ${item.receiptId}\n" +
                             "Date: ${AppUtility.formatDateFromMilliSec(item.createdAt)}"
-                binding.statusTv.text = "Status: ${item.status}"
+
+                if (item.status == "PAID") {
+                    binding.statusTv.text = "${item.status}"
+                    binding.statusTv.setTextColor(
+                        ContextCompat.getColor(
+                            binding.root.context,
+                            R.color.green_success
+                        )
+                    )
+                } else {
+                    binding.statusTv.text = "FAILED"
+                    binding.statusTv.setTextColor(
+                        ContextCompat.getColor(
+                            binding.root.context,
+                            R.color.red
+                        )
+                    )
+
+                }
             }
-            binding.parentTxn.setOnClickListener{
+            binding.parentTxn.setOnClickListener {
                 showTxn(item)
             }
         }

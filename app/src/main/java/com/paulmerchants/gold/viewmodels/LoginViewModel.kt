@@ -1,6 +1,7 @@
 package com.paulmerchants.gold.viewmodels
 
 import android.content.Context
+import android.os.CountDownTimer
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -10,14 +11,19 @@ import androidx.navigation.NavController
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants.LOGIN_WITH_MPIN
+import com.paulmerchants.gold.model.ReqCustomerOtpNew
 import com.paulmerchants.gold.model.RequestLogin
 import com.paulmerchants.gold.model.RespCustomersDetails
 import com.paulmerchants.gold.model.RespLogin
+import com.paulmerchants.gold.model.ResponseGetOtp
+import com.paulmerchants.gold.model.ResponseVerifyOtp
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
+import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
 import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.ReqResetPin
 import com.paulmerchants.gold.model.newmodel.RespCommon
+import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
 import com.paulmerchants.gold.model.newmodel.RespLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.RespTxnHistory
 import com.paulmerchants.gold.networks.CallHandler
@@ -43,12 +49,116 @@ class LoginViewModel @Inject constructor(
     val getTokenResp = MutableLiveData<Response<LoginNewResp>>()
     private val TAG = this.javaClass.name
     val txnHistoryData = MutableLiveData<RespTxnHistory>()
+    val verifyOtp = MutableLiveData<ResponseVerifyOtp>()
 
     init {
         Log.d(TAG, ": init_$TAG")
     }
 
+    var timer: CountDownTimer? = null
+    val countNum = MutableLiveData<Long>()
+    val countStr = MutableLiveData<String>()
 
+    fun timerStart(millis: Long = 120000L) {
+        timer = object : CountDownTimer(millis, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+
+
+                var count = "${millisUntilFinished / 1000}"
+                val inSecond = millisUntilFinished / 1000
+                if (inSecond < 10) {
+                    count = "00:0$inSecond"
+                } else if (inSecond == 120L) {
+                    count = "2:00"
+                } else if (inSecond > 60L) {
+                    count = if (inSecond - 60 < 10) {
+                        "1:0${inSecond - 60}"
+                    } else {
+                        "1:${inSecond - 60}"
+                    }
+                } else if (inSecond < 60) {
+                    count = "00:$inSecond"
+                } else {
+                    count = ""
+                }
+                Log.d("TAG", "hideAndShowOtpView: $count") //Didn’t receive? 00:30
+                countNum.postValue(millisUntilFinished / 1000)
+                countStr.postValue(count)
+            }
+
+            override fun onFinish() {
+                countNum.postValue(0)
+                countStr.postValue("00")
+            }
+        }
+        timer?.start()
+    }
+
+    fun getOtp(appSharedPref: AppSharedPref?, mobileNum: String) =
+        viewModelScope.launch {
+
+            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
+                    return apiParams.getOtp(
+
+                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails()),
+                    )
+                }
+
+                override fun success(response: Response<ResponseGetOtp>) {
+                    if (response.isSuccessful) {
+                        timerStart()
+                    } else {
+                        "Some thing went wrong..".showSnackBar()
+                    }
+//                    val decryptData = decryptKey(
+//                        BuildConfig.SECRET_KEY_GEN, response.body()?.data
+//                    )
+
+
+                }
+
+
+                override fun error(message: String) {
+                    super.error(message)
+                    Log.d("TAG", "error: ......$message")
+                }
+            })
+        }
+    fun verifyOtp(appSharedPref: AppSharedPref?, mobileNum: String, otp: String) =
+        viewModelScope.launch {
+            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseVerifyOtp>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseVerifyOtp> {
+                    return apiParams.verifyOtp(
+                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails()),
+                    )
+                }
+
+                override fun success(response: Response<ResponseVerifyOtp>) {
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            if (it.statusCode == "200") {
+                                appSharedPref?.putStringValue(Constants.CUST_MOBILE, mobileNum)
+                                verifyOtp.value = response.body()
+
+                            } else {
+                                "${it.message}".showSnackBar()
+                            }
+                        }
+                    }
+
+
+                }
+
+
+                override fun error(message: String) {
+                    super.error(message)
+                    Log.d("TAG", "error: ......$message")
+                }
+            })
+        }
     fun loginWithMpin(
         navController: NavController,
         appSharedPref: AppSharedPref?,

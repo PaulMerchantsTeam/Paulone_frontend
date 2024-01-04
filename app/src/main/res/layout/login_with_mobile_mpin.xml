@@ -118,8 +118,8 @@
             android:backgroundTint="@color/view_color"
             android:fontFamily="@font/poppins_bold"
             android:gravity="center"
-            android:maxLength="1"
             android:inputType="numberPassword"
+            android:maxLength="1"
             android:textColor="@color/splash_screen_one"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
             android:textSize="@dimen/_15ssp"
@@ -166,6 +166,23 @@
             app:layout_constraintStart_toEndOf="@+id/pinThreeEt"
             app:layout_constraintTop_toTopOf="@+id/pinThreeEt" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/fogetMpin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:background="?android:attr/selectableItemBackground"
+        android:fontFamily="@font/poppins_bold"
+        android:lineSpacingExtra="@dimen/_3sdp"
+        android:padding="@dimen/_10sdp"
+        android:text="@string/forget_m_pin"
+        android:textColor="@color/splash_screen_three"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enterPhoneNumMain" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signUpBtn"

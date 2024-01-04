@@ -1,5 +1,10 @@
 package com.paulmerchants.gold.ui.splash
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.util.Log
 import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat.getColor
@@ -9,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
+import com.paulmerchants.gold.common.Constants.IS_USER_EXIST
 import com.paulmerchants.gold.common.Constants.LOGIN_DONE
 import com.paulmerchants.gold.common.Constants.LOGIN_WITH_MPIN
 import com.paulmerchants.gold.common.Constants.OTP_VERIFIED
@@ -17,6 +23,8 @@ import com.paulmerchants.gold.common.Constants.SPLASH_SCRN_VISITED
 import com.paulmerchants.gold.databinding.SplashFragmentBinding
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
+import com.paulmerchants.gold.utility.InternetUtils
 import com.paulmerchants.gold.utility.hideViewGrp
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.SplashViewModel
@@ -29,10 +37,10 @@ import kotlinx.coroutines.launch
 class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding::inflate) {
     private val TAG = javaClass.name
     private val splashViewModel: SplashViewModel by viewModels()
-
+    private lateinit var connectivityManager: ConnectivityManager
+    private lateinit var networkCallback: ConnectivityManager.NetworkCallback
     override fun SplashFragmentBinding.initialize() {
         AppUtility.changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
-
         Log.d(
             TAG,
             "initialize: ..1.......${
@@ -46,9 +54,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 )
             }"
                     + "\ninitialize: .....3....${
-                (activity as MainActivity).appSharedPref?.getBooleanValue(
-                    OTP_VERIFIED
-                )
+                (activity as MainActivity).appSharedPref?.getBooleanValue(OTP_VERIFIED)
             }"
                     + "\ninitialize: ......4...${
                 (activity as MainActivity).appSharedPref?.getBooleanValue(
@@ -66,10 +72,14 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 null,
                 (activity as MainActivity).navOption
             )
-        } else if ((activity as MainActivity).appSharedPref?.getBooleanValue(OTP_VERIFIED) == true) {
+        } else if ((activity as MainActivity).appSharedPref?.getBooleanValue(OTP_VERIFIED) == true
+            && (activity as MainActivity).appSharedPref?.getBooleanValue(
+                IS_USER_EXIST
+            ) == true
+        ) {
             findNavController().popBackStack(R.id.splashFragment, true)
             findNavController().navigate(
-                R.id.phoenNumVerifiactionFragment,
+                R.id.loginScreenFrag,
                 null,
                 (activity as MainActivity).navOption
             )
@@ -83,14 +93,18 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
 
     override fun onStart() {
         super.onStart()
-        lifecycleScope.launch(Dispatchers.Main) {
-            animateOne()
-        }
+        connectivityManager =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         binding.nextBtn.setOnClickListener {
             setIntroForNextCounter(splashViewModel.counter)
         }
 //        splashViewModel.getLogin()
-
+        setUpNetworkCallback()
+        if (!InternetUtils.isNetworkAvailable(requireContext())) {
+            lifecycleScope.launch {
+                noInternetDialog()
+            }
+        }
     }
 
     private fun setIntroForNextCounter(counter: Int) {
@@ -234,6 +248,45 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
             introMainPage.show()
         }
         splashViewModel.setValue()
+    }
+
+    private fun setUpNetworkCallback() {
+        networkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                // Network connection is available, perform actions here
+                // For example:
+                // fetchData()
+                Log.d(TAG, "onAvailable: ...........internet")
+                lifecycleScope.launch(Dispatchers.Main) {
+                    animateOne()
+                }
+            }
+
+            override fun onLost(network: Network) {
+                // Network connection is lost, handle accordingly
+                // For example:
+                // showNoInternetMessage()
+                Log.d(TAG, "onLost: ..................")
+                lifecycleScope.launch {
+                    noInternetDialog()
+                }
+            }
+        }
+
+        // Register the network callback
+        val networkRequest = NetworkRequest.Builder()
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .build()
+
+        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Unregister the network callback to avoid memory leaks
+        if (this::connectivityManager.isInitialized) {
+            connectivityManager.unregisterNetworkCallback(networkCallback)
+        }
     }
 
     private fun animateSecondScreen(colorBg: Int, tvColor: Int) {

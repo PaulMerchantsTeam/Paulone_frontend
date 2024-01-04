@@ -90,7 +90,7 @@ class GoldLoanOverViewAdapterProd(
             }
 
             binding.apply {
-                if (actionItem.IsClosed != true) {
+                if (actionItem.closed != true) {
                     binding.apply {
 //                        parentOpenLoan.show()
                         ovrDueParentArrow.show()
@@ -101,8 +101,8 @@ class GoldLoanOverViewAdapterProd(
                         outStaTitleTv.text =
                             binding.root.context.getString(R.string.due_date)
                         outStandValueTv.text =
-                            AppUtility.getDateFormat(actionItem.DueDate)?.trim().toString()
-                        val duedate = AppUtility.numberOfDaysWrtCurrent(actionItem.DueDate)
+                            AppUtility.getDateFormat(actionItem.dueDate)?.trim().toString()
+                        val duedate = AppUtility.numberOfDaysWrtCurrent(actionItem.dueDate)
                         when {
                             duedate.toInt() < 0 -> {
                                 Log.d("TAG", "bind: ----< than 0")
@@ -120,11 +120,9 @@ class GoldLoanOverViewAdapterProd(
 //                            intDueAmountTv.text = "INR ${actionItem.OutStanding?.plus(it)}"
 //                        }
 
-                        intDueAmountTv.text = if (actionItem.RebateAmount != null) {
-                            "INR ${actionItem.RebateAmount.let { actionItem.InterestDue?.minus(it) }}"
-                        } else {
-                            "INR ${actionItem.InterestDue}"
-                        }
+                        intDueAmountTv.text =
+                            if (actionItem.payableAmount != null) "INR ${actionItem.payableAmount}" else ""
+
                         binding.loanClosedBtn.apply {
                             text = binding.root.context.getString(R.string.pay_now)
                             setTextColor(
@@ -142,10 +140,10 @@ class GoldLoanOverViewAdapterProd(
                         intDueAmountTv.hide()
                         clickPayParent.hide()
                         outStaTitleTv.text = root.context.getString(R.string.final_due_paid)
-                        if (actionItem.ClosedDate != "" && actionItem.ClosedDate != null) {
+                        if (actionItem.closedDate != "" && actionItem.closedDate != null) {
 
                             outStandValueTv.text =
-                                AppUtility.getDateFormat(actionItem.ClosedDate.toString())
+                                AppUtility.getDateFormat(actionItem.closedDate.toString())
                             outStandValueTv.show()
                         } else {
                             outStandValueTv.hide()

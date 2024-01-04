@@ -107,6 +107,12 @@ Note: These tags are need to be set under the TextView.
 
 object AppUtility {
 
+    fun openUrl(context: Context, uri: String) {
+        val openURL = Intent(Intent.ACTION_VIEW)
+        openURL.data = Uri.parse(uri)
+        context.startActivity(openURL)
+    }
+
 
     fun Fragment.noInternetDialog() {
         val dialogBinding =
@@ -582,8 +588,8 @@ object AppUtility {
             daysDifference = ChronoUnit.DAYS.between(specificDate, currentDate)
             println("The number of days difference is: $daysDifference")
             return daysDifference
-        } else {
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        } else { //2024-08-26T00:00:00
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd'Tf'HH:mm:ss", Locale.getDefault())
             val specificDate = dateFormat.parse(date)
             val currentDate = Date()
             val calendar1 = Calendar.getInstance()

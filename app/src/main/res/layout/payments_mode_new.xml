@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/splash_screen_two"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/splash_screen_two">
 
     <ScrollView
         android:id="@+id/clOuter"
@@ -65,7 +66,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_20sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
-                        android:text="INR 2500"
+                        android:text="INR 000"
                         android:textColor="@color/splash_screen_one"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -79,20 +80,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/screen_end_margin"
-                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/screen_end_margin"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/amountCardParent">
+                app:layout_constraintTop_toBottomOf="@+id/progressDecl">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/otherModeTv"
                     style="@style/text_11_semi_bold_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Payment Modes"
+                    android:text="Payment Mode"
                     android:textColor="@color/pg_color"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -104,6 +105,7 @@
                     android:layout_marginTop="@dimen/_12sdp"
                     android:background="@drawable/card_sky_rect_6"
                     android:paddingBottom="@dimen/_6sdp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -183,13 +185,13 @@
                             android:layout_height="@dimen/_27sdp"
                             android:layout_margin="@dimen/_6sdp"
                             android:background="@drawable/edit_text_rect"
-                            android:hint="Enter here"
-                            android:textColorHint="@color/gray_2"
                             android:cursorVisible="true"
-                            android:inputType="textEmailAddress"
                             android:digits="abcdefghijklmnopqrstuvwxyz@#$_1234567890 ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                            android:hint="Enter here"
+                            android:inputType="textEmailAddress"
                             android:paddingHorizontal="@dimen/_4sdp"
                             android:textColor="@color/splash_screen_one"
+                            android:textColorHint="@color/gray_2"
                             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -414,6 +416,7 @@
                     android:layout_marginTop="@dimen/_6sdp"
                     android:background="@drawable/card_sky_rect_6"
                     android:paddingBottom="@dimen/_6sdp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/bhmUpiParent">
@@ -545,12 +548,17 @@
 
                         android:id="@+id/nbTv"
                         style="@style/text_11_bold_sk_blue"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_6sdp"
-                        android:text="Credit/Debit Card"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:drawableEnd="@drawable/arrow_down_black"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:text="Debit Card"
                         android:textColor="@color/pg_color"
                         app:layout_constraintBottom_toBottomOf="@+id/view_ver_credit"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/view_ver_credit"
                         app:layout_constraintTop_toTopOf="@+id/view_ver_credit" />
 
@@ -562,6 +570,7 @@
                         android:layout_marginEnd="@dimen/_6sdp"
                         android:padding="@dimen/_8sdp"
                         android:src="@drawable/arrow_down_black"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toTopOf="@+id/creditCardParent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="parent"
@@ -571,10 +580,9 @@
                         android:id="@+id/creditCardParent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_2sdp"
                         android:layout_marginTop="@dimen/_6sdp"
                         android:visibility="gone"
-                        android:layout_margin="@dimen/_2sdp"
-
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -701,6 +709,7 @@
                             android:layout_marginTop="@dimen/_19sdp"
                             android:layout_marginEnd="@dimen/_36sdp"
                             android:text="@string/by_adding_this"
+                            android:visibility="gone"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/expireDateEt" />
@@ -733,6 +742,7 @@
                     android:layout_marginTop="@dimen/_6sdp"
                     android:background="@drawable/card_sky_rect_6"
                     android:paddingBottom="@dimen/_8sdp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -834,6 +844,20 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/progressDecl"
+                style="@style/text_11_semi_bold_black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/poppins_light"
+                android:text="* Currently, we only accept debit card payments. Other payment methods are in progress."
+                android:textColor="@color/splash_screen_one"
+                android:textSize="@dimen/_8ssp"
+                app:layout_constraintEnd_toEndOf="@+id/amountCardParent"
+                app:layout_constraintStart_toStartOf="@+id/amountCardParent"
+                app:layout_constraintTop_toBottomOf="@+id/amountCardParent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -16,13 +16,18 @@ class UpcomingLoansViewHolder(private val binding: ItemUpcomingDueLoanBinding) :
         dueLoans: GetPendingInrstDueRespItem,
         onPayDueClicked: (GetPendingInrstDueRespItem) -> Unit,
     ) {
+        Log.d("TAG", "bind: ............$dueLoans")
         binding.apply {
-            val duedate = AppUtility.numberOfDaysWrtCurrent(dueLoans.DueDate)
+            val duedate = dueLoans.dueDate?.let { AppUtility.numberOfDaysWrtCurrent(it) }
             when {
-                duedate.toInt() < 0 -> {
+                (duedate?.toInt() ?: 0) < 0 -> {
                     Log.d("TAG", "bind: ----< than 0")
                     ovrDueParentArrow.setBackgroundResource(R.drawable.rect_due_green)
-                    overDueDaysTv.text = "Due in ${duedate.absoluteValue} days"
+                    overDueDaysTv.text = "Due in ${duedate?.absoluteValue} days"
+                }
+
+                duedate == null -> {
+                    overDueDaysTv.text = ""
                 }
 
                 else -> {
@@ -31,11 +36,11 @@ class UpcomingLoansViewHolder(private val binding: ItemUpcomingDueLoanBinding) :
                     overDueDaysTv.text = "Overdue by $duedate days"
                 }
             }
-            if (dueLoans.RebateAmount > 0.000) {
-                dueAmountTv.text = "INR ${dueLoans.InterestDue - dueLoans.RebateAmount}"
-            } else {
-                dueAmountTv.text = "INR ${dueLoans.InterestDue}"
-            }
+//            if (dueLoans.payableAmount > 0.000) {
+            dueAmountTv.text = "INR ${dueLoans.payableAmount}"
+//            } else {
+//                dueAmountTv.text = "INR ${dueLoans.InterestDue}"
+//            }
         }
         binding.payNowBtn.setOnClickListener {
             onPayDueClicked(dueLoans)

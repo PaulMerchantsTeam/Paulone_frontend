@@ -20,7 +20,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
+import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
@@ -32,6 +32,8 @@ import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
 import com.paulmerchants.gold.utility.*
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.diffColorText
+import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
+import com.paulmerchants.gold.utility.AppUtility.openUrl
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants.IS_LOGOUT
 import com.paulmerchants.gold.viewmodels.AuthViewModel
@@ -57,8 +59,8 @@ class PhoenNumVerifiactionFragment :
         const val REQ_ONE_TAP = 2
     }
 
-    @Inject
-    lateinit var auth: FirebaseAuth
+    //    @Inject
+//    lateinit var auth: FirebaseAuth
     lateinit var mGoogleClient: GoogleSignInClient
 
 //    val onSignInResult =
@@ -145,26 +147,38 @@ class PhoenNumVerifiactionFragment :
                     }
                 }
             }
+
+        binding.signUpParentMain.privacy.setOnClickListener {
+            openUrl(requireContext(), BuildConfig.PRIVACY_POLICY)
+        }
+        binding.signUpParentMain.tAndCTv.setOnClickListener {
+            openUrl(requireContext(), BuildConfig.TERMS_CONDITION)
+        }
         binding.signUpParentMain.signUpBtn.setOnClickListener {
-            binding.enterPhoneNumMain.hide()
-            println(
-                "-----------ggggggg---------${
-                    binding.signUpParentMain.etName.text.isNotEmpty() && binding.signUpParentMain.etEmailId.text.isNotEmpty() && binding.signUpParentMain.mpinOneEt.text.isNotEmpty() && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinFourEt.text.isNotEmpty() && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty() && binding.signUpParentMain.termsCb.isChecked
-                }"
-            )
-            if (isValidate()) {
-                val confirmPin =
-                    (binding.signUpParentMain.mpinOneConfirmEt.text.toString() + binding.signUpParentMain.mpinConfirmTwoEt.text.toString() + binding.signUpParentMain.mpinConfirmThreeEt.text.toString() + binding.signUpParentMain.mpinConfirmFourEt.text.toString())
-                val mPin =
-                    (binding.signUpParentMain.mpinOneEt.text.toString() + binding.signUpParentMain.mpinTwoEt.text.toString() + binding.signUpParentMain.mpinThreeEt.text.toString() + binding.signUpParentMain.mpinFourEt.text.toString())
-                authViewModel.setMpin(
-                    appSharedPref = (activity as MainActivity).appSharedPref,
-                    confirmMPin = confirmPin,
-                    setUpMPin = mPin,
-                    context = requireContext(),
-                    email = binding.signUpParentMain.etEmailId.text.toString()
+            if (InternetUtils.isNetworkAvailable(requireContext())) {
+                binding.enterPhoneNumMain.hide()
+                println(
+                    "-----------ggggggg---------${
+                        binding.signUpParentMain.etName.text.isNotEmpty() && binding.signUpParentMain.etEmailId.text.isNotEmpty() && binding.signUpParentMain.mpinOneEt.text.isNotEmpty() && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinFourEt.text.isNotEmpty() && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty() && binding.signUpParentMain.termsCb.isChecked
+                    }"
                 )
+                if (isValidate()) {
+                    val confirmPin =
+                        (binding.signUpParentMain.mpinOneConfirmEt.text.toString() + binding.signUpParentMain.mpinConfirmTwoEt.text.toString() + binding.signUpParentMain.mpinConfirmThreeEt.text.toString() + binding.signUpParentMain.mpinConfirmFourEt.text.toString())
+                    val mPin =
+                        (binding.signUpParentMain.mpinOneEt.text.toString() + binding.signUpParentMain.mpinTwoEt.text.toString() + binding.signUpParentMain.mpinThreeEt.text.toString() + binding.signUpParentMain.mpinFourEt.text.toString())
+                    authViewModel.setMpin(
+                        appSharedPref = (activity as MainActivity).appSharedPref,
+                        confirmMPin = confirmPin,
+                        setUpMPin = mPin,
+                        context = requireContext(),
+                        email = binding.signUpParentMain.etEmailId.text.toString()
+                    )
+                }
+            } else {
+                noInternetDialog()
             }
+
         }
         if ((activity as MainActivity).appSharedPref?.getBooleanValue(OTP_VERIFIED) == true) {
             binding.fillOtpParent.hideView()
@@ -217,6 +231,7 @@ class PhoenNumVerifiactionFragment :
                 if (!it.userExist) {
                     hideAndShowSignUpScreen()
                 } else {
+                    (activity as MainActivity).appSharedPref?.putBoolean("IS_USER_EXIST", true)
                     findNavController().popBackStack(R.id.phoenNumVerifiactionFragment, true)
                     findNavController().navigate(R.id.loginScreenFrag)
                 }
@@ -242,33 +257,34 @@ class PhoenNumVerifiactionFragment :
         }
 
         binding.proceedAuthBtn.setOnClickListener {
-            if (!isMobileEntered) {
-                if (binding.etPhoenNum.text.isNotEmpty()) {
-                    authViewModel.getCustomer(
-                        (activity as MainActivity).appSharedPref,
-                        binding.etPhoenNum.text.toString(),
-                        requireContext()
-                    )
-                }
-            } else {
-                if (binding.otpOneEt.text.isNotEmpty() && binding.otpTwoEt.text.isNotEmpty() && binding.otpThreeEt.text.isNotEmpty() && binding.otpFourEt.text.isNotEmpty()) {
-                    val otp =
-                        binding.otpOneEt.text.toString() + binding.otpTwoEt.text.toString() + binding.otpThreeEt.text.toString() + binding.otpFourEt.text.toString()
-                    Log.d("TAG", "onStart: .........OTP_____$otp")
-
-                    /**
-                     * Currently setting OTP 0808...
-                     */
-
-                    if (otp.isNotEmpty()) {
-                        authViewModel.verifyOtp(
+            if (InternetUtils.isNetworkAvailable(requireContext())) {
+                if (!isMobileEntered) {
+                    if (binding.etPhoenNum.text.isNotEmpty()) {
+                        authViewModel.getCustomer(
                             (activity as MainActivity).appSharedPref,
                             binding.etPhoenNum.text.toString(),
-                            otp,
                             requireContext()
                         )
-
                     }
+                } else {
+                    if (binding.otpOneEt.text.isNotEmpty() && binding.otpTwoEt.text.isNotEmpty() && binding.otpThreeEt.text.isNotEmpty() && binding.otpFourEt.text.isNotEmpty()) {
+                        val otp =
+                            binding.otpOneEt.text.toString() + binding.otpTwoEt.text.toString() + binding.otpThreeEt.text.toString() + binding.otpFourEt.text.toString()
+                        Log.d("TAG", "onStart: .........OTP_____$otp")
+
+                        /**
+                         * Currently setting OTP 0808...
+                         */
+
+                        if (otp.isNotEmpty()) {
+                            authViewModel.verifyOtp(
+                                (activity as MainActivity).appSharedPref,
+                                binding.etPhoenNum.text.toString(),
+                                otp,
+                                requireContext()
+                            )
+
+                        }
 
 //                    if (otp == "0808") {
 //                        hideAndShowProgressView(false)
@@ -293,18 +309,20 @@ class PhoenNumVerifiactionFragment :
 //                            Toast.LENGTH_SHORT
 //                        ).show()
 //                    }
+                    }
                 }
+            } else {
+                noInternetDialog()
             }
-
-            binding.pleaseOtpTv.setOnClickListener {
-                //change Num
-                //show Num Input Ui, hide otp layout
-                authViewModel.isCustomerExist.postValue(false)
-                authViewModel.timer?.cancel()
-                authViewModel.isCalledApi = true
-                isMobileEntered = false
-                hideAndShowNumInputView()
-            }
+        }
+        binding.pleaseOtpTv.setOnClickListener {
+            //change Num
+            //show Num Input Ui, hide otp layout
+            authViewModel.isCustomerExist.postValue(false)
+            authViewModel.timer?.cancel()
+            authViewModel.isCalledApi = true
+            isMobileEntered = false
+            hideAndShowNumInputView()
         }
 
         binding.etPhoenNum.addTextChangedListener(object : TextWatcher {
@@ -364,6 +382,8 @@ class PhoenNumVerifiactionFragment :
                 }
             }
         }
+
+
     }
 
     private fun hideAndShowNumInputView() {
@@ -547,6 +567,11 @@ class PhoenNumVerifiactionFragment :
             }
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        authViewModel.timer?.cancel()
     }
 
     private fun callOtpNextFocus() {

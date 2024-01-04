@@ -103,7 +103,7 @@ class SemiCircleArcProgressBar : View {
     }
 
     private val progressBarRectF: RectF
-        private get() = RectF(
+        get() = RectF(
             left.toFloat(),
             top.toFloat(),
             (right - padding).toFloat(),

@@ -19,6 +19,7 @@ object Constants {
     const val SPLASH_SCRN_VISITED = "SPLASH_SCRN_VISITED"
     const val LOGIN_DONE = "LOGIN_DONE"
     const val SIGNUP_DONE = "SIGNUP_DONE"
+    const val IS_USER_EXIST = "IS_USER_EXIST"
     const val OTP_VERIFIED = "OTP_VERIFIED"
     const val AMOUNT_PAYABLE ="AMOUNT_PAYABLE"
     const val CUST_ACC ="CUST_ACC"

@@ -16,10 +16,19 @@
         android:text="@string/transaction_reference_id"
         android:textColor="@color/text_color"
         app:layout_constraintBottom_toTopOf="@+id/statusTv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/openReceiptBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/openReceiptBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:src="@drawable/arrow_right"
+        app:layout_constraintBottom_toBottomOf="@+id/transReferIdTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/transReferIdTv" />
 
 
     <com.google.android.material.textview.MaterialTextView
@@ -27,16 +36,29 @@
         style="@style/text_11_medium_blue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:lineSpacingExtra="@dimen/_5sdp"
         android:text="@string/transaction_reference_id"
         android:textColor="@color/text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/statusTvTitle"
         app:layout_constraintTop_toBottomOf="@+id/transReferIdTv" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/statusTvTitle"
+        style="@style/text_11_medium_blue"
+        android:layout_width="0dp"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:lineSpacingExtra="@dimen/_5sdp"
+        android:text="@string/status"
+        android:textColor="@color/text_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/transReferIdTv" />
 
     <View
         android:id="@+id/view3"

@@ -55,7 +55,7 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
         commonViewModel.getLoanStatement(
             (activity as MainActivity).appSharedPref,
             loanOutStanding?.AcNo.toString(),
-            loanOutStanding?.OpenDate.toString(),
+            loanOutStanding?.openDate.toString(),
             fromDate,
         )
 
@@ -93,9 +93,9 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
     private fun setData(loanOutStanding: RespGetLoanOutStandingItem?) {
         binding.apply {
             loanNumTv.text = "Loan Number - ${loanOutStanding?.AcNo}"
-            if (loanOutStanding?.OpenDate !=null && loanOutStanding?.OpenDate!= ""){
+            if (loanOutStanding?.openDate !=null && loanOutStanding?.openDate!= ""){
                 loanStateDateLargeTv.text =
-                    "Last Statement (${AppUtility.getDateWithYearOrdinals(loanOutStanding?.OpenDate.toString())} - ${AppUtility.getCurrentDateOnly()})"
+                    "Last Statement (${AppUtility.getDateWithYearOrdinals(loanOutStanding?.openDate.toString())} - ${AppUtility.getCurrentDateOnly()})"
             }
 
         }

@@ -186,7 +186,6 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
     }
 
 
-
     fun changeHeader(hBinding: HeaderLayoutBinding, title: String, endIcon: Int) {
         hBinding.apply {
             titlePageTv.text = title
@@ -258,22 +257,23 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
             }
         }
     }
-override fun onResume() {
-    super.onResume()
-    if (updateType == AppUpdateType.IMMEDIATE) {
-        appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
-            if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                appUpdateManager.startUpdateFlowForResult(
-                    info,
-                    updateType,
-                    this,
-                    123
-                )
+
+    override fun onResume() {
+        super.onResume()
+        if (updateType == AppUpdateType.IMMEDIATE) {
+            appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+                if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                    appUpdateManager.startUpdateFlowForResult(
+                        info,
+                        updateType,
+                        this,
+                        123
+                    )
+                }
             }
         }
     }
 
-}
     private fun checkForAppUpdate() {
         appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
             val isUpdateAvailabe = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
@@ -306,6 +306,13 @@ override fun onResume() {
             }
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (updateType == AppUpdateType.IMMEDIATE) {
+            appUpdateManager.unregisterListener(installUpdateListener)
+        }
     }
 }
 

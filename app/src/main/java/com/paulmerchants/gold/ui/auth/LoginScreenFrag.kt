@@ -1,23 +1,27 @@
 package com.paulmerchants.gold.ui.auth
 
+import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.LoginWithMobileMpinBinding
+import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
 import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
 import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
-import com.paulmerchants.gold.utility.disableButton
-import com.paulmerchants.gold.utility.enableButton
+import com.paulmerchants.gold.utility.InternetUtils
 import com.paulmerchants.gold.viewmodels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LoginScreenFrag :
     BaseFragment<LoginWithMobileMpinBinding>(LoginWithMobileMpinBinding::inflate) {
+    private var customDialog: androidx.appcompat.app.AlertDialog? = null
 
     private val loginViewModel: LoginViewModel by viewModels()
 
@@ -72,17 +77,68 @@ class LoginScreenFrag :
 //            findNavController().popBackStack(R.id.loginScreenFrag, true)
             findNavController().navigate(R.id.phoenNumVerifiactionFragment)
         }
-        binding.signUpBtn.setOnClickListener {
-            if (isValidate()) {
-                loginViewModel.loginWithMpin(
-                    findNavController(),
-                    (activity as MainActivity).appSharedPref,
-                    ReqLoginWithMpin(
-                        binding.etPhoenNum.text.toString(),
-                        "${binding.pinOneEt.text}${binding.pinTwoEt.text}${binding.pinThreeEt.text}${binding.pinFourEt.text}"
-                    )
+
+        binding.fogetMpin.setOnClickListener {
+            if (InternetUtils.isNetworkAvailable(requireContext())) {
+                showCustomDialogOTPVerify(
+                    (activity as MainActivity).appSharedPref?.getStringValue(
+                        CUST_MOBILE
+                    ).toString(),
+                    title = "OTP send to the number ${
+                        (activity as MainActivity).appSharedPref?.getStringValue(
+                            CUST_MOBILE
+                        )
+                    }"
                 )
+                (activity as MainActivity).appSharedPref?.getStringValue(
+                    CUST_MOBILE
+                )?.let { loginViewModel.getOtp((activity as MainActivity).appSharedPref, it) }
+            } else {
+                noInternetDialog()
             }
+
+        }
+
+        loginViewModel.verifyOtp.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.statusCode == "200") {
+                    Log.e("TAG", "onStart: .=======${it.data}")
+                    customDialog?.dismiss()
+                    loginViewModel.timer?.cancel()
+                    loginViewModel.countStr.postValue("")
+                    val bundle = Bundle().apply {
+                        putBoolean(
+                            com.paulmerchants.gold.utility.Constants.IS_RESET_MPIN_FROM_LOGIN_PAGE,
+                            true
+                        )
+                    }
+                    /**
+                     * need to handle in the ResetMpin Page......
+                     *
+                     *
+                     */
+                    findNavController().navigate(R.id.resetMpinDialog)
+                } else {
+                    Log.e("TAG", "onStart: .=======${it.data}")
+                }
+            }
+        }
+        binding.signUpBtn.setOnClickListener {
+            if (InternetUtils.isNetworkAvailable(requireContext())) {
+                if (isValidate()) {
+                    loginViewModel.loginWithMpin(
+                        findNavController(),
+                        (activity as MainActivity).appSharedPref,
+                        ReqLoginWithMpin(
+                            binding.etPhoenNum.text.toString(),
+                            "${binding.pinOneEt.text}${binding.pinTwoEt.text}${binding.pinThreeEt.text}${binding.pinFourEt.text}"
+                        )
+                    )
+                }
+            } else {
+                noInternetDialog()
+            }
+
         }
 
         loginViewModel.getTokenResp.observe(viewLifecycleOwner) {
@@ -102,6 +158,68 @@ class LoginScreenFrag :
             }
         }
     }
+
+    private fun showCustomDialogOTPVerify(
+        mobile: String,
+        type: Int = 0,
+        title: String = "",
+    ) {
+        val dialogBinding =
+            OtpFillLayoutDialogBinding.inflate(this.layoutInflater)
+
+        currentMpinFocus(dialogBinding)
+        customDialog =
+            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme).create()
+        customDialog?.apply {
+            setView(dialogBinding.root)
+            setCancelable(false)
+        }?.show()
+        loginViewModel.countStr.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it == "00") {
+                    dialogBinding.didnotReceiveTv.text = getString(R.string.send_again)
+                    dialogBinding.didnotReceiveTv.setOnClickListener {
+                        (activity as MainActivity).appSharedPref?.getStringValue(
+                            CUST_MOBILE
+                        )?.let {
+                            loginViewModel.getOtp(
+                                (activity as MainActivity).appSharedPref,
+                                it
+                            )
+                        }
+                    }
+                } else {
+                    dialogBinding.didnotReceiveTv.text = "Didn't receive OTP? $it"
+                }
+            }
+        }
+        customDialog?.setOnDismissListener { dgInterface ->
+            loginViewModel.timer?.cancel()
+        }
+
+        dialogBinding.verifyOtpBtn.setOnClickListener {
+            if (dialogBinding.otpOneEt.text.isNotEmpty() && dialogBinding.otpTwoEt.text.isNotEmpty() &&
+                dialogBinding.otpThreeEt.text.isNotEmpty() && dialogBinding.otpFourEt.text.isNotEmpty()
+            ) {
+                loginViewModel.verifyOtp(
+                    (activity as MainActivity).appSharedPref,
+                    mobile,
+                    otp = "${dialogBinding.otpOneEt.text}${dialogBinding.otpTwoEt.text}" +
+                            "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}"
+                )
+            } else {
+                "Please fill Otp".showSnackBar()
+            }
+            //verify Otp
+        }
+
+        dialogBinding.cancelDgBtn.setOnClickListener {
+            customDialog?.dismiss()
+            loginViewModel.timer?.cancel()
+            //cancel Otp
+        }
+    }
+
 
     private fun callMpinNextFocus() {
         //GenericTextWatcher here works only for moving to next EditText when a number is entered
@@ -192,6 +310,35 @@ class LoginScreenFrag :
 //                        binding.proceedAuthBtn.disableButton(requireContext())
                     }
                 }
+
+                R.id.otpOneEt -> {
+                    if (text.length == 1) {
+                        nextView?.requestFocus()
+                    } else {
+
+                    }
+                }
+
+                R.id.otpTwoEt -> {
+                    if (text.length == 1) {
+                        nextView?.requestFocus()
+                    } else {
+                    }
+                }
+
+                R.id.otpThreeEt -> {
+                    if (text.length == 1) {
+                        nextView?.requestFocus()
+                    } else {
+                    }
+                }
+
+                R.id.otpFourEt -> {
+                    if (text.length == 1) {
+                        nextView?.requestFocus()
+                    } else {
+                    }
+                }
             }
         }
 
@@ -219,6 +366,55 @@ class LoginScreenFrag :
             }
             return false
         }
+    }
+
+
+    private fun currentMpinFocus(bindingOtp: OtpFillLayoutDialogBinding) {
+        //GenericTextWatcher here works only for moving to next EditText when a number is entered
+        //first parameter is the current EditText and second parameter is next EditText
+        bindingOtp.otpOneEt.addTextChangedListener(
+            GenericTextWatcher(
+                bindingOtp.otpOneEt, bindingOtp.otpTwoEt
+            )
+        )
+        bindingOtp.otpTwoEt.addTextChangedListener(
+            GenericTextWatcher(
+                bindingOtp.otpTwoEt, bindingOtp.otpThreeEt
+            )
+        )
+        bindingOtp.otpThreeEt.addTextChangedListener(
+            GenericTextWatcher(
+                bindingOtp.otpThreeEt, bindingOtp.otpFourEt
+            )
+        )
+        bindingOtp.otpFourEt.addTextChangedListener(
+            GenericTextWatcher(
+                bindingOtp.otpFourEt,
+                null
+            )
+        )
+
+        //GenericKeyEvent here works for deleting the element and to switch back to previous EditText
+        //first parameter is the current EditText and second parameter is previous EditText
+        bindingOtp.otpOneEt.setOnKeyListener(GenericKeyEvent(bindingOtp.otpOneEt, null))
+        bindingOtp.otpTwoEt.setOnKeyListener(
+            GenericKeyEvent(
+                bindingOtp.otpTwoEt,
+                bindingOtp.otpOneEt
+            )
+        )
+        bindingOtp.otpThreeEt.setOnKeyListener(
+            GenericKeyEvent(
+                bindingOtp.otpThreeEt,
+                bindingOtp.otpTwoEt
+            )
+        )
+        bindingOtp.otpFourEt.setOnKeyListener(
+            GenericKeyEvent(
+                bindingOtp.otpFourEt,
+                bindingOtp.otpThreeEt
+            )
+        )
     }
 
 

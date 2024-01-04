@@ -29,6 +29,7 @@ import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.openUrl
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.CUSTOMER_FULL_DATA
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
@@ -198,22 +199,18 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             }
 
             104 -> {
-
+                //playStore
                 startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
                         Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")
                     )
                 )
-
-
-//playStore
-
-
             }
 
             105 -> {
-
+                //Privacy & Policy
+                openUrl(requireContext(), BuildConfig.PRIVACY_POLICY)
             }
 
             else -> {
@@ -306,12 +303,16 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             104 -> {
                 findNavController().navigate(R.id.raiseComplaintFrag)
             }
+
+            105 -> { //terms & Cond
+                openUrl(requireContext(), BuildConfig.TERMS_CONDITION)
+            }
         }
     }
 
     private fun onMenuServiceClickedTitle(menuServices: MenuServices) {
         when (menuServices.serviceId) {
-            105 -> {
+            106 -> {
                 findNavController().navigate(
                     R.id.logoutDialog
                 )

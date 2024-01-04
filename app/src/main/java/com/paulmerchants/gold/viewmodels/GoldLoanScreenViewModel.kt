@@ -13,6 +13,7 @@ import com.paulmerchants.gold.model.RespGetLoanOutStanding
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
+import com.paulmerchants.gold.model.newmodel.RespGetLOanOutStanding
 import com.paulmerchants.gold.model.newmodel.RespTxnHistory
 import com.paulmerchants.gold.model.newmodel.Transactions
 import com.paulmerchants.gold.networks.CallHandler
@@ -21,6 +22,7 @@ import com.paulmerchants.gold.pagingdata.TxnPagingSource
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
 import com.paulmerchants.gold.utility.decryptKey
@@ -54,8 +56,8 @@ class GoldLoanScreenViewModel @Inject constructor(
 
     fun getLoanOutstanding(appSharedPref: AppSharedPref?) = viewModelScope.launch {
 
-        retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
-            override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
+        retrofitSetup.callApi(true, object : CallHandler<Response<RespGetLOanOutStanding>> {
+            override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetLOanOutStanding> {
                 return apiParams.getLoanOutstanding(
                     "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
                     ReqpendingInterstDueNew(
@@ -65,24 +67,29 @@ class GoldLoanScreenViewModel @Inject constructor(
                 )
             }
 
-            override fun success(response: Response<RespCommon>) {
+            override fun success(response: Response<RespGetLOanOutStanding>) {
                 try {
-                    // Get the plain text response
-                    val plainTextResponse = response.body()?.data
-                    // Do something with the plain text response
-                    if (plainTextResponse != null) {
-                        Log.d("Response", plainTextResponse)
-                        val decryptData = decryptKey(
-                            BuildConfig.SECRET_KEY_GEN, plainTextResponse
-                        )
-                        println("decrypt-----$decryptData")
-                        val respPending: RespGetLoanOutStanding? =
-                            AppUtility.convertStringToJson(decryptData.toString())
-//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
-                        respPending?.let { resp ->
-                            getRespGetLoanOutStandingLiveData.value = resp
-                        }
-                        println("Str_To_Json------$respPending")
+//                    // Get the plain text response
+//                    val plainTextResponse = response.body()?.data
+//                    // Do something with the plain text response
+//                    if (plainTextResponse != null) {
+//                        Log.d("Response", plainTextResponse)
+//                        val decryptData = decryptKey(
+//                            BuildConfig.SECRET_KEY_GEN, plainTextResponse
+//                        )
+//                        println("decrypt-----$decryptData")
+//                        val respPending: RespGetLoanOutStanding? =
+//                            AppUtility.convertStringToJson(decryptData.toString())
+////                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+//                        respPending?.let { resp ->
+//                            getRespGetLoanOutStandingLiveData.value = resp
+//                        }
+//                        println("Str_To_Json------$respPending")
+//                    }
+                    if (response.body()?.statusCode == "200") {
+                        getRespGetLoanOutStandingLiveData.value = response.body()?.data
+                    } else {
+                        "Some thing went wrong".showSnackBar()
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()

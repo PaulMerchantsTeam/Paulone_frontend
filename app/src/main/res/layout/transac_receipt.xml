@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/receipt"
@@ -319,9 +320,12 @@
             android:drawableEnd="@drawable/phone_call_new"
             android:paddingHorizontal="@dimen/_18sdp"
             android:paddingVertical="@dimen/_16sdp"
-            android:text="For any queries, please reach out to us"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:text="Need support"
             android:textColor="@color/red_txt"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/shareTv"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/parentTxn" />
 
@@ -330,8 +334,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/screen_start_margin"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:layout_marginBottom="@dimen/_40sdp"
             android:background="@drawable/rec_black_8"
             android:drawableEnd="@drawable/share_recpt"
             android:drawablePadding="@dimen/_17sdp"
@@ -339,12 +341,12 @@
             android:paddingVertical="@dimen/_16sdp"
             android:text="@string/share_this"
             android:textColor="@color/splash_screen_one"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/downlaodBtn"
+            app:layout_constraintBottom_toBottomOf="@+id/phoneQueryTv"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phoneQueryTv" />
+            app:layout_constraintStart_toEndOf="@+id/phoneQueryTv"
+            app:layout_constraintTop_toTopOf="@+id/phoneQueryTv" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/downlaodBtn"
@@ -358,6 +360,7 @@
             android:paddingVertical="@dimen/_16sdp"
             android:text="@string/download_bill"
             android:textColor="@color/splash_screen_one"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/shareTv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

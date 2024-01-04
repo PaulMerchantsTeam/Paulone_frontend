@@ -58,17 +58,17 @@ class PaidReceiptFrag :
         }
 
         binding.downlaodBtn.setOnClickListener {
-            val screenBitmap =
-                AppUtility.getScreenBitmap(binding.parentTxn, R.color.white)
-            val pdfWidth = 500f
-            val pdfHeight = 800f
-            AppUtility.saveAsPdf(
-                requireContext(),
-                pdfWidth,
-                pdfHeight,
-                screenBitmap,
-                R.color.white
-            )
+//            val screenBitmap =
+//                AppUtility.getScreenBitmap(binding.parentTxn, R.color.white)
+//            val pdfWidth = 500f
+//            val pdfHeight = 800f
+//            AppUtility.saveAsPdf(
+//                requireContext(),
+//                pdfWidth,
+//                pdfHeight,
+//                screenBitmap,
+//                R.color.white
+//            )
         }
         binding.headerMain.titlePageTv.text = ""
         binding.headerMain.backIv.setOnClickListener {

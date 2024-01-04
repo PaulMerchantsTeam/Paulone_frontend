@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.ui.btmsheetDg
 
+//import com.razorpay.Checkout
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
@@ -13,30 +14,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.common.Constants.CUST_ACC
 import com.paulmerchants.gold.common.Constants.IS_CUSTOM_AMOUNT
 import com.paulmerchants.gold.databinding.QuickPayPopupBinding
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
-import com.paulmerchants.gold.model.newmodel.Notes
-import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
-import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
-import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
-import com.paulmerchants.gold.viewmodels.CommonViewModel
-//import com.razorpay.Checkout
-import com.razorpay.PaymentData
-import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
-import org.json.JSONObject
 
 
 /**
@@ -98,21 +88,16 @@ class QuickPayDialog : BottomSheetDialogFragment() {
         dueLoans = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) arguments?.getParcelable(
             Constants.DUE_LOAN_DATA, GetPendingInrstDueRespItem::class.java
         ) else arguments?.getParcelable<GetPendingInrstDueRespItem>(Constants.DUE_LOAN_DATA) as GetPendingInrstDueRespItem
+
         Log.d(
-            TAG, "onCreate:---dueDays-${dueLoans?.DueDate}\n-----amount---${dueLoans?.InterestDue} "
+            TAG,
+            "onCreate:--=====--------$dueLoans-----------dueDays-${dueLoans?.dueDate}\n-----amount---${dueLoans?.payableAmount} "
         )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setAmount("${
-            dueLoans?.RebateAmount?.let {
-                dueLoans?.InterestDue?.minus(
-                    it
-                )
-            }
-        }"
-        )
+        setAmount(dueLoans?.payableAmount.toString())
         quickPayPopupBinding.quixPayParentBtn.setOnClickListener {
             if (quickPayPopupBinding.customPayRadio.isChecked) {
                 actualLoan?.let {
@@ -121,11 +106,7 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                             Toast.makeText(
                                 requireContext(),
                                 "Amount Due: ${
-                                    dueLoans?.RebateAmount?.let {
-                                        dueLoans?.InterestDue?.minus(
-                                            it
-                                        )
-                                    }
+                                    dueLoans?.payableAmount
                                 }\nPlease fill valid amount",
                                 Toast.LENGTH_SHORT
                             ).show()
@@ -144,7 +125,7 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                                         "AMOUNT_PAYABLE",
                                         quickPayPopupBinding.customPayEt.text.toString().toDouble()
                                     )
-                                    putString(CUST_ACC, dueLoans?.AcNo.toString())
+                                    putString(CUST_ACC, dueLoans?.acNo.toString())
                                     putBoolean(IS_CUSTOM_AMOUNT, true)
                                 }
                                 findNavController().navigate(R.id.paymentModesFragNew, bundle)
@@ -167,29 +148,26 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                 }
             } else {
 //                dismiss()
-                dueLoans?.RebateAmount?.let {
-                    dueLoans?.InterestDue?.minus(
-                        it
-                    )
-                }?.let { it1 ->
+                dueLoans?.payableAmount?.let {
                     val bundle = Bundle().apply {
-                        putDouble("AMOUNT_PAYABLE", it1)
-                        putString(CUST_ACC, dueLoans?.AcNo.toString())
+                        putDouble("AMOUNT_PAYABLE", it)
+                        putString(CUST_ACC, dueLoans?.acNo.toString())
                         putBoolean(IS_CUSTOM_AMOUNT, false)
                     }
                     findNavController().navigate(R.id.paymentModesFragNew, bundle)
 //                    createOrder(it1)
                 }
-            }
 
+            }
         }
+
 //        quickPayPopupBinding.chnagePayModeTv.setOnClickListener {
 //            findNavController().navigate(R.id.paymentModesFrag)
 //        }
         quickPayPopupBinding.apply {
             fullPayRadio.text =
-                "Pay INR ${dueLoans?.RebateAmount?.let { dueLoans?.InterestDue?.minus(it) }} fully"
-            goldLoanNumTv.text = "Gold Loan - xxxx${dueLoans?.AcNo.toString().takeLast(4)}"
+                "Pay INR ${dueLoans?.payableAmount} fully"
+            goldLoanNumTv.text = "Gold Loan - xxxx${dueLoans?.acNo.toString().takeLast(4)}"
         }
         onCLickRadio()
     }
@@ -268,13 +246,13 @@ class QuickPayDialog : BottomSheetDialogFragment() {
     fun onCLickRadio() {
         quickPayPopupBinding.fullPayRadio.setOnClickListener {
             quickPayPopupBinding.customPayEt.hide()
-            dueLoans?.InterestDue?.toString()?.let { it1 -> setAmount(it1) }
+            dueLoans?.payableAmount?.toString()?.let { it1 -> setAmount(it1) }
         }
         quickPayPopupBinding.customPayRadio.setOnClickListener {
             quickPayPopupBinding.customPayEt.show()
-            dueLoans?.InterestDue?.toString()?.let { it1 -> setAmount(it1) }
+            dueLoans?.payableAmount?.toString()?.let { it1 -> setAmount(it1) }
         }
-        actualLoan = dueLoans?.RebateAmount?.let { dueLoans?.InterestDue?.minus(it) }
+        actualLoan = dueLoans?.payableAmount
         quickPayPopupBinding.customPayEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 

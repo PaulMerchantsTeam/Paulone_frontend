@@ -31,6 +31,8 @@ import com.paulmerchants.gold.model.newmodel.ReqGetLoanStatement
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCreateOrder
+import com.paulmerchants.gold.model.newmodel.RespGetLOanOutStanding
+import com.paulmerchants.gold.model.newmodel.RespPendingInterstDue
 import com.paulmerchants.gold.model.newmodel.RespUpdatePaymentStatus
 import com.paulmerchants.gold.model.newmodel.StatusPayment
 import com.paulmerchants.gold.networks.CallHandler
@@ -133,8 +135,8 @@ class CommonViewModel @Inject constructor(
 
     fun getPendingInterestDues(appSharedPref: AppSharedPref?) = viewModelScope.launch {
 
-        retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
-            override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
+        retrofitSetup.callApi(true, object : CallHandler<Response<RespPendingInterstDue>> {
+            override suspend fun sendRequest(apiParams: ApiParams): Response<RespPendingInterstDue> {
                 return apiParams.getPendingInterestDues(
                     "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
                     ReqpendingInterstDueNew(
@@ -144,32 +146,36 @@ class CommonViewModel @Inject constructor(
                 )
             }
 
-            override fun success(response: Response<*>) {
+            override fun success(response: Response<RespPendingInterstDue>) {
                 Log.d("TAG", "success: ......${response.body()}")
                 if (response.isSuccessful) {
                     try {
-                        val gson = Gson()
-                        val respSuccess: RespCommon? = gson.fromJson(
-                            gson.toJsonTree(response.body()).asJsonObject,
-                            RespCommon::class.java
-                        )
-                        // Get the plain text response
-                        val plainTextResponse = respSuccess?.data
+//                        val gson = Gson()
+//                        val respSuccess: RespCommon? = gson.fromJson(
+//                            gson.toJsonTree(response.body()).asJsonObject,
+//                            RespCommon::class.java
+//                        )
+//                        // Get the plain text response
+//                        val plainTextResponse = respSuccess?.data
                         // Do something with the plain text response
-                        if (plainTextResponse != null) {
-                            Log.d("Response", plainTextResponse)
-                            val decryptData = decryptKey(
-                                BuildConfig.SECRET_KEY_GEN, plainTextResponse
-                            )
-                            println("decrypt-----$decryptData")
-                            val respPending: GetPendingInrstDueResp? =
-                                AppUtility.convertStringToJson(decryptData.toString())
+//                        if (plainTextResponse != null) {
+//                            Log.d("Response", plainTextResponse)
+//                            val decryptData = decryptKey(
+//                                BuildConfig.SECRET_KEY_GEN, plainTextResponse
+//                            )
+//                            println("decrypt-----$decryptData")
+//                            val respPending: GetPendingInrstDueResp? =
+//                                AppUtility.convertStringToJson(decryptData.toString())
 //                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
-                            respPending?.let { resp ->
-                                getPendingInterestDuesLiveData.value = resp
-                            }
-                            println("Str_To_Json------$respPending")
+//                            respPending?.let { resp ->
+                        if (response.body()?.statusCode == "200") {
+                            getPendingInterestDuesLiveData.value = response.body()?.data
+                        } else {
+                            "Some thing went wrong".showSnackBar()
                         }
+//                            }
+//                            println("Str_To_Json------$respPending")
+//                        }
 
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -278,7 +284,7 @@ class CommonViewModel @Inject constructor(
                     razorpayOrderId = razorpay_order_id,
                     razorpaySignature = razorpay_signature,
                     custId = custId,
-                    acNo = dueLoanSelected?.AcNo.toString(),
+                    acNo = dueLoanSelected?.acNo.toString(),
                     makerId = "12545as",
                     macID = Build.ID,
                     deviceDetailsDTO = AppUtility.getDeviceDetails(),
@@ -358,8 +364,8 @@ class CommonViewModel @Inject constructor(
 
     fun getLoanOutstanding(appSharedPref: AppSharedPref?) = viewModelScope.launch {
 
-        retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
-            override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
+        retrofitSetup.callApi(true, object : CallHandler<Response<RespGetLOanOutStanding>> {
+            override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetLOanOutStanding> {
                 return apiParams.getLoanOutstanding(
                     "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
                     ReqpendingInterstDueNew(
@@ -369,25 +375,28 @@ class CommonViewModel @Inject constructor(
                 )
             }
 
-            override fun success(response: Response<RespCommon>) {
+            override fun success(response: Response<RespGetLOanOutStanding>) {
                 try {
                     // Get the plain text response
-                    val plainTextResponse = response.body()?.data
+//                    val plainTextResponse = response.body()?.data
                     // Do something with the plain text response
-                    if (plainTextResponse != null) {
-                        Log.d("Response", plainTextResponse)
-                        val decryptData = decryptKey(
-                            BuildConfig.SECRET_KEY_GEN, plainTextResponse
-                        )
-                        println("decrypt-----$decryptData")
-                        val respPending: RespGetLoanOutStanding? =
-                            AppUtility.convertStringToJson(decryptData.toString())
+//                    if (plainTextResponse != null) {
+//                        Log.d("Response", plainTextResponse)
+//                        val decryptData = decryptKey(
+//                            BuildConfig.SECRET_KEY_GEN, plainTextResponse
+//                        )
+//                        println("decrypt-----$decryptData")
+//                        val respPending: RespGetLoanOutStanding? =
+//                            AppUtility.convertStringToJson(decryptData.toString())
 //                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
-                        respPending?.let { resp ->
-                            getRespGetLoanOutStandingLiveData.value = resp
-                        }
-                        println("Str_To_Json------$respPending")
+//                        respPending?.let { resp ->
+                    if (response.body()?.statusCode == "200") {
+                        getRespGetLoanOutStandingLiveData.value = response.body()?.data
+
                     }
+//                        }
+//                        println("Str_To_Json------$respPending")
+//                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -591,8 +600,6 @@ class CommonViewModel @Inject constructor(
             }
         })
     }
-
-
 
 
 //    fun filterLocation(region: String?) {

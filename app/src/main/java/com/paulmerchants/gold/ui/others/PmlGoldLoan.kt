@@ -48,25 +48,25 @@ class PmlGoldLoan : BaseFragment<PmlGoldLoanBinding>(PmlGoldLoanBinding::inflate
     private fun setData(loanOutStanding: RespGetLoanOutStandingItem?) {
         binding.apply {
             loanNumTv.text = loanOutStanding?.AcNo.toString()
-            intPeriodNumTv.text = "${loanOutStanding?.InterestPeriod} days"
-            outStandLoanNumTv.text = "INR ${loanOutStanding?.OutStanding}"
-            if (loanOutStanding?.ClosedDate != null && loanOutStanding.ClosedDate !="") {
-                closedDate = AppUtility.getDateFormat(loanOutStanding.ClosedDate)
+            intPeriodNumTv.text = "${loanOutStanding?.interestPeriod} days"
+            outStandLoanNumTv.text = "INR ${loanOutStanding?.outStanding}"
+            if (loanOutStanding?.closedDate != null && loanOutStanding?.closedDate !="") {
+                closedDate = AppUtility.getDateFormat(loanOutStanding.closedDate)
             } else {
                 closedDate = "NA"
             }
             loanPeriodNumTv.text =
-                "${AppUtility.getDateFormat(loanOutStanding?.OpenDate.toString())}-$closedDate"
+                "${AppUtility.getDateFormat(loanOutStanding?.openDate.toString())}-$closedDate"
             loanPricepalNumTv.text = "NA"
             loanJourneyMainTitle.text = "Loan Journey as of ${AppUtility.getCurrentDate()}"
             loanStartedDateTv.text =
-                "${AppUtility.getDateFormat(loanOutStanding?.OpenDate.toString())}"
+                "${AppUtility.getDateFormat(loanOutStanding?.openDate.toString())}"
             loanStartedDateTv2.text = closedDate
-            loanOutStanding?.OpeningAmount?.let {
+            loanOutStanding?.openingAmount?.let {
                 linearProgressIndicator.max = it.toInt()
             }
             val left =
-                loanOutStanding?.OutStanding?.let { loanOutStanding.OpeningAmount?.minus(it) }
+                loanOutStanding?.outStanding?.let { loanOutStanding.openingAmount?.minus(it) }
             if (left != null) {
                 linearProgressIndicator.progress = left.toInt()
                 paidAmountLoanTV.text = "Paid - INR $left"
@@ -81,7 +81,7 @@ class PmlGoldLoan : BaseFragment<PmlGoldLoanBinding>(PmlGoldLoanBinding::inflate
 
         binding.dueLoanParent.apply {
 
-            val duedate = AppUtility.numberOfDaysWrtCurrent(loanOutStanding?.DueDate.toString())
+            val duedate = AppUtility.numberOfDaysWrtCurrent(loanOutStanding?.dueDate.toString())
             when {
                 duedate.toInt() < 0 -> {
                     Log.d("TAG", "bind: ----< than 0")
@@ -96,7 +96,7 @@ class PmlGoldLoan : BaseFragment<PmlGoldLoanBinding>(PmlGoldLoanBinding::inflate
                 }
             }
 
-            dueAmountTv.text = "INR ${loanOutStanding?.OutStanding}"
+            dueAmountTv.text = "INR ${loanOutStanding?.outStanding}"
         }
     }
 

@@ -25,4 +25,8 @@
     <string name="your_loyalty_our_royalty">(Your loyalty, our royalty)</string>
     <string name="loan_overview_cap">LOAN OVERVIEW</string>
     <string name="do_you_want_to_close_this_app">Do you want to close this app?</string>
+    <string name="forget_m_pin"><u>Forget M-Pin</u></string>
+    <string name="about_us">About Us</string>
+    <string name="status">Status:</string>
+    <string name="privacy_policy">Privacy policy.</string>
 </resources>

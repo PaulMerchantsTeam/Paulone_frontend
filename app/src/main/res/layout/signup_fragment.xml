@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <androidx.constraintlayout.motion.widget.MotionLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,14 +57,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/createAccTitleTv">
 
-                <androidx.constraintlayout.motion.widget.MotionLayout
-                    android:id="@+id/constraintLayout2"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:paddingBottom="@dimen/_13sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/fullName"
@@ -330,21 +323,44 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/mpinOneConfirmEt" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/signUpBtn"
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/privacy"
+                        android:layout_width="105dp"
+                        android:layout_height="24dp"
+                        android:text="@string/privacy_policy_"
+                        android:textColor="@color/splash_screen_one"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintStart_toStartOf="@+id/termsCb"
+                        app:layout_constraintTop_toBottomOf="@+id/termsCb" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tAndCTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_39sdp"
-                        android:backgroundTint="@color/color_prim_one_40"
-                        android:enabled="false"
-                        android:text="@string/sign_up"
-                        android:textAllCaps="false"
-                        android:textColor="@color/yellow_main"
-                        android:textSize="@dimen/_9ssp"
-                        android:visibility="visible"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/termsCb" />
+                        android:layout_marginTop="48dp"
+                        android:text="@string/t_and_c"
+                        android:textColor="@color/splash_screen_one"
+                        android:textSize="@dimen/_11ssp"
+                        app:layout_constraintStart_toEndOf="@+id/privacy"
+                        app:layout_constraintTop_toTopOf="@+id/termsCb" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/signUpBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_30sdp"
+                    android:backgroundTint="@color/color_prim_one_40"
+                    android:enabled="false"
+                    android:text="@string/sign_up"
+                    android:textAllCaps="false"
+                    android:textColor="@color/yellow_main"
+                    android:textSize="@dimen/_9ssp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/privacy" />
 
                     <View
                         android:id="@+id/view"
@@ -424,7 +440,7 @@
                     <!--                        app:layout_constraintEnd_toEndOf="@+id/googleSignInTv"-->
                     <!--                        app:layout_constraintStart_toStartOf="@+id/googleSignInTv"-->
                     <!--                        app:layout_constraintTop_toBottomOf="@+id/googleSignInTv" />-->
-                </androidx.constraintlayout.motion.widget.MotionLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <include
@@ -439,7 +455,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-        </androidx.constraintlayout.motion.widget.MotionLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

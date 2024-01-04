@@ -3,21 +3,23 @@ package com.paulmerchants.gold.model
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import java.math.BigDecimal
 
 @Parcelize
 data class RespGetLoanOutStandingItem(
-    @SerializedName("AcNo") val AcNo: Long,
-    @SerializedName("ClosedDate") val ClosedDate: String?,
-    @SerializedName("DueDate") val DueDate: String,
-    @SerializedName("InterestDue") val InterestDue: Double?,
-    @SerializedName("Fine") val Fine: Int,
-    @SerializedName("InterestPeriod") val InterestPeriod: Int,
-    @SerializedName("IsClosed") val IsClosed: Boolean?,
-    @SerializedName("OpenDate") val OpenDate: String,
-    @SerializedName("OpeningAmount") val OpeningAmount: Double?,
-    @SerializedName("OutStanding") val OutStanding: Double?,
-    @SerializedName("ProductName") val ProductName: String,
-    @SerializedName("RebateAmount") val RebateAmount: Double?,
+    @SerializedName("acNo") val AcNo: Long,
+    @SerializedName("closedDate") val closedDate: String?,
+    @SerializedName("dueDate") val dueDate: String,
+    @SerializedName("interestDue") val interestDue: Double?,
+    @SerializedName("productName") val productName: String,
+    @SerializedName("openDate") val openDate: String,
+    @SerializedName("interestPeriod") val interestPeriod: Int,
+    @SerializedName("fine") val fine: Int,
+    @SerializedName("closed") val closed: Boolean?,
+    @SerializedName("openingAmount") val openingAmount: Double?,
+    @SerializedName("outStanding") val outStanding: Double?,
+    @SerializedName("rebateAmount") val rebateAmount: Double?,
+    @SerializedName("payableAmount") val payableAmount: Double?,
 ) : Parcelable
 
 /**

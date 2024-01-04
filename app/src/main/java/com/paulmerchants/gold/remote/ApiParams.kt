@@ -23,8 +23,10 @@ import com.paulmerchants.gold.model.newmodel.RespAllBranch
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
 import com.paulmerchants.gold.model.newmodel.RespGetCustomer
+import com.paulmerchants.gold.model.newmodel.RespGetLOanOutStanding
 import com.paulmerchants.gold.model.newmodel.RespLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.RespPaidSingleReceipt
+import com.paulmerchants.gold.model.newmodel.RespPendingInterstDue
 import com.paulmerchants.gold.model.newmodel.RespResetFogetMpin
 import com.paulmerchants.gold.model.newmodel.RespSearchBranch
 import com.paulmerchants.gold.model.newmodel.RespTxnHistory
@@ -104,14 +106,14 @@ interface ApiParams {
         @Header("Authorization") auth: String,
         @Body reqpendingInterstDueNew: ReqpendingInterstDueNew,
 //        @Query("AsOnDate") AsOnDate: String,
-    ): Response<*>
+    ): Response<RespPendingInterstDue>
 
 
     @POST("api/get-loan-outstanding")   //RespGetLoanOutStanding
     suspend fun getLoanOutstanding(
         @Header("Authorization") auth: String,
         @Body reqpendingInterstDueNew: ReqpendingInterstDueNew,
-    ): Response<RespCommon>
+    ): Response<RespGetLOanOutStanding>
 
     @POST("api/get-loan-due-date")   //RespLoanDueDate
     suspend fun getLoanDueDate(
