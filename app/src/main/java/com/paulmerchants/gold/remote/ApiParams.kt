@@ -26,6 +26,8 @@ import com.paulmerchants.gold.model.newmodel.RespGetCustomer
 import com.paulmerchants.gold.model.newmodel.RespGetLOanOutStanding
 import com.paulmerchants.gold.model.newmodel.RespLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.RespPaidSingleReceipt
+import com.paulmerchants.gold.model.newmodel.RespPayReceipt
+import com.paulmerchants.gold.model.newmodel.RespPaymentMethod
 import com.paulmerchants.gold.model.newmodel.RespPendingInterstDue
 import com.paulmerchants.gold.model.newmodel.RespResetFogetMpin
 import com.paulmerchants.gold.model.newmodel.RespSearchBranch
@@ -166,6 +168,11 @@ interface ApiParams {
         @Body payAllInOnGo: ReqPayAlInOnGo,
     ): Response<*>
 
+    @GET("payments/payments-method")   //RespLoanDueDate
+    suspend fun getPaymentMethod(
+        @Header("Authorization") auth: String,
+    ): Response<RespPaymentMethod>
+
     /**
      *    @RequestParam("acNo") String acNo,
     @RequestParam("makerId") String makerId,
@@ -271,7 +278,7 @@ interface ApiParams {
     suspend fun getPaidReceipt(
         @Header("Authorization") auth: String,
         @Path("paymentId") paymentId: String,
-    ): Response<RespPaidSingleReceipt>
+    ): Response<RespPayReceipt>
 
     @GET("/branch/search-by-branch-name/Paul Merchants")   //
     suspend fun searchBranch(

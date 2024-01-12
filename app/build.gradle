@@ -23,8 +23,8 @@ android {
         applicationId "com.paulmerchants.gold"
         minSdk 23
         targetSdk 33
-        versionCode 4
-        versionName "1.0.3_gold"
+        versionCode 8
+        versionName "1.0.8_gold"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

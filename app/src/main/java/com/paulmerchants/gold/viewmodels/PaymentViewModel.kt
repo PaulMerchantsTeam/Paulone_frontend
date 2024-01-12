@@ -16,6 +16,7 @@ import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.ReqPayAlInOnGo
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCreateOrder
+import com.paulmerchants.gold.model.newmodel.RespPaymentMethod
 import com.paulmerchants.gold.model.newmodel.RespUpdatePaymentStatus
 import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.networks.RetrofitSetup
@@ -39,10 +40,34 @@ class PaymentViewModel @Inject constructor(
     val responseCreateOrder = MutableLiveData<RespCreateOrder?>()
     val tokenExpiredResp = MutableLiveData<RespCommon?>()
     val respPaymentUpdate = MutableLiveData<RespUpdatePaymentStatus?>()
+    val getPaymentMethod = MutableLiveData<RespPaymentMethod?>()
 
     init {
         Log.d(TAG, ": init_$TAG")
     }
+
+
+    fun getPaymentMethod(appSharedPref: AppSharedPref?) =
+        viewModelScope.launch {
+
+            retrofitSetup.callApi(true, object : CallHandler<Response<RespPaymentMethod>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<RespPaymentMethod> {
+                    return apiParams.getPaymentMethod(
+                        "Bearer ${appSharedPref?.getStringValue(Constants.JWT_TOKEN).toString()}"
+                    )
+                }
+
+                override fun success(response: Response<RespPaymentMethod>) {
+                    Log.d("TAG", "success: ......${response.body()}")
+                    if (response.isSuccessful) {
+                        getPaymentMethod.value = response.body()
+                    } else {
+                        "Some thing went wrong".showSnackBar()
+                    }
+                }
+            })
+        }
+
 
     fun createOrder(appSharedPref: AppSharedPref?, reqCreateOrder: ReqCreateOrder) =
         viewModelScope.launch {
@@ -191,7 +216,6 @@ class PaymentViewModel @Inject constructor(
         description: String = "descriptionPayment",
         listOfPaullINOneGo: List<PayAll>,
     ) = viewModelScope.launch {
-
         retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
                 return apiParams.updatePaymentStatusAllInOneGo(

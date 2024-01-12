@@ -9,6 +9,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.paulmerchants.gold.model.newmodel.RespPaidSingleReceipt
+import com.paulmerchants.gold.model.newmodel.RespPayReceipt
 import com.paulmerchants.gold.model.newmodel.RespTxnHistory
 import com.paulmerchants.gold.model.newmodel.Transactions
 import com.paulmerchants.gold.networks.CallHandler
@@ -32,7 +33,7 @@ class TxnReceiptViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val TAG = this.javaClass.name
-    val paidReceipt = MutableLiveData<RespPaidSingleReceipt>()
+    val paidReceipt = MutableLiveData<RespPayReceipt>()
 
     init {
         Log.d(TAG, ": init_$TAG")
@@ -40,15 +41,15 @@ class TxnReceiptViewModel @Inject constructor(
 
     fun getPaidReceipt(appSharedPref: AppSharedPref?, paymentId: String) =
         viewModelScope.launch {
-            retrofitSetup.callApi(true, object : CallHandler<Response<RespPaidSingleReceipt>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<RespPaidSingleReceipt> {
+            retrofitSetup.callApi(true, object : CallHandler<Response<RespPayReceipt>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<RespPayReceipt> {
                     return apiParams.getPaidReceipt(
                         "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
                         paymentId
                     )
                 }
 
-                override fun success(response: Response<RespPaidSingleReceipt>) {
+                override fun success(response: Response<RespPayReceipt>) {
                     Log.d("TAG", "success: ..getTxnHistory....${response.body()}")
                     if (response.body()?.statusCode == "200") {
                         paidReceipt.value = response.body()

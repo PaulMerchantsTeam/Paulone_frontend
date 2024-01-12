@@ -1,20 +1,15 @@
 package com.paulmerchants.gold.ui.others
 
-import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
-import com.paulmerchants.gold.common.Constants
-import com.paulmerchants.gold.databinding.LayoutLoanEmiProceedToPayBinding
-import com.paulmerchants.gold.databinding.LoanPayInrSecureBinding
 import com.paulmerchants.gold.databinding.TransacReceiptBinding
-import com.paulmerchants.gold.model.newmodel.RespPaidSingleReceipt
+import com.paulmerchants.gold.model.newmodel.RespPayReceipt
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.Constants.PAYMENT_ID
-import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.TxnReceiptViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,7 +24,6 @@ class PaidReceiptFrag :
         paymentId = arguments?.getString(PAYMENT_ID)
         Log.d("TAG", "initialize: ..........$paymentId")
     }
-
 
     override fun onStart() {
         super.onStart()
@@ -77,22 +71,24 @@ class PaidReceiptFrag :
         }
     }
 
-    private fun setData(it: RespPaidSingleReceipt) {
+    private fun setData(it: RespPayReceipt) {
         binding.apply {
-            amountPaid.text = "${getString(R.string.Rs)}${it.data.paymentDetailsDTO.amount}"
-            if (it.data.paymentDetailsDTO.captured) {
-                paymentConfirmIv.setImageResource(R.drawable.pay_confirm_tick_icon)
-            } else {
-                paymentConfirmIv.setImageResource(R.drawable.baseline_error)
-            }
-            statusPaymnet.text = if (it.data.paymentDetailsDTO.captured) "SUCCESS!" else "FAIL!"
-            dateOfTrans.text =
-                AppUtility.formatDateFromMilliSec(it.data.paymentDetailsDTO.created_at).toString()
-            transIdNumTv.text = it.data.paymentDetailsDTO.id
-            paidFromNameTv.text = it.data.paymentDetailsDTO.method
-            transTypeTv.text = it.data.paymentDetailsDTO.email
-            viewRefNumTv.text = it.data.paymentDetailsDTO.contact
-            paidToNameTv.text = it.data.accNo
+            amountPaid.text = "${getString(R.string.Rs)}${it.data.entityPayment.amount}"
+            paymentConfirmIv.setImageResource(
+                if (it.data.entityPayment.captured) {
+                    R.drawable.pay_confirm_tick_icon
+                } else {
+                    R.drawable.baseline_error
+                }
+            )
+            statusPaymnet.text = if (it.data.entityPayment.captured) "SUCCESS!" else "FAIL!"
+            dateOfTrans.text = it.data.entityPayment.created_at
+            transIdNumTv.text = it.data.entityPayment.paymentId ?: "NA"
+            paidFromNameTv.text = it.data.entityPayment.method
+            transTypeTv.text = it.data.entityPayment.email
+            viewRefNumTv.text = it.data.entityPayment.contact
+            paidToNameTv.text = it.data.accNo ?: "NA"
+            reasonOFCancelTv.text = it.data.entityPayment.error_reason
 //            cardNumTv.text = ""
 //            paidToNameTv.text = ""
 //            paidToCardNumTv.text = ""

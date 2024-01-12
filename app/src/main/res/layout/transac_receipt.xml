@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/receipt"
+    android:background="@color/white"
     android:scrollbars="none">
+    <!--    android:background="@drawable/receipt"-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -91,8 +92,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/screen_start_margin"
                 android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/rec_black_8"
                 android:padding="@dimen/screen_start_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewSep">
@@ -293,14 +296,17 @@
                     app:layout_constraintTop_toBottomOf="@+id/paidToTv" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/paidToCardNumTv"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/reasonOFCancelTv"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_25sdp"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="xxxx xxxx xxxx 4536"
+                    android:text="Reason"
                     android:textColor="@color/view_line_dark"
                     android:textSize="@dimen/_10ssp"
                     android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/paidToNameTv" />
 
@@ -316,11 +322,11 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/screen_start_margin"
             android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             android:background="@drawable/rec_black_8"
             android:drawableEnd="@drawable/phone_call_new"
             android:paddingHorizontal="@dimen/_18sdp"
             android:paddingVertical="@dimen/_16sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
             android:text="Need support"
             android:textColor="@color/red_txt"
             app:layout_constraintBottom_toBottomOf="parent"

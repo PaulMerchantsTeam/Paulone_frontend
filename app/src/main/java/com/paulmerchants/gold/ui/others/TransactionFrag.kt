@@ -29,9 +29,9 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
     private val allTxnAdapter = AllTxnAdapter(::showTxn)
 
     private fun showTxn(transactions: Transactions) {
-        if (transactions.paymentId != null) {
+        if (transactions.orderId != null) {
             val bundle = Bundle().apply {
-                putString(Constants.PAYMENT_ID, transactions.paymentId)
+                putString(Constants.PAYMENT_ID, transactions.orderId)
             }
             findNavController().navigate(R.id.paidReceiptFrag, bundle)
         } else {

@@ -359,11 +359,20 @@ object AppUtility {
         }
     }
 
+    fun getDayOrdinalNew(day: Int): String {
+        return when (day) {
+            1, 21, 31 -> "${day}st"
+            2, 22 -> "${day}nd"
+            3, 23 -> "${day}rd"
+            else -> "${day}th"
+        }
+    }
+
     fun getOrdinalSuffix(day: Int): String {
-        return when (day % 10) {
-            1 -> "st"
-            2 -> "nd"
-            3 -> "rd"
+        return when (day) {
+            1, 21, 31 -> "st"
+            2, 22 -> "nd"
+            3, 23 -> "rd"
             else -> "th"
         }
     }
@@ -420,9 +429,14 @@ object AppUtility {
 
             //Providing file name along with Bitmap to capture screenview
             val path = "$mainDir/qrcode-$format.jpeg"
-            view.isDrawingCacheEnabled = true
-            val bitmap: Bitmap? = Bitmap.createBitmap(view.drawingCache)
-            view.isDrawingCacheEnabled = false
+//            view.isDrawingCacheEnabled = true
+//            val bitmap: Bitmap? = Bitmap.createBitmap(view.drawingCache)
+//            view.isDrawingCacheEnabled = false
+
+            val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+            view.draw(canvas)
 
             //This logic is used to save file at given location with the given filename and compress the Image Quality.
             val imageFile = File(path)

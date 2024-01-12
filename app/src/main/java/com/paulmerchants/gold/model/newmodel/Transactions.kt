@@ -8,7 +8,7 @@ data class Transactions(
     @SerializedName("createdBy") val createdBy: Int,
     @SerializedName("custId") val custId: String,
     @SerializedName("id") val id: Int,
-    @SerializedName("orderId") val orderId: String,
+    @SerializedName("orderId") val orderId: String?,
     @SerializedName("paymentId") val paymentId: String?,
     @SerializedName("processFlag") val processFlag: Int,
     @SerializedName("receiptId") val receiptId: String,

@@ -49,9 +49,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout8"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="32dp"
-        android:layout_marginStart="@dimen/_31sdp"
+        android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_40sdp"
         android:layout_marginEnd="@dimen/_31sdp"
         android:background="@drawable/yellow_half_8"
@@ -64,7 +64,7 @@
             style="@style/text_11_medium_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Some message will shown here"
+            android:text="Navigate the interest maze with ease using our Paul One"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

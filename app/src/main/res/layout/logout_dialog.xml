@@ -44,10 +44,6 @@
         app:layout_constraintTop_toBottomOf="@+id/quickPay" />
 
 
-
-
-
-
     <!--    <com.airbnb.lottie.LottieAnimationView-->
     <!--        android:id="@+id/animationViewCeleb"-->
     <!--        android:layout_width="wrap_content"-->
@@ -67,8 +63,8 @@
         android:layout_marginStart="@dimen/_31sdp"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_31sdp"
-        android:visibility="invisible"
         android:background="@drawable/yellow_half_8"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/loginParentBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +74,8 @@
             style="@style/text_11_medium_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Some message will shown here"
+            android:text="Click, Pay, Done! Effortless online payments for your convenience."
+            android:textColor="@color/splash_screen_one"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

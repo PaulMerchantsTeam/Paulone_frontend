@@ -18,12 +18,14 @@ class UpcomingLoansViewHolder(private val binding: ItemUpcomingDueLoanBinding) :
     ) {
         Log.d("TAG", "bind: ............$dueLoans")
         binding.apply {
-            val duedate = dueLoans.dueDate?.let { AppUtility.numberOfDaysWrtCurrent(it) }
-            when {
+//            val duedate = dueLoans.dueDate?.let { AppUtility.numberOfDaysWrtCurrent(it) }
+            val duedate = AppUtility.getCurrentDateOnly()
+            overDueDaysTv.text = "Due till date\n$duedate"
+         /*   when {
                 (duedate?.toInt() ?: 0) < 0 -> {
                     Log.d("TAG", "bind: ----< than 0")
                     ovrDueParentArrow.setBackgroundResource(R.drawable.rect_due_green)
-                    overDueDaysTv.text = "Due in ${duedate?.absoluteValue} days"
+                    overDueDaysTv.text = "Due in $duedate"
                 }
 
                 duedate == null -> {
@@ -35,7 +37,7 @@ class UpcomingLoansViewHolder(private val binding: ItemUpcomingDueLoanBinding) :
                     ovrDueParentArrow.setBackgroundResource(R.drawable.rectangle_due_red)
                     overDueDaysTv.text = "Overdue by $duedate days"
                 }
-            }
+            }*/
 //            if (dueLoans.payableAmount > 0.000) {
             dueAmountTv.text = "INR ${dueLoans.payableAmount}"
 //            } else {

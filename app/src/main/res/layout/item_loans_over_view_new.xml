@@ -60,7 +60,7 @@
         android:id="@+id/ovrDueParentArrow"
         android:layout_width="@dimen/_120sdp"
         android:layout_height="wrap_content"
-        android:background="@drawable/rectangle_due_red"
+        android:background="@drawable/rect_due_green"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/intDueAmountTv"
         app:layout_constraintStart_toStartOf="parent"

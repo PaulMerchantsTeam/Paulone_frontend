@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_9sdp"
-            android:background="@drawable/rectangle_due_red"
+            android:background="@drawable/rect_due_green"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Overdue by 4 days"
+                android:text="due till date\n10 Jan 2024"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_8ssp"
                 android:paddingVertical="@dimen/_6sdp"

@@ -102,20 +102,22 @@ class GoldLoanOverViewAdapterProd(
                             binding.root.context.getString(R.string.due_date)
                         outStandValueTv.text =
                             AppUtility.getDateFormat(actionItem.dueDate)?.trim().toString()
-                        val duedate = AppUtility.numberOfDaysWrtCurrent(actionItem.dueDate)
-                        when {
-                            duedate.toInt() < 0 -> {
-                                Log.d("TAG", "bind: ----< than 0")
-                                ovrDueParentArrow.setBackgroundResource(R.drawable.rect_due_green)
-                                overDueDaysTv.text = "Due in ${duedate.absoluteValue} days"
-                            }
-
-                            else -> {
-                                Log.d("TAG", "bind: ----else ---- ")
-                                ovrDueParentArrow.setBackgroundResource(R.drawable.rectangle_due_red)
-                                overDueDaysTv.text = "Overdue by $duedate days"
-                            }
-                        }
+//                        val duedate = AppUtility.numberOfDaysWrtCurrent(actionItem.dueDate)
+                        val duedate = AppUtility.getCurrentDateOnly()
+                        overDueDaysTv.text = "Due till date\n$duedate"
+//                        when {
+//                            duedate.toInt() < 0 -> {
+//                                Log.d("TAG", "bind: ----< than 0")
+//                                ovrDueParentArrow.setBackgroundResource(R.drawable.rect_due_green)
+//                                overDueDaysTv.text = "Due in ${duedate.absoluteValue} days"
+//                            }
+//
+//                            else -> {
+//                                Log.d("TAG", "bind: ----else ---- ")
+//                                ovrDueParentArrow.setBackgroundResource(R.drawable.rectangle_due_red)
+//                                overDueDaysTv.text = "Overdue by $duedate days"
+//                            }
+//                        }
 //                        actionItem.InterestDue?.let {
 //                            intDueAmountTv.text = "INR ${actionItem.OutStanding?.plus(it)}"
 //                        }

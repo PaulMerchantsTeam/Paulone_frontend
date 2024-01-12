@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.ui
 
+import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
@@ -77,7 +78,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
         )
         checkForAppUpdate()
-        if (updateType == AppUpdateType.FLEXIBLE) {
+        if (updateType == AppUpdateType.IMMEDIATE) {
             appUpdateManager.registerListener(installUpdateListener)
         }
         if (AppUtility.isUsbDebuggingEnabled(this)) {
@@ -251,26 +252,26 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
     private val installUpdateListener = InstallStateUpdatedListener { state ->
         if (state.installStatus() == InstallStatus.DOWNLOADED) {
             Toast.makeText(applicationContext, "Download Successful.", Toast.LENGTH_SHORT).show()
-            lifecycleScope.launch {
-                delay(5.seconds)
-                appUpdateManager.completeUpdate()
-            }
+//            lifecycleScope.launch {
+//                delay(5.seconds)
+            appUpdateManager.completeUpdate()
+//            }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        if (updateType == AppUpdateType.IMMEDIATE) {
-            appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
-                if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                    appUpdateManager.startUpdateFlowForResult(
-                        info,
-                        updateType,
-                        this,
-                        123
-                    )
-                }
+//        if (updateType == AppUpdateType.IMMEDIATE) {
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+            if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                appUpdateManager.startUpdateFlowForResult(
+                    info,
+                    AppUpdateType.IMMEDIATE,
+                    this,
+                    123
+                )
             }
+//            }
         }
     }
 
@@ -278,7 +279,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
         appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
             val isUpdateAvailabe = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
             val isUpdateAllowed = when (updateType) {
-                AppUpdateType.FLEXIBLE -> info.isFlexibleUpdateAllowed
+//                AppUpdateType.FLEXIBLE -> info.isFlexibleUpdateAllowed
                 AppUpdateType.IMMEDIATE -> info.isImmediateUpdateAllowed
                 else -> false
             }
@@ -298,11 +299,17 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 123) {
-            if (resultCode != RESULT_OK) {
-                Log.d("TAG", "onActivityResult: .......Something went wrong")
-            } else {
+        when (requestCode) {
+            123 -> {
 
+            }
+
+            Activity.RESULT_CANCELED -> {
+                checkForAppUpdate()
+            }
+
+            else -> {
+                checkForAppUpdate()
             }
         }
 
