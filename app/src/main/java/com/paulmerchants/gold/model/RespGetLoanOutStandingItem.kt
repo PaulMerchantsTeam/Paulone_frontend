@@ -20,6 +20,7 @@ data class RespGetLoanOutStandingItem(
     @SerializedName("outStanding") val outStanding: Double?,
     @SerializedName("rebateAmount") val rebateAmount: Double?,
     @SerializedName("payableAmount") val payableAmount: Double?,
+    var currentDate: String,
 ) : Parcelable
 
 /**

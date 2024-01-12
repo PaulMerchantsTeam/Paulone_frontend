@@ -11,6 +11,7 @@ import androidx.paging.cachedIn
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.model.RespGetLoanOutStanding
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
+import com.paulmerchants.gold.model.newmodel.GeOtStandingRespObj
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespGetLOanOutStanding
@@ -38,7 +39,7 @@ class GoldLoanScreenViewModel @Inject constructor(
     private val apiParams: ApiParams,
 ) : ViewModel() {
     var isCalledGoldLoanScreen: Boolean = true
-    val getRespGetLoanOutStandingLiveData = MutableLiveData<RespGetLoanOutStanding>()
+    val getRespGetLoanOutStandingLiveData = MutableLiveData<GeOtStandingRespObj>()
     var respGetLoanOutStanding = ArrayList<RespGetLoanOutStandingItem>()
 
 

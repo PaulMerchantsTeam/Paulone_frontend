@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.paulmerchants.gold.adapterviewholders.UpcomingLoansViewHolder
 import com.paulmerchants.gold.databinding.ItemUpcomingDueLoanBinding
+
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
+import com.paulmerchants.gold.model.newmodel.GepPendingRespObj
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
@@ -49,7 +51,7 @@ class UpcomingLoanAdapter(private val onPayDueClicked: (GetPendingInrstDueRespIt
                 override fun areItemsTheSame(
                     oldItem: GetPendingInrstDueRespItem,
                     newItem: GetPendingInrstDueRespItem,
-                ): Boolean = true
+                ): Boolean = oldItem.acNo == newItem.acNo
 
                 override fun areContentsTheSame(
                     oldItem: GetPendingInrstDueRespItem,

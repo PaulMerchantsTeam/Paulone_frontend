@@ -5,7 +5,7 @@ import com.paulmerchants.gold.model.GetPendingInrstDueResp
 import com.paulmerchants.gold.model.RespGetLoanOutStanding
 
 data class RespGetLOanOutStanding(
-    @SerializedName("data") val `data`: RespGetLoanOutStanding,
+    @SerializedName("data") val `data`: GeOtStandingRespObj,
     @SerializedName("message") val message: String,
     @SerializedName("response_message") val response_message: String,
     @SerializedName("status") val status: String,

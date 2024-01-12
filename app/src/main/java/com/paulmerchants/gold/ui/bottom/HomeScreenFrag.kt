@@ -1,8 +1,6 @@
 package com.paulmerchants.gold.ui.bottom
 
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -11,15 +9,11 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MoreToComeAdapter
@@ -29,35 +23,22 @@ import com.paulmerchants.gold.adapter.UpcomingLoanNewuserAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants.DUE_LOAN_DATA
 import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
-import com.paulmerchants.gold.databinding.NoInternetDgBinding
-import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
-import com.paulmerchants.gold.enums.BbpsType
-import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.MoreToComeModel
-import com.paulmerchants.gold.model.OurServices
 import com.paulmerchants.gold.model.PrepaidCardModel
-import com.paulmerchants.gold.model.RespGetLoanOutStanding
-import com.paulmerchants.gold.model.newmodel.StatusPayment
+import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
-import com.paulmerchants.gold.utility.AppUtility.colorList
 import com.paulmerchants.gold.utility.AppUtility.hideShim
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
 import com.paulmerchants.gold.utility.AppUtility.showShimmer
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.InternetUtils
-import com.paulmerchants.gold.utility.hide
-import com.paulmerchants.gold.utility.setUiOnHomeSweetHomeBills
 import com.paulmerchants.gold.utility.show
-import com.paulmerchants.gold.utility.startCustomAnimation
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.Objects
 
 
 @AndroidEntryPoint
@@ -660,11 +641,16 @@ class HomeScreenFrag :
         ) {
             it?.let {
                 (activity as MainActivity).commonViewModel.notZero =
-                    it.filter { it.payableAmount != 0.0000 }
+                    it.pendingInterestDuesResponseData.filter {
+                        it.payableAmount != 0.0
+                    }
                 Log.i(
                     TAG,
                     "setUpComingDueLoans: ${(activity as MainActivity).commonViewModel.notZero}"
                 )
+                for (i in it.pendingInterestDuesResponseData) {
+                    i.currentDate = it.currentDate
+                }
                 if ((activity as MainActivity).commonViewModel.notZero.isNotEmpty()) {
                     upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
                     binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
@@ -683,7 +669,10 @@ class HomeScreenFrag :
             viewLifecycleOwner
         ) {
             it?.let {
-                setLoanOverView(it)
+                for(i in it.getLoanOutstandingResponseData){
+                    i.currentDate =it.currentDate
+                }
+                setLoanOverView(it.getLoanOutstandingResponseData)
             }
         }
 //        val dueLoans1 = DueLoans(1, 4, 6000)
@@ -701,7 +690,7 @@ class HomeScreenFrag :
          )
      }*/
 
-    private fun setLoanOverView(resp: RespGetLoanOutStanding) {
+    private fun setLoanOverView(resp: List<RespGetLoanOutStandingItem>) {
         var totalAmount = 0.0
         binding.apply {
 //            loanOverViewCardParent.cardParent.setBackgroundColor(R.drawable.new_user_card_grad)

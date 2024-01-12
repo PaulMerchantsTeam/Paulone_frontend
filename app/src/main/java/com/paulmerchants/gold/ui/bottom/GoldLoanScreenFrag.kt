@@ -173,11 +173,15 @@ class GoldLoanScreenFrag :
 
             goldScreenViewModel.getRespGetLoanOutStandingLiveData.observe(viewLifecycleOwner) {
                 it?.let {
-                    if (it.size != 0) {
-                        if (it.size == 1) {
+                    if (it.getLoanOutstandingResponseData.size != 0) {
+                        if (it.getLoanOutstandingResponseData.size == 1) {
                             hideViews()
                         }
-                        goldScreenViewModel.respGetLoanOutStanding = it
+                        goldScreenViewModel.respGetLoanOutStanding =
+                            it.getLoanOutstandingResponseData as ArrayList<RespGetLoanOutStandingItem>
+                        for (i in it.getLoanOutstandingResponseData) {
+                            i.currentDate = it.currentDate
+                        }
 
                         setUiFoOpenGoldLoans()
                     } else {
@@ -229,7 +233,7 @@ class GoldLoanScreenFrag :
     }
 
     private fun setUiFoOpenGoldLoans() {
-//        binding.goldLoanParentMain.rvLoanOverViewMain.setGoldLoanOverView(1)
+//      binding.goldLoanParentMain.rvLoanOverViewMain.setGoldLoanOverView(1)
         var totalAmount = 0.0
         val open = goldScreenViewModel.respGetLoanOutStanding.filter { it.closed == false }
         Log.d("TAG", "setUiFoOpenGoldLoans: $open")

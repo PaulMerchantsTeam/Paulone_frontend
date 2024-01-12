@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.paulmerchants.gold.model.GetPendingInrstDueResp
 
 data class RespPendingInterstDue(
-    @SerializedName("data") val `data`: GetPendingInrstDueResp,
+    @SerializedName("data") val `data`: GepPendingRespObj,
     @SerializedName("message") val message: String,
     @SerializedName("response_message") val response_message: String,
     @SerializedName("status") val status: String,

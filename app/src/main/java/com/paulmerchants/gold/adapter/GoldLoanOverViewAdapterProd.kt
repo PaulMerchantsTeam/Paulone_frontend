@@ -103,8 +103,8 @@ class GoldLoanOverViewAdapterProd(
                         outStandValueTv.text =
                             AppUtility.getDateFormat(actionItem.dueDate)?.trim().toString()
 //                        val duedate = AppUtility.numberOfDaysWrtCurrent(actionItem.dueDate)
-                        val duedate = AppUtility.getCurrentDateOnly()
-                        overDueDaysTv.text = "Due till date\n$duedate"
+//                        val duedate = AppUtility.getCurrentDateOnly()
+                        overDueDaysTv.text = "Due till date\n${actionItem.currentDate}"
 //                        when {
 //                            duedate.toInt() < 0 -> {
 //                                Log.d("TAG", "bind: ----< than 0")

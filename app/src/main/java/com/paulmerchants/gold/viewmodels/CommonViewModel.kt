@@ -23,6 +23,8 @@ import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLoanRenewalProcess
 import com.paulmerchants.gold.model.RespLoanStatment
 import com.paulmerchants.gold.model.RespRenewalEligiblity
+import com.paulmerchants.gold.model.newmodel.GeOtStandingRespObj
+import com.paulmerchants.gold.model.newmodel.GepPendingRespObj
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReGetLoanClosureReceipNew
@@ -66,9 +68,9 @@ class CommonViewModel @Inject constructor(
     var notZero: List<GetPendingInrstDueRespItem> = arrayListOf()
     private var remoteDataList: List<Place>? = null
     private var listOfLocation: List<com.paulmerchants.gold.place.Place>? = null
-    val getPendingInterestDuesLiveData = MutableLiveData<GetPendingInrstDueResp>()
+    val getPendingInterestDuesLiveData = MutableLiveData<GepPendingRespObj>()
     val tokenExpiredResp = MutableLiveData<RespCommon?>()
-    val getRespGetLoanOutStandingLiveData = MutableLiveData<RespGetLoanOutStanding>()
+    val getRespGetLoanOutStandingLiveData = MutableLiveData<GeOtStandingRespObj>()
     val getRespLoanDueDateLiveData = MutableLiveData<RespLoanDueDate>()
     val getRespClosureReceiptLiveData = MutableLiveData<RespClosureReceipt>()
     val getRespLoanStatmentLiveData = MutableLiveData<RespLoanStatment>()
