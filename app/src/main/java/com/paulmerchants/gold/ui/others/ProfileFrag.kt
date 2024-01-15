@@ -25,6 +25,8 @@ import com.paulmerchants.gold.databinding.ProfileLayoutBinding
 import com.paulmerchants.gold.enums.ScreenType
 import com.paulmerchants.gold.model.MenuServices
 import com.paulmerchants.gold.model.RespCustomersDetails
+import com.paulmerchants.gold.mylog.LogUtil.showLogD
+import com.paulmerchants.gold.mylog.LogUtil.showLogI
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
@@ -70,10 +72,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
 
         val backStack = findNavController().backQueue
         for (i in backStack) {
-            Log.d(
-                "TAG",
-                "STACK__COUNT_NAME: ...${i.id}..--------.${i.destination.displayName}"
-            )
+            showLogI("${i.id}..--------.${i.destination.displayName}")
         }
         if ((activity as MainActivity).appSharedPref?.getStringValue(CUSTOMER_FULL_DATA)
                 ?.isNotEmpty() == true
@@ -108,14 +107,8 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                         it
                     )
                 }
-                if (it.respGetCustomer.Email == "") {
-                    binding.emailUserIv.text =
-                        "Email Id: ${it.emailIdNew}"
-                } else {
-                    binding.emailUserIv.text =
-                        "Email Id: ${it.respGetCustomer.Email ?: "NA"}"
-                }
-
+                binding.emailUserIv.text =
+                    "Email Id: ${it.emailIdNew}"  // in profile we are showing latest email id ...
                 binding.userNumTv.text = "Mobile: ${it.respGetCustomer.MobileNo ?: "NA"}"
                 binding.addressTv.text = "Address: ${it.respGetCustomer.MailingAddress ?: "NA"}"
 //                Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
@@ -126,7 +119,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
         profileViewModel.verifyOtp.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.statusCode == "200") {
-                    Log.e("TAG", "onStart: .=======${it.data}")
+                    showLogD("onStart: .=======${it.data}")
                     customDialog?.dismiss()
                     val bundle = Bundle().apply {
                         putBoolean(IS_RESET_MPIN, true)
@@ -135,7 +128,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                     profileViewModel.timer?.cancel()
                     profileViewModel.countStr.postValue("")
                 } else {
-                    Log.e("TAG", "onStart: .=======${it.data}")
+                    showLogD("onStart: .=======${it.data}")
                 }
             }
         }
