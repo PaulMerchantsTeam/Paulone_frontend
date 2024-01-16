@@ -81,7 +81,7 @@ class LocateUsFrag :
         super.onStart()
         // [START_EXCLUDE silent]
         // Construct a PlacesClient
-        Places.initialize(requireContext(), BuildConfig.MAPS_API_KEY)
+        Places.initialize(requireContext(), getString(R.string.MAPS_API_KEY))
         placesClient = Places.createClient(requireContext())
 
         // Construct a FusedLocationProviderClient.
@@ -140,7 +140,7 @@ class LocateUsFrag :
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         locationPermissionGranted = false
         when (requestCode) {
@@ -153,6 +153,7 @@ class LocateUsFrag :
                     locationPermissionGranted = true
                 }
             }
+
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
         updateLocationUI()
@@ -166,7 +167,6 @@ class LocateUsFrag :
         if (locationPermissionGranted) {
             // Use fields to define the data types to return.
             val placeFields = listOf(Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG)
-
 
 
             // Use the builder to create a FindCurrentPlaceRequest.

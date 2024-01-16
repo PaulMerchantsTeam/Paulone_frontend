@@ -35,7 +35,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
+            android:value="AIzaSyD4wDzESIHuVLPC6XJJ-7WQ3k3pIy_7qfM" />
         <meta-data
             android:name="com.razorpay.ApiKey"
             android:value="rzp_live_me6vHPlVFbR2rA" />

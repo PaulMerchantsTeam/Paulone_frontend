@@ -299,12 +299,17 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            123 -> {
-
+        Log.d(TAG, "onActivityResult: ....$requestCode...$resultCode")
+        when {
+            requestCode == 123 && resultCode == 0 -> {
+                checkForAppUpdate()
             }
 
-            Activity.RESULT_CANCELED -> {
+            requestCode == 123 && resultCode == -1 -> {
+                //Downloaded status
+            }
+
+            requestCode == Activity.RESULT_CANCELED -> {
                 checkForAppUpdate()
             }
 

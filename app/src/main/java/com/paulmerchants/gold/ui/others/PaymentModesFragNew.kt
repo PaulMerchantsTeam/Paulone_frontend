@@ -20,9 +20,11 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.PaymentsModeNewBinding
+import com.paulmerchants.gold.model.RespCustomersDetails
 import com.paulmerchants.gold.model.newmodel.Notes
 import com.paulmerchants.gold.model.newmodel.PayAllnOneGoDataTobeSent
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
+import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
 import com.paulmerchants.gold.model.newmodel.StatusPayment
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
@@ -63,6 +65,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
     private lateinit var bankDialog: AlertDialog
     private lateinit var walletDialog: AlertDialog
     private val paymentViewModel: PaymentViewModel by viewModels()
+    private var respCustomerDetail: RespCustomCustomerDetail? = null
 
     override fun PaymentsModeNewBinding.initialize() {
         amountToPay = arguments?.getDouble(Constants.AMOUNT_PAYABLE)
@@ -94,6 +97,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
     override fun onStart() {
         super.onStart()
+
         if (amountToPay != 0.0) {
             binding.amountPaidTv.text = "${getString(R.string.Rs)}$amountToPay"
         } else {
@@ -105,6 +109,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         var creditValue = true
         var netBanking = true
         if (paymentViewModel.isCalled) {
+            (activity as MainActivity).appSharedPref?.let { paymentViewModel.getCustomerDetails(it) }
             initRazorpay()
             paymentViewModel.getPaymentMethod((activity as MainActivity).appSharedPref)
         }
@@ -190,7 +195,11 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 }
             }
         }
-
+        paymentViewModel.getRespCustomersDetailsLiveData.observe(viewLifecycleOwner) {
+            it?.let {
+                respCustomerDetail = it
+            }
+        }
         val callback: OnBackPressedCallback =
             object : OnBackPressedCallback(true) { /* enabled by default */
                 override fun handleOnBackPressed() {
@@ -704,6 +713,11 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        paymentViewModel.isCalled = false
+    }
+
     private fun updatePaymentStatusToServer(
         appSharedPref: AppSharedPref,
         statusData: StatusPayment,
@@ -944,11 +958,11 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             payload.put("currency", "INR")
             payload.put(
                 "contact",
-                (activity as MainActivity).appSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUST_MOBILE)
+                respCustomerDetail?.respGetCustomer?.MobileNo
             )
             payload.put(
                 "email",
-                "pmldevspace@gmail.com"
+                respCustomerDetail?.emailIdNew
             )
         } catch (e: Exception) {
             e.printStackTrace()

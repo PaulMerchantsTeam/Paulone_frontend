@@ -9,13 +9,17 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
+import com.paulmerchants.gold.model.RespCustomersDetails
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.PayAll
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.ReqPayAlInOnGo
+import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCreateOrder
+import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
+import com.paulmerchants.gold.model.newmodel.RespGetCustomer
 import com.paulmerchants.gold.model.newmodel.RespPaymentMethod
 import com.paulmerchants.gold.model.newmodel.RespUpdatePaymentStatus
 import com.paulmerchants.gold.networks.CallHandler
@@ -25,6 +29,7 @@ import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
+import com.paulmerchants.gold.utility.decryptKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -41,11 +46,73 @@ class PaymentViewModel @Inject constructor(
     val tokenExpiredResp = MutableLiveData<RespCommon?>()
     val respPaymentUpdate = MutableLiveData<RespUpdatePaymentStatus?>()
     val getPaymentMethod = MutableLiveData<RespPaymentMethod?>()
+    val getRespCustomersDetailsLiveData = MutableLiveData<RespCustomCustomerDetail>()
 
     init {
         Log.d(TAG, ": init_$TAG")
     }
 
+    fun getCustomerDetails(appSharedPref: AppSharedPref) = viewModelScope.launch {
+        retrofitSetup.callApi(true, object : CallHandler<Response<RespGetCustomer>> {
+            override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetCustomer> {
+                return apiParams.getCustomerDetails(
+                    "Bearer ${appSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}",
+                    ReqpendingInterstDueNew(
+                        appSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
+                        AppUtility.getDeviceDetails()
+                    )
+                )
+            }
+
+            override fun success(response: Response<RespGetCustomer>) {
+                try {
+                    // Get the plain text response
+                    if (response.isSuccessful) {
+                        val plainTextResponse = response.body()?.data?.apiResponse
+
+                        // Do something with the plain text response
+                        if (plainTextResponse != null) {
+                            Log.d("Response", plainTextResponse)
+                            val decryptData = decryptKey(
+                                BuildConfig.SECRET_KEY_GEN, plainTextResponse
+                            )
+
+                            println("decrypt-----$decryptData")
+                            val respPending: RespCustomersDetails? =
+                                AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                            respPending?.let { resp ->
+                                appSharedPref.putStringValue(
+                                    Constants.CUSTOMER_FULL_DATA,
+                                    decryptData.toString()
+                                )
+                                appSharedPref.putStringValue(
+                                    Constants.CUST_EMAIL,
+                                    response.body()?.data?.email.toString()
+                                )
+                                getRespCustomersDetailsLiveData.value = RespCustomCustomerDetail(
+                                    resp,
+                                    response.body()?.data?.email.toString()
+                                )
+                            }
+                            println("Str_To_Json------$respPending")
+                        }
+
+
+                    }
+
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                AppUtility.hideProgressBar()
+            }
+
+            override fun error(message: String) {
+                super.error(message)
+            }
+        })
+    }
 
     fun getPaymentMethod(appSharedPref: AppSharedPref?) =
         viewModelScope.launch {

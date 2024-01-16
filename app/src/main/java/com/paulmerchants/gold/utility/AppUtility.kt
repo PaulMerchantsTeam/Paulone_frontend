@@ -25,12 +25,12 @@ import android.os.Handler
 import android.provider.Settings
 import android.text.TextUtils
 import android.text.format.DateFormat
+import android.util.Base64
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.PixelCopy
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.FrameLayout
@@ -49,9 +49,7 @@ import com.google.gson.Gson
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
 import com.itextpdf.text.Image
-import com.itextpdf.text.PageSize
 import com.itextpdf.text.Rectangle
-import com.itextpdf.text.pdf.PdfContentByte
 import com.itextpdf.text.pdf.PdfWriter
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
@@ -68,12 +66,8 @@ import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLogin
 import com.paulmerchants.gold.model.newmodel.DeviceDetailsDTO
 import com.paulmerchants.gold.ui.MainActivity
-import com.paulmerchants.gold.utility.AppUtility.convertStringToJson
-import com.paulmerchants.gold.utility.AppUtility.formatDateFromMilliSec
 import com.paulmerchants.gold.utility.AppUtility.getCurrentDate
-import com.paulmerchants.gold.utility.AppUtility.getDateWithOrdinals
 import org.bouncycastle.jce.provider.BouncyCastleProvider
-import org.w3c.dom.Text
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -85,7 +79,6 @@ import java.security.Security
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
-import java.util.ArrayList
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -106,6 +99,38 @@ Note: These tags are need to be set under the TextView.
  */
 
 object AppUtility {
+/*    val thePartOne = ""
+    val thePartTwo = ""
+    val thePartThree = ""
+    val thePartFour = ""
+    fun getEncodedApiKey() {
+        val plainApiKey = BuildConfig.MAPS_API_KEY //
+        val encodedApiKey: String = String(
+            Base64.encode(
+                Base64.encode(
+                    plainApiKey.toByteArray(),
+                    Base64.DEFAULT
+                ),
+                Base64.DEFAULT
+            )
+        )
+        Log.i("AppUtility", "getEncodedApiKey: $encodedApiKey")
+    }*/
+
+/*    fun getSplitedDecodedApiKey(): String {
+        return String(
+            Base64.decode(
+                Base64.decode(
+                    "U2YyYk5lV1RqUkRJM" +
+                            "3JrcFdMVmRHVGxkVlpN" +
+                            "VUVNMldFcEtMVGRYVVRO" +
+                            "ck0zQkplVjgzY1daTgo=",
+                    Base64.DEFAULT
+                ),
+                Base64.DEFAULT
+            )
+        )
+    }*/
 
     fun openUrl(context: Context, uri: String) {
         val openURL = Intent(Intent.ACTION_VIEW)
@@ -817,7 +842,8 @@ fun main() {
 //    println(respLogin?.Status)
 //    println(respLogin?.JWToken)
 //    getDateWithOrdinals()
-    println(getCurrentDate())
+//    println(getCurrentDate())
+//    println(getEncodedApiKey())
 //    println(AppUtility.getDateFormat("2024-06-20T00:00:00"))
 }
 

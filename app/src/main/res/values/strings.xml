@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Paul One</string>
+    <string name="MAPS_API_KEY">AIzaSyD4wDzESIHuVLPC6XJJ-7WQ3k3pIy_7qfM</string>
     <string name="powered_by">Powered By</string>
     <string name="track_your_dues_and_bills">Track your dues and bills like never before. We bring punctuality in your life</string>
     <string name="next">Next</string>
@@ -214,6 +215,7 @@
     <string name="select_state">Select state </string>
     <string name="select_board">Select board </string>
     <string name="select_your_board">Select your board </string>
+    <string name="privacy_policy">Privacy policy.</string>
 
     <string name="select_ott_platform">Select OTT Platform </string>
     <string name="enter_register_mail_number">Enter Registered Mail ID/Phone Number</string>
