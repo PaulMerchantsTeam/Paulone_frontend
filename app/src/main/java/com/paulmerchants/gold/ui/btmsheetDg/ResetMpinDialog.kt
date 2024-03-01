@@ -18,6 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.databinding.ResetMPinForgetBinding
 import com.paulmerchants.gold.model.newmodel.ReqResetForgetPin
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
@@ -100,10 +101,9 @@ class ResetMpinDialog : BottomSheetDialogFragment() {
                     "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}"
                 ) {
                     resetMpinViewModel.resetForgetMpin(
-                        (activity as MainActivity).appSharedPref,
                         ReqResetForgetPin(
                             confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
-                            mobileNo = (activity as MainActivity).appSharedPref?.getStringValue(
+                            mobileNo = AppSharedPref.getStringValue(
                                 com.paulmerchants.gold.utility.Constants.CUST_MOBILE
                             ).toString(),
                             newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",

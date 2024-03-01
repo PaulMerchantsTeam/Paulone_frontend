@@ -1,5 +1,7 @@
 package com.paulmerchants.gold.viewmodels
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -26,10 +28,13 @@ import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.networks.RetrofitSetup
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
+import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
+import com.paulmerchants.gold.utility.IS_SHOW_TXN
 import com.paulmerchants.gold.utility.decryptKey
+import com.paulmerchants.gold.utility.showCustomDialogFoPaymentStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -52,13 +57,13 @@ class PaymentViewModel @Inject constructor(
         Log.d(TAG, ": init_$TAG")
     }
 
-    fun getCustomerDetails(appSharedPref: AppSharedPref) = viewModelScope.launch {
+    fun getCustomerDetails(AppSharedPref: AppSharedPref) = viewModelScope.launch {
         retrofitSetup.callApi(true, object : CallHandler<Response<RespGetCustomer>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetCustomer> {
                 return apiParams.getCustomerDetails(
-                    "Bearer ${appSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}",
+                    "Bearer ${AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}",
                     ReqpendingInterstDueNew(
-                        appSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
+                        AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
                         AppUtility.getDeviceDetails()
                     )
                 )
@@ -82,11 +87,11 @@ class PaymentViewModel @Inject constructor(
                                 AppUtility.convertStringToJson(decryptData.toString())
 //                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
                             respPending?.let { resp ->
-                                appSharedPref.putStringValue(
+                                AppSharedPref.putStringValue(
                                     Constants.CUSTOMER_FULL_DATA,
                                     decryptData.toString()
                                 )
-                                appSharedPref.putStringValue(
+                                AppSharedPref.putStringValue(
                                     Constants.CUST_EMAIL,
                                     response.body()?.data?.email.toString()
                                 )
@@ -114,13 +119,13 @@ class PaymentViewModel @Inject constructor(
         })
     }
 
-    fun getPaymentMethod(appSharedPref: AppSharedPref?) =
+    fun getPaymentMethod(AppSharedPref: AppSharedPref) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<RespPaymentMethod>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespPaymentMethod> {
                     return apiParams.getPaymentMethod(
-                        "Bearer ${appSharedPref?.getStringValue(Constants.JWT_TOKEN).toString()}"
+                        "Bearer ${AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}"
                     )
                 }
 
@@ -136,13 +141,13 @@ class PaymentViewModel @Inject constructor(
         }
 
 
-    fun createOrder(appSharedPref: AppSharedPref?, reqCreateOrder: ReqCreateOrder) =
+    fun createOrder(AppSharedPref: AppSharedPref, reqCreateOrder: ReqCreateOrder) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
                     return apiParams.createOrder(
-                        "Bearer ${appSharedPref?.getStringValue(Constants.JWT_TOKEN).toString()}",
+                        "Bearer ${AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}",
                         reqCreateOrder
                     )
                 }
@@ -172,8 +177,8 @@ class PaymentViewModel @Inject constructor(
                             RespCommon::class.java
                         )
                         tokenExpiredResp.value = respFail
-                        if (appSharedPref != null) {
-                            getLogin2(appSharedPref)
+                        if (AppSharedPref != null) {
+                            getLogin2()
                         }
                     }
 
@@ -190,8 +195,7 @@ class PaymentViewModel @Inject constructor(
 
 
     fun updatePaymentStatus(
-        navController: NavController,
-        appSharedPref: AppSharedPref?,
+        activity: Activity,
         status: String?,
         razorpay_payment_id: String,
         razorpay_order_id: String,
@@ -209,7 +213,7 @@ class PaymentViewModel @Inject constructor(
         retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
                 return apiParams.updatePaymentStatus(
-                    "Bearer ${appSharedPref?.getStringValue(Constants.JWT_TOKEN).toString()}",
+                    "Bearer ${AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}",
                     amount = amount,
                     contactCount = contactCount,
                     companyName = companyName,
@@ -237,7 +241,7 @@ class PaymentViewModel @Inject constructor(
                             gson.toJsonTree(response.body()).asJsonObject,
                             RespUpdatePaymentStatus::class.java
                         )
-                        respSuccess?.message.showSnackBar()
+//                        respSuccess?.message.showSnackBar()
                         respPaymentUpdate.value = respSuccess
 //                        navController.navigateUp()
                     } catch (e: Exception) {
@@ -251,11 +255,16 @@ class PaymentViewModel @Inject constructor(
                         RespCommon::class.java
                     )
                     tokenExpiredResp.value = respFail
-                    if (appSharedPref != null) {
-                        getLogin2(appSharedPref)
-                    }
+
+                    getLogin2()
+
                 } else {
-                    "Some thing went wrong..try again later".showSnackBar()
+//                    "Some thing went wrong..try again later".showSnackBar()
+                    activity.showCustomDialogFoPaymentStatus(
+                        message = response.message(),
+                        isClick = {
+
+                        })
                 }
                 AppUtility.hideProgressBar()
             }
@@ -269,8 +278,6 @@ class PaymentViewModel @Inject constructor(
     }
 
     fun updatePaymentStatusAllInOneGo(
-        navController: NavController,
-        appSharedPref: AppSharedPref?,
         status: String?,
         razorpay_payment_id: String,
         razorpay_order_id: String,
@@ -286,7 +293,7 @@ class PaymentViewModel @Inject constructor(
         retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
                 return apiParams.updatePaymentStatusAllInOneGo(
-                    "Bearer ${appSharedPref?.getStringValue(Constants.JWT_TOKEN).toString()}",
+                    "Bearer ${AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}",
                     amount = amount,
                     contactCount = contactCount,
                     companyName = companyName,
@@ -326,8 +333,8 @@ class PaymentViewModel @Inject constructor(
                         RespCommon::class.java
                     )
                     tokenExpiredResp.value = respFail
-                    if (appSharedPref != null) {
-                        getLogin2(appSharedPref)
+                    if (AppSharedPref != null) {
+                        getLogin2()
                     }
                 } else {
                     "Some thing went wrong..try again later".showSnackBar()
@@ -343,7 +350,7 @@ class PaymentViewModel @Inject constructor(
 
     }
 
-    fun getLogin2(appSharedPref: AppSharedPref?) = viewModelScope.launch {
+    fun getLogin2() = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
@@ -359,13 +366,13 @@ class PaymentViewModel @Inject constructor(
             override fun success(response: Response<LoginNewResp>) {
                 Log.d("TAG", "success: ......$response")
                 response.body()?.statusCode?.let {
-                    appSharedPref?.putStringValue(
+                    AppSharedPref.putStringValue(
                         Constants.AUTH_STATUS,
                         it
                     )
                 }
                 response.body()?.token?.let {
-                    appSharedPref?.putStringValue(
+                    AppSharedPref.putStringValue(
                         Constants.JWT_TOKEN,
                         it
                     )

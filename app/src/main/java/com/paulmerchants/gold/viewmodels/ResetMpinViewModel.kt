@@ -41,13 +41,13 @@ class ResetMpinViewModel @Inject constructor(
         Log.d(TAG, ": init_$TAG")
     }
 
-    fun changeMpin(appSharedPref: AppSharedPref?, reqResetPin: ReqResetPin) =
+    fun changeMpin( reqResetPin: ReqResetPin) =
         viewModelScope.launch {
             Log.d("TAG", "getLogin: //../........")
             retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
                     return apiParams.reSetMPin(
-                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                         reqResetPin
                     )
                 }
@@ -66,13 +66,13 @@ class ResetMpinViewModel @Inject constructor(
             })
         }
 
-    fun resetForgetMpin(appSharedPref: AppSharedPref?, reqResetPin: ReqResetForgetPin) =
+    fun resetForgetMpin(reqResetPin: ReqResetForgetPin) =
         viewModelScope.launch {
             Log.d("TAG", "getLogin: //../........")
             retrofitSetup.callApi(true, object : CallHandler<Response<RespResetFogetMpin>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespResetFogetMpin> {
                     return apiParams.resetOrForgetMpin(
-                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                         reqResetPin
                     )
                 }

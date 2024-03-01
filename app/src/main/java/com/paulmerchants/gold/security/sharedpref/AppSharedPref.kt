@@ -3,18 +3,20 @@ package com.paulmerchants.gold.security.sharedpref
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
+import androidx.security.crypto.MasterKey
 import com.paulmerchants.gold.common.Constants.SHARED_PREF_FILE
 
-class AppSharedPref {
-    private val mainKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+object AppSharedPref {
     private lateinit var preferences: SharedPreferences
 
     fun start(context: Context) {
+        val mainKeyAlias =
+            MasterKey.Builder(context, "$SHARED_PREF_FILE")
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()
         preferences = EncryptedSharedPreferences.create(
+            context,
             SHARED_PREF_FILE,
             mainKeyAlias,
-            context,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
@@ -59,11 +61,6 @@ class AppSharedPref {
     fun getLongValue(key: String): Long {
         return preferences.getLong(key, 0L)
     }
-
-    fun putMap(key: String) {
-
-    }
-
 
     fun clearSharedPref() {
         val editor = preferences.edit()

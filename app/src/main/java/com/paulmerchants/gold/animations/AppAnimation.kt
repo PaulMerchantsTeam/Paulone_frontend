@@ -34,23 +34,23 @@ object AppAnimation {
         animator.start()
     }
 
-    fun colorizer(iv: ImageView) {
-
-        // Animate the color of the star's container from black to red over a half
-        // second, then reverse back to black. Note that using a propertyName of
-        // "backgroundColor" will cause the animator to call the backgroundColor property
-        // (in Kotlin) or setBackgroundColor(int) (in Java).
-
-        val animator = ObjectAnimator.ofArgb(
-            iv.parent,
-            "backgroundColor", R.color.splash_screen_one, R.color.splash_screen_three
-        )
-        animator.duration = 500
-        animator.repeatCount = 1
-        animator.repeatMode = ObjectAnimator.REVERSE
-//        animator.disableViewDuringAnimation(colorizeButton)
-        animator.start()
-    }
+//    fun colorizer(iv: ImageView) {
+//
+//        // Animate the color of the star's container from black to red over a half
+//        // second, then reverse back to black. Note that using a propertyName of
+//        // "backgroundColor" will cause the animator to call the backgroundColor property
+//        // (in Kotlin) or setBackgroundColor(int) (in Java).
+//
+//        val animator = ObjectAnimator.ofArgb(
+//            iv.parent,
+//            "backgroundColor", R.color.splash_screen_one, R.color.splash_screen_three
+//        )
+//        animator.duration = 500
+//        animator.repeatCount = 1
+//        animator.repeatMode = ObjectAnimator.REVERSE
+////        animator.disableViewDuringAnimation(colorizeButton)
+//        animator.start()
+//    }
 
 
     fun scaler(iv: ImageView) {

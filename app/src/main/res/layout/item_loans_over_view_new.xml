@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/_8sdp"
+    android:layout_marginBottom="@dimen/_10sdp"
     android:background="@drawable/rec_sky_loan_blue_solid"
     android:paddingTop="@dimen/_8sdp"
     android:paddingBottom="@dimen/_8sdp">
@@ -26,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="XXXXXX"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="@+id/loanNumTitle"
         app:layout_constraintTop_toBottomOf="@+id/loanNumTitle" />
 
@@ -36,9 +37,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/final_due_paid"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8
-"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,6 +51,7 @@
         android:layout_marginEnd="@dimen/screen_start_margin"
         android:maxLines="1"
         android:text="XXX-XX-XXT00:00:00"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/loanNumTv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/outStaTitleTv"
@@ -61,8 +63,8 @@
         android:layout_width="@dimen/_120sdp"
         android:layout_height="wrap_content"
         android:background="@drawable/rect_due_green"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/intDueAmountTv"
+        android:visibility="visible"
+        android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loanNumTv">
 
@@ -87,15 +89,14 @@
     <TextView
         android:id="@+id/intDueAmountTitleTv"
         style="@style/text_10_semi_bold_sky_blue"
-        android:layout_marginEnd="@dimen/_10sdp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
         android:text="Interest \nDue Amount"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/clickPayParent"
-        app:layout_constraintStart_toStartOf="@+id/outStandValueTv"
-        app:layout_constraintTop_toBottomOf="@+id/outStandValueTv" />
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ovrDueParentArrow" />
 
     <TextView
         android:id="@+id/intDueAmountTv"
@@ -104,9 +105,7 @@
         android:layout_height="wrap_content"
         android:text="INR 0,000"
         android:visibility="gone"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/intDueAmountTitleTv"
+        app:layout_constraintEnd_toEndOf="@+id/intDueAmountTitleTv"
         app:layout_constraintTop_toBottomOf="@+id/intDueAmountTitleTv" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -119,9 +118,9 @@
         android:focusable="true"
         android:padding="@dimen/_2sdp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/intDueAmountTitleTv"
+        app:layout_constraintBottom_toBottomOf="@+id/ovrDueParentArrow"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/intDueAmountTitleTv">
+        app:layout_constraintTop_toTopOf="@+id/loanNumTitle">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -145,10 +144,10 @@
         android:background="@drawable/rec_back_btn"
         android:paddingStart="@dimen/screen_start_margin"
         android:paddingTop="@dimen/_8sdp"
-        android:visibility="gone"
         android:paddingEnd="@dimen/_18sdp"
         android:paddingBottom="@dimen/_11sdp"
         android:text="@string/view_details"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/loanClosedBtn"
         app:layout_constraintEnd_toStartOf="@+id/loanClosedBtn"
         app:layout_constraintHorizontal_bias="0.0"
@@ -161,18 +160,14 @@
         style="@style/text_10_semi_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
         android:background="@drawable/rec_one_blue_btn"
         android:paddingHorizontal="@dimen/_18sdp"
         android:paddingTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         android:paddingBottom="@dimen/_8sdp"
         android:text="@string/loan_closed"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8
-"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/intDueAmountTv" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

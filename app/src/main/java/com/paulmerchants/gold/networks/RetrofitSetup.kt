@@ -24,6 +24,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 
+@Suppress("UNCHECKED_CAST")
 class RetrofitSetup @Inject constructor(private val apiParams: ApiParams) {
 
     fun <T> callApi(

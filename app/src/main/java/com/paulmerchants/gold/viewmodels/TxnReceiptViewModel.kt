@@ -39,12 +39,12 @@ class TxnReceiptViewModel @Inject constructor(
         Log.d(TAG, ": init_$TAG")
     }
 
-    fun getPaidReceipt(appSharedPref: AppSharedPref?, paymentId: String) =
+    fun getPaidReceipt( paymentId: String) =
         viewModelScope.launch {
             retrofitSetup.callApi(true, object : CallHandler<Response<RespPayReceipt>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespPayReceipt> {
                     return apiParams.getPaidReceipt(
-                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                         paymentId
                     )
                 }

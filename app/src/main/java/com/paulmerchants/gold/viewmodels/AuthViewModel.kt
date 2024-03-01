@@ -91,7 +91,7 @@ class AuthViewModel @Inject constructor(
         timer?.start()
     }
 
-    fun getCustomer(appSharedPref: AppSharedPref?, mobileNum: String, context: Context) =
+    fun getCustomer(mobileNum: String, context: Context) =
         viewModelScope.launch {
 
 //        if (mobileNum == "9999988888") {
@@ -102,7 +102,7 @@ class AuthViewModel @Inject constructor(
             retrofitSetup.callApi(true, object : CallHandler<Response<RespCutomerInfo>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespCutomerInfo> {
                     return apiParams.getCustomer(
-                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                         ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails()),
                     )
                 }
@@ -123,9 +123,8 @@ class AuthViewModel @Inject constructor(
                                     "getCustomer: -CustomerId---${respCutomer[0]}"
                                 )
                                 if (respCutomer[0].Status == true) {
-                                    if (appSharedPref != null) {
-                                        getOtp(appSharedPref, mobileNum)
-                                    }
+                                        getOtp(mobileNum)
+
                                     isCustomerExist.postValue(true)
                                     Log.d(
                                         "TAG",
@@ -135,11 +134,11 @@ class AuthViewModel @Inject constructor(
                                         "TAG",
                                         "getCustomer: -CustName---${respCutomer[0].CustName.toString()}"
                                     )
-                                    appSharedPref?.putStringValue(
+                                    AppSharedPref.putStringValue(
                                         CUSTOMER_ID,
                                         respCutomer[0].Cust_ID.toString()
                                     )
-                                    appSharedPref?.putStringValue(
+                                    AppSharedPref.putStringValue(
                                         CUSTOMER_NAME, respCutomer[0].CustName.toString()
                                     )
                                 } else {
@@ -154,7 +153,7 @@ class AuthViewModel @Inject constructor(
                             Log.d("TAG", "success: ........${e.message}")
                         }
                     } else if (response.code() == 401) {
-                        getLogin2(appSharedPref)
+                        getLogin2()
                     } else {
 
                     }
@@ -168,14 +167,14 @@ class AuthViewModel @Inject constructor(
             })
         }
 
-    fun getOtp(appSharedPref: AppSharedPref?, mobileNum: String) =
+    fun getOtp( mobileNum: String) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
                     return apiParams.getOtp(
 
-                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                         ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails()),
                     )
                 }
@@ -197,7 +196,7 @@ class AuthViewModel @Inject constructor(
             })
         }
 
-    fun getLogin2(appSharedPref: AppSharedPref?) = viewModelScope.launch {
+    fun getLogin2() = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
@@ -214,12 +213,12 @@ class AuthViewModel @Inject constructor(
                 Log.d("TAG", "success: ......$response")
                 if (response.isSuccessful) {
                     response.body()?.statusCode?.let {
-                        appSharedPref?.putStringValue(
+                        AppSharedPref.putStringValue(
                             Constants.AUTH_STATUS,
                             it
                         )
                     }
-                    response.body()?.token?.let { appSharedPref?.putStringValue(JWT_TOKEN, it) }
+                    response.body()?.token?.let { AppSharedPref.putStringValue(JWT_TOKEN, it) }
                     getTokenResp.value = response
                 } else {
                     Log.e("TAG", "success: .........")
@@ -235,12 +234,12 @@ class AuthViewModel @Inject constructor(
         })
     }
 
-    fun verifyOtp(appSharedPref: AppSharedPref?, mobileNum: String, otp: String, context: Context) =
+    fun verifyOtp(mobileNum: String, otp: String) =
         viewModelScope.launch {
             retrofitSetup.callApi(true, object : CallHandler<Response<ResponseVerifyOtp>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseVerifyOtp> {
                     return apiParams.verifyOtp(
-                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                         ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails()),
                     )
                 }
@@ -249,7 +248,7 @@ class AuthViewModel @Inject constructor(
                     if (response.isSuccessful) {
                         response.body()?.let {
                             if (it.statusCode == "200") {
-                                appSharedPref?.putStringValue(CUST_MOBILE, mobileNum)
+                                AppSharedPref.putStringValue(CUST_MOBILE, mobileNum)
                                 isOtpVerify.postValue(true)
                                 verifyOtp.value = response.body()
 
@@ -270,24 +269,22 @@ class AuthViewModel @Inject constructor(
         }
 
     fun setMpin(
-        appSharedPref: AppSharedPref?,
         confirmMPin: String,
         setUpMPin: String,
-        context: Context,
         email: String,
     ) = viewModelScope.launch {
 
         retrofitSetup.callApi(true, object : CallHandler<Response<RespSetMpin>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<RespSetMpin> {
                 return apiParams.setMPin(
-                    "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                    "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                     ReqSetMPin(
                         confirmMPin = confirmMPin,
                         emailId = email,
-                        fullName = appSharedPref?.getStringValue(
+                        fullName = AppSharedPref.getStringValue(
                             CUSTOMER_NAME
                         ).toString(),
-                        mobileNo = appSharedPref?.getStringValue(
+                        mobileNo = AppSharedPref.getStringValue(
                             CUST_MOBILE
                         ).toString(),
                         setUpMPin = setUpMPin,

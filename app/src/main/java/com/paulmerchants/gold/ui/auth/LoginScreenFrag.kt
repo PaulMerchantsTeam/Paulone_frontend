@@ -17,6 +17,7 @@ import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.LoginWithMobileMpinBinding
 import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
 import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
@@ -68,12 +69,12 @@ class LoginScreenFrag :
         callMpinNextFocus()
         binding.etPhoenNum.isEnabled = false
         binding.etPhoenNum.setText(
-            (activity as MainActivity).appSharedPref?.getStringValue(CUST_MOBILE)
+            AppSharedPref.getStringValue(CUST_MOBILE)
                 .toString()
         )
         binding.loginWithDifferentAccTv.setOnClickListener {
             Toast.makeText(requireContext(), "CLICKED", Toast.LENGTH_SHORT).show()
-            (activity as MainActivity).appSharedPref?.putBoolean(Constants.OTP_VERIFIED, false)
+            AppSharedPref.putBoolean(Constants.OTP_VERIFIED, false)
 //            findNavController().popBackStack(R.id.loginScreenFrag, true)
             findNavController().navigate(R.id.phoenNumVerifiactionFragment)
         }
@@ -81,18 +82,18 @@ class LoginScreenFrag :
         binding.fogetMpin.setOnClickListener {
             if (InternetUtils.isNetworkAvailable(requireContext())) {
                 showCustomDialogOTPVerify(
-                    (activity as MainActivity).appSharedPref?.getStringValue(
+                    AppSharedPref?.getStringValue(
                         CUST_MOBILE
                     ).toString(),
                     title = "OTP send to the number ${
-                        (activity as MainActivity).appSharedPref?.getStringValue(
+                        AppSharedPref?.getStringValue(
                             CUST_MOBILE
                         )
                     }"
                 )
-                (activity as MainActivity).appSharedPref?.getStringValue(
+                AppSharedPref?.getStringValue(
                     CUST_MOBILE
-                )?.let { loginViewModel.getOtp((activity as MainActivity).appSharedPref, it) }
+                )?.let { loginViewModel.getOtp( it) }
             } else {
                 noInternetDialog()
             }
@@ -106,12 +107,12 @@ class LoginScreenFrag :
                     customDialog?.dismiss()
                     loginViewModel.timer?.cancel()
                     loginViewModel.countStr.postValue("")
-                    val bundle = Bundle().apply {
+                  /*  val bundle = Bundle().apply {
                         putBoolean(
                             com.paulmerchants.gold.utility.Constants.IS_RESET_MPIN_FROM_LOGIN_PAGE,
                             true
                         )
-                    }
+                    }*/
                     /**
                      * need to handle in the ResetMpin Page......
                      *
@@ -128,7 +129,7 @@ class LoginScreenFrag :
                 if (isValidate()) {
                     loginViewModel.loginWithMpin(
                         findNavController(),
-                        (activity as MainActivity).appSharedPref,
+                        AppSharedPref,
                         ReqLoginWithMpin(
                             binding.etPhoenNum.text.toString(),
                             "${binding.pinOneEt.text}${binding.pinTwoEt.text}${binding.pinThreeEt.text}${binding.pinFourEt.text}"
@@ -147,7 +148,7 @@ class LoginScreenFrag :
                     if (isValidate()) {
                         loginViewModel.loginWithMpin(
                             findNavController(),
-                            (activity as MainActivity).appSharedPref,
+                            AppSharedPref,
                             ReqLoginWithMpin(
                                 binding.etPhoenNum.text.toString(),
                                 "${binding.pinOneEt.text}${binding.pinTwoEt.text}${binding.pinThreeEt.text}${binding.pinFourEt.text}"
@@ -179,11 +180,10 @@ class LoginScreenFrag :
                 if (it == "00") {
                     dialogBinding.didnotReceiveTv.text = getString(R.string.send_again)
                     dialogBinding.didnotReceiveTv.setOnClickListener {
-                        (activity as MainActivity).appSharedPref?.getStringValue(
+                        AppSharedPref?.getStringValue(
                             CUST_MOBILE
                         )?.let {
                             loginViewModel.getOtp(
-                                (activity as MainActivity).appSharedPref,
                                 it
                             )
                         }
@@ -202,7 +202,7 @@ class LoginScreenFrag :
                 dialogBinding.otpThreeEt.text.isNotEmpty() && dialogBinding.otpFourEt.text.isNotEmpty()
             ) {
                 loginViewModel.verifyOtp(
-                    (activity as MainActivity).appSharedPref,
+                    AppSharedPref,
                     mobile,
                     otp = "${dialogBinding.otpOneEt.text}${dialogBinding.otpTwoEt.text}" +
                             "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}"

@@ -100,13 +100,13 @@ class ProfileViewModel @Inject constructor(
         timer?.start()
     }
 
-    fun getCustomerDetails(appSharedPref: AppSharedPref) = viewModelScope.launch {
+    fun getCustomerDetails() = viewModelScope.launch {
         retrofitSetup.callApi(true, object : CallHandler<Response<RespGetCustomer>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetCustomer> {
                 return apiParams.getCustomerDetails(
-                    "Bearer ${appSharedPref.getStringValue(JWT_TOKEN).toString()}",
+                    "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                     ReqpendingInterstDueNew(
-                        appSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
+                        AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
                         AppUtility.getDeviceDetails()
                     )
                 )
@@ -130,11 +130,11 @@ class ProfileViewModel @Inject constructor(
                                 AppUtility.convertStringToJson(decryptData.toString())
 //                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
                             respPending?.let { resp ->
-                                appSharedPref.putStringValue(
+                                AppSharedPref.putStringValue(
                                     CUSTOMER_FULL_DATA,
                                     decryptData.toString()
                                 )
-                                appSharedPref.putStringValue(
+                                AppSharedPref.putStringValue(
                                     CUST_EMAIL,
                                     response.body()?.data?.email.toString()
                                 )
@@ -163,12 +163,12 @@ class ProfileViewModel @Inject constructor(
     }
 
     // {"status":"SUCCESS" , "statusCode":"200","message": "User Has Been Logout Successfully!"}
-    fun logout(navController: NavController, appSharedPref: AppSharedPref?) =
+    fun logout(navController: NavController) =
         viewModelScope.launch {
             retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
                     return apiParams.logOut(
-                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}"
+                        "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}"
                     )
                 }
 
@@ -176,16 +176,16 @@ class ProfileViewModel @Inject constructor(
                     try {
                         // Get the plain text response
                         if (response.body()?.statusCode == "200") {
-                            appSharedPref?.clearSharedPref()
+                            AppSharedPref?.clearSharedPref()
                             val backStack = navController.backQueue
-                            for (i in backStack) {
-                                Log.d(
-                                    TAG,
-                                    "success: ...${i.id}..--------.${i.destination.displayName}"
-                                )
+//                            for (i in backStack) {
+//                                Log.d(
+//                                    TAG,
+//                                    "success: ...${i.id}..--------.${i.destination.displayName}"
+//                                )
 //                                i.destination.route?.let { navController.popBackStack(it, true) }
 //                                navController.clearBackStack(i.id)
-                            }
+//                            }
                             val bundle = Bundle().apply {
                                 putBoolean(IS_LOGOUT, true)
                             }
@@ -208,14 +208,14 @@ class ProfileViewModel @Inject constructor(
             })
         }
 
-    fun getOtp(appSharedPref: AppSharedPref?, mobileNum: String) =
+    fun getOtp(mobileNum: String) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
                     return apiParams.getOtp(
 
-                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
                         ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails()),
                     )
                 }
@@ -241,12 +241,12 @@ class ProfileViewModel @Inject constructor(
             })
         }
 
-    fun verifyOtp(appSharedPref: AppSharedPref?, mobileNum: String, otp: String) =
+    fun verifyOtp(mobileNum: String, otp: String) =
         viewModelScope.launch {
             retrofitSetup.callApi(true, object : CallHandler<Response<ResponseVerifyOtp>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseVerifyOtp> {
                     return apiParams.verifyOtp(
-                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                         ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails()),
                     )
                 }
@@ -255,7 +255,7 @@ class ProfileViewModel @Inject constructor(
                     if (response.isSuccessful) {
                         response.body()?.let {
                             if (it.statusCode == "200") {
-                                appSharedPref?.putStringValue(CUST_MOBILE, mobileNum)
+                                AppSharedPref.putStringValue(CUST_MOBILE, mobileNum)
                                 verifyOtp.value = response.body()
 
                             } else {

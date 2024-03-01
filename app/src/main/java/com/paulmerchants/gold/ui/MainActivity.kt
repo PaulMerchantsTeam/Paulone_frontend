@@ -10,7 +10,6 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
@@ -21,7 +20,6 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.paulmerchants.gold.MainNavGraphDirections
 import com.paulmerchants.gold.R
@@ -31,21 +29,18 @@ import com.paulmerchants.gold.databinding.HeaderLayoutBinding
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.IS_SHOW_TXN
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
-import kotlin.time.Duration.Companion.seconds
 
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
-    PaymentResultWithDataListener {
+class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(){
     private lateinit var appUpdateManager: AppUpdateManager
     private val updateType = AppUpdateType.IMMEDIATE
     lateinit var navOption: NavOptions
@@ -53,7 +48,6 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
     lateinit var navOptionTop: NavOptions
     lateinit var navController: NavController
     lateinit var secureFiles: SecureFiles
-    var appSharedPref: AppSharedPref? = null
     val commonViewModel: CommonViewModel by viewModels()
     var amount: Double? = null   //will assign dynamically...
 
@@ -64,12 +58,12 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
     public override val mViewModel: CommonViewModel by viewModels()
     override fun getViewBinding() = ActivityMainBinding.inflate(layoutInflater)
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        appSharedPref = AppSharedPref()
-        appSharedPref?.start(this)
         context = WeakReference(this)
+        AppSharedPref.start(this)
         appUpdateManager = AppUpdateManagerFactory.create(this)
 //        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         AppUtility.changeStatusBarWithReqdColor(this, R.color.splash_screen_two)
@@ -91,6 +85,8 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.battery_main_nav_graph) as NavHostFragment
         navController = navHostFragment.navController
+
+
         navOption = NavOptions.Builder().setEnterAnim(R.anim.slide_in_right)
             .setExitAnim(R.anim.slide_out_left).setPopEnterAnim(R.anim.slide_in_left)
             .setPopExitAnim(R.anim.slide_out_right).build()
@@ -178,13 +174,19 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
                 }
             }
         }
+//        Log.e(
+//            TAG,
+//            "onCreate: ........${
+//                intent?.getBooleanExtra(IS_SHOW_TXN, false)
+//            }",
+//        )
 
+//        if (intent?.getBooleanExtra(IS_SHOW_TXN, false) == true) {
+//            navController.navigate(R.id.transactionFrag)
+//        }
 
     }
 
-    fun showQuickPayDialog() {
-
-    }
 
 
     fun changeHeader(hBinding: HeaderLayoutBinding, title: String, endIcon: Int) {
@@ -201,33 +203,23 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(),
     }
 
 
-    fun hideStatusBar() {
-        this.window.clearFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
-    }
-
-    fun showStatusBar() {
-        this.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-    }
-
-    override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
-        Log.i(
-            TAG,
-            "onPaymentSuccess: ......$p0........${p1?.orderId}.....${p1?.paymentId}------${p1?.signature}"
-        )
+//    override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+//        Log.i(
+//            TAG,
+//            "onPaymentSuccess: ......$p0........${p1?.orderId}.....${p1?.paymentId}------${p1?.signature}"
+//        )
 //        commonViewModel.paymentData.postValue(StatusPayment(true, p1))
 //        updatePaymentStatusToServer(StatusPayment("captured", p1))
-    }
+//    }
 
-    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
-        Log.i(
-            TAG,
-            "onPaymentError: -----------$p0.---$p1...${p2?.orderId}.....${p2?.paymentId}------${p2?.signature}"
-        )
+//    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+//        Log.i(
+//            TAG,
+//            "onPaymentError: -----------$p0.---$p1...${p2?.orderId}.....${p2?.paymentId}------${p2?.signature}"
+//        )
 //      commonViewModel.paymentData.postValue(StatusPayment(false, p2))
 //        updatePaymentStatusToServer(StatusPayment("not_captured", p2))
-    }
+//    }
 
 //    private fun updatePaymentStatusToServer(statusData: StatusPayment) {
 //        Log.d(TAG, "updatePaymentStatusToServer: $amount....$statusData")

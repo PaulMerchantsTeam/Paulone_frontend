@@ -34,12 +34,12 @@ class MapViewModel @Inject constructor(
     }
 
     fun getBranchWithPaging(
-        appSharedPref: AppSharedPref,
+        AppSharedPref: AppSharedPref,
     ): Flow<PagingData<PmlBranch>> {
         val pager = Pager(config = PagingConfig(10, enablePlaceholders = false)) {
             LocationPagingSource(
                 apiParams,
-                "Bearer ${appSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.JWT_TOKEN)}"
+                "Bearer ${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.JWT_TOKEN)}"
             )
         }.flow.cachedIn(viewModelScope)
         return pager
@@ -47,25 +47,25 @@ class MapViewModel @Inject constructor(
 
     fun searchBranchWithPaging(
         branchName: String,
-        appSharedPref: AppSharedPref,
+        AppSharedPref: AppSharedPref,
     ): Flow<PagingData<PmlBranch>> {
         val pager = Pager(config = PagingConfig(10, enablePlaceholders = false)) {
             SearchLocationPagingSource(
                 apiParams,
                 branchName,
-                "Bearer ${appSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.JWT_TOKEN)}"
+                "Bearer ${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.JWT_TOKEN)}"
             )
         }.flow.cachedIn(viewModelScope)
         return pager
     }
 
-//    fun getBranchLocation(appSharedPref: AppSharedPref?) =
+//    fun getBranchLocation(AppSharedPref: AppSharedPref?) =
 //        viewModelScope.launch {
 //            Log.d("TAG", "getLogin: //../........")
 //            retrofitSetup.callApi(true, object : CallHandler<Response<RespAllBranch>> {
 //                override suspend fun sendRequest(apiParams: ApiParams): Response<RespAllBranch> {
 //                    return apiParams.fetchAllBranch(
-//                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}"
+//                        "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}"
 //                    )
 //                }
 //

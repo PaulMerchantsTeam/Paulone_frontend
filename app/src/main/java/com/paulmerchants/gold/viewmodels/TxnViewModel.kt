@@ -35,13 +35,12 @@ class TxnViewModel @Inject constructor(
 
 
     fun getTxnHistory(
-        appSharedPref: AppSharedPref?,
     ): Flow<PagingData<Transactions>> {
         val pager = Pager(config = PagingConfig(10, enablePlaceholders = false)) {
             TxnPagingSource(
                 apiParams,
-                "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN)}",
-                appSharedPref?.getStringValue(Constants.CUSTOMER_ID).toString()
+                "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN)}",
+                AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString()
             )
         }.flow.cachedIn(viewModelScope)
         return pager

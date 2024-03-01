@@ -50,7 +50,7 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
         modifyHeaders()
         if (isForReset == true) {
             binding.apply {
-                titleWelcomTv.text = getString(R.string.reset_yr_pin)
+                titleWelcomTvResetMpin.text = getString(R.string.reset_yr_pin)
                 setUpMPinTv.hide()
                 pinCurrOneEt.hide()
                 pinCurrTwoEt.hide()
@@ -59,7 +59,7 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
             }
         } else {
             binding.apply {
-                titleWelcomTv.text = getString(R.string.chag_yr_pin)
+                titleWelcomTvResetMpin.text = getString(R.string.chag_yr_pin)
                 setUpMPinTv.show()
                 pinCurrOneEt.show()
                 pinCurrTwoEt.show()
@@ -143,10 +143,9 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
                         "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}"
                     ) {
                         resetMpinViewModel.resetForgetMpin(
-                            (activity as MainActivity).appSharedPref,
                             ReqResetForgetPin(
                                 confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
-                                mobileNo = (activity as MainActivity).appSharedPref?.getStringValue(
+                                mobileNo = AppSharedPref.getStringValue(
                                     CUST_MOBILE
                                 ).toString(),
                                 newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
@@ -165,11 +164,10 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
                         "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}"
                     ) {
                         resetMpinViewModel.changeMpin(
-                            (activity as MainActivity).appSharedPref,
                             ReqResetPin(
                                 "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
                                 "${binding.pinCurrOneEt.text}${binding.pinCurrTwoEt.text}${binding.pinCurrThreeEt.text}${binding.pinCurrFourEt.text}",
-                                (activity as MainActivity).appSharedPref?.getStringValue(CUST_MOBILE)
+                                AppSharedPref.getStringValue(CUST_MOBILE)
                                     .toString(),  //static for testing
                                 "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
                                 AppUtility.getDeviceDetails()

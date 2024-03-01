@@ -9,3 +9,8 @@ data class RespUpdatePaymentStatus(
     @SerializedName("status") val status: String,
     @SerializedName("statusCode") val statusCode: String,
 )
+/**
+ * {"status":"302","statusCode":"FAILURE",
+ * "message":"Order not found in system",
+ * "response_message":"Request Processed Successfully"}
+ */

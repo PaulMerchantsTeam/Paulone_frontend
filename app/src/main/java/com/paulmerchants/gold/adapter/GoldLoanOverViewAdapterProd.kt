@@ -98,10 +98,10 @@ class GoldLoanOverViewAdapterProd(
                         intDueAmountTv.show()
 //                        clickPayParent.show()
 
-                        outStaTitleTv.text =
-                            binding.root.context.getString(R.string.due_date)
-                        outStandValueTv.text =
-                            AppUtility.getDateFormat(actionItem.dueDate)?.trim().toString()
+//                        outStaTitleTv.text =
+//                            binding.root.context.getString(R.string.due_date)
+//                        outStandValueTv.text =
+//                            AppUtility.getDateFormat(actionItem.dueDate)?.trim().toString()
 //                        val duedate = AppUtility.numberOfDaysWrtCurrent(actionItem.dueDate)
 //                        val duedate = AppUtility.getCurrentDateOnly()
                         overDueDaysTv.text = "Due till date\n${actionItem.currentDate}"

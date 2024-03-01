@@ -1,6 +1,7 @@
 package com.paulmerchants.gold.ui.bottom
 
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -28,7 +29,9 @@ import com.paulmerchants.gold.model.MoreToComeModel
 import com.paulmerchants.gold.model.PrepaidCardModel
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.security.SecureFiles
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.ui.PaymentActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.hideShim
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
@@ -100,11 +103,11 @@ class HomeScreenFrag :
         Log.d(
             TAG,
             "onStart: .......MOBILE-----....${
-                (activity as MainActivity).appSharedPref?.getStringValue(
+                AppSharedPref.getStringValue(
                     Constants.CUST_MOBILE,
                 )
             }-------------------$.${
-                (activity as MainActivity).appSharedPref?.getStringValue(
+                AppSharedPref.getStringValue(
                     Constants.CUSTOMER_NAME,
                 )
             }"
@@ -247,6 +250,7 @@ class HomeScreenFrag :
             }
 //        val quickPayDialog = QuickPayDialog()
 //        quickPayDialog.setPaymentResultListener(this)
+
             findNavController().navigate(
                 R.id.quickPayDialog, bundle
             )
@@ -278,18 +282,18 @@ class HomeScreenFrag :
     private fun setProfileUi() {
         val userFirstName =
             AppUtility.getFirstName(
-                (activity as MainActivity).appSharedPref?.getStringValue(
+                AppSharedPref.getStringValue(
                     Constants.CUSTOMER_NAME
                 )
             )
         Log.d(TAG, "setProfileUi: ...............$userFirstName")
         binding.searchProfileParent.userName.text = "Hey ${
-            (activity as MainActivity).appSharedPref?.getStringValue(
+            AppSharedPref.getStringValue(
                 Constants.CUSTOMER_NAME,
             )?.substringBefore(" ")
         }"
         binding.searchProfileParent.firtLetterUser.text = "${
-            (activity as MainActivity).appSharedPref?.getStringValue(
+            AppSharedPref.getStringValue(
                 Constants.CUSTOMER_NAME,
             )?.first() ?: "U"
         }"
@@ -492,12 +496,12 @@ class HomeScreenFrag :
     /*    private fun updatePaymentStatusToServer(statusData: StatusPayment) {
             Log.d(TAG, "updatePaymentStatusToServer: ....$statusData")
             (activity as MainActivity).commonViewModel.updatePaymentStatus(
-                (activity as MainActivity).appSharedPref,
+                AppSharedPref,
                 status = statusData.status,
                 razorpay_payment_id = statusData.paymentData?.paymentId.toString(),
                 razorpay_order_id = statusData.paymentData?.orderId.toString(),
                 razorpay_signature = statusData.paymentData?.signature.toString(),
-                custId = (activity as MainActivity).appSharedPref?.getStringValue(Constants.CUSTOMER_ID)
+                custId = AppSharedPref.getStringValue(Constants.CUSTOMER_ID)
                     .toString(),
                 amount = 100.00,
                 contactCount = 0,
@@ -631,8 +635,8 @@ class HomeScreenFrag :
 //            currentDate, BuildConfig.SECRET_KEY_GEN
 //        )
 //        if (!(activity as MainActivity).commonViewModel.isCalled) {
-        (activity as MainActivity).commonViewModel.getPendingInterestDues((activity as MainActivity).appSharedPref)
-        (activity as MainActivity).commonViewModel.getLoanOutstanding((activity as MainActivity).appSharedPref)
+        (activity as MainActivity).commonViewModel.getPendingInterestDues(AppSharedPref)
+        (activity as MainActivity).commonViewModel.getLoanOutstanding(AppSharedPref)
 
 //            (activity as MainActivity).commonViewModel.isCalled = true
 //        }
@@ -669,8 +673,8 @@ class HomeScreenFrag :
             viewLifecycleOwner
         ) {
             it?.let {
-                for(i in it.getLoanOutstandingResponseData){
-                    i.currentDate =it.currentDate
+                for (i in it.getLoanOutstandingResponseData) {
+                    i.currentDate = it.currentDate
                 }
                 setLoanOverView(it.getLoanOutstandingResponseData)
             }

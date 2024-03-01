@@ -49,7 +49,7 @@ class CreditScoreScreenFrag :
                 constraintLayout10.show()
                 creditScoreParent.show()
                 aboutCreditScore.text = getString(R.string.overview)
-                aboutCreditScore.setTextColor(resources.getColor(R.color.splash_screen_one))
+                aboutCreditScore.setTextColor(ContextCompat.getColor(requireContext(),R.color.splash_screen_one))
                 billTimelyLimitedTv.show()
                 billTimelyLimitedTv.text = getString(R.string.timely_bill_paid)
                 lifecycleScope.launch {

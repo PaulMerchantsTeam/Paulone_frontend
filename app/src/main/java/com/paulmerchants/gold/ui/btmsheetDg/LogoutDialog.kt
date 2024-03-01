@@ -100,7 +100,6 @@ class LogoutDialog : BottomSheetDialogFragment() {
         quickPayPopupBinding.loginParentBtn.setOnClickListener {
             profileViewModel.logout(
                 findNavController(),
-                appSharedPref = (activity as MainActivity).appSharedPref
             )
             dismiss()
         }

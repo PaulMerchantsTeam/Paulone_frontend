@@ -29,6 +29,7 @@ import com.paulmerchants.gold.common.Constants.OTP_VERIFIED
 import com.paulmerchants.gold.common.Constants.SIGNUP_DONE
 import com.paulmerchants.gold.databinding.PhoneAuthFragmentBinding
 import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.*
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.diffColorText
@@ -126,19 +127,19 @@ class PhoenNumVerifiactionFragment :
     override fun onStart() {
         super.onStart()
         val backStack = findNavController().backQueue
-        for (i in backStack) {
+   /*     for (i in backStack) {
             Log.d(
                 "TAG", "STACK__COUNT_NAME: ...${i.id}..--------.${i.destination.displayName}"
             )
-        }
+        }*/
         if (authViewModel.isFrmLogout == true) {
-            (activity as MainActivity).commonViewModel.getLogin2((activity as MainActivity).appSharedPref)
+            (activity as MainActivity).commonViewModel.getLogin2(AppSharedPref)
         }
         //Welcome to Paul Gold,
         //we are happy to serve you!!
         callMpinNextFocus()
         callMpinConfirmNextFocus()
-        (activity as MainActivity).appSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)
+        AppSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)
             ?.let {
                 if (it != "") {
                     binding.signUpParentMain.etName.apply {
@@ -168,10 +169,8 @@ class PhoenNumVerifiactionFragment :
                     val mPin =
                         (binding.signUpParentMain.mpinOneEt.text.toString() + binding.signUpParentMain.mpinTwoEt.text.toString() + binding.signUpParentMain.mpinThreeEt.text.toString() + binding.signUpParentMain.mpinFourEt.text.toString())
                     authViewModel.setMpin(
-                        appSharedPref = (activity as MainActivity).appSharedPref,
                         confirmMPin = confirmPin,
                         setUpMPin = mPin,
-                        context = requireContext(),
                         email = binding.signUpParentMain.etEmailId.text.toString()
                     )
                 }
@@ -180,13 +179,13 @@ class PhoenNumVerifiactionFragment :
             }
 
         }
-        if ((activity as MainActivity).appSharedPref?.getBooleanValue(OTP_VERIFIED) == true) {
+        if (AppSharedPref?.getBooleanValue(OTP_VERIFIED) == true) {
             binding.fillOtpParent.hideView()
             binding.signUpParentMain.root.show()
         }
         if (pinValue == 100) {
             binding.apply {
-                titleWelcomTv.hide()
+                titleWelcomTvAuth.hide()
                 pleaseTv.hide()
                 etTv.hide()
                 etPhoenNum.hide()
@@ -207,7 +206,7 @@ class PhoenNumVerifiactionFragment :
                 "",
                 "",
                 "",
-                binding.titleWelcomTv
+                binding.titleWelcomTvAuth
             )
         }
         authViewModel.isCustomerExist.observe(viewLifecycleOwner) {
@@ -231,7 +230,7 @@ class PhoenNumVerifiactionFragment :
                 if (!it.userExist) {
                     hideAndShowSignUpScreen()
                 } else {
-                    (activity as MainActivity).appSharedPref?.putBoolean("IS_USER_EXIST", true)
+                    AppSharedPref?.putBoolean("IS_USER_EXIST", true)
                     findNavController().popBackStack(R.id.phoenNumVerifiactionFragment, true)
                     findNavController().navigate(R.id.loginScreenFrag)
                 }
@@ -251,7 +250,7 @@ class PhoenNumVerifiactionFragment :
                     delay(1000)
                 }
                 isOtpVerified = true
-                (activity as MainActivity).appSharedPref?.putBoolean(OTP_VERIFIED, isOtpVerified)
+                AppSharedPref?.putBoolean(OTP_VERIFIED, isOtpVerified)
 
             }
         }
@@ -261,7 +260,6 @@ class PhoenNumVerifiactionFragment :
                 if (!isMobileEntered) {
                     if (binding.etPhoenNum.text.isNotEmpty()) {
                         authViewModel.getCustomer(
-                            (activity as MainActivity).appSharedPref,
                             binding.etPhoenNum.text.toString(),
                             requireContext()
                         )
@@ -278,10 +276,8 @@ class PhoenNumVerifiactionFragment :
 
                         if (otp.isNotEmpty()) {
                             authViewModel.verifyOtp(
-                                (activity as MainActivity).appSharedPref,
                                 binding.etPhoenNum.text.toString(),
-                                otp,
-                                requireContext()
+                                otp
                             )
 
                         }
@@ -300,7 +296,7 @@ class PhoenNumVerifiactionFragment :
 //                            delay(1000)
 //                        }
 //                        isOtpVerified = true
-//                        (activity as MainActivity).appSharedPref?.putBoolean(OTP_VERIFIED, isOtpVerified)
+//                        AppSharedPref?.putBoolean(OTP_VERIFIED, isOtpVerified)
 //                        hideAndShowSignUpScreen()
 //                    } else {
 //                        Toast.makeText(
@@ -361,7 +357,6 @@ class PhoenNumVerifiactionFragment :
             } else {
                 if (binding.etPhoenNum.text.toString().isNotEmpty()) {
                     authViewModel.getOtp(
-                        appSharedPref = (activity as MainActivity).appSharedPref,
                         binding.etPhoenNum.text.toString()
                     )
                     authViewModel.timerStart()
@@ -374,7 +369,6 @@ class PhoenNumVerifiactionFragment :
                 if (it.code() == 200) {
                     if (binding.etPhoenNum.text.isNotEmpty()) {
                         authViewModel.getCustomer(
-                            (activity as MainActivity).appSharedPref,
                             binding.etPhoenNum.text.toString(),
                             requireContext()
                         )
@@ -382,8 +376,6 @@ class PhoenNumVerifiactionFragment :
                 }
             }
         }
-
-
     }
 
     private fun hideAndShowNumInputView() {
@@ -407,7 +399,7 @@ class PhoenNumVerifiactionFragment :
         customizeText()
         callMpinNextFocus()
         callMpinConfirmNextFocus()
-        (activity as MainActivity).appSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)
+        AppSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)
             ?.let {
                 if (it != "") {
                     binding.signUpParentMain.etName.apply {
@@ -465,20 +457,20 @@ class PhoenNumVerifiactionFragment :
                 "",
                 "",
                 "",
-                binding.titleWelcomTv
+                binding.titleWelcomTvAuth
             )
             binding.fillOtpParent.hideView()
         } else {
             diffColorText(
                 getString(R.string.this_may_take_some),
                 getString(R.string.us),
-                binding.titleWelcomTv
+                binding.titleWelcomTvAuth
             )
             lifecycleScope.launch {
                 binding.mainPgCons.progessTv.apply {
                     setTColor(getString(R.string.verifying), requireContext(), R.color.yellow_main)
                 }
-                binding.mainPgCons.cirStreakTimePg.startProgress(requireContext())
+                binding.mainPgCons.cirStreakTimePg.startProgress()
                 delay(1000)
                 binding.mainPgCons.progessTv.apply {
                     setTColor(
@@ -498,7 +490,7 @@ class PhoenNumVerifiactionFragment :
     }
 
     private fun hideAndShowSignUpDoneScreen() {
-        binding.titleWelcomTv.hideView()
+        binding.titleWelcomTvAuth.hideView()
         binding.mainPgCons.root.hideView()
         diffColorText(
             "And we are",
@@ -511,7 +503,7 @@ class PhoenNumVerifiactionFragment :
         )
 
         binding.createMpinAndSuccessMain.root.show()
-        (activity as MainActivity).appSharedPref?.putBoolean(SIGNUP_DONE, true)
+        AppSharedPref?.putBoolean(SIGNUP_DONE, true)
         lifecycleScope.launchWhenCreated {
             delay(2000)
             findNavController().popBackStack(R.id.phoenNumVerifiactionFragment, true)

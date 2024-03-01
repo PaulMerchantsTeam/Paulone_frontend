@@ -91,7 +91,7 @@
     <string name="loan_overview">LOAN OVERVIEW</string>
     <string name="overview">OverView:</string>
     <string name="search_for_specific_loans">Search for the specific loans</string>
-    <string name="you_have_taken_up_4_act">You have taken up X active loans. And they total upto INR XXXXXX</string>
+    <string name="you_have_taken_up_4_act">You have taken up X active loan, and the interest due is up to INR XXXXXX</string>
     <string name="open_loans">Open Loans</string>
     <string name="closed_loans">Closed Loans</string>
     <string name="view_details">VIEW DETAILS</string>
@@ -385,7 +385,7 @@
     <string name="loan_overview_cap">LOAN OVERVIEW</string>
     <string name="loan_tracking_made_easier_for_you">(Loan tracking made easier for you)</string>
     <string name="do_you_want_to_close_this_app">Do you want to close this app?</string>
-    <string name="forget_m_pin"><u>Forget M-Pin</u></string>
+    <string name="forget_m_pin"><u>Forget M-Pin?</u></string>
     <string name="about_us">About Us</string>
     <string name="status">Status:</string>
     <string name="privacy_policy_"><b><u>Privacy &amp; Policy</u></b></string>

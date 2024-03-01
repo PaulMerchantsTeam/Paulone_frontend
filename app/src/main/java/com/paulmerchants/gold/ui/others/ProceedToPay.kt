@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.animation.AnimationUtils
 import androidx.appcompat.widget.ViewUtils
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
@@ -63,8 +64,17 @@ class ProceedToPay :
 
             }
             selectUpiIdParent.setOnClickListener {
-                selectUpi.setBackgroundColor(resources.getColor(R.color.splash_screen_one))
-                selectPrecard.setBackgroundColor(resources.getColor(R.color.splash_screen_two))
+                selectUpi.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.splash_screen_one
+                    )
+                )
+                selectPrecard.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(), R.color.splash_screen_two
+                    )
+                )
                 proceedBtn = "2"
             }
             arrowDowmBhmIv.setOnClickListener {

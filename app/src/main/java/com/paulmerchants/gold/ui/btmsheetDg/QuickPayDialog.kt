@@ -4,6 +4,7 @@ package com.paulmerchants.gold.ui.btmsheetDg
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Build
 import android.os.Build.VERSION
 import android.os.Bundle
@@ -23,6 +24,7 @@ import com.paulmerchants.gold.common.Constants.IS_CUSTOM_AMOUNT
 import com.paulmerchants.gold.databinding.QuickPayPopupBinding
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.ui.PaymentActivity
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
@@ -128,7 +130,9 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                                     putString(CUST_ACC, dueLoans?.acNo.toString())
                                     putBoolean(IS_CUSTOM_AMOUNT, true)
                                 }
+
                                 findNavController().navigate(R.id.paymentModesFragNew, bundle)
+                                dismiss()
                             } else {
                                 "Please enter valid amount.".showSnackBar()
                             }
@@ -154,7 +158,10 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                         putString(CUST_ACC, dueLoans?.acNo.toString())
                         putBoolean(IS_CUSTOM_AMOUNT, false)
                     }
-                    findNavController().navigate(R.id.paymentModesFragNew, bundle)
+                    val intent = Intent(requireContext(), PaymentActivity::class.java)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+//                    findNavController().navigate(R.id.paymentModesFragNew, bundle)
 //                    createOrder(it1)
                 }
 

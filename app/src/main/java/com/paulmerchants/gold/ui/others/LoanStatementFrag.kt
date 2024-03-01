@@ -12,6 +12,7 @@ import com.paulmerchants.gold.databinding.LoanStatementBinding
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.model.RespLoanStatment
 import com.paulmerchants.gold.security.SecureFiles
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.getScreenBitmap
@@ -45,7 +46,7 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
         val fromDate = AppUtility.getCurrentDate()
         val toDate = ""
 
-        commonViewModel.getLoanClosureReceipt((activity as MainActivity).appSharedPref,loanOutStanding?.AcNo.toString())
+        commonViewModel.getLoanClosureReceipt(AppSharedPref,loanOutStanding?.AcNo.toString())
         commonViewModel.getRespClosureReceiptLiveData.observe(viewLifecycleOwner) {
             it?.let {
 
@@ -53,7 +54,6 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
         }
         //opening date to till now.
         commonViewModel.getLoanStatement(
-            (activity as MainActivity).appSharedPref,
             loanOutStanding?.AcNo.toString(),
             loanOutStanding?.openDate.toString(),
             fromDate,
@@ -93,9 +93,9 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
     private fun setData(loanOutStanding: RespGetLoanOutStandingItem?) {
         binding.apply {
             loanNumTv.text = "Loan Number - ${loanOutStanding?.AcNo}"
-            if (loanOutStanding?.openDate !=null && loanOutStanding?.openDate!= ""){
+            if (loanOutStanding?.openDate !=null && loanOutStanding.openDate!= ""){
                 loanStateDateLargeTv.text =
-                    "Last Statement (${AppUtility.getDateWithYearOrdinals(loanOutStanding?.openDate.toString())} - ${AppUtility.getCurrentDateOnly()})"
+                    "Last Statement (${AppUtility.getDateWithYearOrdinals(loanOutStanding.openDate)} - ${AppUtility.getCurrentDateOnly()})"
             }
 
         }

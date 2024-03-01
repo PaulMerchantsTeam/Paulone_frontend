@@ -7,6 +7,7 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.TransacReceiptBinding
 import com.paulmerchants.gold.model.newmodel.RespPayReceipt
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.Constants.PAYMENT_ID
@@ -29,7 +30,6 @@ class PaidReceiptFrag :
         super.onStart()
         paymentId?.let {
             txnReceiptViewModel.getPaidReceipt(
-                (activity as MainActivity).appSharedPref,
                 it
             )
         }
@@ -66,29 +66,29 @@ class PaidReceiptFrag :
         }
         binding.headerMain.titlePageTv.text = ""
         binding.headerMain.backIv.setOnClickListener {
-            findNavController().popBackStack(R.id.paidReceiptFrag, true)
-            findNavController().navigate(R.id.homeScreenFrag)
+            findNavController().navigateUp()
         }
     }
 
     private fun setData(it: RespPayReceipt) {
         binding.apply {
-            amountPaid.text = "${getString(R.string.Rs)}${it.data.entityPayment.amount}"
+            amountPaid.text = "${getString(R.string.Rs)}${it.data.entityPayment?.amount}"
             paymentConfirmIv.setImageResource(
-                if (it.data.entityPayment.captured) {
+                if (it.data.entityPayment?.captured == true) {
                     R.drawable.pay_confirm_tick_icon
                 } else {
                     R.drawable.baseline_error
                 }
             )
-            statusPaymnet.text = if (it.data.entityPayment.captured) "SUCCESS!" else "FAIL!"
-            dateOfTrans.text = it.data.entityPayment.created_at
-            transIdNumTv.text = it.data.entityPayment.paymentId ?: "NA"
-            paidFromNameTv.text = it.data.entityPayment.method
-            transTypeTv.text = it.data.entityPayment.email
-            viewRefNumTv.text = it.data.entityPayment.contact
+            statusPaymnet.text =
+                if (it.data.entityPayment?.captured == true) "SUCCESS!" else "FAIL!"
+            dateOfTrans.text = it.data.entityPayment?.created_at
+            transIdNumTv.text = it.data.entityPayment?.paymentId ?: "NA"
+            paidFromNameTv.text = it.data.entityPayment?.method
+            transTypeTv.text = it.data.entityPayment?.email
+            viewRefNumTv.text = it.data.entityPayment?.contact
             paidToNameTv.text = it.data.accNo ?: "NA"
-            reasonOFCancelTv.text = it.data.entityPayment.error_reason
+            reasonOFCancelTv.text = it.data.entityPayment?.error_reason
 //            cardNumTv.text = ""
 //            paidToNameTv.text = ""
 //            paidToCardNumTv.text = ""

@@ -61,13 +61,15 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
     override fun getViewBinding() = ActivityMapBinding.inflate(layoutInflater)
     private var cityName: String = ""
     private val mapLocationAdapter = MapLocationAdapter(::OnLocationClicked, ::onMarkLocation)
-    private val places: ArrayList<com.paulmerchants.gold.place.Place> = arrayListOf()
+
+    //    private val places: ArrayList<com.paulmerchants.gold.place.Place> = arrayListOf()
     private val mapViewModel: MapViewModel by viewModels()
 
 
     private fun onMarkLocation(pmlBranch: PmlBranch) {
         val pm22 = LatLng(pmlBranch.branchLat.toDouble(), pmlBranch.branchLng.toDouble())
         Log.d(TAG, "addMarkers: $pm22")
+        map?.clear()
         map?.addMarker(
             MarkerOptions()
                 .position(pm22)
@@ -106,18 +108,14 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
     private var likelyPlaceAddresses: Array<String?> = arrayOfNulls(0)
     private var likelyPlaceAttributions: Array<List<*>?> = arrayOfNulls(0)
     private var likelyPlaceLatLngs: Array<LatLng?> = arrayOfNulls(0)
-    private lateinit var appSharedPref: AppSharedPref
     override val mViewModel: CommonViewModel by viewModels()
 
     // [START maps_current_place_on_create]
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        appSharedPref = AppSharedPref()
-        appSharedPref.start(this)
         lifecycleScope.launch {
             try {
-                mapViewModel.getBranchWithPaging(appSharedPref).collectLatest { data ->
+                mapViewModel.getBranchWithPaging(AppSharedPref).collectLatest { data ->
                     Log.d(TAG, "onCreate: ..dattttttttt........}")
                     showDataToRv(data)
                 }
@@ -174,7 +172,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         binding.viewAllLocation.setOnClickListener {
             lifecycleScope.launch {
                 try {
-                    mapViewModel.getBranchWithPaging(appSharedPref).collectLatest { data ->
+                    mapViewModel.getBranchWithPaging(AppSharedPref).collectLatest { data ->
                         Log.d(TAG, "onCreate: ..dattttttttt........}")
                         showDataToRv(data)
                     }
@@ -254,7 +252,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
                     Log.d(TAG, "onTextChanged: ........$p0")
                     lifecycleScope.launch {
                         try {
-                            mapViewModel.searchBranchWithPaging(p0.toString(), appSharedPref)
+                            mapViewModel.searchBranchWithPaging(p0.toString(), AppSharedPref)
                                 .collectLatest { data ->
                                     Log.d(TAG, "onCreate: ..dattttttttt........}")
                                     showDataToRv(data)
@@ -345,7 +343,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         }
     */
 
-
+    @Suppress("OverridingDeprecatedMember")
     // [START maps_current_place_on_map_ready]
     override fun onMapReady(map: GoogleMap) {
         this.map = map
@@ -397,6 +395,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
             override fun getInfoWindow(arg0: Marker): View? {
                 return null
             }
+
 
             override fun getInfoContents(marker: Marker): View {
                 // Inflate the layouts for the info window, title and snippet.

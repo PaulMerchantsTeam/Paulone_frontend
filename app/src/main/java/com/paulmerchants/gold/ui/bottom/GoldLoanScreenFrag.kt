@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.ui.bottom
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.viewModels
@@ -15,6 +16,7 @@ import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.model.newmodel.PayAll
 import com.paulmerchants.gold.model.newmodel.PayAllnOneGoDataTobeSent
 import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.ui.PaymentActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.hide
@@ -122,7 +124,10 @@ class GoldLoanScreenFrag :
                 putString(Constants.CUST_ACC, actionItem.AcNo.toString())
             }
             goldScreenViewModel.isCalledGoldLoanScreen = true
-            findNavController().navigate(R.id.paymentModesFragNew, bundle)
+            val intent = Intent(requireContext(), PaymentActivity::class.java)
+            intent.putExtras(bundle)
+            startActivity(intent)
+//            findNavController().navigate(R.id.paymentModesFragNew, bundle)
         }
     }
 
@@ -154,7 +159,7 @@ class GoldLoanScreenFrag :
                     goldLoanParentMain.closedLoanTv.setBackgroundColor(resources.getColor(R.color.splash_screen_two))
                     setUiFoOpenGoldLoans()
                     lastStatementAdapter.notifyDataSetChanged()
-                    binding.constraintLayout12.show()
+                    binding.constraintLayout12.hide()
                     binding.ttlAmountNumTv.text = "INR 0"
                 }
 
@@ -169,7 +174,7 @@ class GoldLoanScreenFrag :
                 }
             }
 
-            goldScreenViewModel.getLoanOutstanding((activity as MainActivity).appSharedPref)
+            goldScreenViewModel.getLoanOutstanding()
 
             goldScreenViewModel.getRespGetLoanOutStandingLiveData.observe(viewLifecycleOwner) {
                 it?.let {
@@ -204,6 +209,9 @@ class GoldLoanScreenFrag :
 //                    putBoolean(IS_FROM_ALL_IN_ONE_GO, true)
                     }
                     goldScreenViewModel.isCalledGoldLoanScreen = true
+                    val intent = Intent(requireContext(), PaymentActivity::class.java)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
                     findNavController().navigate(R.id.paymentModesFragNew, bundle)
                 } else {
                     lastStatementAdapter.isShowSelctOption(true)
@@ -243,17 +251,34 @@ class GoldLoanScreenFrag :
                 totalAmount += i.payableAmount
             }
         }
-        AppUtility.diffColorText(
-            "You have taken up ",
-            "${open.size}",
-            " active loans. And they total interest due up to ",
-            "INR $totalAmount", "", "", binding.goldLoanParentMain.lonOverDesc
-        )
 
-        "You have taken up ${open.size} active loans. And they total interest due up to INR $totalAmount"
+        when {
+            open.size == 1 -> {
+                AppUtility.diffColorText(
+                    "You have ",
+                    "${open.size}",
+                    " active loan, and the interest due is up to ",
+                    "INR $totalAmount", "", "", binding.goldLoanParentMain.lonOverDesc
+                )
+            }
+
+            open.size > 1 -> {
+                AppUtility.diffColorText(
+                    "You have ",
+                    "${open.size}",
+                    " active loans, and their total interest due is up to ",
+                    "INR $totalAmount", "", "", binding.goldLoanParentMain.lonOverDesc
+                )
+            }
+
+            else -> {
+
+            }
+        }
+
         val notZeroInterestData = open.filter { it.payableAmount != 0.0 }
         if (notZeroInterestData.isNotEmpty()) {
-            binding.constraintLayout12.show()
+            binding.constraintLayout12.hide()
             setData(notZeroInterestData as ArrayList<RespGetLoanOutStandingItem>)
         } else {
             binding.constraintLayout12.hide()

@@ -135,14 +135,14 @@ class CommonViewModel @Inject constructor(
      */
 
 
-    fun getPendingInterestDues(appSharedPref: AppSharedPref?) = viewModelScope.launch {
+    fun getPendingInterestDues(AppSharedPref: AppSharedPref?) = viewModelScope.launch {
 
         retrofitSetup.callApi(true, object : CallHandler<Response<RespPendingInterstDue>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<RespPendingInterstDue> {
                 return apiParams.getPendingInterestDues(
-                    "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                    "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
                     ReqpendingInterstDueNew(
-                        appSharedPref?.getStringValue(CUSTOMER_ID).toString(),
+                        AppSharedPref?.getStringValue(CUSTOMER_ID).toString(),
                         AppUtility.getDeviceDetails()
                     )
                 )
@@ -183,8 +183,8 @@ class CommonViewModel @Inject constructor(
                         e.printStackTrace()
                     }
                 } else if (response.code() == 401) {
-                    if (appSharedPref != null) {
-                        getLogin2(appSharedPref)
+                    if (AppSharedPref != null) {
+                        getLogin2(AppSharedPref)
                     }
                     Log.d("FAILED_401", "400000111111: ...............${response.body()}")
                     val gson = Gson()
@@ -206,13 +206,13 @@ class CommonViewModel @Inject constructor(
 
     }
 
-    fun createOrder(appSharedPref: AppSharedPref?, reqCreateOrder: ReqCreateOrder) =
+    fun createOrder(AppSharedPref: AppSharedPref?, reqCreateOrder: ReqCreateOrder) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
                     return apiParams.createOrder(
-                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
                         reqCreateOrder
                     )
                 }
@@ -242,8 +242,8 @@ class CommonViewModel @Inject constructor(
                             RespCommon::class.java
                         )
                         tokenExpiredResp.value = respFail
-                        if (appSharedPref != null) {
-                            getLogin2(appSharedPref)
+                        if (AppSharedPref != null) {
+                            getLogin2(AppSharedPref)
                         }
                     }
 
@@ -260,7 +260,7 @@ class CommonViewModel @Inject constructor(
 
 
     fun updatePaymentStatus(
-        appSharedPref: AppSharedPref?,
+        AppSharedPref: AppSharedPref?,
         status: String?,
         razorpay_payment_id: String,
         razorpay_order_id: String,
@@ -275,7 +275,7 @@ class CommonViewModel @Inject constructor(
         retrofitSetup.callApi(false, object : CallHandler<Response<*>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
                 return apiParams.updatePaymentStatus(
-                    "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                    "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
                     amount = amount,
                     contactCount = contactCount,
                     companyName = companyName,
@@ -316,8 +316,8 @@ class CommonViewModel @Inject constructor(
                         RespCommon::class.java
                     )
                     tokenExpiredResp.value = respFail
-                    if (appSharedPref != null) {
-                        getLogin2(appSharedPref)
+                    if (AppSharedPref != null) {
+                        getLogin2(AppSharedPref)
                     }
                 }
                 AppUtility.hideProgressBar()
@@ -331,7 +331,7 @@ class CommonViewModel @Inject constructor(
 
     }
 
-    fun getLogin2(appSharedPref: AppSharedPref?) = viewModelScope.launch {
+    fun getLogin2(AppSharedPref: AppSharedPref?) = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
@@ -347,12 +347,12 @@ class CommonViewModel @Inject constructor(
             override fun success(response: Response<LoginNewResp>) {
                 Log.d("TAG", "success: ......$response")
                 response.body()?.statusCode?.let {
-                    appSharedPref?.putStringValue(
+                    AppSharedPref?.putStringValue(
                         Constants.AUTH_STATUS,
                         it
                     )
                 }
-                response.body()?.token?.let { appSharedPref?.putStringValue(JWT_TOKEN, it) }
+                response.body()?.token?.let { AppSharedPref?.putStringValue(JWT_TOKEN, it) }
                 AppUtility.hideProgressBar()
             }
 
@@ -364,14 +364,14 @@ class CommonViewModel @Inject constructor(
         })
     }
 
-    fun getLoanOutstanding(appSharedPref: AppSharedPref?) = viewModelScope.launch {
+    fun getLoanOutstanding(AppSharedPref: AppSharedPref?) = viewModelScope.launch {
 
         retrofitSetup.callApi(true, object : CallHandler<Response<RespGetLOanOutStanding>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetLOanOutStanding> {
                 return apiParams.getLoanOutstanding(
-                    "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                    "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
                     ReqpendingInterstDueNew(
-                        appSharedPref?.getStringValue(CUSTOMER_ID).toString(),
+                        AppSharedPref?.getStringValue(CUSTOMER_ID).toString(),
                         AppUtility.getDeviceDetails()
                     )
                 )
@@ -444,13 +444,13 @@ class CommonViewModel @Inject constructor(
         AppUtility.hideProgressBar()
     }*/
 
-    fun getLoanClosureReceipt(appSharedPref: AppSharedPref?, accNum: String) =
+    fun getLoanClosureReceipt(AppSharedPref: AppSharedPref?, accNum: String) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
                     return apiParams.getLoanClosureReceipt(
-                        "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
                         ReGetLoanClosureReceipNew(
                             accNum,
                             AppUtility.getDeviceDetails()
@@ -558,7 +558,6 @@ class CommonViewModel @Inject constructor(
 
 
     fun getLoanStatement(
-        appSharedPref: AppSharedPref?,
         accNum: String,
         fromDat: String,
         toDate: String,
@@ -568,7 +567,7 @@ class CommonViewModel @Inject constructor(
         retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
                 return apiParams.getLoanStatement(
-                    "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                    "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
                     ReqGetLoanStatement(accNum, fromDat, toDate, AppUtility.getDeviceDetails())
                 )
             }

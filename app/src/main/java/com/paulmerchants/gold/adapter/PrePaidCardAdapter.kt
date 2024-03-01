@@ -21,7 +21,7 @@ class PrePaidCardAdapter(private val onPayDueClicked: (PrepaidCardModel) -> Unit
     )
 
     override fun onBindViewHolder(holder: PrepaidCardVIewHolder, position: Int) {
-        holder.bind(getItem(position), position,onPayDueClicked)
+        holder.bind(getItem(position),onPayDueClicked)
     }
 
     companion object {
@@ -44,7 +44,7 @@ class PrePaidCardAdapter(private val onPayDueClicked: (PrepaidCardModel) -> Unit
     inner class PrepaidCardVIewHolder(private val binding: YourCardsLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(dueLoans: PrepaidCardModel, position: Int,clicked: (PrepaidCardModel) -> Unit) {
+        fun bind(dueLoans: PrepaidCardModel,clicked: (PrepaidCardModel) -> Unit) {
             binding.apply {
                 cardHolderName.text = dueLoans.name
                 viewLoanBtn.setOnClickListener {

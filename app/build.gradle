@@ -23,8 +23,8 @@ android {
         applicationId "com.paulmerchants.gold"
         minSdk 23
         targetSdk 33
-        versionCode 10
-        versionName "1.0.10_gold"
+        versionCode 11
+        versionName "1.0.11"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -71,6 +71,7 @@ android {
             matchingFallbacks = ['release']
             debuggable false
         }
+
 //        debug {
 //            firebaseAppDistribution {
 //                releaseNotes "adding distribution type"
@@ -134,7 +135,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
 
     //encrypted shared Preferences
-    implementation("androidx.security:security-crypto:1.0.0")
+    implementation("androidx.security:security-crypto:1.1.0-alpha04")
 
 //    implementation 'com.google.android.gms:play-services-safetynet:18.0.1'
     //refresh

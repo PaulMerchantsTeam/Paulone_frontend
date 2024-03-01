@@ -3,21 +3,16 @@ package com.paulmerchants.gold.utility
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
-import android.app.AlertDialog
-import android.app.Dialog
+import android.app.Activity
 import android.content.Context
-import android.content.res.Resources.Theme
+import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,22 +20,43 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.transition.Fade
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.dialog.MaterialDialogs
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.paulmerchants.gold.R
-import com.paulmerchants.gold.adapter.*
+import com.paulmerchants.gold.adapter.GoldLoanOverViewAdapter
+import com.paulmerchants.gold.adapter.HomeSweetBillsAdapter
+import com.paulmerchants.gold.adapter.MenuServicesAdapter
+import com.paulmerchants.gold.adapter.NotificationAdapter
+import com.paulmerchants.gold.databinding.AppCloseDialogBinding
 import com.paulmerchants.gold.databinding.DialogPinRestSuccessBinding
-import com.paulmerchants.gold.databinding.OtpFillLayoutBinding
-import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
 import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.MenuServices
 import com.paulmerchants.gold.model.Notifications
-import com.paulmerchants.gold.security.sharedpref.AppSharedPref
-import com.paulmerchants.gold.viewmodels.AuthViewModel
-import com.paulmerchants.gold.viewmodels.ProfileViewModel
+import com.paulmerchants.gold.ui.MainActivity
 
+const val IS_SHOW_TXN = "IS_SHOW_TXN"
+fun Activity.showCustomDialogFoPaymentStatus(message: String, isClick: (Boolean) -> Unit) {
+    val binding = AppCloseDialogBinding.inflate(layoutInflater)
+    val dialog = BottomSheetDialog(this)
+    dialog.setCancelable(true)
+    dialog.setContentView(binding.root)
+    binding.quickPay.text = "Payment Status"
+    binding.upcomDTv.apply {
+        text = message
+        show()
+    }
+    binding.cancelDgBtn.setOnClickListener {
+        dialog.dismiss()
+    }
+    binding.loginParentBtn.setOnClickListener {
+        isClick(true)
+        dialog.dismiss()
+        finish()
+    }
+    dialog.show()
+}
 
 fun ImageView.startCustomAnimation(drawable: Int) {
     val animationDrawable: AnimationDrawable
@@ -357,12 +373,12 @@ fun RecyclerView.setServicesUi(
         context.getString(R.string.check_ye_spent),
         ""
     )
-    val service3 = MenuServices(
-        103,
-        context.getString(R.string.app_Setting),
-        context.getString(R.string.yr_pref),
-        ""
-    )
+//    val service3 = MenuServices(
+//        103,
+//        context.getString(R.string.app_Setting),
+//        context.getString(R.string.yr_pref),
+//        ""
+//    )
     val service4 = MenuServices(
         104,
         context.getString(R.string.anything_fr_us),
@@ -437,7 +453,7 @@ fun View.enableButton(context: Context) {
 
 }
 
-fun CircularProgressIndicator.startProgress(context: Context) {
+fun CircularProgressIndicator.startProgress() {
     isIndeterminate = true
     progress = 50
 }

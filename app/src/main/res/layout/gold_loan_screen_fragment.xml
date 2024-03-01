@@ -75,6 +75,7 @@
         android:layout_height="0dp"
         android:background="@color/splash_screen_two"
         android:paddingHorizontal="@dimen/screen_start_margin"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

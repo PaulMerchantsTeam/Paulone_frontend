@@ -11,6 +11,7 @@ import com.paulmerchants.gold.adapter.AllTxnAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.AllTxnFragBinding
 import com.paulmerchants.gold.model.newmodel.Transactions
+import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.MapActivity
 import com.paulmerchants.gold.utility.AppUtility
@@ -52,7 +53,7 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
 
         lifecycleScope.launch {
             try {
-                txnViewModel.getTxnHistory((activity as MainActivity).appSharedPref)
+                txnViewModel.getTxnHistory()
                     .collectLatest { data ->
                         Log.d("TAG", "onCreate: ..dattttttttt........}")
                         setTransaction(data)

@@ -22,6 +22,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.text.TextUtils
 import android.text.format.DateFormat
@@ -34,6 +35,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -42,6 +44,7 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -54,6 +57,7 @@ import com.itextpdf.text.pdf.PdfWriter
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants
+import com.paulmerchants.gold.databinding.AppCloseDialogBinding
 import com.paulmerchants.gold.databinding.NoInternetDgBinding
 import com.paulmerchants.gold.databinding.ProgressLayoutBinding
 import com.paulmerchants.gold.model.ActionItem
@@ -99,38 +103,58 @@ Note: These tags are need to be set under the TextView.
  */
 
 object AppUtility {
-/*    val thePartOne = ""
-    val thePartTwo = ""
-    val thePartThree = ""
-    val thePartFour = ""
-    fun getEncodedApiKey() {
-        val plainApiKey = BuildConfig.MAPS_API_KEY //
-        val encodedApiKey: String = String(
-            Base64.encode(
-                Base64.encode(
-                    plainApiKey.toByteArray(),
-                    Base64.DEFAULT
-                ),
-                Base64.DEFAULT
-            )
-        )
-        Log.i("AppUtility", "getEncodedApiKey: $encodedApiKey")
-    }*/
 
-/*    fun getSplitedDecodedApiKey(): String {
-        return String(
-            Base64.decode(
-                Base64.decode(
-                    "U2YyYk5lV1RqUkRJM" +
-                            "3JrcFdMVmRHVGxkVlpN" +
-                            "VUVNMldFcEtMVGRYVVRO" +
-                            "ck0zQkplVjgzY1daTgo=",
+    fun Activity.showCustomDialogForRenewCard(onOkClick: (Boolean) -> Unit) {
+        val payClose = AppCloseDialogBinding.inflate(layoutInflater)
+        val dialog = BottomSheetDialog(this)
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        payClose.apply {
+            quickPay.text = "Do you want to cancel the Payment?"
+        }
+        payClose.loginParentBtn.setOnClickListener {
+            onOkClick(true)
+            dialog.dismiss()
+
+        }
+        payClose.cancelDgBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(false)
+        dialog.setContentView(payClose.root)
+        dialog.show()
+    }
+    /*    val thePartOne = ""
+        val thePartTwo = ""
+        val thePartThree = ""
+        val thePartFour = ""
+        fun getEncodedApiKey() {
+            val plainApiKey = BuildConfig.MAPS_API_KEY //
+            val encodedApiKey: String = String(
+                Base64.encode(
+                    Base64.encode(
+                        plainApiKey.toByteArray(),
+                        Base64.DEFAULT
+                    ),
                     Base64.DEFAULT
-                ),
-                Base64.DEFAULT
+                )
             )
-        )
-    }*/
+            Log.i("AppUtility", "getEncodedApiKey: $encodedApiKey")
+        }*/
+
+    /*    fun getSplitedDecodedApiKey(): String {
+            return String(
+                Base64.decode(
+                    Base64.decode(
+                        "U2YyYk5lV1RqUkRJM" +
+                                "3JrcFdMVmRHVGxkVlpN" +
+                                "VUVNMldFcEtMVGRYVVRO" +
+                                "ck0zQkplVjgzY1daTgo=",
+                        Base64.DEFAULT
+                    ),
+                    Base64.DEFAULT
+                )
+            )
+        }*/
 
     fun openUrl(context: Context, uri: String) {
         val openURL = Intent(Intent.ACTION_VIEW)
@@ -325,7 +349,7 @@ object AppUtility {
                                 callback(bitmap)
                             }
                             // possible to handle other result codes ...
-                        }, Handler()
+                        }, Handler(Looper.getMainLooper())
                     )
                 }
             } catch (e: IllegalArgumentException) {

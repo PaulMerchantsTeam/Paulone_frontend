@@ -282,4 +282,5 @@
         android:id="@+id/resetMpinDialog"
         android:name="com.paulmerchants.gold.ui.btmsheetDg.ResetMpinDialog"
         android:label="ResetMpinDialog" />
+
 </navigation>

@@ -35,7 +35,7 @@ class SplashViewModel @Inject constructor(
         Log.d(TAG, ": init_")
     }
 
-    fun getLogin2(appSharedPref: AppSharedPref?) = viewModelScope.launch {
+    fun getLogin2() = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
@@ -50,8 +50,8 @@ class SplashViewModel @Inject constructor(
 
             override fun success(response: Response<LoginNewResp>) {
                 Log.d("TAG", "success: ......$response")
-                response.body()?.statusCode?.let { appSharedPref?.putStringValue(AUTH_STATUS, it) }
-                response.body()?.token?.let { appSharedPref?.putStringValue(JWT_TOKEN, it) }
+                response.body()?.statusCode?.let { AppSharedPref.putStringValue(AUTH_STATUS, it) }
+                response.body()?.token?.let { AppSharedPref.putStringValue(JWT_TOKEN, it) }
                 AppUtility.hideProgressBar()
             }
 

@@ -8,7 +8,7 @@
 
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/titleWelcomTv"
+        android:id="@+id/titleWelcomTvAuth"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_82sdp"
@@ -35,7 +35,7 @@
         app:layout_constraintBottom_toTopOf="@+id/proceedAuthBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleWelcomTv"
+        app:layout_constraintTop_toBottomOf="@+id/titleWelcomTvAuth"
         app:layout_constraintVertical_bias="0.13999999">
 
         <TextView
@@ -107,7 +107,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleWelcomTv">
+        app:layout_constraintTop_toBottomOf="@+id/titleWelcomTvAuth">
 
         <TextView
             android:id="@+id/pleaseOtpTv"

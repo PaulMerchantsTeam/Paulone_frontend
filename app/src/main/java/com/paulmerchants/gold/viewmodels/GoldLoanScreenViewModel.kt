@@ -55,14 +55,14 @@ class GoldLoanScreenViewModel @Inject constructor(
         isCalledGoldLoanScreen = false
     }
 
-    fun getLoanOutstanding(appSharedPref: AppSharedPref?) = viewModelScope.launch {
+    fun getLoanOutstanding() = viewModelScope.launch {
 
         retrofitSetup.callApi(true, object : CallHandler<Response<RespGetLOanOutStanding>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetLOanOutStanding> {
                 return apiParams.getLoanOutstanding(
-                    "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                    "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                     ReqpendingInterstDueNew(
-                        appSharedPref?.getStringValue(Constants.CUSTOMER_ID).toString(),
+                        AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
                         AppUtility.getDeviceDetails()
                     )
                 )

@@ -12,7 +12,7 @@ data class GetPendingInrstDueRespItem(
     @SerializedName("fine") val fine: Double,
     @SerializedName("interestDue") val interestDue: Double,
     @SerializedName("productName") val productName: String,
-    @SerializedName("payableAmount") val payableAmount: Double?,
+    @SerializedName("payableAmount") val payableAmount: Double?,  //!=0.0
     var currentDate: String,
 ) : Parcelable
 

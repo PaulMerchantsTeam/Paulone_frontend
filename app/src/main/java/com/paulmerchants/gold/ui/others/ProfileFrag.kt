@@ -69,40 +69,40 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
 
     override fun onStart() {
         super.onStart()
-
+        binding.appVersion.text = "Paul One ${BuildConfig.VERSION_NAME}"
         val backStack = findNavController().backQueue
-        for (i in backStack) {
-            showLogI("${i.id}..--------.${i.destination.displayName}")
-        }
-        if ((activity as MainActivity).appSharedPref?.getStringValue(CUSTOMER_FULL_DATA)
+//        for (i in backStack) {
+//            showLogI("${i.id}..--------.${i.destination.displayName}")
+//        }
+        if (AppSharedPref.getStringValue(CUSTOMER_FULL_DATA)
                 ?.isNotEmpty() == true
         ) {
             val decryptData =
-                (activity as MainActivity).appSharedPref?.getStringValue(CUSTOMER_FULL_DATA)
+                AppSharedPref.getStringValue(CUSTOMER_FULL_DATA)
             val respPending: RespCustomersDetails? =
                 AppUtility.convertStringToJson(decryptData.toString())
             respPending?.let {
                 binding.nameUserTv.text = it.DisplayName ?: "NA"
                 it.DisplayName?.let {
-                    (activity as MainActivity).appSharedPref?.putStringValue(
+                    AppSharedPref.putStringValue(
                         Constants.CUSTOMER_NAME,
                         it
                     )
                 }
                 binding.emailUserIv.text =
-                    (activity as MainActivity).appSharedPref?.getStringValue(Constants.CUST_EMAIL)
+                    AppSharedPref.getStringValue(Constants.CUST_EMAIL)
                 binding.userNumTv.text = it.MobileNo ?: "NA"
                 binding.addressTv.text = "Address: ${it.MailingAddress ?: "NA"}"
 //              Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
             }
         } else {
-            (activity as MainActivity).appSharedPref?.let { profileViewModel.getCustomerDetails(it) }
+            profileViewModel.getCustomerDetails()
         }
         profileViewModel.getRespCustomersDetailsLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 binding.nameUserTv.text = "Name: ${it.respGetCustomer.DisplayName ?: "NA"}"
                 it.respGetCustomer.DisplayName?.let {
-                    (activity as MainActivity).appSharedPref?.putStringValue(
+                    AppSharedPref.putStringValue(
                         Constants.CUSTOMER_NAME,
                         it
                     )
@@ -232,11 +232,10 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                 if (it == "00") {
                     dialogBinding.didnotReceiveTv.text = getString(R.string.send_again)
                     dialogBinding.didnotReceiveTv.setOnClickListener {
-                        (activity as MainActivity).appSharedPref?.getStringValue(
+                        AppSharedPref.getStringValue(
                             CUST_MOBILE
                         )?.let {
                             profileViewModel.getOtp(
-                                (activity as MainActivity).appSharedPref,
                                 it
                             )
                         }
@@ -255,7 +254,6 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                 dialogBinding.otpThreeEt.text.isNotEmpty() && dialogBinding.otpFourEt.text.isNotEmpty()
             ) {
                 profileViewModel.verifyOtp(
-                    (activity as MainActivity).appSharedPref,
                     mobile,
                     otp = "${dialogBinding.otpOneEt.text}${dialogBinding.otpTwoEt.text}" +
                             "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}"
@@ -278,19 +276,19 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             100 -> {
                 requireActivity().runOnUiThread {
                     showCustomDialogOTPVerify(
-                        (activity as MainActivity).appSharedPref?.getStringValue(
+                        AppSharedPref.getStringValue(
                             CUST_MOBILE
                         ).toString(),
                         title = "OTP send to the number ${
-                            (activity as MainActivity).appSharedPref?.getStringValue(
+                            AppSharedPref.getStringValue(
                                 CUST_MOBILE
                             )
                         }"
                     )
                 }
-                (activity as MainActivity).appSharedPref?.getStringValue(
+                AppSharedPref.getStringValue(
                     CUST_MOBILE
-                )?.let { profileViewModel.getOtp((activity as MainActivity).appSharedPref, it) }
+                )?.let { profileViewModel.getOtp(it) }
             }
 
             104 -> {
