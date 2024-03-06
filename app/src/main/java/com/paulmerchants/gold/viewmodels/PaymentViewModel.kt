@@ -23,6 +23,7 @@ import com.paulmerchants.gold.model.newmodel.RespCreateOrder
 import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
 import com.paulmerchants.gold.model.newmodel.RespGetCustomer
 import com.paulmerchants.gold.model.newmodel.RespPaymentMethod
+import com.paulmerchants.gold.model.newmodel.RespUnderMain
 import com.paulmerchants.gold.model.newmodel.RespUpdatePaymentStatus
 import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.networks.RetrofitSetup
@@ -31,6 +32,7 @@ import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.AppUtility.showSnackBarForPayment
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.IS_SHOW_TXN
 import com.paulmerchants.gold.utility.decryptKey
@@ -52,9 +54,50 @@ class PaymentViewModel @Inject constructor(
     val respPaymentUpdate = MutableLiveData<RespUpdatePaymentStatus?>()
     val getPaymentMethod = MutableLiveData<RespPaymentMethod?>()
     val getRespCustomersDetailsLiveData = MutableLiveData<RespCustomCustomerDetail>()
+    val isUnderMainLiveData = MutableLiveData<RespUnderMain>()
 
     init {
         Log.d(TAG, ": init_$TAG")
+    }
+
+    fun getUnderMaintenanceStatusCheck() = viewModelScope.launch {
+        retrofitSetup.callApi(
+            true,
+            object : CallHandler<Response<RespUnderMain>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
+                    return apiParams.isUnderMaintenance()
+                }
+
+                override fun success(response: Response<RespUnderMain>) {
+                    Log.d("TAG", "success: ......${response.body()}")
+                    if (response.isSuccessful) {
+                        isUnderMainLiveData.value = response.body()
+                    }
+                }
+            })
+    }
+
+    fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder) = viewModelScope.launch {
+        retrofitSetup.callApi(
+            true,
+            object : CallHandler<Response<RespUnderMain>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
+                    return apiParams.isUnderMaintenance()
+                }
+
+                override fun success(response: Response<RespUnderMain>) {
+                    Log.d("TAG", "success: ......${response.body()}")
+                    if (response.isSuccessful) {
+                        if (response.body()?.statusCode == "200") {
+                            if (response.body()?.data?.down == false) {
+                                createOrder(reqCreateOrder)
+                            } else {
+                                "App is under maintenance. Please try after some time".showSnackBarForPayment()
+                            }
+                        }
+                    }
+                }
+            })
     }
 
     fun getCustomerDetails(AppSharedPref: AppSharedPref) = viewModelScope.launch {
@@ -141,7 +184,7 @@ class PaymentViewModel @Inject constructor(
         }
 
 
-    fun createOrder(AppSharedPref: AppSharedPref, reqCreateOrder: ReqCreateOrder) =
+    fun createOrder(reqCreateOrder: ReqCreateOrder) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<*>> {

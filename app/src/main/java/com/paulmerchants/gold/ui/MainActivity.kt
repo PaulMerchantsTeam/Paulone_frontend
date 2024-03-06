@@ -4,12 +4,17 @@ import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
@@ -29,18 +34,17 @@ import com.paulmerchants.gold.databinding.HeaderLayoutBinding
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
-import com.paulmerchants.gold.utility.IS_SHOW_TXN
+import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
-import com.razorpay.PaymentData
-import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(){
+class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     private lateinit var appUpdateManager: AppUpdateManager
     private val updateType = AppUpdateType.IMMEDIATE
     lateinit var navOption: NavOptions
@@ -50,6 +54,8 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(){
     lateinit var secureFiles: SecureFiles
     val commonViewModel: CommonViewModel by viewModels()
     var amount: Double? = null   //will assign dynamically...
+    private lateinit var networkCallback: ConnectivityManager.NetworkCallback
+    private lateinit var connectivityManager: ConnectivityManager
 
     companion object {
         lateinit var context: WeakReference<Context>
@@ -71,6 +77,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(){
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
         )
+        connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         checkForAppUpdate()
         if (updateType == AppUpdateType.IMMEDIATE) {
             appUpdateManager.registerListener(installUpdateListener)
@@ -184,10 +191,62 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>(){
 //        if (intent?.getBooleanExtra(IS_SHOW_TXN, false) == true) {
 //            navController.navigate(R.id.transactionFrag)
 //        }
+        binding.underMainParent.closeBtn.setOnClickListener {
+            finish()
+        }
+        setUpNetworkCallbackFOrDueLoans()
+        commonViewModel.isUnderMainLiveData.observe(this) {
+            it?.let {
+                if (it.statusCode == "200") {
+                    if (it.data.down) {
+                        showUnderMainTainPage()
+                    } else {
+
+                    }
+                }
+            }
+        }
 
     }
 
 
+    private fun setUpNetworkCallbackFOrDueLoans() {
+        networkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                // Network connection is available, perform actions here
+                // For example:
+                // fetchData()
+                Log.d(TAG, "onAvailable: ...........internet")
+                lifecycleScope.launch {
+                    commonViewModel.getUnderMaintenanceStatus()
+                }
+            }
+
+            override fun onLost(network: Network) {
+                // Network connection is lost, handle accordingly
+                // For example:
+                // showNoInternetMessage()
+                Log.d(TAG, "onLost: ..................")
+                lifecycleScope.launch {
+                    noInternetDialog()
+                }
+            }
+        }
+
+        // Register the network callback
+        val networkRequest = NetworkRequest.Builder()
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .build()
+
+        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+    }
+
+
+    private fun showUnderMainTainPage() {
+        binding.bottomNavigationView.hide()
+        binding.batteryMainNavGraph.hide()
+        binding.underMainParent.root.show()
+    }
 
     fun changeHeader(hBinding: HeaderLayoutBinding, title: String, endIcon: Int) {
         hBinding.apply {

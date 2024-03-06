@@ -32,6 +32,7 @@ import com.paulmerchants.gold.model.newmodel.RespPendingInterstDue
 import com.paulmerchants.gold.model.newmodel.RespResetFogetMpin
 import com.paulmerchants.gold.model.newmodel.RespSearchBranch
 import com.paulmerchants.gold.model.newmodel.RespTxnHistory
+import com.paulmerchants.gold.model.newmodel.RespUnderMain
 import okhttp3.ResponseBody
 import retrofit2.Response
 
@@ -48,6 +49,9 @@ interface ApiParams {
     suspend fun getLogin(
         @Body login: LoginReqNew,
     ): Response<LoginNewResp>
+
+    @GET("isdown/")
+    suspend fun isUnderMaintenance(): Response<RespUnderMain>
 
     @POST("api/login_mpin")
     suspend fun loginWithMpin(

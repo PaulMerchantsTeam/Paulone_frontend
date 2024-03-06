@@ -174,7 +174,20 @@ class GoldLoanScreenFrag :
                 }
             }
 
-            goldScreenViewModel.getLoanOutstanding()
+            (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(this) {
+                it?.let {
+                    if (it.statusCode == "200") {
+                        if (it.data.down) {
+                            findNavController().navigate(R.id.mainScreenFrag)
+                            (activity as MainActivity).binding.bottomNavigationView.hide()
+                        } else {
+                            setUpNetworkCallbackFOrDueLoans()
+                        }
+                    }
+                }
+            }
+
+
 
             goldScreenViewModel.getRespGetLoanOutStandingLiveData.observe(viewLifecycleOwner) {
                 it?.let {
@@ -222,6 +235,10 @@ class GoldLoanScreenFrag :
         } else {
 
         }
+    }
+
+    private fun setUpNetworkCallbackFOrDueLoans() {
+        goldScreenViewModel.getLoanOutstanding()
     }
 
     private fun hideViews() {

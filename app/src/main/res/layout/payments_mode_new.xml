@@ -194,12 +194,12 @@
                             android:cursorVisible="true"
                             android:digits="abcdefghijklmnopqrstuvwxyz@#$_1234567890 ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             android:hint="Enter here"
-                            android:visibility="gone"
                             android:inputType="textEmailAddress"
                             android:paddingHorizontal="@dimen/_4sdp"
                             android:textColor="@color/splash_screen_one"
                             android:textColorHint="@color/gray_2"
                             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                            android:visibility="gone"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/addUpiTv" />
@@ -888,10 +888,26 @@
 
     </ScrollView>
 
+    <include
+        android:id="@+id/underMainParent"
+        layout="@layout/lauout_under_maintance"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

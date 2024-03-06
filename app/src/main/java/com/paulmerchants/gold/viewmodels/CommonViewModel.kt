@@ -35,6 +35,7 @@ import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCreateOrder
 import com.paulmerchants.gold.model.newmodel.RespGetLOanOutStanding
 import com.paulmerchants.gold.model.newmodel.RespPendingInterstDue
+import com.paulmerchants.gold.model.newmodel.RespUnderMain
 import com.paulmerchants.gold.model.newmodel.RespUpdatePaymentStatus
 import com.paulmerchants.gold.model.newmodel.StatusPayment
 import com.paulmerchants.gold.networks.CallHandler
@@ -83,6 +84,7 @@ class CommonViewModel @Inject constructor(
     var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
     private val secureFiles: SecureFiles = SecureFiles()
     val responseCreateOrder = MutableLiveData<RespCreateOrder?>()
+    val isUnderMainLiveData = MutableLiveData<RespUnderMain>()
 //    val placesLive = MutableLiveData<MutableList<Place>?>()
 
     val respPaymentUpdate = MutableLiveData<RespUpdatePaymentStatus?>()
@@ -133,25 +135,47 @@ class CommonViewModel @Inject constructor(
      *      }
      * ]
      */
+    fun getUnderMaintenanceStatus() = viewModelScope.launch {
+        retrofitSetup.callApi(
+            true,
+            object : CallHandler<Response<RespUnderMain>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
+                    return apiParams.isUnderMaintenance()
+                }
+
+                override fun success(response: Response<RespUnderMain>) {
+                    Log.d("TAG", "success: ......${response.body()}")
+                    if (response.isSuccessful) {
+                        isUnderMainLiveData.value = response.body()
+                    }
+                }
+            })
+    }
 
 
-    fun getPendingInterestDues(AppSharedPref: AppSharedPref?) = viewModelScope.launch {
+    fun getPendingInterestDues(AppSharedPref: AppSharedPref?) =
+        viewModelScope.launch {
 
-        retrofitSetup.callApi(true, object : CallHandler<Response<RespPendingInterstDue>> {
-            override suspend fun sendRequest(apiParams: ApiParams): Response<RespPendingInterstDue> {
-                return apiParams.getPendingInterestDues(
-                    "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
-                    ReqpendingInterstDueNew(
-                        AppSharedPref?.getStringValue(CUSTOMER_ID).toString(),
-                        AppUtility.getDeviceDetails()
-                    )
-                )
-            }
+            retrofitSetup.callApi(
+                true,
+                object : CallHandler<Response<RespPendingInterstDue>> {
+                    override suspend fun sendRequest(apiParams: ApiParams): Response<RespPendingInterstDue> {
+                        return apiParams.getPendingInterestDues(
+                            "Bearer ${
+                                AppSharedPref?.getStringValue(JWT_TOKEN).toString()
+                            }",
+                            ReqpendingInterstDueNew(
+                                AppSharedPref?.getStringValue(CUSTOMER_ID)
+                                    .toString(),
+                                AppUtility.getDeviceDetails()
+                            )
+                        )
+                    }
 
-            override fun success(response: Response<RespPendingInterstDue>) {
-                Log.d("TAG", "success: ......${response.body()}")
-                if (response.isSuccessful) {
-                    try {
+                    override fun success(response: Response<RespPendingInterstDue>) {
+                        Log.d("TAG", "success: ......${response.body()}")
+                        if (response.isSuccessful) {
+                            try {
 //                        val gson = Gson()
 //                        val respSuccess: RespCommon? = gson.fromJson(
 //                            gson.toJsonTree(response.body()).asJsonObject,
@@ -159,7 +183,7 @@ class CommonViewModel @Inject constructor(
 //                        )
 //                        // Get the plain text response
 //                        val plainTextResponse = respSuccess?.data
-                        // Do something with the plain text response
+                                // Do something with the plain text response
 //                        if (plainTextResponse != null) {
 //                            Log.d("Response", plainTextResponse)
 //                            val decryptData = decryptKey(
@@ -170,41 +194,45 @@ class CommonViewModel @Inject constructor(
 //                                AppUtility.convertStringToJson(decryptData.toString())
 //                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
 //                            respPending?.let { resp ->
-                        if (response.body()?.statusCode == "200") {
-                            getPendingInterestDuesLiveData.value = response.body()?.data
-                        } else {
-                            "Some thing went wrong".showSnackBar()
-                        }
+                                if (response.body()?.statusCode == "200") {
+                                    getPendingInterestDuesLiveData.value =
+                                        response.body()?.data
+                                } else {
+                                    "Some thing went wrong".showSnackBar()
+                                }
 //                            }
 //                            println("Str_To_Json------$respPending")
 //                        }
 
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        } else if (response.code() == 401) {
+                            if (AppSharedPref != null) {
+                                getLogin2(AppSharedPref)
+                            }
+                            Log.d(
+                                "FAILED_401",
+                                "400000111111: ...............${response.body()}"
+                            )
+                            val gson = Gson()
+                            val respFail: RespCommon? = gson.fromJson(
+                                gson.toJsonTree(response.body()).asJsonObject,
+                                RespCommon::class.java
+                            )
+                            tokenExpiredResp.value = respFail
+                        }
+
+                        AppUtility.hideProgressBar()
                     }
-                } else if (response.code() == 401) {
-                    if (AppSharedPref != null) {
-                        getLogin2(AppSharedPref)
+
+                    override fun error(message: String) {
+                        super.error(message)
+                        Log.d("TAG", "error: ......$message")
                     }
-                    Log.d("FAILED_401", "400000111111: ...............${response.body()}")
-                    val gson = Gson()
-                    val respFail: RespCommon? = gson.fromJson(
-                        gson.toJsonTree(response.body()).asJsonObject,
-                        RespCommon::class.java
-                    )
-                    tokenExpiredResp.value = respFail
-                }
+                })
 
-                AppUtility.hideProgressBar()
-            }
-
-            override fun error(message: String) {
-                super.error(message)
-                Log.d("TAG", "error: ......$message")
-            }
-        })
-
-    }
+        }
 
     fun createOrder(AppSharedPref: AppSharedPref?, reqCreateOrder: ReqCreateOrder) =
         viewModelScope.launch {
@@ -212,7 +240,9 @@ class CommonViewModel @Inject constructor(
             retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
                     return apiParams.createOrder(
-                        "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        "Bearer ${
+                            AppSharedPref?.getStringValue(JWT_TOKEN).toString()
+                        }",
                         reqCreateOrder
                     )
                 }
@@ -235,7 +265,10 @@ class CommonViewModel @Inject constructor(
                             e.printStackTrace()
                         }
                     } else if (response.code() == 401) {
-                        Log.d("FAILED_401", "400000111111: ...............${response.body()}")
+                        Log.d(
+                            "FAILED_401",
+                            "400000111111: ...............${response.body()}"
+                        )
                         val gson = Gson()
                         val respFail: RespCommon? = gson.fromJson(
                             gson.toJsonTree(response.body()).asJsonObject,
@@ -309,7 +342,10 @@ class CommonViewModel @Inject constructor(
                         e.printStackTrace()
                     }
                 } else if (response.code() == 401) {
-                    Log.d("FAILED_401", "400000111111: ...............${response.body()}")
+                    Log.d(
+                        "FAILED_401",
+                        "400000111111: ...............${response.body()}"
+                    )
                     val gson = Gson()
                     val respFail: RespCommon? = gson.fromJson(
                         gson.toJsonTree(response.body()).asJsonObject,
@@ -352,7 +388,12 @@ class CommonViewModel @Inject constructor(
                         it
                     )
                 }
-                response.body()?.token?.let { AppSharedPref?.putStringValue(JWT_TOKEN, it) }
+                response.body()?.token?.let {
+                    AppSharedPref?.putStringValue(
+                        JWT_TOKEN,
+                        it
+                    )
+                }
                 AppUtility.hideProgressBar()
             }
 
@@ -366,22 +407,26 @@ class CommonViewModel @Inject constructor(
 
     fun getLoanOutstanding(AppSharedPref: AppSharedPref?) = viewModelScope.launch {
 
-        retrofitSetup.callApi(true, object : CallHandler<Response<RespGetLOanOutStanding>> {
-            override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetLOanOutStanding> {
-                return apiParams.getLoanOutstanding(
-                    "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
-                    ReqpendingInterstDueNew(
-                        AppSharedPref?.getStringValue(CUSTOMER_ID).toString(),
-                        AppUtility.getDeviceDetails()
+        retrofitSetup.callApi(
+            true,
+            object : CallHandler<Response<RespGetLOanOutStanding>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetLOanOutStanding> {
+                    return apiParams.getLoanOutstanding(
+                        "Bearer ${
+                            AppSharedPref?.getStringValue(JWT_TOKEN).toString()
+                        }",
+                        ReqpendingInterstDueNew(
+                            AppSharedPref?.getStringValue(CUSTOMER_ID).toString(),
+                            AppUtility.getDeviceDetails()
+                        )
                     )
-                )
-            }
+                }
 
-            override fun success(response: Response<RespGetLOanOutStanding>) {
-                try {
-                    // Get the plain text response
+                override fun success(response: Response<RespGetLOanOutStanding>) {
+                    try {
+                        // Get the plain text response
 //                    val plainTextResponse = response.body()?.data
-                    // Do something with the plain text response
+                        // Do something with the plain text response
 //                    if (plainTextResponse != null) {
 //                        Log.d("Response", plainTextResponse)
 //                        val decryptData = decryptKey(
@@ -392,23 +437,24 @@ class CommonViewModel @Inject constructor(
 //                            AppUtility.convertStringToJson(decryptData.toString())
 //                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
 //                        respPending?.let { resp ->
-                    if (response.body()?.statusCode == "200") {
-                        getRespGetLoanOutStandingLiveData.value = response.body()?.data
+                        if (response.body()?.statusCode == "200") {
+                            getRespGetLoanOutStandingLiveData.value =
+                                response.body()?.data
 
-                    }
+                        }
 //                        }
 //                        println("Str_To_Json------$respPending")
 //                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                    AppUtility.hideProgressBar()
                 }
-                AppUtility.hideProgressBar()
-            }
 
-            override fun error(message: String) {
-                super.error(message)
-            }
-        })
+                override fun error(message: String) {
+                    super.error(message)
+                }
+            })
 
 
     }
@@ -450,7 +496,9 @@ class CommonViewModel @Inject constructor(
             retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
                     return apiParams.getLoanClosureReceipt(
-                        "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        "Bearer ${
+                            AppSharedPref?.getStringValue(JWT_TOKEN).toString()
+                        }",
                         ReGetLoanClosureReceipNew(
                             accNum,
                             AppUtility.getDeviceDetails()
@@ -568,7 +616,12 @@ class CommonViewModel @Inject constructor(
             override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
                 return apiParams.getLoanStatement(
                     "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
-                    ReqGetLoanStatement(accNum, fromDat, toDate, AppUtility.getDeviceDetails())
+                    ReqGetLoanStatement(
+                        accNum,
+                        fromDat,
+                        toDate,
+                        AppUtility.getDeviceDetails()
+                    )
                 )
             }
 

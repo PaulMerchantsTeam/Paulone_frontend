@@ -70,6 +70,7 @@ import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLogin
 import com.paulmerchants.gold.model.newmodel.DeviceDetailsDTO
 import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.ui.PaymentActivity
 import com.paulmerchants.gold.utility.AppUtility.getCurrentDate
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.io.ByteArrayOutputStream
@@ -168,6 +169,30 @@ object AppUtility {
             NoInternetDgBinding.inflate(layoutInflater)
         val customDialog =
             MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme).create()
+        customDialog.apply {
+            setView(dialogBinding.root)
+            setCancelable(false)
+        }.show()
+        customDialog.setOnDismissListener { dgInterface ->
+
+        }
+
+        dialogBinding.verifyOtpBtn.setOnClickListener {
+            customDialog.dismiss()
+            //verify Otp
+        }
+
+        dialogBinding.cancelDgBtn.setOnClickListener {
+            customDialog.dismiss()
+            //cancel Otp
+        }
+    }
+
+    fun Activity.noInternetDialog() {
+        val dialogBinding =
+            NoInternetDgBinding.inflate(layoutInflater)
+        val customDialog =
+            MaterialAlertDialogBuilder(this, R.style.AlertDialogTheme).create()
         customDialog.apply {
             setView(dialogBinding.root)
             setCancelable(false)
@@ -610,6 +635,37 @@ object AppUtility {
        } catch (e: Exception) {
            e.printStackTrace()
        }*/
+    fun String?.showSnackBarForPayment() = try {
+        val msg = this ?: "Something went wrong."
+        val activity = PaymentActivity.context.get() as Activity
+
+        val snackbar = Snackbar.make(
+            activity.findViewById(android.R.id.content),
+            msg,
+            Snackbar.LENGTH_LONG
+        )
+
+        // Customize Snackbar layout to show at the top
+        val params = snackbar.view.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP
+        params.setMargins(
+            convertDpToPx(20),
+            convertDpToPx(35),
+            convertDpToPx(20),
+            0
+        ) // Adjust top margin as needed
+        snackbar.view.layoutParams = params
+
+        snackbar.apply {
+            setBackgroundTint(ContextCompat.getColor(activity, R.color.splash_screen_three))
+            animationMode = Snackbar.ANIMATION_MODE_FADE
+            setTextColor(ContextCompat.getColor(activity, R.color.white))
+            view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = 5
+            show()
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
 
     fun String?.showSnackBar() = try {
         val msg = this ?: "Something went wrong."

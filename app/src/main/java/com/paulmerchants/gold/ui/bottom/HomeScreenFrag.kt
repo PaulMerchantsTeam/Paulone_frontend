@@ -39,6 +39,7 @@ import com.paulmerchants.gold.utility.AppUtility.showShimmer
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.InternetUtils
+import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -55,7 +56,7 @@ class HomeScreenFrag :
     lateinit var navController: NavController
     private val moreToComeAdapter = MoreToComeAdapter()
     private lateinit var connectivityManager: ConnectivityManager
-    private lateinit var networkCallback: ConnectivityManager.NetworkCallback
+    private var networkCallback: ConnectivityManager.NetworkCallback? = null
 
     private val bannerList = listOf(
         MoreToComeModel(
@@ -81,6 +82,18 @@ class HomeScreenFrag :
 
     override fun onStart() {
         super.onStart()
+        (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(this) {
+            it?.let {
+                if (it.statusCode == "200") {
+                    if (it.data.down) {
+                        findNavController().navigate(R.id.mainScreenFrag)
+                        (activity as MainActivity).binding.bottomNavigationView.hide()
+                    } else {
+                        setUpNetworkCallbackFOrDueLoans()
+                    }
+                }
+            }
+        }
 //        AppUtility.addDrawableGradient(
 //            requireContext(), binding.searchProfileParent.parentTop, intArrayOf(
 //                // Define your gradient colors here
@@ -119,7 +132,7 @@ class HomeScreenFrag :
             requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         // Set up the network callback
-        setUpNetworkCallback()
+
 //        setUpComingDueLoans()
 
 //        startAnimationOnIcon()
@@ -144,20 +157,20 @@ class HomeScreenFrag :
 //            }
 //        }
 
-        (activity as MainActivity).commonViewModel.respPaymentUpdate.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it.status == "200") {
-                    Log.d(TAG, "ojnnnnnn: /.................$it")
-//                    (activity as MainActivity).commonViewModel.getPendingInterestDues()
-                }
-            }
-        }
+//        (activity as MainActivity).commonViewModel.respPaymentUpdate.observe(viewLifecycleOwner) {
+//            it?.let {
+//                if (it.status == "200") {
+//                    Log.d(TAG, "ojnnnnnn: /.................$it")
+////                    (activity as MainActivity).commonViewModel.getPendingInterestDues()
+//                }
+//            }
+//        }
         binding.swiperefresh.setOnRefreshListener(object : SwipeRefreshLayout.OnRefreshListener {
             override fun onRefresh() {
                 Log.i(TAG, "onRefresh: ....called")
 
                 if (InternetUtils.isNetworkAvailable(requireContext())) {
-                    setUpComingDueLoans()
+                    (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
                 } else {
                     lifecycleScope.launch {
                         noInternetDialog()
@@ -167,12 +180,9 @@ class HomeScreenFrag :
             }
 
         })
-
-
     }
 
-
-    private fun setUpNetworkCallback() {
+    private fun setUpNetworkCallbackFOrDueLoans() {
         networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 // Network connection is available, perform actions here
@@ -200,7 +210,10 @@ class HomeScreenFrag :
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .build()
 
-        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+        connectivityManager.registerNetworkCallback(
+            networkRequest,
+            networkCallback as ConnectivityManager.NetworkCallback
+        )
     }
 
     //Remove Observer...
@@ -221,7 +234,7 @@ class HomeScreenFrag :
     override fun onDestroyView() {
         super.onDestroyView()
         // Unregister the network callback to avoid memory leaks
-        connectivityManager.unregisterNetworkCallback(networkCallback)
+        networkCallback?.let { connectivityManager.unregisterNetworkCallback(it) }
     }
 //    private fun showHideLoadinf() {
 //        binding.shimmmerParent.startShimmer()

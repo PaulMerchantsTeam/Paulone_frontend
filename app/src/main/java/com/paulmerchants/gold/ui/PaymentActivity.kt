@@ -1,6 +1,7 @@
 package com.paulmerchants.gold.ui
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
@@ -41,6 +43,7 @@ import com.razorpay.ValidationListener
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONArray
 import org.json.JSONObject
+import java.lang.ref.WeakReference
 
 @AndroidEntryPoint
 class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>() {
@@ -56,14 +59,16 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     private lateinit var walletDialog: AlertDialog
     private val paymentViewModel: PaymentViewModel by viewModels()
     private var respCustomerDetail: RespCustomCustomerDetail? = null
-
+    private var isDown: Boolean = false
     override fun getViewBinding() = PaymentsModeNewBinding.inflate(layoutInflater)
     override val mViewModel: PaymentViewModel by viewModels()
-
-
+    companion object {
+        lateinit var context: WeakReference<Context>
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        context = WeakReference(this)
         val bundle = intent.extras
         amountToPay = bundle?.getDouble(Constants.AMOUNT_PAYABLE, 0.0)
         customerAcc = bundle?.getString(Constants.CUST_ACC)
@@ -89,8 +94,25 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 //        var walletValue = true
         var creditValue = true
         var netBanking = true
-        paymentViewModel.getCustomerDetails(AppSharedPref)
-
+        binding.underMainParent.closeBtn.setOnClickListener {
+            finish()
+            MainActivity().finish()
+        }
+        paymentViewModel.getUnderMaintenanceStatusCheck()
+        paymentViewModel.isUnderMainLiveData.observe(this) {
+            it?.let {
+                if (it.statusCode == "200") {
+                    if (it.data.down) {
+                        binding.underMainParent.root.show()
+                        binding.clOuter.hide()
+                        isDown = it.data.down
+                    } else {
+                        paymentViewModel.getCustomerDetails(AppSharedPref)
+                        paymentViewModel.getPaymentMethod(AppSharedPref)
+                    }
+                }
+            }
+        }
 
         binding.payDebitCredit.setOnClickListener {
             if (isValidate()) {
@@ -99,7 +121,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 amountToPay?.let { it1 -> createOrder(it1, notes = "paying from debit_or_credit") }
             }
         }
-        paymentViewModel.getPaymentMethod(AppSharedPref)
+
         paymentViewModel.getPaymentMethod.observe(this) {
             it?.let {
                 if (it.data.DebitCard && !it.data.CreditCard) { //10
@@ -201,7 +223,6 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 }
             }
         }
-
 
 
         binding.enterCardNumEt.addTextChangedListener(object : TextWatcher {
@@ -564,8 +585,8 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
     private fun createOrder(amount: Double, notes: String) {
         Log.d("TAG", "createOrder: ......$amount")
-        paymentViewModel.createOrder(
-            AppSharedPref,
+
+        paymentViewModel.getUnderMaintenanceStatus(
             reqCreateOrder = ReqCreateOrder(
                 amount = amount,
                 currency = "INR",

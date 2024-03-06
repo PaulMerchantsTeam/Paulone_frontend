@@ -9,7 +9,10 @@
     android:elevation="@dimen/_8sdp"
     tools:context=".ui.bottom.HomeScreenFrag">
 
+
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/parnetMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -139,8 +142,8 @@
 
                         <HorizontalScrollView
                             android:layout_width="match_parent"
-                            android:contentDescription="@string/upcoming_dues"
                             android:layout_height="wrap_content"
+                            android:contentDescription="@string/upcoming_dues"
                             android:scrollbars="none">
 
                             <androidx.appcompat.widget.LinearLayoutCompat
@@ -357,8 +360,8 @@
 
                             <ImageView
                                 android:layout_width="wrap_content"
-                                android:contentDescription="payonline"
                                 android:layout_height="wrap_content"
+                                android:contentDescription="payonline"
                                 android:src="@drawable/undraw_pay_online_card"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent" />
