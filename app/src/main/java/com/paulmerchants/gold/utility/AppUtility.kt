@@ -564,6 +564,7 @@ object AppUtility {
         return outputDate
     }
 
+
     fun Fragment.showSnackBar(message: String) {
         val snakbar = this.view?.let {
             Snackbar.make(
