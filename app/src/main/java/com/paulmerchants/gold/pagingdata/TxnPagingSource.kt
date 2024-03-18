@@ -14,6 +14,7 @@ private const val BRANCH_STARTING_PAGE_INDEX = 0
 
 
 class TxnPagingSource @Inject constructor(
+    private val status: Int,
     private val apiParams: ApiParams,
     private val token: String,
     private val custId: String,
@@ -27,7 +28,19 @@ class TxnPagingSource @Inject constructor(
                 token, custId, position,
                 10
             )
-            val repos = response.body()?.data ?: emptyList()
+            val repos = response.body()?.data ?: emptyList<Transactions>().filter {
+                when (status) {
+                    1 -> {
+                        it.status == "PAID"
+                    }
+
+                    else -> {
+                        it.status == "CREATED"
+                    }
+                }
+            }
+
+
             Log.d("PAGGGIIINNNGGG", "load: ............${repos.size}")
             val nextKey = if (repos.isEmpty()) {
                 null

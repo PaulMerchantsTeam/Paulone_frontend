@@ -2,10 +2,12 @@ package com.paulmerchants.gold.ui.others
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
+import com.google.android.material.chip.Chip
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.AllTxnAdapter
 import com.paulmerchants.gold.common.BaseFragment
@@ -46,14 +48,42 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
 
     override fun onStart() {
         super.onStart()
+
+        binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
+            val chip: Chip? = group.findViewById(checkedId)
+            chip?.let { chipView ->
+                when (chipView.text.toString()) {
+                    "All" -> {
+                        Toast.makeText(requireContext(), "All", Toast.LENGTH_SHORT).show()
+                        getTxnHistory()
+                    }
+
+                    "Success" -> {
+                        Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+                        getTxnHistory(1)
+                    }
+
+                    "Failed" -> {
+                        Toast.makeText(requireContext(), "Failed", Toast.LENGTH_SHORT).show()
+                        getTxnHistory()
+                    }
+                }
+            } ?: kotlin.run {
+
+            }
+        }
+        getTxnHistory()
         binding.neddSuppMenuCard.setOnClickListener {
             AppUtility.dialer(requireContext(), "18001371333")
         }
         modifyHeaders()
 
+    }
+
+    private fun getTxnHistory(status: Int = 0) {
         lifecycleScope.launch {
             try {
-                txnViewModel.getTxnHistory()
+                txnViewModel.getTxnHistory(status)
                     .collectLatest { data ->
                         Log.d("TAG", "onCreate: ..dattttttttt........}")
                         setTransaction(data)
@@ -62,7 +92,6 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
                 e.printStackTrace()
             }
         }
-
     }
 
 

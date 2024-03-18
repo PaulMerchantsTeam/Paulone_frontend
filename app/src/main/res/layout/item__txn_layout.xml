@@ -9,7 +9,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/transReferIdTv"
-        style="@style/text_11_medium_blue"
+        style="@style/text_12_semi_bold_sky"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="@dimen/_5sdp"

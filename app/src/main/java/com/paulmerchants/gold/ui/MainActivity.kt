@@ -35,12 +35,15 @@ import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.io.File
 import java.lang.ref.WeakReference
+import java.security.MessageDigest
 
 
 @AndroidEntryPoint
@@ -81,11 +84,6 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         checkForAppUpdate()
         if (updateType == AppUpdateType.IMMEDIATE) {
             appUpdateManager.registerListener(installUpdateListener)
-        }
-        if (AppUtility.isUsbDebuggingEnabled(this)) {
-            Log.i("TAG", "DEBUG_MODE_ENABLED")
-        } else {
-            Log.i("TAG", "NO_DEBUG_MODE_ENABLED")
         }
         secureFiles = SecureFiles()
 
@@ -205,6 +203,13 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                     }
                 }
             }
+        }
+
+        if (AppUtility.isUsbDebuggingEnabled(this)) {
+            "Please turn off the debug mode".showSnackBar()
+            return
+        } else {
+            Log.i("TAG", "NO_DEBUG_MODE_ENABLED")
         }
 
     }
@@ -376,6 +381,24 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         if (updateType == AppUpdateType.IMMEDIATE) {
             appUpdateManager.unregisterListener(installUpdateListener)
         }
+    }
+    fun verifyChecksum(file: File, expectedChecksum: String): Boolean {
+        val actualChecksum = generateChecksum(file)
+        return actualChecksum == expectedChecksum
+    }
+
+    private fun generateChecksum(file: File): String {
+        val messageDigest = MessageDigest.getInstance("SHA-256")
+        val inputStream = file.inputStream()
+        val byteArray = ByteArray(8192)
+        var bytesRead = inputStream.read(byteArray)
+        while (bytesRead != -1) {
+            messageDigest.update(byteArray, 0, bytesRead)
+            bytesRead = inputStream.read(byteArray)
+        }
+        inputStream.close()
+        val digestBytes = messageDigest.digest()
+        return digestBytes.joinToString("") { "%02x".format(it) }
     }
 }
 

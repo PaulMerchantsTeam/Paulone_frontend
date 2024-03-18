@@ -44,7 +44,8 @@ android {
             buildConfigField "String", "PASSWORD", "\"FU510N@pro\""
             buildConfigField "String", "USERNAME", "\"pml\""
 
-            buildConfigField "String", "SECRET_KEY", "\"MobApp#L0AnDeT@ils#SeCUretechpool*20&23\""
+
+            buildConfigField "String", "SECRET_KEY", "\"`MobApp#L0AnDeT@ils#SeCUretechpool*20&2`3\""
             buildConfigField "String", "SECRET_KEY_GEN", "\"09C427004E85E561ED607E0038946EBF\""
             buildConfigField "String", "PRIVACY_POLICY", "\"https://prod.paulgold.in/paulgoldv01/conditions/privacy-policy\""
             buildConfigField "String", "TERMS_CONDITION", "\"https://prod.paulgold.in/paulgoldv01/conditions/terms-conditions\""

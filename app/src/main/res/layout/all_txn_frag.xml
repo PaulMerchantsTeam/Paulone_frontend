@@ -55,9 +55,9 @@
             android:id="@+id/neddSuppMenuCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_35sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:background="@drawable/menu_card_small_rad_14_1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -91,9 +91,49 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    <com.google.android.material.textview.MaterialTextView-->
+    <!--        android:id="@+id/materialTextView6"-->
+    <!--        style="@style/text_11_medium_blue"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:background="@drawable/rec_back_btn"-->
+    <!--        android:padding="@dimen/_5sdp"-->
+    <!--        android:text="Success"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/topMenuParent" />-->
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topMenuParent"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip2"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip3"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Success" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip4"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Failed" />
+    </com.google.android.material.chip.ChipGroup>
 
     <!--    <include-->
     <!--        android:id="@+id/header_transDetail"-->
@@ -105,14 +145,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTxnAll"
         android:layout_width="0dp"
-        android:scrollbars="vertical"
-        android:scrollbarSize="@dimen/_5sdp"
         android:layout_height="0dp"
+        android:scrollbarSize="@dimen/_5sdp"
+        android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topMenuParent"
+        app:layout_constraintTop_toBottomOf="@+id/chip_group"
         tools:itemCount="20"
         tools:listitem="@layout/item__txn_layout" />
 
