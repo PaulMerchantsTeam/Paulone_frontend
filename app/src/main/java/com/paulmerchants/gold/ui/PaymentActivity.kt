@@ -62,9 +62,11 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     private var isDown: Boolean = false
     override fun getViewBinding() = PaymentsModeNewBinding.inflate(layoutInflater)
     override val mViewModel: PaymentViewModel by viewModels()
+
     companion object {
         lateinit var context: WeakReference<Context>
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -594,6 +596,11 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     .toString(),
                 notes = Notes(notes, "notes_2"),
                 receipt = "${AppUtility.getCurrentDate()}_${BuildConfig.VERSION_NAME}",
+                accNo = customerAcc.toString(),
+                makerId = "12545as",
+                submit = true,
+                macId = Build.ID,
+                valueDate = AppUtility.getCurrentDate()
             )
         )
     }

@@ -33,6 +33,7 @@ import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.PaymentActivity
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.hideShim
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
 import com.paulmerchants.gold.utility.AppUtility.showShimmer
@@ -74,6 +75,7 @@ class HomeScreenFrag :
     )
     private val TAG = "HomeScreenFrag"
     override fun DummyHomeScreenFragmentBinding.initialize() {
+        changeStatusBarWithReqdColor(requireActivity(),R.color.splash_screen_two)
         navController = findNavController()
         secureFiles = SecureFiles()
 //        setUpComingOurServices()

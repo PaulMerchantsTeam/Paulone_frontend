@@ -35,7 +35,7 @@ class TxnViewModel @Inject constructor(
 
 
     fun getTxnHistory(
-        status: Int = 0,
+        status: Int,
     ): Flow<PagingData<Transactions>> {
         val pager = Pager(config = PagingConfig(10, enablePlaceholders = false)) {
             TxnPagingSource(

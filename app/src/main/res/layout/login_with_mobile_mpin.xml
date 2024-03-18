@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
             android:lineSpacingExtra="@dimen/_3sdp"
-            android:text="Login"
+            android:text="Welcome "
             android:textColor="@color/splash_screen_three"
             android:textSize="@dimen/_25ssp"
             app:layout_constraintEnd_toEndOf="parent"

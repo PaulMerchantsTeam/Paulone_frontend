@@ -127,6 +127,12 @@ interface ApiParams {
         @Query("Cust_ID") Cust_ID: String,
     ): ResponseBody
 
+//    @POST("payments/create-order")   //RespLoanDueDate
+//    suspend fun createOrder(
+//        @Header("Authorization") auth: String,
+//        @Body reqCreateOrder: ReqCreateOrder,
+//    ): Response<*>
+
     @POST("payments/create-order")   //RespLoanDueDate
     suspend fun createOrder(
         @Header("Authorization") auth: String,
@@ -274,6 +280,15 @@ interface ApiParams {
     suspend fun txnHistory(
         @Header("Authorization") auth: String,
         @Path("custId") custId: String,
+        @Query("pageNumber") pageNumber: Int,
+        @Query("pageSize") pageSize: Int,
+    ): Response<RespTxnHistory>
+
+    @POST("payments/transaction-history-search/{custId}/{status}")   //
+    suspend fun txnHistorySearch(
+        @Header("Authorization") auth: String,
+        @Path("custId") custId: String,
+        @Path("status") status: String,
         @Query("pageNumber") pageNumber: Int,
         @Query("pageSize") pageSize: Int,
     ): Response<RespTxnHistory>

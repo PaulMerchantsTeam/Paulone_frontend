@@ -10,7 +10,7 @@
         android:id="@+id/topMenuParent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rec_one_sky_b_grad"
+        android:background="@drawable/bg_green_coin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/backIv"
-            android:layout_width="@dimen/_22sdp"
-            android:layout_height="@dimen/_22sdp"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
             android:layout_marginStart="@dimen/screen_end_margin"
             android:layout_marginTop="@dimen/_30sdp"
             android:src="@drawable/back_arrow_white"
@@ -33,8 +33,9 @@
             style="@style/text_16_bold_white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_36sdp"
             android:text="@string/all_transaction"
+            android:textColor="@color/splash_screen_one"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_35sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:background="@drawable/menu_card_small_rad_14_1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -153,7 +154,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chip_group"
-        tools:itemCount="20"
+        tools:itemCount="5"
         tools:listitem="@layout/item__txn_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

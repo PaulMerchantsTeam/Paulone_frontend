@@ -20,4 +20,17 @@ data class Data(
     @SerializedName("status") val status: String,
     @SerializedName("mobileNo") val mobileNo: String,
     @SerializedName("otp") val otp: String,
+    @SerializedName("accNo") val accNo: String,
+    @SerializedName("submit") val submit: Boolean,
+    @SerializedName("valueDate") val valueDate: String,
+    @SerializedName("macId") val macId: String,
+    @SerializedName("makerId") val makerId: String,
 )
+
+/**
+ * "accNo": "102210000015920",
+ *     "submit": true,
+ *     "valueDate": "2024-03-18T17:37:54.204593",
+ *     "makerId": "12545as",
+ *     "macId": "SP1A.210812.016"
+ */

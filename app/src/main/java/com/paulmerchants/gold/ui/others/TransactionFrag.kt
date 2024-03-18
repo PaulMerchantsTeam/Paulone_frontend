@@ -17,6 +17,7 @@ import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.MapActivity
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.viewmodels.TxnViewModel
@@ -43,36 +44,38 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
     }
 
     override fun AllTxnFragBinding.initialize() {
-
+        changeStatusBarWithReqdColor(requireActivity(), R.color.green_new_bg)
     }
 
     override fun onStart() {
         super.onStart()
+
+        binding.chip2.performClick()
+        getTxnHistory(11)
 
         binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
             val chip: Chip? = group.findViewById(checkedId)
             chip?.let { chipView ->
                 when (chipView.text.toString()) {
                     "All" -> {
-                        Toast.makeText(requireContext(), "All", Toast.LENGTH_SHORT).show()
-                        getTxnHistory()
+//                        Toast.makeText(requireContext(), "All", Toast.LENGTH_SHORT).show()
+                        getTxnHistory(11)
                     }
 
                     "Success" -> {
-                        Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
                         getTxnHistory(1)
                     }
 
                     "Failed" -> {
-                        Toast.makeText(requireContext(), "Failed", Toast.LENGTH_SHORT).show()
-                        getTxnHistory()
+//                        Toast.makeText(requireContext(), "Failed", Toast.LENGTH_SHORT).show()
+                        getTxnHistory(0)
                     }
                 }
             } ?: kotlin.run {
 
             }
         }
-        getTxnHistory()
         binding.neddSuppMenuCard.setOnClickListener {
             AppUtility.dialer(requireContext(), "18001371333")
         }
@@ -80,7 +83,7 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
 
     }
 
-    private fun getTxnHistory(status: Int = 0) {
+    private fun getTxnHistory(status: Int) {
         lifecycleScope.launch {
             try {
                 txnViewModel.getTxnHistory(status)

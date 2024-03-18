@@ -24,21 +24,30 @@ class TxnPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Transactions> {
         val position = params.key ?: BRANCH_STARTING_PAGE_INDEX
         return try {
-            val response = apiParams.txnHistory(
-                token, custId, position,
-                10
-            )
-            val repos = response.body()?.data ?: emptyList<Transactions>().filter {
-                when (status) {
-                    1 -> {
-                        it.status == "PAID"
-                    }
 
-                    else -> {
-                        it.status == "CREATED"
-                    }
+            val response = when (status) {
+                0 -> {
+                    apiParams.txnHistorySearch(
+                        token, custId, "CREATED", position,
+                        10
+                    )
+                }
+
+                1 -> {
+                    apiParams.txnHistorySearch(
+                        token, custId, "PAID", position,
+                        10
+                    )
+                }
+
+                else -> {
+                    apiParams.txnHistory(
+                        token, custId, position,
+                        10
+                    )
                 }
             }
+            val repos = response.body()?.data ?: emptyList<Transactions>()
 
 
             Log.d("PAGGGIIINNNGGG", "load: ............${repos.size}")
