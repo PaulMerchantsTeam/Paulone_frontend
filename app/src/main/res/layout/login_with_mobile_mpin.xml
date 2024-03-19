@@ -5,6 +5,15 @@
     android:layout_height="match_parent"
     android:background="@color/splash_screen_two">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_blue_coin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/enterPhoneNumMain"
@@ -25,9 +34,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
             android:lineSpacingExtra="@dimen/_3sdp"
-            android:text="Welcome "
-            android:textColor="@color/splash_screen_three"
-            android:textSize="@dimen/_25ssp"
+            android:text="Welcome Back\n we missed you"
+            android:textColor="@color/blue_new"
+            android:textSize="@dimen/_20ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.567"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,6 +55,7 @@
             android:textColor="@color/splash_screen_one"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
             android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/etTv"
@@ -73,6 +83,7 @@
             android:text="@string/str_91"
             android:textColor="@color/splash_screen_three"
             android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/etPhoenNum"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/etPhoenNum"
@@ -83,9 +94,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_medium"
             android:lineSpacingExtra="@dimen/_3sdp"
-            android:text="@string/m_pin"
+            android:text="Enter M-PIN"
+            android:textAlignment="center"
             android:textColor="@color/splash_screen_three"
             android:textSize="@dimen/_13ssp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -94,17 +106,17 @@
 
         <EditText
             android:id="@+id/pinOneEt"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:backgroundTint="@color/view_color"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/edit_text_rect_8"
             android:fontFamily="@font/poppins_bold"
             android:gravity="center"
             android:inputType="numberPassword"
             android:maxLength="1"
             android:textColor="@color/splash_screen_one"
             android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-            android:textSize="@dimen/_15ssp"
+            android:textSize="@dimen/_16ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/pinTwoEt"
             app:layout_constraintHorizontal_bias="0.5"
@@ -113,9 +125,9 @@
 
         <EditText
             android:id="@+id/pinTwoEt"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/view_color"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@drawable/edit_text_rect_8"
             android:fontFamily="@font/poppins_bold"
             android:gravity="center"
             android:inputType="numberPassword"
@@ -132,9 +144,9 @@
 
         <EditText
             android:id="@+id/pinThreeEt"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/view_color"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@drawable/edit_text_rect_8"
             android:fontFamily="@font/poppins_bold"
             android:gravity="center"
             android:inputType="numberPassword"
@@ -150,9 +162,9 @@
 
         <EditText
             android:id="@+id/pinFourEt"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/view_color"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@drawable/edit_text_rect_8"
             android:fontFamily="@font/poppins_bold"
             android:gravity="center"
             android:inputType="numberPassword"

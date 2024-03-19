@@ -3,23 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/_120sdp"
     android:elevation="@dimen/_6sdp"
     app:cardCornerRadius="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parentTop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/splash_screen_two"
-        android:paddingStart="@dimen/screen_start_margin"
-        android:paddingTop="@dimen/_25sdp"
-        android:paddingEnd="@dimen/screen_end_margin">
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/customImageView"
+            android:layout_width="25dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/profileIv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_start_margin"
+            android:layout_marginTop="@dimen/_25sdp"
             android:background="?actionBarItemBackground"
             android:clickable="true"
             android:focusable="true"
@@ -34,8 +43,10 @@
             android:id="@+id/notImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/screen_start_margin"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
+
             android:focusable="true"
             android:padding="@dimen/_8sdp"
             android:visibility="visible"
@@ -160,12 +171,14 @@
             android:id="@+id/userName"
             style="@style/text_16_bold_blue"
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_start_margin"
             android:layout_marginTop="@dimen/_18sdp"
             android:fontFamily="@font/poppins_bold"
             android:lineSpacingExtra="@dimen/_3sdp"
             android:text="Hey User"
-            android:textColor="@color/splash_screen_three"
+            android:textColor="@color/splash_screen_one"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout11" />
 
@@ -174,6 +187,7 @@
             style="@style/text_11_medium_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_start_margin"
             android:layout_marginBottom="@dimen/_6sdp"
             android:fontFamily="@font/poppins_medium"
             android:lineSpacingExtra="@dimen/_3sdp"

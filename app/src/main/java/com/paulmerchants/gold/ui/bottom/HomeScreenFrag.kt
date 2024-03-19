@@ -1,7 +1,6 @@
 package com.paulmerchants.gold.ui.bottom
 
 import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -23,6 +22,8 @@ import com.paulmerchants.gold.adapter.UpcomingLoanAdapter
 import com.paulmerchants.gold.adapter.UpcomingLoanNewuserAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants.DUE_LOAN_DATA
+import com.paulmerchants.gold.common.AppNameGlideModule
+import com.paulmerchants.gold.common.GlideApp
 import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.MoreToComeModel
@@ -31,7 +32,6 @@ import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
-import com.paulmerchants.gold.ui.PaymentActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.hideShim
@@ -75,7 +75,7 @@ class HomeScreenFrag :
     )
     private val TAG = "HomeScreenFrag"
     override fun DummyHomeScreenFragmentBinding.initialize() {
-        changeStatusBarWithReqdColor(requireActivity(),R.color.splash_screen_two)
+        changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
         navController = findNavController()
         secureFiles = SecureFiles()
 //        setUpComingOurServices()
@@ -84,6 +84,7 @@ class HomeScreenFrag :
 
     override fun onStart() {
         super.onStart()
+//        (activity as MainActivity).commonViewModel.getFestDetailsForHeaderHomePage()
         (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(this) {
             it?.let {
                 if (it.statusCode == "200") {
@@ -96,6 +97,27 @@ class HomeScreenFrag :
                 }
             }
         }
+
+//        (activity as MainActivity).commonViewModel.festivalLiveData.observe(viewLifecycleOwner) {
+//            it?.let {
+//                if (it.data?.isNotEmpty() == true) {
+//                    if (it.data[0].showAtCurrentDate == true) {
+//                        Log.e(TAG, "onStart: .,.,,,,,<${it.data.get(0).imageUrl}")
+//                        val imageUrl = it.data[0].imageUrl
+//                        GlideApp.with(requireContext())
+//                            .load(imageUrl)
+//                            .into(binding.searchProfileParent.customImageView)
+////                        Glide.with(requireContext()).load(imageUrl)
+////                            .into(binding.searchProfileParent.customImageView)
+////                        AppNameGlideModule.with()
+////                            .load(imageUrl)
+////                            .centerCrop()
+////                            .placeholder(R.color.splash_screen_one)
+////                            .into(binding.searchProfileParent.customImageView)
+//                    }
+//                }
+//            }
+//        }
 //        AppUtility.addDrawableGradient(
 //            requireContext(), binding.searchProfileParent.parentTop, intArrayOf(
 //                // Define your gradient colors here
@@ -183,6 +205,7 @@ class HomeScreenFrag :
 
         })
     }
+
 
     private fun setUpNetworkCallbackFOrDueLoans() {
         networkCallback = object : ConnectivityManager.NetworkCallback() {

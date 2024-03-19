@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     android:background="@color/splash_screen_two">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_blue_coin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/titleWelcomTvAuth"
@@ -18,7 +28,7 @@
         android:paddingStart="@dimen/screen_start_margin"
         android:text="@string/welocome_to_paul_gold"
         android:textColor="@color/splash_screen_three"
-        android:textSize="@dimen/_13ssp"
+        android:textSize="@dimen/_16ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -44,9 +54,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
             android:lineSpacingExtra="@dimen/_3sdp"
-            android:text="@string/please_enter_phone"
+            android:text="Enter mobile number"
             android:textColor="@color/splash_screen_three"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_14ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -54,10 +64,12 @@
         <EditText
             android:id="@+id/etPhoenNum"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_margin="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_11sdp"
-            android:backgroundTint="@color/view_color"
+            android:background="@drawable/edit_text_rect_8"
             android:fontFamily="@font/poppins_semi_bold"
+            android:paddingHorizontal="@dimen/_10sdp"
             android:inputType="number"
             android:maxLength="10"
             android:textColor="@color/splash_screen_one"
@@ -84,12 +96,15 @@
 
         <TextView
             android:id="@+id/etTv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_40sdp"
+            android:padding="@dimen/_10sdp"
             android:fontFamily="@font/poppins_bold"
             android:text="@string/str_91"
+            android:textAlignment="center"
+            android:background="@drawable/edit_text_rect_8"
             android:textColor="@color/splash_screen_three"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_16ssp"
             app:layout_constraintBottom_toBottomOf="@+id/etPhoenNum"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/etPhoenNum"

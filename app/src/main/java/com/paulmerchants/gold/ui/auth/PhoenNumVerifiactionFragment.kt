@@ -62,7 +62,7 @@ class PhoenNumVerifiactionFragment :
 
     //    @Inject
 //    lateinit var auth: FirebaseAuth
-    lateinit var mGoogleClient: GoogleSignInClient
+//    lateinit var mGoogleClient: GoogleSignInClient
 
 //    val onSignInResult =
 //        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: androidx.activity.result.ActivityResult ->
@@ -77,7 +77,7 @@ class PhoenNumVerifiactionFragment :
 //        }
 
     override fun PhoneAuthFragmentBinding.initialize() {
-        changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
+        changeStatusBarWithReqdColor(requireActivity(), R.color.pg_color)
         pinValue = arguments?.getInt("ProfileChangePin", 0)
         Log.d("TAG", "initialize: ........${arguments?.getBoolean(IS_LOGOUT, false)}")
         authViewModel.isFrmLogout = arguments?.getBoolean(IS_LOGOUT, false)
@@ -127,11 +127,11 @@ class PhoenNumVerifiactionFragment :
     override fun onStart() {
         super.onStart()
         val backStack = findNavController().backQueue
-   /*     for (i in backStack) {
-            Log.d(
-                "TAG", "STACK__COUNT_NAME: ...${i.id}..--------.${i.destination.displayName}"
-            )
-        }*/
+        /*     for (i in backStack) {
+                 Log.d(
+                     "TAG", "STACK__COUNT_NAME: ...${i.id}..--------.${i.destination.displayName}"
+                 )
+             }*/
         if (authViewModel.isFrmLogout == true) {
             (activity as MainActivity).commonViewModel.getLogin2(AppSharedPref)
         }

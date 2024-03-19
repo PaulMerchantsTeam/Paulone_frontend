@@ -17,6 +17,7 @@ import com.paulmerchants.gold.model.GetPendingInrstDueResp
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.RespClosureReceipt
 import com.paulmerchants.gold.model.RespCustomersDetails
+import com.paulmerchants.gold.model.RespFetchFest
 import com.paulmerchants.gold.model.RespGetLoanOutStanding
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.model.RespLoanDueDate
@@ -61,6 +62,7 @@ class CommonViewModel @Inject constructor(
     private val retrofitSetup: RetrofitSetup,
     private val apiParams: ApiParams,
 ) : ViewModel() {
+    val festivalLiveData = MutableLiveData<RespFetchFest>()
     var isCalled: Boolean = true
     var isCalledGoldLoanScreen: Boolean = true
     val paymentData = MutableLiveData<StatusPayment?>()
@@ -147,6 +149,25 @@ class CommonViewModel @Inject constructor(
                     Log.d("TAG", "success: ......${response.body()}")
                     if (response.isSuccessful) {
                         isUnderMainLiveData.value = response.body()
+                    }
+                }
+            })
+    }
+
+    fun getFestDetailsForHeaderHomePage() = viewModelScope.launch {
+        retrofitSetup.callApi(
+            true,
+            object : CallHandler<Response<RespFetchFest>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<RespFetchFest> {
+                    return apiParams.getFestDetailsForHeaderHomePage("Bearer ${
+                        AppSharedPref.getStringValue(JWT_TOKEN).toString()
+                    }")
+                }
+
+                override fun success(response: Response<RespFetchFest>) {
+                    Log.d("TAG", "success: ......${response.body()}")
+                    if (response.isSuccessful) {
+                        festivalLiveData.value = response.body()
                     }
                 }
             })

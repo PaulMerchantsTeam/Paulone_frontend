@@ -19,6 +19,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.InstallStateUpdatedListener
@@ -59,6 +60,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     var amount: Double? = null   //will assign dynamically...
     private lateinit var networkCallback: ConnectivityManager.NetworkCallback
     private lateinit var connectivityManager: ConnectivityManager
+    private lateinit var mFusedLocationClient: FusedLocationProviderClient
 
     companion object {
         lateinit var context: WeakReference<Context>

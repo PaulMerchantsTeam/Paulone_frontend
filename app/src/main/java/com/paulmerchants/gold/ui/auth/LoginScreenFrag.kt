@@ -19,6 +19,7 @@ import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
 import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
@@ -35,11 +36,12 @@ class LoginScreenFrag :
     private val loginViewModel: LoginViewModel by viewModels()
 
     override fun LoginWithMobileMpinBinding.initialize() {
-
+        changeStatusBarWithReqdColor(requireActivity(), R.color.pg_color)
     }
 
     private fun isValidate(): Boolean = when {
-        binding.etPhoenNum.text.toString().isEmpty() -> {
+        AppSharedPref.getStringValue(CUST_MOBILE)
+            .toString().isEmpty() -> {
             false
         }
 
@@ -67,13 +69,13 @@ class LoginScreenFrag :
     override fun onStart() {
         super.onStart()
         callMpinNextFocus()
-        binding.etPhoenNum.isEnabled = false
-        binding.etPhoenNum.setText(
-            AppSharedPref.getStringValue(CUST_MOBILE)
-                .toString()
-        )
+//        binding.etPhoenNum.isEnabled = false
+//        binding.etPhoenNum.setText(
+//            AppSharedPref.getStringValue(CUST_MOBILE)
+//                .toString()
+//        )
         binding.loginWithDifferentAccTv.setOnClickListener {
-            Toast.makeText(requireContext(), "CLICKED", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(requireContext(), "CLICKED", Toast.LENGTH_SHORT).show()
             AppSharedPref.putBoolean(Constants.OTP_VERIFIED, false)
 //            findNavController().popBackStack(R.id.loginScreenFrag, true)
             findNavController().navigate(R.id.phoenNumVerifiactionFragment)
@@ -93,7 +95,7 @@ class LoginScreenFrag :
                 )
                 AppSharedPref?.getStringValue(
                     CUST_MOBILE
-                )?.let { loginViewModel.getOtp( it) }
+                )?.let { loginViewModel.getOtp(it) }
             } else {
                 noInternetDialog()
             }
@@ -107,12 +109,12 @@ class LoginScreenFrag :
                     customDialog?.dismiss()
                     loginViewModel.timer?.cancel()
                     loginViewModel.countStr.postValue("")
-                  /*  val bundle = Bundle().apply {
-                        putBoolean(
-                            com.paulmerchants.gold.utility.Constants.IS_RESET_MPIN_FROM_LOGIN_PAGE,
-                            true
-                        )
-                    }*/
+                    /*  val bundle = Bundle().apply {
+                          putBoolean(
+                              com.paulmerchants.gold.utility.Constants.IS_RESET_MPIN_FROM_LOGIN_PAGE,
+                              true
+                          )
+                      }*/
                     /**
                      * need to handle in the ResetMpin Page......
                      *
@@ -131,7 +133,8 @@ class LoginScreenFrag :
                         findNavController(),
                         AppSharedPref,
                         ReqLoginWithMpin(
-                            binding.etPhoenNum.text.toString(),
+                            AppSharedPref.getStringValue(CUST_MOBILE)
+                                .toString(),
                             "${binding.pinOneEt.text}${binding.pinTwoEt.text}${binding.pinThreeEt.text}${binding.pinFourEt.text}"
                         )
                     )
@@ -150,7 +153,8 @@ class LoginScreenFrag :
                             findNavController(),
                             AppSharedPref,
                             ReqLoginWithMpin(
-                                binding.etPhoenNum.text.toString(),
+                                AppSharedPref.getStringValue(CUST_MOBILE)
+                                    .toString(),
                                 "${binding.pinOneEt.text}${binding.pinTwoEt.text}${binding.pinThreeEt.text}${binding.pinFourEt.text}"
                             )
                         )

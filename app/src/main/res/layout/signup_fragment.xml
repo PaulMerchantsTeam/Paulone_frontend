@@ -134,9 +134,11 @@
 
                     <EditText
                         android:id="@+id/mpinOneEt"
-                        android:layout_width="@dimen/_46sdp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/view_color"
+                        android:layout_width="@dimen/_45sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:background="@drawable/edit_text_rect_8"
+                        android:layout_marginTop="@dimen/_10sdp"
+
                         android:digits="0123456789"
                         android:fontFamily="@font/poppins_bold"
                         android:gravity="center"
@@ -153,15 +155,14 @@
 
                     <EditText
                         android:id="@+id/mpinTwoEt"
-                        android:layout_width="@dimen/_46sdp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/view_color"
+                        android:layout_width="@dimen/_45sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:background="@drawable/edit_text_rect_8"
                         android:digits="0123456789"
                         android:fontFamily="@font/poppins_bold"
                         android:gravity="center"
                         android:imeOptions="actionNext"
                         android:inputType="numberPassword"
-
                         android:maxLength="1"
                         android:textColor="@color/splash_screen_one"
                         android:textCursorDrawable="@drawable/custom_edit_text_cursor"
@@ -175,9 +176,9 @@
 
                     <EditText
                         android:id="@+id/mpinThreeEt"
-                        android:layout_width="@dimen/_46sdp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/view_color"
+                        android:layout_width="@dimen/_45sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:background="@drawable/edit_text_rect_8"
                         android:digits="0123456789"
                         android:fontFamily="@font/poppins_bold"
                         android:gravity="center"
@@ -195,9 +196,9 @@
 
                     <EditText
                         android:id="@+id/mpinFourEt"
-                        android:layout_width="@dimen/_46sdp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/view_color"
+                        android:layout_width="@dimen/_45sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:background="@drawable/edit_text_rect_8"
                         android:digits="0123456789"
                         android:fontFamily="@font/poppins_bold"
                         android:gravity="center"
@@ -231,9 +232,10 @@
 
                     <EditText
                         android:id="@+id/mpinOneConfirmEt"
-                        android:layout_width="@dimen/_46sdp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/view_color"
+                        android:layout_width="@dimen/_45sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/edit_text_rect_8"
                         android:digits="0123456789"
                         android:fontFamily="@font/poppins_bold"
                         android:gravity="center"
@@ -250,9 +252,9 @@
 
                     <EditText
                         android:id="@+id/mpinConfirmTwoEt"
-                        android:layout_width="@dimen/_46sdp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/view_color"
+                        android:layout_width="@dimen/_45sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:background="@drawable/edit_text_rect_8"
                         android:digits="0123456789"
                         android:fontFamily="@font/poppins_bold"
                         android:gravity="center"
@@ -271,9 +273,9 @@
 
                     <EditText
                         android:id="@+id/mpinConfirmThreeEt"
-                        android:layout_width="@dimen/_46sdp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/view_color"
+                        android:layout_width="@dimen/_45sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:background="@drawable/edit_text_rect_8"
                         android:digits="0123456789"
                         android:fontFamily="@font/poppins_bold"
                         android:gravity="center"
@@ -291,9 +293,9 @@
 
                     <EditText
                         android:id="@+id/mpinConfirmFourEt"
-                        android:layout_width="@dimen/_46sdp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/view_color"
+                        android:layout_width="@dimen/_45sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:background="@drawable/edit_text_rect_8"
                         android:digits="0123456789"
                         android:fontFamily="@font/poppins_bold"
                         android:gravity="center"

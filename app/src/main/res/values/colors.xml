@@ -25,6 +25,7 @@
     <color name="red_txt">#C70000</color>
 
     <color name="text_gray_2">#8C8C8C</color>
+    <color name="blue_new">#034BA0</color>
 
     <!--    color of splash-->
     <color name="splash_screen_one">#150750</color>
@@ -50,6 +51,7 @@
     <color name="view_color">#663F72AF</color>
     <color name="view_color_line">#B4B4B4</color>
     <color name="pg_color">#3F72AF</color>
+    <color name="bg_status_color">#668DBB</color>
     <color name="no_color">#00FFFFFF</color>
     <color name="text_color_gray">#7C7D7E</color>
 

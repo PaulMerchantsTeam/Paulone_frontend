@@ -62,6 +62,12 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     private var isDown: Boolean = false
     override fun getViewBinding() = PaymentsModeNewBinding.inflate(layoutInflater)
     override val mViewModel: PaymentViewModel by viewModels()
+//    var isUpiIntent = false
+//    var isUpiCollect = false
+
+    enum class PaymentMode {
+        UPI_COLLECT, UPI_INTENT, DebitCard, Netbanking, CreditCard, Wallet
+    }
 
     companion object {
         lateinit var context: WeakReference<Context>
@@ -126,34 +132,94 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
         paymentViewModel.getPaymentMethod.observe(this) {
             it?.let {
-                if (it.data.DebitCard && !it.data.CreditCard) { //10
-                    binding.nbTv.text = "Debit Card"
-                    binding.creditDebitParent.show()
-                } else if (it.data.DebitCard && it.data.CreditCard) {//11
-                    binding.nbTv.text = "Credit/Debit Card"
-                    binding.creditDebitParent.show()
-                } else if (!it.data.DebitCard && it.data.CreditCard) {//01
-                    binding.nbTv.text = "Credit Card"
-                    binding.creditDebitParent.show()
-                } else {//00
-                    binding.creditDebitParent.hide()
-                }
-                if (it.data.Netbanking) {
-                    binding.netBankingParentParent.show()
-                } else {
-                    binding.netBankingParentParent.hide()
+                for (paymentMethods in it.data) {
+                    Log.e(TAG, "onCreate: .........$paymentMethods")
+                    if (paymentMethods.method == PaymentMode.UPI_COLLECT.name) {
+//                        val isUpiCollect =
+                        if (paymentMethods.value) {
+                            showUpiCollect()
+                            Log.e(TAG, "onCreate: .........rere")
+                        } else {
+                            hideUPiCollect()
+                            Log.e(TAG, "onCreate: ////////")
+                        }
 
+//                        if (paymentMethods.method == PaymentMode.UPI_INTENT.name) {
+//                            val isUpiIntent = paymentMethods.value
+//                            Log.e(TAG, "onCreate: .......$isUpiCollect-----$isUpiIntent")
+//                            if (!isUpiCollect && !isUpiIntent) {
+//                                binding.bhmUpiParent.hide()
+//                            } else {
+//                                Log.e(TAG, "onCreate: .........3333")
+//                                if (isUpiCollect) {
+//                                    showUpiCollect()
+//                                } else {
+//                                    hideUPiCollect()
+//                                }
+//                                if (isUpiIntent) {
+//                                    binding.upiMethodParent.show()
+//                                } else {
+//                                    binding.upiMethodParent.hide()
+//                                }
+//                            }
+//                        }
+                    }
+                    if (paymentMethods.method == PaymentMode.UPI_INTENT.name) {
+//                        val isUpiIntent = paymentMethods.value
+//                        Log.e(TAG, "onCreate: .......$isUpiCollect-----$isUpiIntent"
+//                            if (!isUpiCollect && !isUpiIntent) {
+//                                binding.bhmUpiParent.hide()
+//                            } else {
+                        Log.e(
+                            TAG,
+                            "onCreate: ..${paymentMethods.method}......${paymentMethods.value}",
+                        )
+                        if (paymentMethods.value) {
+                            binding.upiMethodParent.show()
+                        } else {
+                            binding.upiMethodParent.hide()
+                        }
+//                            }
+                    }
+                    if (paymentMethods.method == PaymentMode.DebitCard.name) {
+                        val isValueDebitCard = paymentMethods.value
+                        if (paymentMethods.method == PaymentMode.CreditCard.name) {
+                            val isValueForCreditCard = paymentMethods.value
+
+                            if (isValueDebitCard && !isValueForCreditCard) { //10
+                                binding.nbTv.text = "Debit Card"
+                                binding.creditDebitParent.show()
+                            } else if (isValueDebitCard && isValueForCreditCard) {//11
+                                binding.nbTv.text = "Credit/Debit Card"
+                                binding.creditDebitParent.show()
+                            } else if (!isValueDebitCard && isValueForCreditCard) {//01
+                                binding.nbTv.text = "Credit Card"
+                                binding.creditDebitParent.show()
+                            } else {//00
+                                binding.creditDebitParent.hide()
+                            }
+                        }
+
+
+                    }
+                    if (paymentMethods.method == PaymentMode.Netbanking.name) {
+                        if (paymentMethods.value) {
+                            binding.netBankingParentParent.show()
+                        } else {
+                            binding.netBankingParentParent.hide()
+                        }
+                    }
+
+                    if (paymentMethods.method == PaymentMode.Wallet.name) {
+                        if (paymentMethods.value) {
+                            binding.walletParent.show()
+                        } else {
+                            binding.walletParent.hide()
+                        }
+                    }
                 }
-                if (it.data.Wallet) {
-                    binding.walletParent.show()
-                } else {
-                    binding.walletParent.hide()
-                }
-                if (it.data.UPI) {
-                    binding.bhmUpiParent.show()
-                } else {
-                    binding.bhmUpiParent.show()
-                }
+
+
                 /*  when {
                       it.data.CreditCard && it.data.DebitCard && it.data.UPI && it.data.Wallet && it.data.Netbanking -> {
 
@@ -198,10 +264,11 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 if (it.status == "200") {
                     Log.d(TAG, "ojnnnnnn: /.................$it")
 
-                    showCustomDialogFoPaymentStatus(message = it.message, isClick = {
+                    showCustomDialogFoPaymentStatus(
+                        message = "${it.message}\n Payment has been collected. It will be reflected in you loan account in a few minutes.",
+                        isClick = {
 
-
-                    })
+                        })
 //                    val bundle = Bundle().apply {
 //                        putString(
 //                            com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
@@ -256,8 +323,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                /*
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {/*
                                 if (s?.length == 2 && before == 0) { // Assuming MM/YYYY format
                                     binding.enterExpireDateEt.setText(String.format("%s/", s))
                                     binding.enterExpireDateEt.setSelection(binding.enterExpireDateEt.text?.length ?: 0)
@@ -288,8 +354,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
             }
         })
-        paymentViewModel.responseCreateOrder.observe(this)
-        {
+        paymentViewModel.responseCreateOrder.observe(this) {
             it?.let {
                 Log.d(TAG, "onCreate: ...................$it")
                 if (it.statusCode == "200") {
@@ -368,8 +433,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                             upiCollect(binding.enterUpiEt.text.toString())
                             amountToPay?.let { it1 ->
                                 createOrder(
-                                    it1,
-                                    notes = "paying from upi_collect"
+                                    it1, notes = "paying from upi_collect"
                                 )
                             }
                         } else {
@@ -421,8 +485,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     bhmUpiParent.setBackgroundResource(R.drawable.card_sky_rect_6)
                     bhmValue = true
                 }
-            }
-            /*
+            }/*
                         walletParent.setOnClickListener {
                             if (walletValue) {
                                 arrowDownWalletIv.setImageResource(R.drawable.cross_icon)
@@ -485,10 +548,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     )
 //                    arrowDownCreditIv.setImageResource(R.drawable.arrow_down_black)
                     nbTv.setCompoundDrawablesWithIntrinsicBounds(
-                        0,
-                        0,
-                        R.drawable.arrow_down_black,
-                        0
+                        0, 0, R.drawable.arrow_down_black, 0
                     )
                     creditDebitParent.setBackgroundResource(R.drawable.card_sky_rect_6)
                     creditValue = true
@@ -534,6 +594,22 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
     }
 
+    private fun showUpiCollect() {
+        binding.apply {
+            addUpiTv.show()
+            enterUpiEt.show()
+            verifyUpiBtn.show()
+        }
+    }
+
+    private fun hideUPiCollect() {
+        binding.apply {
+            addUpiTv.hide()
+            enterUpiEt.hide()
+            verifyUpiBtn.hide()
+        }
+    }
+
     private fun toggleWebViewVisibility(webviewVisibility: Int) {
         binding.webview.visibility = webviewVisibility
         binding.clOuter.visibility = if (webviewVisibility == View.VISIBLE) {
@@ -545,8 +621,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
     private fun isValidate(): Boolean {
         return when {
-            binding.enterNameOnCardEt.text?.isEmpty() == true && binding.enterCardNumEt.text?.isEmpty() == true
-                    && binding.enterExpireDateEt.text?.isEmpty() == true && binding.enterCvvEt.text?.isEmpty() == true -> {
+            binding.enterNameOnCardEt.text?.isEmpty() == true && binding.enterCardNumEt.text?.isEmpty() == true && binding.enterExpireDateEt.text?.isEmpty() == true && binding.enterCvvEt.text?.isEmpty() == true -> {
                 "Please fill all card details".showSnackBar()
                 false
             }
@@ -594,7 +669,10 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 currency = "INR",
                 custId = AppSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
                     .toString(),
-                notes = Notes(notes, "notes_2"),
+                notes = Notes(
+                    "$notes custId=${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)}",
+                    "Loan Acc Number: $customerAcc"
+                ),
                 receipt = "${AppUtility.getCurrentDate()}_${BuildConfig.VERSION_NAME}",
                 accNo = customerAcc.toString(),
                 makerId = "12545as",
@@ -624,8 +702,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                                 )
                             } else {
                                 updatePaymentStatusToServer(
-                                    StatusPayment("captured", p1),
-                                    false
+                                    StatusPayment("captured", p1), false
                                     //                                                isCustomPay ?: false
                                 )
 
@@ -650,8 +727,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
                             } else {
                                 updatePaymentStatusToServer(
-                                    StatusPayment("not_captured", p2),
-                                    false
+                                    StatusPayment("not_captured", p2), false
 //                                                isCustomPay ?: false
                                 )
                             }
@@ -703,7 +779,8 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
                         .toString(),
                     amount = amountToPay,
-                    contactCount = 0, description = "desc_payment",
+                    contactCount = 0,
+                    description = "desc_payment",
                     account = customerAcc.toString(),
                     isCustom = isCustom
                 )
@@ -765,9 +842,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     }
 //                    setUpBankSpinnerForRazorPay(bankNames, bankKeys)
                     banksListAdapter = ArrayAdapter(
-                        this@PaymentActivity,
-                        android.R.layout.simple_list_item_1,
-                        bankNames
+                        this@PaymentActivity, android.R.layout.simple_list_item_1, bankNames
                     )
                     bankListView.adapter = banksListAdapter
                     bankDialogBuilder.setView(bankListLayout)
@@ -793,9 +868,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                         }
                     }
                     walletListAdapter = ArrayAdapter(
-                        this@PaymentActivity,
-                        android.R.layout.simple_list_item_1,
-                        walletNames
+                        this@PaymentActivity, android.R.layout.simple_list_item_1, walletNames
                     )
                     walletListView.adapter = walletListAdapter
                     walletDialogBuilder.setView(walletListLayout)
@@ -816,11 +889,8 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
             override fun onError(p0: String?) {
                 Toast.makeText(
-                    this@PaymentActivity,
-                    p0 ?: "Some thing went wrong..",
-                    Toast.LENGTH_LONG
-                )
-                    .show()
+                    this@PaymentActivity, p0 ?: "Some thing went wrong..", Toast.LENGTH_LONG
+                ).show()
             }
         })
         razorpay?.setWebView(binding.webview)
@@ -843,8 +913,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
         payload.put("method", "card")
         payload.put(
-            "card[number]",
-            binding.enterCardNumEt.text.toString().replace("\\s".toRegex(), "")
+            "card[number]", binding.enterCardNumEt.text.toString().replace("\\s".toRegex(), "")
         ) //4111111111111111
         payload.put(
             "card[expiry_month]", binding.enterExpireDateEt.text.toString().substring(0, 2)
@@ -935,12 +1004,10 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             payload.put("amount", amountToPay?.times(100.00)?.toInt())
             payload.put("currency", "INR")
             payload.put(
-                "contact",
-                respCustomerDetail?.respGetCustomer?.MobileNo
+                "contact", respCustomerDetail?.respGetCustomer?.MobileNo
             )
             payload.put(
-                "email",
-                respCustomerDetail?.emailIdNew
+                "email", respCustomerDetail?.emailIdNew
             )
         } catch (e: Exception) {
             e.printStackTrace()

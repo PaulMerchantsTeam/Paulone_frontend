@@ -3,6 +3,7 @@ package com.paulmerchants.gold.remote
 import com.itextpdf.text.PageSize
 import com.paulmerchants.gold.model.ReqCustomerOtpNew
 import com.paulmerchants.gold.model.ReqSetMPin
+import com.paulmerchants.gold.model.RespFetchFest
 import com.paulmerchants.gold.model.RespSetMpin
 import com.paulmerchants.gold.model.ResponseGetOtp
 import com.paulmerchants.gold.model.ResponseVerifyOtp
@@ -178,10 +179,15 @@ interface ApiParams {
         @Body payAllInOnGo: ReqPayAlInOnGo,
     ): Response<*>
 
-    @GET("payments/payments-method")   //RespLoanDueDate
+    @GET("methods/")   //RespLoanDueDate
     suspend fun getPaymentMethod(
         @Header("Authorization") auth: String,
     ): Response<RespPaymentMethod>
+
+    @GET("fest/")   //RespLoanDueDate
+    suspend fun getFestDetailsForHeaderHomePage(
+        @Header("Authorization") auth: String,
+    ): Response<RespFetchFest>
 
     /**
      *    @RequestParam("acNo") String acNo,
