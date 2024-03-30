@@ -1,35 +1,27 @@
 package com.paulmerchants.gold.ui.auth
 
-import android.app.Activity
-import android.app.Instrumentation.ActivityResult
-import android.content.Intent
+import android.location.Location
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.common.api.ApiException
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
-import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.common.Constants.OTP_VERIFIED
 import com.paulmerchants.gold.common.Constants.SIGNUP_DONE
 import com.paulmerchants.gold.databinding.PhoneAuthFragmentBinding
-import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
+import com.paulmerchants.gold.location.LocationProvider
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
+import com.paulmerchants.gold.ui.TAG
 import com.paulmerchants.gold.utility.*
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.diffColorText
@@ -38,11 +30,9 @@ import com.paulmerchants.gold.utility.AppUtility.openUrl
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants.IS_LOGOUT
 import com.paulmerchants.gold.viewmodels.AuthViewModel
-import com.paulmerchants.gold.viewmodels.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -85,29 +75,21 @@ class PhoenNumVerifiactionFragment :
 
     private fun isValidate(): Boolean {
         val confirmPin =
-            (binding.signUpParentMain.mpinOneConfirmEt.text.toString() + binding.signUpParentMain.mpinConfirmTwoEt.text.toString()
-                    + binding.signUpParentMain.mpinConfirmThreeEt.text.toString() + binding.signUpParentMain.mpinConfirmFourEt.text.toString())
+            (binding.signUpParentMain.mpinOneConfirmEt.text.toString() + binding.signUpParentMain.mpinConfirmTwoEt.text.toString() + binding.signUpParentMain.mpinConfirmThreeEt.text.toString() + binding.signUpParentMain.mpinConfirmFourEt.text.toString())
         val mPin =
-            (binding.signUpParentMain.mpinOneEt.text.toString() + binding.signUpParentMain.mpinTwoEt.text.toString()
-                    + binding.signUpParentMain.mpinThreeEt.text.toString() + binding.signUpParentMain.mpinFourEt.text.toString())
+            (binding.signUpParentMain.mpinOneEt.text.toString() + binding.signUpParentMain.mpinTwoEt.text.toString() + binding.signUpParentMain.mpinThreeEt.text.toString() + binding.signUpParentMain.mpinFourEt.text.toString())
         return when {
             confirmPin != mPin -> {
                 "M-Pin Mismatched ".showSnackBar()
                 false
             }
 
-            binding.signUpParentMain.mpinOneEt.text.isEmpty()
-                    || binding.signUpParentMain.mpinTwoEt.text.isEmpty()
-                    || binding.signUpParentMain.mpinThreeEt.text.isEmpty()
-                    || binding.signUpParentMain.mpinFourEt.text.isEmpty() -> {
+            binding.signUpParentMain.mpinOneEt.text.isEmpty() || binding.signUpParentMain.mpinTwoEt.text.isEmpty() || binding.signUpParentMain.mpinThreeEt.text.isEmpty() || binding.signUpParentMain.mpinFourEt.text.isEmpty() -> {
                 "Please enter M-Pin".showSnackBar()
                 false
             }
 
-            binding.signUpParentMain.mpinOneConfirmEt.text.isEmpty()
-                    || binding.signUpParentMain.mpinConfirmTwoEt.text.isEmpty()
-                    || binding.signUpParentMain.mpinConfirmThreeEt.text.isEmpty()
-                    || binding.signUpParentMain.mpinConfirmFourEt.text.isEmpty()
+            binding.signUpParentMain.mpinOneConfirmEt.text.isEmpty() || binding.signUpParentMain.mpinConfirmTwoEt.text.isEmpty() || binding.signUpParentMain.mpinConfirmThreeEt.text.isEmpty() || binding.signUpParentMain.mpinConfirmFourEt.text.isEmpty()
 
             -> {
                 "Please enter Confirm M-Pin".showSnackBar()
@@ -126,28 +108,28 @@ class PhoenNumVerifiactionFragment :
 
     override fun onStart() {
         super.onStart()
-        val backStack = findNavController().backQueue
-        /*     for (i in backStack) {
+        val backStack = findNavController().backQueue/*     for (i in backStack) {
                  Log.d(
                      "TAG", "STACK__COUNT_NAME: ...${i.id}..--------.${i.destination.displayName}"
                  )
              }*/
         if (authViewModel.isFrmLogout == true) {
-            (activity as MainActivity).commonViewModel.getLogin2(AppSharedPref)
+            (activity as MainActivity).commonViewModel.getLogin2(
+                AppSharedPref, (activity as MainActivity).mLocation
+            )
         }
         //Welcome to Paul Gold,
         //we are happy to serve you!!
         callMpinNextFocus()
         callMpinConfirmNextFocus()
-        AppSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)
-            ?.let {
-                if (it != "") {
-                    binding.signUpParentMain.etName.apply {
-                        setText(it)
-                        isEnabled = false
-                    }
+        AppSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)?.let {
+            if (it != "") {
+                binding.signUpParentMain.etName.apply {
+                    setText(it)
+                    isEnabled = false
                 }
             }
+        }
 
         binding.signUpParentMain.privacy.setOnClickListener {
             openUrl(requireContext(), BuildConfig.PRIVACY_POLICY)
@@ -171,7 +153,8 @@ class PhoenNumVerifiactionFragment :
                     authViewModel.setMpin(
                         confirmMPin = confirmPin,
                         setUpMPin = mPin,
-                        email = binding.signUpParentMain.etEmailId.text.toString()
+                        email = binding.signUpParentMain.etEmailId.text.toString(),
+                        (activity as MainActivity).mLocation
                     )
                 }
             } else {
@@ -259,12 +242,20 @@ class PhoenNumVerifiactionFragment :
             if (InternetUtils.isNetworkAvailable(requireContext())) {
                 if (!isMobileEntered) {
                     if (binding.etPhoenNum.text.isNotEmpty()) {
+//                        if ((activity as MainActivity).mLocation != null) {
+                        Log.e("TAG", "onStart: /.....11")
                         authViewModel.getCustomer(
                             binding.etPhoenNum.text.toString(),
-                            requireContext()
+                            (activity as MainActivity).mLocation,
+                            requireActivity()
                         )
+//                        } else {
+//                            Log.e("TAG", "onStart: /////---12")
+//                            (activity as MainActivity).updateLocation()
+//                        }
                     }
                 } else {
+                    Log.e("TAG", "onStart: /.....eheheh")
                     if (binding.otpOneEt.text.isNotEmpty() && binding.otpTwoEt.text.isNotEmpty() && binding.otpThreeEt.text.isNotEmpty() && binding.otpFourEt.text.isNotEmpty()) {
                         val otp =
                             binding.otpOneEt.text.toString() + binding.otpTwoEt.text.toString() + binding.otpThreeEt.text.toString() + binding.otpFourEt.text.toString()
@@ -277,7 +268,8 @@ class PhoenNumVerifiactionFragment :
                         if (otp.isNotEmpty()) {
                             authViewModel.verifyOtp(
                                 binding.etPhoenNum.text.toString(),
-                                otp
+                                otp,
+                                (activity as MainActivity).mLocation
                             )
 
                         }
@@ -357,7 +349,7 @@ class PhoenNumVerifiactionFragment :
             } else {
                 if (binding.etPhoenNum.text.toString().isNotEmpty()) {
                     authViewModel.getOtp(
-                        binding.etPhoenNum.text.toString()
+                        binding.etPhoenNum.text.toString(), requireActivity()
                     )
                     authViewModel.timerStart()
                 }
@@ -368,10 +360,15 @@ class PhoenNumVerifiactionFragment :
             it?.let {
                 if (it.code() == 200) {
                     if (binding.etPhoenNum.text.isNotEmpty()) {
-                        authViewModel.getCustomer(
-                            binding.etPhoenNum.text.toString(),
-                            requireContext()
-                        )
+                        if ((activity as MainActivity).mLocation != null) {
+                            authViewModel.getCustomer(
+                                binding.etPhoenNum.text.toString(),
+
+                                (activity as MainActivity).mLocation, requireActivity(),
+                            )
+                        } else {
+                            (activity as MainActivity).locationProvider.startLocationUpdates()
+                        }
                     }
                 }
             }
@@ -399,15 +396,14 @@ class PhoenNumVerifiactionFragment :
         customizeText()
         callMpinNextFocus()
         callMpinConfirmNextFocus()
-        AppSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)
-            ?.let {
-                if (it != "") {
-                    binding.signUpParentMain.etName.apply {
-                        setText(it)
-                        isEnabled = false
-                    }
+        AppSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)?.let {
+            if (it != "") {
+                binding.signUpParentMain.etName.apply {
+                    setText(it)
+                    isEnabled = false
                 }
             }
+        }
 //        binding.signUpParentMain.googleSignInTv.setOnClickListener {
 //            //flow_remaining...
 //            googleSignUpScreen()
@@ -550,9 +546,7 @@ class PhoenNumVerifiactionFragment :
             if (it == "00") {
                 isResendEnabled = true
                 binding.didnotReceiveTv.setTColor(
-                    "${getString(R.string.send_again)}",
-                    requireContext(),
-                    R.color.splash_screen_one
+                    "${getString(R.string.send_again)}", requireContext(), R.color.splash_screen_one
                 )
             } else {
                 diffColorText("Didn’t receive?", it, binding.didnotReceiveTv)
@@ -641,6 +635,7 @@ class PhoenNumVerifiactionFragment :
             )
         )
     }
+
 
     private fun callMpinConfirmNextFocus() {
         //GenericTextWatcher here works only for moving to next EditText when a number is entered

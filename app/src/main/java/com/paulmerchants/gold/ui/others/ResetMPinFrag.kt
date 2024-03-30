@@ -142,16 +142,21 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
                     if ("${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}" ==
                         "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}"
                     ) {
-                        resetMpinViewModel.resetForgetMpin(
-                            ReqResetForgetPin(
-                                confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
-                                mobileNo = AppSharedPref.getStringValue(
-                                    CUST_MOBILE
-                                ).toString(),
-                                newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
-                                AppUtility.getDeviceDetails()
+                        if ((activity as MainActivity).mLocation != null) {
+                            resetMpinViewModel.resetForgetMpin(
+                                ReqResetForgetPin(
+                                    confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
+                                    mobileNo = AppSharedPref.getStringValue(
+                                        CUST_MOBILE
+                                    ).toString(),
+                                    newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
+                                    AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
+                                )
                             )
-                        )
+                        } else {
+                            (activity as MainActivity).locationProvider.startLocationUpdates()
+                        }
+
                     } else {
                         "New M-Pin and Confirm M-Pin mismatched".showSnackBar()
                     }
@@ -163,16 +168,20 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
                     if ("${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}" ==
                         "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}"
                     ) {
-                        resetMpinViewModel.changeMpin(
-                            ReqResetPin(
-                                "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
-                                "${binding.pinCurrOneEt.text}${binding.pinCurrTwoEt.text}${binding.pinCurrThreeEt.text}${binding.pinCurrFourEt.text}",
-                                AppSharedPref.getStringValue(CUST_MOBILE)
-                                    .toString(),  //static for testing
-                                "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
-                                AppUtility.getDeviceDetails()
+                        if ((activity as MainActivity).mLocation != null) {
+                            resetMpinViewModel.changeMpin(
+                                ReqResetPin(
+                                    "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
+                                    "${binding.pinCurrOneEt.text}${binding.pinCurrTwoEt.text}${binding.pinCurrThreeEt.text}${binding.pinCurrFourEt.text}",
+                                    AppSharedPref.getStringValue(CUST_MOBILE)
+                                        .toString(),  //static for testing
+                                    "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
+                                    AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
+                                )
                             )
-                        )
+                        } else {
+                            (activity as MainActivity).locationProvider.startLocationUpdates()
+                        }
                     } else {
                         "New M-Pin and Confirm M-Pin mismatched".showSnackBar()
                     }

@@ -37,6 +37,7 @@ class LoginScreenFrag :
 
     override fun LoginWithMobileMpinBinding.initialize() {
         changeStatusBarWithReqdColor(requireActivity(), R.color.pg_color)
+        (activity as MainActivity).locationProvider.startLocationUpdates()
     }
 
     private fun isValidate(): Boolean = when {
@@ -95,7 +96,12 @@ class LoginScreenFrag :
                 )
                 AppSharedPref?.getStringValue(
                     CUST_MOBILE
-                )?.let { loginViewModel.getOtp(it) }
+                )?.let {
+                    loginViewModel.getOtp(
+                        it,
+                        (activity as MainActivity).mLocation
+                    )
+                }
             } else {
                 noInternetDialog()
             }
@@ -135,8 +141,9 @@ class LoginScreenFrag :
                         ReqLoginWithMpin(
                             AppSharedPref.getStringValue(CUST_MOBILE)
                                 .toString(),
-                            "${binding.pinOneEt.text}${binding.pinTwoEt.text}${binding.pinThreeEt.text}${binding.pinFourEt.text}"
-                        )
+                            "${binding.pinOneEt.text}${binding.pinTwoEt.text}${binding.pinThreeEt.text}${binding.pinFourEt.text}",
+                        ),
+                        (activity as MainActivity).mLocation
                     )
                 }
             } else {
@@ -156,7 +163,8 @@ class LoginScreenFrag :
                                 AppSharedPref.getStringValue(CUST_MOBILE)
                                     .toString(),
                                 "${binding.pinOneEt.text}${binding.pinTwoEt.text}${binding.pinThreeEt.text}${binding.pinFourEt.text}"
-                            )
+                            ),
+                            (activity as MainActivity).mLocation
                         )
                     }
                 }
@@ -188,7 +196,8 @@ class LoginScreenFrag :
                             CUST_MOBILE
                         )?.let {
                             loginViewModel.getOtp(
-                                it
+                                it,
+                                (activity as MainActivity).mLocation
                             )
                         }
                     }
@@ -209,7 +218,8 @@ class LoginScreenFrag :
                     AppSharedPref,
                     mobile,
                     otp = "${dialogBinding.otpOneEt.text}${dialogBinding.otpTwoEt.text}" +
-                            "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}"
+                            "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}",
+                    (activity as MainActivity).mLocation
                 )
             } else {
                 "Please fill Otp".showSnackBar()

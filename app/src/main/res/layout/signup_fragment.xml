@@ -5,14 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/splash_screen_two"
-    android:paddingStart="@dimen/screen_start_margin"
-    android:paddingEnd="@dimen/screen_end_margin"
     android:scrollbars="none">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_blue_coin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <ScrollView
         android:id="@+id/scrollAuth"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingStart="@dimen/screen_start_margin"
+        android:paddingEnd="@dimen/screen_end_margin"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,12 +45,12 @@
                 android:id="@+id/createAccTitleTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:fontFamily="@font/poppins_bold"
+                android:layout_marginTop="@dimen/_35sdp"
                 android:lineSpacingExtra="@dimen/_3sdp"
+                android:fontFamily="@font/poppins_bold"
+                android:textColor="@color/blue_new"
+                android:textSize="@dimen/_16ssp"
                 android:text="@string/please_create_a_acc"
-                android:textColor="@color/splash_screen_three"
-                android:textSize="@dimen/_13ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -58,298 +68,300 @@
                 app:layout_constraintTop_toBottomOf="@+id/createAccTitleTv">
 
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/fullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:lineSpacingExtra="@dimen/_3sdp"
+                    android:text="@string/full_name"
+                    android:textColor="@color/splash_screen_three"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/fullName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:lineSpacingExtra="@dimen/_3sdp"
-                        android:text="@string/full_name"
-                        android:textColor="@color/splash_screen_three"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <EditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:background="@drawable/edit_text_rect_8"
+                    android:enabled="false"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:inputType="textPersonName"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:textColor="@color/splash_screen_one"
+                    android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fullName" />
 
-                    <EditText
-                        android:id="@+id/etName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/view_color"
-                        android:enabled="false"
-                        android:fontFamily="@font/poppins_semi_bold"
-                        android:inputType="textPersonName"
-                        android:textColor="@color/splash_screen_one"
-                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-                        android:textSize="@dimen/_11ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/fullName" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/emailId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:lineSpacingExtra="@dimen/_3sdp"
+                    android:text="@string/email_id"
+                    android:textColor="@color/splash_screen_three"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etName" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/emailId"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_14sdp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:lineSpacingExtra="@dimen/_3sdp"
-                        android:text="@string/email_id"
-                        android:textColor="@color/splash_screen_three"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/etName" />
+                <EditText
+                    android:id="@+id/etEmailId"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:background="@drawable/edit_text_rect_8"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:hint="abc@gmail.com"
+                    android:inputType="textEmailAddress"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:textColor="@color/splash_screen_one"
+                    android:textColorHint="@color/gray_2"
+                    android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/emailId" />
 
-                    <EditText
-                        android:id="@+id/etEmailId"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/view_color"
-                        android:fontFamily="@font/poppins_semi_bold"
-                        android:hint="abc@gmail.com"
-                        android:inputType="textEmailAddress"
-                        android:textColor="@color/splash_screen_one"
-                        android:textColorHint="@color/gray_2"
-                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-                        android:textSize="@dimen/_11ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/emailId" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/mpin"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_14sdp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:lineSpacingExtra="@dimen/_3sdp"
-                        android:text="@string/set_up_mpin"
-                        android:textColor="@color/splash_screen_three"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/etEmailId" />
-
-
-                    <EditText
-                        android:id="@+id/mpinOneEt"
-                        android:layout_width="@dimen/_45sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:background="@drawable/edit_text_rect_8"
-                        android:layout_marginTop="@dimen/_10sdp"
-
-                        android:digits="0123456789"
-                        android:fontFamily="@font/poppins_bold"
-                        android:gravity="center"
-                        android:imeOptions="actionNext"
-                        android:inputType="numberPassword"
-                        android:maxLength="1"
-                        android:textColor="@color/splash_screen_one"
-                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-                        android:textSize="@dimen/_20ssp"
-                        app:layout_constraintEnd_toStartOf="@+id/mpinTwoEt"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/mpin" />
-
-                    <EditText
-                        android:id="@+id/mpinTwoEt"
-                        android:layout_width="@dimen/_45sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:background="@drawable/edit_text_rect_8"
-                        android:digits="0123456789"
-                        android:fontFamily="@font/poppins_bold"
-                        android:gravity="center"
-                        android:imeOptions="actionNext"
-                        android:inputType="numberPassword"
-                        android:maxLength="1"
-                        android:textColor="@color/splash_screen_one"
-                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-                        android:textSize="@dimen/_20ssp"
-                        app:layout_constraintBottom_toBottomOf="@+id/mpinOneEt"
-                        app:layout_constraintEnd_toStartOf="@+id/mpinThreeEt"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/mpinOneEt"
-                        app:layout_constraintTop_toTopOf="@+id/mpinOneEt" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mpin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:lineSpacingExtra="@dimen/_3sdp"
+                    android:text="@string/set_up_mpin"
+                    android:textColor="@color/splash_screen_three"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etEmailId" />
 
 
-                    <EditText
-                        android:id="@+id/mpinThreeEt"
-                        android:layout_width="@dimen/_45sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:background="@drawable/edit_text_rect_8"
-                        android:digits="0123456789"
-                        android:fontFamily="@font/poppins_bold"
-                        android:gravity="center"
-                        android:imeOptions="actionNext"
-                        android:inputType="numberPassword"
-                        android:maxLength="1"
-                        android:textColor="@color/splash_screen_one"
-                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-                        android:textSize="@dimen/_20ssp"
-                        app:layout_constraintBottom_toBottomOf="@+id/mpinTwoEt"
-                        app:layout_constraintEnd_toStartOf="@+id/mpinFourEt"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/mpinTwoEt"
-                        app:layout_constraintTop_toTopOf="@+id/mpinTwoEt" />
+                <EditText
+                    android:id="@+id/mpinOneEt"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/edit_text_rect_8"
 
-                    <EditText
-                        android:id="@+id/mpinFourEt"
-                        android:layout_width="@dimen/_45sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:background="@drawable/edit_text_rect_8"
-                        android:digits="0123456789"
-                        android:fontFamily="@font/poppins_bold"
-                        android:gravity="center"
-                        android:imeOptions="actionNext"
-                        android:inputType="numberPassword"
-                        android:maxLength="1"
-                        android:textColor="@color/splash_screen_one"
-                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-                        android:textSize="@dimen/_20ssp"
-                        app:layout_constraintBottom_toBottomOf="@+id/mpinThreeEt"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/mpinThreeEt"
-                        app:layout_constraintTop_toTopOf="@+id/mpinThreeEt" />
+                    android:digits="0123456789"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberPassword"
+                    android:maxLength="1"
+                    android:textColor="@color/splash_screen_one"
+                    android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                    android:textSize="@dimen/_20ssp"
+                    app:layout_constraintEnd_toStartOf="@+id/mpinTwoEt"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mpin" />
 
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/mpinConfirm"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_14sdp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:lineSpacingExtra="@dimen/_3sdp"
-                        android:text="@string/conf_mpin"
-                        android:textColor="@color/splash_screen_three"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/mpinOneEt" />
+                <EditText
+                    android:id="@+id/mpinTwoEt"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:background="@drawable/edit_text_rect_8"
+                    android:digits="0123456789"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberPassword"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:maxLength="1"
+                    android:textColor="@color/splash_screen_one"
+                    android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                    android:textSize="@dimen/_20ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/mpinOneEt"
+                    app:layout_constraintEnd_toStartOf="@+id/mpinThreeEt"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/mpinOneEt"
+                    app:layout_constraintTop_toTopOf="@+id/mpinOneEt" />
 
 
-                    <EditText
-                        android:id="@+id/mpinOneConfirmEt"
-                        android:layout_width="@dimen/_45sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:background="@drawable/edit_text_rect_8"
-                        android:digits="0123456789"
-                        android:fontFamily="@font/poppins_bold"
-                        android:gravity="center"
-                        android:imeOptions="actionNext"
-                        android:inputType="numberPassword"
-                        android:maxLength="1"
-                        android:textColor="@color/splash_screen_one"
-                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-                        android:textSize="@dimen/_20ssp"
-                        app:layout_constraintEnd_toStartOf="@+id/mpinTwoEt"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/mpinConfirm" />
+                <EditText
+                    android:id="@+id/mpinThreeEt"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:background="@drawable/edit_text_rect_8"
+                    android:digits="0123456789"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberPassword"
+                    android:maxLength="1"
+                    android:layout_marginStart="@dimen/_10sdp"
 
-                    <EditText
-                        android:id="@+id/mpinConfirmTwoEt"
-                        android:layout_width="@dimen/_45sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:background="@drawable/edit_text_rect_8"
-                        android:digits="0123456789"
-                        android:fontFamily="@font/poppins_bold"
-                        android:gravity="center"
-                        android:imeOptions="actionNext"
-                        android:inputType="numberPassword"
-                        android:maxLength="1"
-                        android:textColor="@color/splash_screen_one"
-                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-                        android:textSize="@dimen/_20ssp"
-                        app:layout_constraintBottom_toBottomOf="@+id/mpinOneConfirmEt"
-                        app:layout_constraintEnd_toStartOf="@+id/mpinConfirmThreeEt"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/mpinOneConfirmEt"
-                        app:layout_constraintTop_toTopOf="@+id/mpinOneConfirmEt" />
+                    android:textColor="@color/splash_screen_one"
+                    android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                    android:textSize="@dimen/_20ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/mpinTwoEt"
+                    app:layout_constraintEnd_toStartOf="@+id/mpinFourEt"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/mpinTwoEt"
+                    app:layout_constraintTop_toTopOf="@+id/mpinTwoEt" />
 
+                <EditText
+                    android:id="@+id/mpinFourEt"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:background="@drawable/edit_text_rect_8"
+                    android:digits="0123456789"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberPassword"
+                    android:maxLength="1"
 
-                    <EditText
-                        android:id="@+id/mpinConfirmThreeEt"
-                        android:layout_width="@dimen/_45sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:background="@drawable/edit_text_rect_8"
-                        android:digits="0123456789"
-                        android:fontFamily="@font/poppins_bold"
-                        android:gravity="center"
-                        android:imeOptions="actionNext"
-                        android:inputType="numberPassword"
-                        android:maxLength="1"
-                        android:textColor="@color/splash_screen_one"
-                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-                        android:textSize="@dimen/_20ssp"
-                        app:layout_constraintBottom_toBottomOf="@+id/mpinConfirmTwoEt"
-                        app:layout_constraintEnd_toStartOf="@+id/mpinFourEt"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/mpinConfirmTwoEt"
-                        app:layout_constraintTop_toTopOf="@+id/mpinConfirmTwoEt" />
-
-                    <EditText
-                        android:id="@+id/mpinConfirmFourEt"
-                        android:layout_width="@dimen/_45sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:background="@drawable/edit_text_rect_8"
-                        android:digits="0123456789"
-                        android:fontFamily="@font/poppins_bold"
-                        android:gravity="center"
-                        android:imeOptions="actionNext"
-                        android:inputType="numberPassword"
-                        android:maxLength="1"
-                        android:textColor="@color/splash_screen_one"
-                        android:textCursorDrawable="@drawable/custom_edit_text_cursor"
-                        android:textSize="@dimen/_20ssp"
-                        app:layout_constraintBottom_toBottomOf="@+id/mpinConfirmThreeEt"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/mpinConfirmThreeEt"
-                        app:layout_constraintTop_toTopOf="@+id/mpinConfirmThreeEt" />
-
-                    <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/termsCb"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_22sdp"
-                        android:buttonTint="@color/splash_screen_one"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="@string/by_creating_the_account"
-                        android:textColor="@color/splash_screen_one"
-                        android:textSize="@dimen/_11ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/mpinOneConfirmEt" />
+                    android:textColor="@color/splash_screen_one"
+                    android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                    android:textSize="@dimen/_20ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/mpinThreeEt"
+                    app:layout_constraintStart_toEndOf="@+id/mpinThreeEt"
+                    app:layout_constraintTop_toTopOf="@+id/mpinThreeEt" />
 
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/privacy"
-                        android:layout_width="105dp"
-                        android:layout_height="24dp"
-                        android:text="@string/privacy_policy_"
-                        android:textColor="@color/splash_screen_one"
-                        android:textSize="@dimen/_11ssp"
-                        app:layout_constraintStart_toStartOf="@+id/termsCb"
-                        app:layout_constraintTop_toBottomOf="@+id/termsCb" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mpinConfirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:lineSpacingExtra="@dimen/_3sdp"
+                    android:text="@string/conf_mpin"
+                    android:textColor="@color/splash_screen_three"
+                    android:textSize="@dimen/_13ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mpinOneEt" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tAndCTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="48dp"
-                        android:text="@string/t_and_c"
-                        android:textColor="@color/splash_screen_one"
-                        android:textSize="@dimen/_11ssp"
-                        app:layout_constraintStart_toEndOf="@+id/privacy"
-                        app:layout_constraintTop_toTopOf="@+id/termsCb" />
+
+                <EditText
+                    android:id="@+id/mpinOneConfirmEt"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/edit_text_rect_8"
+                    android:digits="0123456789"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberPassword"
+                    android:maxLength="1"
+                    android:textColor="@color/splash_screen_one"
+                    android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                    android:textSize="@dimen/_20ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mpinConfirm" />
+
+                <EditText
+                    android:id="@+id/mpinConfirmTwoEt"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:background="@drawable/edit_text_rect_8"
+                    android:digits="0123456789"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberPassword"
+                    android:maxLength="1"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:textColor="@color/splash_screen_one"
+                    android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                    android:textSize="@dimen/_20ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/mpinOneConfirmEt"
+                    app:layout_constraintEnd_toStartOf="@+id/mpinConfirmThreeEt"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/mpinOneConfirmEt"
+                    app:layout_constraintTop_toTopOf="@+id/mpinOneConfirmEt" />
+
+
+                <EditText
+                    android:id="@+id/mpinConfirmThreeEt"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:background="@drawable/edit_text_rect_8"
+                    android:digits="0123456789"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberPassword"
+                    android:maxLength="1"
+                    android:textColor="@color/splash_screen_one"
+                    android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                    android:textSize="@dimen/_20ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/mpinConfirmTwoEt"
+                    app:layout_constraintStart_toEndOf="@+id/mpinConfirmTwoEt"
+                    app:layout_constraintTop_toTopOf="@+id/mpinConfirmTwoEt" />
+
+                <EditText
+                    android:id="@+id/mpinConfirmFourEt"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:background="@drawable/edit_text_rect_8"
+                    android:digits="0123456789"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberPassword"
+                    android:maxLength="1"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:textColor="@color/splash_screen_one"
+                    android:textCursorDrawable="@drawable/custom_edit_text_cursor"
+                    android:textSize="@dimen/_20ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/mpinConfirmThreeEt"
+                    app:layout_constraintStart_toEndOf="@+id/mpinConfirmThreeEt"
+                    app:layout_constraintTop_toTopOf="@+id/mpinConfirmThreeEt" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/termsCb"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_22sdp"
+                    android:buttonTint="@color/splash_screen_one"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/by_creating_the_account"
+                    android:textColor="@color/splash_screen_one"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mpinOneConfirmEt" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/privacy"
+                    android:layout_width="105dp"
+                    android:layout_height="24dp"
+                    android:text="@string/privacy_policy_"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:textColor="@color/splash_screen_one"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintStart_toStartOf="@+id/termsCb"
+                    app:layout_constraintTop_toBottomOf="@+id/termsCb" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tAndCTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="48dp"
+                    android:text="@string/t_and_c"
+                    android:textColor="@color/splash_screen_one"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintStart_toEndOf="@+id/privacy"
+                    app:layout_constraintTop_toTopOf="@+id/termsCb" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/signUpBtn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/_30sdp"
                     android:backgroundTint="@color/color_prim_one_40"
@@ -357,91 +369,92 @@
                     android:text="@string/sign_up"
                     android:textAllCaps="false"
                     android:textColor="@color/yellow_main"
-                    android:textSize="@dimen/_9ssp"
+                    android:textSize="@dimen/_12ssp"
+                    android:paddingVertical="@dimen/_10sdp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/privacy" />
 
-                    <View
-                        android:id="@+id/view"
-                        android:layout_width="@dimen/_70sdp"
-                        android:layout_height="@dimen/_1sdp"
-                        android:background="@color/color_prim_one_40"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="@+id/materialTextView"
-                        app:layout_constraintEnd_toStartOf="@+id/materialTextView"
-                        app:layout_constraintTop_toTopOf="@+id/materialTextView" />
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:background="@color/color_prim_one_40"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/materialTextView"
+                    app:layout_constraintEnd_toStartOf="@+id/materialTextView"
+                    app:layout_constraintTop_toTopOf="@+id/materialTextView" />
 
-                    <View
-                        android:id="@+id/view2"
-                        android:layout_width="@dimen/_70sdp"
-                        android:layout_height="@dimen/_1sdp"
-                        android:background="@color/color_prim_one_40"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="@+id/materialTextView"
-                        app:layout_constraintStart_toEndOf="@+id/materialTextView"
-                        app:layout_constraintTop_toTopOf="@+id/materialTextView" />
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_1sdp"
+                    android:background="@color/color_prim_one_40"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/materialTextView"
+                    app:layout_constraintStart_toEndOf="@+id/materialTextView"
+                    app:layout_constraintTop_toTopOf="@+id/materialTextView" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/materialTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_23sdp"
-                        android:fontFamily="@font/poppins_medium"
-                        android:gravity="center"
-                        android:padding="@dimen/_3sdp"
-                        android:text="or"
-                        android:textAlignment="gravity"
-                        android:textSize="@dimen/_11ssp"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/signUpBtn" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/materialTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_23sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center"
+                    android:padding="@dimen/_3sdp"
+                    android:text="or"
+                    android:textAlignment="gravity"
+                    android:textSize="@dimen/_11ssp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/signUpBtn" />
 
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/googleSignInTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_18sdp"
-                        android:background="@drawable/rec_back_btn"
-                        android:drawableStart="@drawable/google_svg"
-                        android:drawablePadding="@dimen/_14sdp"
-                        android:fontFamily="@font/poppins_semi_bold"
-                        android:gravity="center_vertical"
-                        android:padding="@dimen/_5sdp"
-                        android:paddingStart="@dimen/_23sdp"
-                        android:paddingTop="@dimen/_14sdp"
-                        android:paddingEnd="@dimen/_53sdp"
-                        android:paddingBottom="@dimen/_14sdp"
-                        android:text="@string/cont_with_google"
-                        android:textAlignment="gravity"
-                        android:textColor="@color/splash_screen_one"
-                        android:textSize="@dimen/_9ssp"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/googleSignInTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_18sdp"
+                    android:background="@drawable/rec_back_btn"
+                    android:drawableStart="@drawable/google_svg"
+                    android:drawablePadding="@dimen/_14sdp"
+                    android:fontFamily="@font/poppins_semi_bold"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/_5sdp"
+                    android:paddingStart="@dimen/_23sdp"
+                    android:paddingTop="@dimen/_14sdp"
+                    android:paddingEnd="@dimen/_53sdp"
+                    android:paddingBottom="@dimen/_14sdp"
+                    android:text="@string/cont_with_google"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/splash_screen_one"
+                    android:textSize="@dimen/_9ssp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/materialTextView" />
 
-                    <!--                    <com.google.android.material.textview.MaterialTextView-->
-                    <!--                        android:id="@+id/alreadyHaveAccTv"-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_marginTop="@dimen/_16sdp"-->
-                    <!--                        android:fontFamily="@font/poppins_bold"-->
-                    <!--                        android:lineSpacingExtra="@dimen/_3sdp"-->
-                    <!--                        android:text="@string/already_have_an_acc"-->
-                    <!--                        android:textColor="@color/splash_screen_three"-->
-                    <!--                        android:textSize="@dimen/_10ssp"-->
-                    <!--                        android:visibility="gone"-->
-                    <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--                        app:layout_constraintEnd_toEndOf="@+id/googleSignInTv"-->
-                    <!--                        app:layout_constraintStart_toStartOf="@+id/googleSignInTv"-->
-                    <!--                        app:layout_constraintTop_toBottomOf="@+id/googleSignInTv" />-->
+                <!--                    <com.google.android.material.textview.MaterialTextView-->
+                <!--                        android:id="@+id/alreadyHaveAccTv"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_marginTop="@dimen/_16sdp"-->
+                <!--                        android:fontFamily="@font/poppins_bold"-->
+                <!--                        android:lineSpacingExtra="@dimen/_3sdp"-->
+                <!--                        android:text="@string/already_have_an_acc"-->
+                <!--                        android:textColor="@color/splash_screen_three"-->
+                <!--                        android:textSize="@dimen/_10ssp"-->
+                <!--                        android:visibility="gone"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                        app:layout_constraintEnd_toEndOf="@+id/googleSignInTv"-->
+                <!--                        app:layout_constraintStart_toStartOf="@+id/googleSignInTv"-->
+                <!--                        app:layout_constraintTop_toBottomOf="@+id/googleSignInTv" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

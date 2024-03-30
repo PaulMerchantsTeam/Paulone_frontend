@@ -96,7 +96,9 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
 //              Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
             }
         } else {
-            profileViewModel.getCustomerDetails()
+            profileViewModel.getCustomerDetails(
+                (activity as MainActivity).mLocation
+            )
         }
         profileViewModel.getRespCustomersDetailsLiveData.observe(viewLifecycleOwner) {
             it?.let {
@@ -236,7 +238,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                             CUST_MOBILE
                         )?.let {
                             profileViewModel.getOtp(
-                                it
+                                it, (activity as MainActivity).mLocation
                             )
                         }
                     }
@@ -256,7 +258,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                 profileViewModel.verifyOtp(
                     mobile,
                     otp = "${dialogBinding.otpOneEt.text}${dialogBinding.otpTwoEt.text}" +
-                            "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}"
+                            "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}",(activity as MainActivity).mLocation
                 )
             } else {
                 "Please fill Otp".showSnackBar()
@@ -288,7 +290,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                 }
                 AppSharedPref.getStringValue(
                     CUST_MOBILE
-                )?.let { profileViewModel.getOtp(it) }
+                )?.let { profileViewModel.getOtp(it,(activity as MainActivity).mLocation) }
             }
 
             104 -> {

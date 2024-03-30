@@ -17,6 +17,7 @@ import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
+import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -26,7 +27,6 @@ import android.os.Looper
 import android.provider.Settings
 import android.text.TextUtils
 import android.text.format.DateFormat
-import android.util.Base64
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -35,7 +35,6 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -71,7 +70,6 @@ import com.paulmerchants.gold.model.RespLogin
 import com.paulmerchants.gold.model.newmodel.DeviceDetailsDTO
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.PaymentActivity
-import com.paulmerchants.gold.utility.AppUtility.getCurrentDate
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -255,12 +253,12 @@ object AppUtility {
         hide()
     }
 
-    fun getDeviceDetails() = DeviceDetailsDTO(
+    fun getDeviceDetails(location: Location?) = DeviceDetailsDTO(
         BuildConfig.VERSION_NAME,
         BuildConfig.VERSION_CODE.toString(),
         Build.MODEL,
-        "121212.12",
-        "41221.22"
+        location?.latitude.toString(),
+        location?.longitude.toString()
     )
 
     fun blurTextView(blurredTextView: TextView, context: Context) {
@@ -280,7 +278,7 @@ object AppUtility {
                 blurredTextView.background?.draw(canvas)
 
                 // Apply blur effect to the Bitmap
-                val blurredBitmap = blurBitmap(bitmap, 25f, context)
+                val blurredBitmap = blurBitmap(bitmap, 25f)
 
                 // Create a BitmapDrawable with the blurred Bitmap and set it as the TextView's background
                 val blurredDrawable = BitmapDrawable(blurredTextView.resources, blurredBitmap)
@@ -290,7 +288,7 @@ object AppUtility {
     }
 
     // Function to apply blur effect to a Bitmap
-    private fun blurBitmap(bitmap: Bitmap, radius: Float, context: Context): Bitmap {
+    private fun blurBitmap(bitmap: Bitmap, radius: Float): Bitmap {
         val overlay = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(overlay)
 
@@ -306,7 +304,7 @@ object AppUtility {
         return overlay
     }
 
-    fun getScreenBitmap(view: View, backgroundColor: Int): Bitmap {
+    fun getScreenBitmap(view: View): Bitmap {
 //        view.setBackgroundColor(backgroundColor)
         val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
@@ -729,7 +727,7 @@ object AppUtility {
         return ColorStateList.valueOf(ContextCompat.getColor(this, id))
     }
 
-    fun addDrawableGradient(context: Context, layout: View, colors: IntArray) {
+    fun addDrawableGradient(layout: View, colors: IntArray) {
         // Create a GradientDrawable for the gradient background
         val gradientDrawable = GradientDrawable(
             GradientDrawable.Orientation.TOP_BOTTOM, // Set your gradient orientation

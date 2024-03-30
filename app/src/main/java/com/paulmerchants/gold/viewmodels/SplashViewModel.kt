@@ -1,6 +1,7 @@
 package com.paulmerchants.gold.viewmodels
 
 import android.content.Context
+import android.location.Location
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
@@ -35,13 +36,13 @@ class SplashViewModel @Inject constructor(
         Log.d(TAG, ": init_")
     }
 
-    fun getLogin2() = viewModelScope.launch {
+    fun getLogin2(location: Location?) = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
                 return apiParams.getLogin(
                     LoginReqNew(
-                        AppUtility.getDeviceDetails(),
+                        AppUtility.getDeviceDetails(location),
                         BuildConfig.PASSWORD,
                         BuildConfig.USERNAME
                     )

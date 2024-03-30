@@ -46,6 +46,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
+
 @AndroidEntryPoint
 class HomeScreenFrag :
     BaseFragment<DummyHomeScreenFragmentBinding>(DummyHomeScreenFragmentBinding::inflate) {
@@ -78,6 +79,8 @@ class HomeScreenFrag :
         changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
         navController = findNavController()
         secureFiles = SecureFiles()
+        (activity as MainActivity).locationProvider.startLocationUpdates()
+
 //        setUpComingOurServices()
 
     }
@@ -673,8 +676,8 @@ class HomeScreenFrag :
 //            currentDate, BuildConfig.SECRET_KEY_GEN
 //        )
 //        if (!(activity as MainActivity).commonViewModel.isCalled) {
-        (activity as MainActivity).commonViewModel.getPendingInterestDues(AppSharedPref)
-        (activity as MainActivity).commonViewModel.getLoanOutstanding(AppSharedPref)
+        (activity as MainActivity).commonViewModel.getPendingInterestDues(AppSharedPref,(activity as MainActivity).mLocation)
+        (activity as MainActivity).commonViewModel.getLoanOutstanding(AppSharedPref,(activity as MainActivity).mLocation)
 
 //            (activity as MainActivity).commonViewModel.isCalled = true
 //        }

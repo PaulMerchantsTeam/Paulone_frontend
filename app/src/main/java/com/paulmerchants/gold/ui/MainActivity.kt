@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -32,6 +34,7 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.databinding.ActivityMainBinding
 import com.paulmerchants.gold.databinding.HeaderLayoutBinding
+import com.paulmerchants.gold.location.LocationProvider
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
@@ -61,6 +64,8 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     private lateinit var networkCallback: ConnectivityManager.NetworkCallback
     private lateinit var connectivityManager: ConnectivityManager
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
+    lateinit var locationProvider: LocationProvider
+    var mLocation: Location? = null
 
     companion object {
         lateinit var context: WeakReference<Context>
@@ -88,6 +93,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             appUpdateManager.registerListener(installUpdateListener)
         }
         secureFiles = SecureFiles()
+        updateLocation()
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.battery_main_nav_graph) as NavHostFragment
@@ -109,8 +115,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            Log.d("TAG", "onCreate:${destination.displayName} ")
-
+//            Log.d("TAG", "onCreate:${destination.displayName} ")
 
             if (
                 destination.id == R.id.mainScreenFrag ||
@@ -213,6 +218,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         } else {
             Log.i("TAG", "NO_DEBUG_MODE_ENABLED")
         }
+
 
     }
 
@@ -333,6 +339,11 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        locationProvider.stopLocationUpdates()
+    }
+
     private fun checkForAppUpdate() {
         appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
             val isUpdateAvailabe = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
@@ -378,12 +389,27 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
     }
 
+    fun updateLocation() {
+        locationProvider = LocationProvider(this, object : LocationProvider.LocationListener {
+            override fun onLocationChanged(location: Location) {
+                Log.e(
+                    TAG,
+                    "onLocationChanged: .....${location.latitude}-----${location.longitude}",
+                )
+                mLocation = location
+            }
+
+        }, this)
+        locationProvider.startLocationUpdates()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         if (updateType == AppUpdateType.IMMEDIATE) {
             appUpdateManager.unregisterListener(installUpdateListener)
         }
     }
+
     fun verifyChecksum(file: File, expectedChecksum: String): Boolean {
         val actualChecksum = generateChecksum(file)
         return actualChecksum == expectedChecksum
@@ -401,6 +427,26 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         inputStream.close()
         val digestBytes = messageDigest.digest()
         return digestBytes.joinToString("") { "%02x".format(it) }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LocationProvider.REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, start location updates
+                locationProvider.startLocationUpdates()
+            } else {
+                Log.e(TAG, "onRequestPermissionsResult: ............no permission....", )
+//                locationProvider.startLocationUpdates()
+                // Permission denied, handle accordingly
+                // Display a message informing the user about the necessity of location permission
+                // Encourage them to grant the permission or provide alternative functionality
+            }
+        }
     }
 }
 

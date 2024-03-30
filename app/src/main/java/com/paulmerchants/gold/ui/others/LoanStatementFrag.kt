@@ -3,7 +3,6 @@ package com.paulmerchants.gold.ui.others
 import android.os.Build
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.LastStatemnetAdapter
 import com.paulmerchants.gold.common.BaseFragment
@@ -17,7 +16,6 @@ import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.getScreenBitmap
 import com.paulmerchants.gold.utility.AppUtility.saveAsPdf
-import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,7 +44,11 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
         val fromDate = AppUtility.getCurrentDate()
         val toDate = ""
 
-        commonViewModel.getLoanClosureReceipt(AppSharedPref,loanOutStanding?.AcNo.toString())
+        commonViewModel.getLoanClosureReceipt(
+            AppSharedPref,
+            loanOutStanding?.AcNo.toString(),
+            (activity as MainActivity).mLocation
+        )
         commonViewModel.getRespClosureReceiptLiveData.observe(viewLifecycleOwner) {
             it?.let {
 
@@ -57,6 +59,7 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
             loanOutStanding?.AcNo.toString(),
             loanOutStanding?.openDate.toString(),
             fromDate,
+            (activity as MainActivity).mLocation
         )
 
         commonViewModel.getRespLoanStatmentLiveData.observe(viewLifecycleOwner) {
@@ -71,7 +74,7 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
             findNavController().navigate(R.id.homeScreenFrag)
         }
         binding.donwloadPdfBtn.setOnClickListener {
-            val screenBitmap = getScreenBitmap(binding.constraintLayout7, R.color.open_loans)
+            val screenBitmap = getScreenBitmap(binding.constraintLayout7)
             val pdfWidth = 450f
             val pdfHeight = 842f
             saveAsPdf(
@@ -93,7 +96,7 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
     private fun setData(loanOutStanding: RespGetLoanOutStandingItem?) {
         binding.apply {
             loanNumTv.text = "Loan Number - ${loanOutStanding?.AcNo}"
-            if (loanOutStanding?.openDate !=null && loanOutStanding.openDate!= ""){
+            if (loanOutStanding?.openDate != null && loanOutStanding.openDate != "") {
                 loanStateDateLargeTv.text =
                     "Last Statement (${AppUtility.getDateWithYearOrdinals(loanOutStanding.openDate)} - ${AppUtility.getCurrentDateOnly()})"
             }

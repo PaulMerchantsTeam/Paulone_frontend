@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.viewmodels
 
+import android.location.Location
 import android.os.Build
 import android.os.CountDownTimer
 import android.util.Log
@@ -9,16 +10,11 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
-import com.paulmerchants.gold.R
-import com.paulmerchants.gold.model.GetPendingInrstDueResp
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.RespClosureReceipt
-import com.paulmerchants.gold.model.RespCustomersDetails
 import com.paulmerchants.gold.model.RespFetchFest
-import com.paulmerchants.gold.model.RespGetLoanOutStanding
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLoanRenewalProcess
@@ -51,7 +47,6 @@ import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
 import com.paulmerchants.gold.utility.decryptKey
-import com.paulmerchants.gold.utility.setTColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -60,7 +55,6 @@ import javax.inject.Inject
 @HiltViewModel
 class CommonViewModel @Inject constructor(
     private val retrofitSetup: RetrofitSetup,
-    private val apiParams: ApiParams,
 ) : ViewModel() {
     val festivalLiveData = MutableLiveData<RespFetchFest>()
     var isCalled: Boolean = true
@@ -174,7 +168,7 @@ class CommonViewModel @Inject constructor(
     }
 
 
-    fun getPendingInterestDues(AppSharedPref: AppSharedPref?) =
+    fun getPendingInterestDues(AppSharedPref: AppSharedPref?,location: Location?) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(
@@ -188,7 +182,7 @@ class CommonViewModel @Inject constructor(
                             ReqpendingInterstDueNew(
                                 AppSharedPref?.getStringValue(CUSTOMER_ID)
                                     .toString(),
-                                AppUtility.getDeviceDetails()
+                                AppUtility.getDeviceDetails(location)
                             )
                         )
                     }
@@ -230,7 +224,7 @@ class CommonViewModel @Inject constructor(
                             }
                         } else if (response.code() == 401) {
                             if (AppSharedPref != null) {
-                                getLogin2(AppSharedPref)
+                                getLogin2(AppSharedPref,location)
                             }
                             Log.d(
                                 "FAILED_401",
@@ -255,7 +249,7 @@ class CommonViewModel @Inject constructor(
 
         }
 
-    fun createOrder(AppSharedPref: AppSharedPref?, reqCreateOrder: ReqCreateOrder) =
+    fun createOrder(AppSharedPref: AppSharedPref?, reqCreateOrder: ReqCreateOrder,location: Location?) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
@@ -297,7 +291,7 @@ class CommonViewModel @Inject constructor(
                         )
                         tokenExpiredResp.value = respFail
                         if (AppSharedPref != null) {
-                            getLogin2(AppSharedPref)
+                            getLogin2(AppSharedPref, location =location)
                         }
                     }
 
@@ -325,6 +319,7 @@ class CommonViewModel @Inject constructor(
         companyName: String = "PAUL MERCHANTS",
         currency: String = "INR",
         description: String,
+        location: Location?
     ) = viewModelScope.launch {
         retrofitSetup.callApi(false, object : CallHandler<Response<*>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
@@ -343,7 +338,7 @@ class CommonViewModel @Inject constructor(
                     acNo = dueLoanSelected?.acNo.toString(),
                     makerId = "12545as",
                     macID = Build.ID,
-                    deviceDetailsDTO = AppUtility.getDeviceDetails(),
+                    deviceDetailsDTO = AppUtility.getDeviceDetails(location),
                     isCustom = false
                 )
             }
@@ -374,7 +369,7 @@ class CommonViewModel @Inject constructor(
                     )
                     tokenExpiredResp.value = respFail
                     if (AppSharedPref != null) {
-                        getLogin2(AppSharedPref)
+                        getLogin2(AppSharedPref,location)
                     }
                 }
                 AppUtility.hideProgressBar()
@@ -388,13 +383,13 @@ class CommonViewModel @Inject constructor(
 
     }
 
-    fun getLogin2(AppSharedPref: AppSharedPref?) = viewModelScope.launch {
+    fun getLogin2(AppSharedPref: AppSharedPref?,location: Location?) = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
                 return apiParams.getLogin(
                     LoginReqNew(
-                        AppUtility.getDeviceDetails(),
+                        AppUtility.getDeviceDetails(location = location),
                         BuildConfig.PASSWORD,
                         BuildConfig.USERNAME
                     )
@@ -426,7 +421,7 @@ class CommonViewModel @Inject constructor(
         })
     }
 
-    fun getLoanOutstanding(AppSharedPref: AppSharedPref?) = viewModelScope.launch {
+    fun getLoanOutstanding(AppSharedPref: AppSharedPref?,location: Location?) = viewModelScope.launch {
 
         retrofitSetup.callApi(
             true,
@@ -438,7 +433,7 @@ class CommonViewModel @Inject constructor(
                         }",
                         ReqpendingInterstDueNew(
                             AppSharedPref?.getStringValue(CUSTOMER_ID).toString(),
-                            AppUtility.getDeviceDetails()
+                            AppUtility.getDeviceDetails(location)
                         )
                     )
                 }
@@ -511,7 +506,7 @@ class CommonViewModel @Inject constructor(
         AppUtility.hideProgressBar()
     }*/
 
-    fun getLoanClosureReceipt(AppSharedPref: AppSharedPref?, accNum: String) =
+    fun getLoanClosureReceipt(AppSharedPref: AppSharedPref?, accNum: String,location: Location?) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
@@ -522,7 +517,7 @@ class CommonViewModel @Inject constructor(
                         }",
                         ReGetLoanClosureReceipNew(
                             accNum,
-                            AppUtility.getDeviceDetails()
+                            AppUtility.getDeviceDetails(location)
                         )
                     )
                 }
@@ -630,6 +625,7 @@ class CommonViewModel @Inject constructor(
         accNum: String,
         fromDat: String,
         toDate: String,
+        location: Location?
     ) = viewModelScope.launch {
 
 
@@ -641,7 +637,7 @@ class CommonViewModel @Inject constructor(
                         accNum,
                         fromDat,
                         toDate,
-                        AppUtility.getDeviceDetails()
+                        AppUtility.getDeviceDetails(location)
                     )
                 )
             }

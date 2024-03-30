@@ -1,9 +1,9 @@
 package com.paulmerchants.gold.viewmodels
 
-import android.content.Context
+import android.app.Activity
+import android.location.Location
 import android.os.CountDownTimer
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,6 +22,7 @@ import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.networks.RetrofitSetup
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
+import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
@@ -37,7 +38,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val apiParams: ApiParams,
     private val retrofitSetup: RetrofitSetup,
 ) : ViewModel() {
     //    val pass = "FU510N@pro"
@@ -91,7 +91,7 @@ class AuthViewModel @Inject constructor(
         timer?.start()
     }
 
-    fun getCustomer(mobileNum: String, context: Context) =
+    fun getCustomer(mobileNum: String, location: Location?, activity: Activity) =
         viewModelScope.launch {
 
 //        if (mobileNum == "9999988888") {
@@ -103,7 +103,7 @@ class AuthViewModel @Inject constructor(
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespCutomerInfo> {
                     return apiParams.getCustomer(
                         "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
-                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails()),
+                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location)),
                     )
                 }
 
@@ -123,7 +123,7 @@ class AuthViewModel @Inject constructor(
                                     "getCustomer: -CustomerId---${respCutomer[0]}"
                                 )
                                 if (respCutomer[0].Status == true) {
-                                        getOtp(mobileNum)
+                                    getOtp(mobileNum, activity)
 
                                     isCustomerExist.postValue(true)
                                     Log.d(
@@ -153,7 +153,7 @@ class AuthViewModel @Inject constructor(
                             Log.d("TAG", "success: ........${e.message}")
                         }
                     } else if (response.code() == 401) {
-                        getLogin2()
+                        getLogin2(location)
                     } else {
 
                     }
@@ -167,7 +167,7 @@ class AuthViewModel @Inject constructor(
             })
         }
 
-    fun getOtp( mobileNum: String) =
+    fun getOtp(mobileNum: String, activity: Activity) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
@@ -175,7 +175,10 @@ class AuthViewModel @Inject constructor(
                     return apiParams.getOtp(
 
                         "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
-                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails()),
+                        ReqCustomerNew(
+                            mobileNum,
+                            AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
+                        ),
                     )
                 }
 
@@ -196,13 +199,13 @@ class AuthViewModel @Inject constructor(
             })
         }
 
-    fun getLogin2() = viewModelScope.launch {
+    fun getLogin2(location: Location?) = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
                 return apiParams.getLogin(
                     LoginReqNew(
-                        AppUtility.getDeviceDetails(),
+                        AppUtility.getDeviceDetails(location),
                         BuildConfig.PASSWORD,
                         BuildConfig.USERNAME
                     )
@@ -234,13 +237,17 @@ class AuthViewModel @Inject constructor(
         })
     }
 
-    fun verifyOtp(mobileNum: String, otp: String) =
+    fun verifyOtp(mobileNum: String, otp: String, location: Location?) =
         viewModelScope.launch {
             retrofitSetup.callApi(true, object : CallHandler<Response<ResponseVerifyOtp>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseVerifyOtp> {
                     return apiParams.verifyOtp(
                         "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
-                        ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails()),
+                        ReqCustomerOtpNew(
+                            mobileNum,
+                            otp,
+                            AppUtility.getDeviceDetails(location = location)
+                        ),
                     )
                 }
 
@@ -272,6 +279,7 @@ class AuthViewModel @Inject constructor(
         confirmMPin: String,
         setUpMPin: String,
         email: String,
+        location: Location?,
     ) = viewModelScope.launch {
 
         retrofitSetup.callApi(true, object : CallHandler<Response<RespSetMpin>> {
@@ -289,7 +297,7 @@ class AuthViewModel @Inject constructor(
                         ).toString(),
                         setUpMPin = setUpMPin,
                         termsAndCondition = true,
-                        deviceDetailsDTO = AppUtility.getDeviceDetails()
+                        deviceDetailsDTO = AppUtility.getDeviceDetails(location = location)
                     ),
                 )
             }

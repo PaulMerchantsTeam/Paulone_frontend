@@ -3,8 +3,12 @@ package com.paulmerchants.gold.ui
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -15,12 +19,13 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.annotation.RequiresApi
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.PaymentsModeNewBinding
+import com.paulmerchants.gold.location.LocationProvider
 import com.paulmerchants.gold.model.newmodel.Notes
 import com.paulmerchants.gold.model.newmodel.PayAllnOneGoDataTobeSent
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
@@ -30,7 +35,6 @@ import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showCustomDialogForRenewCard
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
-import com.paulmerchants.gold.utility.IS_SHOW_TXN
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.utility.showCustomDialogFoPaymentStatus
@@ -62,6 +66,8 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     private var isDown: Boolean = false
     override fun getViewBinding() = PaymentsModeNewBinding.inflate(layoutInflater)
     override val mViewModel: PaymentViewModel by viewModels()
+    lateinit var locationProvider: LocationProvider
+    var mLocation: Location? = null
 //    var isUpiIntent = false
 //    var isUpiCollect = false
 
@@ -73,14 +79,27 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         lateinit var context: WeakReference<Context>
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         context = WeakReference(this)
+        AppUtility.changeStatusBarWithReqdColor(this, R.color.pg_color)
         val bundle = intent.extras
         amountToPay = bundle?.getDouble(Constants.AMOUNT_PAYABLE, 0.0)
         customerAcc = bundle?.getString(Constants.CUST_ACC)
         isCustomPay = bundle?.getBoolean(Constants.IS_CUSTOM_AMOUNT, false)
+        locationProvider = LocationProvider(this, object : LocationProvider.LocationListener {
+            override fun onLocationChanged(location: Location) {
+                Log.e(
+                    TAG,
+                    "onLocationChanged: .....${location.latitude}-----${location.longitude}",
+                )
+                mLocation = location
+            }
+
+        }, this)
+        locationProvider.startLocationUpdates()
 
         payAlllInOneGo =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) bundle?.getParcelable(
@@ -115,7 +134,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                         binding.clOuter.hide()
                         isDown = it.data.down
                     } else {
-                        paymentViewModel.getCustomerDetails(AppSharedPref)
+                        paymentViewModel.getCustomerDetails(AppSharedPref, mLocation)
                         paymentViewModel.getPaymentMethod(AppSharedPref)
                     }
                 }
@@ -611,6 +630,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     }
 
     private fun toggleWebViewVisibility(webviewVisibility: Int) {
+        binding.parentWeb.visibility = webviewVisibility
         binding.webview.visibility = webviewVisibility
         binding.clOuter.visibility = if (webviewVisibility == View.VISIBLE) {
             View.GONE
@@ -660,27 +680,38 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun createOrder(amount: Double, notes: String) {
         Log.d("TAG", "createOrder: ......$amount")
 
-        paymentViewModel.getUnderMaintenanceStatus(
-            reqCreateOrder = ReqCreateOrder(
-                amount = amount,
-                currency = "INR",
-                custId = AppSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
-                    .toString(),
-                notes = Notes(
-                    "$notes custId=${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)}",
-                    "Loan Acc Number: $customerAcc"
-                ),
-                receipt = "${AppUtility.getCurrentDate()}_${BuildConfig.VERSION_NAME}",
-                accNo = customerAcc.toString(),
-                makerId = "12545as",
-                submit = true,
-                macId = Build.ID,
-                valueDate = AppUtility.getCurrentDate()
+        if (mLocation?.isMock == true) {
+            "Please disable your mock Location from developer option".showSnackBar()
+            return
+        }
+
+        if (mLocation == null) {
+            locationProvider.startLocationUpdates()
+            return
+        } else {
+            paymentViewModel.getUnderMaintenanceStatus(
+                reqCreateOrder = ReqCreateOrder(
+                    amount = amount,
+                    currency = "INR",
+                    custId = AppSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
+                        .toString(),
+                    notes = Notes(
+                        "$notes custId=${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)}",
+                        "Loan Acc Number: $customerAcc"
+                    ),
+                    receipt = "${AppUtility.getCurrentDate()}_${BuildConfig.VERSION_NAME}",
+                    accNo = customerAcc.toString(),
+                    makerId = "12545as",
+                    submit = true,
+                    macId = Build.ID,
+                    valueDate = AppUtility.getCurrentDate()
+                ), mLocation
             )
-        )
+        }
     }
 
     private fun sendRequest() {
@@ -756,6 +787,37 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         paymentViewModel.isCalled = false
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LocationProvider.REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, start location updates
+                locationProvider.startLocationUpdates()
+            } else {
+                Log.e(TAG, "onRequestPermissionsResult: ............no permission....")
+                showCustomDialogFoPaymentStatus(
+                    header = "Location Access Required",
+                    message = "Please enable location access in your device settings to finalize payments.",
+                    isClick = {
+                        startActivity(
+                            Intent(
+                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                Uri.fromParts("package", this.packageName, null),
+                            ),
+                        )
+                    })
+//                locationProvider.startLocationUpdates()
+                // Permission denied, handle accordingly
+                // Display a message informing the user about the necessity of location permission
+                // Encourage them to grant the permission or provide alternative functionality
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (razorpay != null) {
@@ -782,7 +844,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     contactCount = 0,
                     description = "desc_payment",
                     account = customerAcc.toString(),
-                    isCustom = isCustom
+                    isCustom = isCustom, location = mLocation
                 )
             }
         } else {
@@ -807,7 +869,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                         amount = amountToPay,
                         contactCount = 0,
                         description = "desc_payment",
-                        listOfPaullINOneGo = payAllGo
+                        listOfPaullINOneGo = payAllGo, location = mLocation
                     )
                 }
             }
@@ -1026,4 +1088,11 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             }
         }
     }
+
+    override fun onStop() {
+        super.onStop()
+        locationProvider.stopLocationUpdates()
+    }
+
+
 }

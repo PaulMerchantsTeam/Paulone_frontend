@@ -238,7 +238,7 @@ class GoldLoanScreenFrag :
     }
 
     private fun setUpNetworkCallbackFOrDueLoans() {
-        goldScreenViewModel.getLoanOutstanding()
+        goldScreenViewModel.getLoanOutstanding((activity as MainActivity).mLocation)
     }
 
     private fun hideViews() {

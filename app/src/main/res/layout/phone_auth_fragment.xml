@@ -232,7 +232,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/proceedAuthBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:paddingVertical="@dimen/_10sdp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/color_prim_one_40"
         android:enabled="false"

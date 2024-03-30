@@ -1,6 +1,7 @@
 package com.paulmerchants.gold.viewmodels
 
 import android.content.Context
+import android.location.Location
 import android.os.CountDownTimer
 import android.util.Log
 import android.widget.Toast
@@ -94,7 +95,7 @@ class LoginViewModel @Inject constructor(
         timer?.start()
     }
 
-    fun getOtp( mobileNum: String) =
+    fun getOtp( mobileNum: String,location: Location?) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
@@ -102,7 +103,7 @@ class LoginViewModel @Inject constructor(
                     return apiParams.getOtp(
 
                         "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
-                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails()),
+                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location)),
                     )
                 }
 
@@ -126,13 +127,13 @@ class LoginViewModel @Inject constructor(
                 }
             })
         }
-    fun verifyOtp(AppSharedPref: AppSharedPref?, mobileNum: String, otp: String) =
+    fun verifyOtp(AppSharedPref: AppSharedPref?, mobileNum: String, otp: String,location: Location?) =
         viewModelScope.launch {
             retrofitSetup.callApi(true, object : CallHandler<Response<ResponseVerifyOtp>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseVerifyOtp> {
                     return apiParams.verifyOtp(
                         "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
-                        ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails()),
+                        ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails(location)),
                     )
                 }
 
@@ -163,6 +164,7 @@ class LoginViewModel @Inject constructor(
         navController: NavController,
         AppSharedPref: AppSharedPref?,
         reqLoginWithMpin: ReqLoginWithMpin,
+        location: Location?
     ) =
         viewModelScope.launch {
             retrofitSetup.callApi(true, object : CallHandler<Response<RespLoginWithMpin>> {
@@ -189,7 +191,7 @@ class LoginViewModel @Inject constructor(
 
                         }
                     } else if (response.code() == 401) {
-                        getLogin2(AppSharedPref)
+                        getLogin2(AppSharedPref, location = location)
                     }
 
                 }
@@ -203,13 +205,13 @@ class LoginViewModel @Inject constructor(
         }
 
 
-    fun getLogin2(AppSharedPref: AppSharedPref?) = viewModelScope.launch {
+    fun getLogin2(AppSharedPref: AppSharedPref?,location: Location?) = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
                 return apiParams.getLogin(
                     LoginReqNew(
-                        AppUtility.getDeviceDetails(),
+                        AppUtility.getDeviceDetails(location),
                         BuildConfig.PASSWORD,
                         BuildConfig.USERNAME
                     )

@@ -39,6 +39,8 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
     private val splashViewModel: SplashViewModel by viewModels()
     private lateinit var connectivityManager: ConnectivityManager
     private lateinit var networkCallback: ConnectivityManager.NetworkCallback
+
+
     override fun SplashFragmentBinding.initialize() {
 
         AppUtility.changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
@@ -235,7 +237,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         delay(1000)
         try {
             AppUtility.progressBarAlert()
-            splashViewModel.getLogin2()
+            splashViewModel.getLogin2((activity as MainActivity).mLocation)
         } catch (e: Exception) {
             e.printStackTrace()
         }

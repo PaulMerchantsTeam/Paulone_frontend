@@ -2,6 +2,7 @@ package com.paulmerchants.gold.viewmodels
 
 import android.app.Activity
 import android.content.Intent
+import android.location.Location
 import android.os.Build
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -77,90 +78,93 @@ class PaymentViewModel @Inject constructor(
             })
     }
 
-    fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder) = viewModelScope.launch {
-        retrofitSetup.callApi(
-            true,
-            object : CallHandler<Response<RespUnderMain>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
-                    return apiParams.isUnderMaintenance()
-                }
+    fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder, location: Location?) =
+        viewModelScope.launch {
+            retrofitSetup.callApi(
+                true,
+                object : CallHandler<Response<RespUnderMain>> {
+                    override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
+                        return apiParams.isUnderMaintenance()
+                    }
 
-                override fun success(response: Response<RespUnderMain>) {
-                    Log.d("TAG", "success: ......${response.body()}")
-                    if (response.isSuccessful) {
-                        if (response.body()?.statusCode == "200") {
-                            if (response.body()?.data?.down == false) {
-                                createOrder(reqCreateOrder)
-                            } else {
-                                "App is under maintenance. Please try after some time".showSnackBarForPayment()
+                    override fun success(response: Response<RespUnderMain>) {
+                        Log.d("TAG", "success: ......${response.body()}")
+                        if (response.isSuccessful) {
+                            if (response.body()?.statusCode == "200") {
+                                if (response.body()?.data?.down == false) {
+                                    createOrder(reqCreateOrder, location = location)
+                                } else {
+                                    "App is under maintenance. Please try after some time".showSnackBarForPayment()
+                                }
                             }
                         }
                     }
+                })
+        }
+
+    fun getCustomerDetails(AppSharedPref: AppSharedPref, location: Location?) =
+        viewModelScope.launch {
+            retrofitSetup.callApi(true, object : CallHandler<Response<RespGetCustomer>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetCustomer> {
+                    return apiParams.getCustomerDetails(
+                        "Bearer ${AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}",
+                        ReqpendingInterstDueNew(
+                            AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
+                            AppUtility.getDeviceDetails(location)
+                        )
+                    )
+                }
+
+                override fun success(response: Response<RespGetCustomer>) {
+                    try {
+                        // Get the plain text response
+                        if (response.isSuccessful) {
+                            val plainTextResponse = response.body()?.data?.apiResponse
+
+                            // Do something with the plain text response
+                            if (plainTextResponse != null) {
+                                Log.d("Response", plainTextResponse)
+                                val decryptData = decryptKey(
+                                    BuildConfig.SECRET_KEY_GEN, plainTextResponse
+                                )
+
+                                println("decrypt-----$decryptData")
+                                val respPending: RespCustomersDetails? =
+                                    AppUtility.convertStringToJson(decryptData.toString())
+//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
+                                respPending?.let { resp ->
+                                    AppSharedPref.putStringValue(
+                                        Constants.CUSTOMER_FULL_DATA,
+                                        decryptData.toString()
+                                    )
+                                    AppSharedPref.putStringValue(
+                                        Constants.CUST_EMAIL,
+                                        response.body()?.data?.email.toString()
+                                    )
+                                    getRespCustomersDetailsLiveData.value =
+                                        RespCustomCustomerDetail(
+                                            resp,
+                                            response.body()?.data?.email.toString()
+                                        )
+                                }
+                                println("Str_To_Json------$respPending")
+                            }
+
+
+                        }
+
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                    AppUtility.hideProgressBar()
+                }
+
+                override fun error(message: String) {
+                    super.error(message)
                 }
             })
-    }
-
-    fun getCustomerDetails(AppSharedPref: AppSharedPref) = viewModelScope.launch {
-        retrofitSetup.callApi(true, object : CallHandler<Response<RespGetCustomer>> {
-            override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetCustomer> {
-                return apiParams.getCustomerDetails(
-                    "Bearer ${AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}",
-                    ReqpendingInterstDueNew(
-                        AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
-                        AppUtility.getDeviceDetails()
-                    )
-                )
-            }
-
-            override fun success(response: Response<RespGetCustomer>) {
-                try {
-                    // Get the plain text response
-                    if (response.isSuccessful) {
-                        val plainTextResponse = response.body()?.data?.apiResponse
-
-                        // Do something with the plain text response
-                        if (plainTextResponse != null) {
-                            Log.d("Response", plainTextResponse)
-                            val decryptData = decryptKey(
-                                BuildConfig.SECRET_KEY_GEN, plainTextResponse
-                            )
-
-                            println("decrypt-----$decryptData")
-                            val respPending: RespCustomersDetails? =
-                                AppUtility.convertStringToJson(decryptData.toString())
-//                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
-                            respPending?.let { resp ->
-                                AppSharedPref.putStringValue(
-                                    Constants.CUSTOMER_FULL_DATA,
-                                    decryptData.toString()
-                                )
-                                AppSharedPref.putStringValue(
-                                    Constants.CUST_EMAIL,
-                                    response.body()?.data?.email.toString()
-                                )
-                                getRespCustomersDetailsLiveData.value = RespCustomCustomerDetail(
-                                    resp,
-                                    response.body()?.data?.email.toString()
-                                )
-                            }
-                            println("Str_To_Json------$respPending")
-                        }
-
-
-                    }
-
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                AppUtility.hideProgressBar()
-            }
-
-            override fun error(message: String) {
-                super.error(message)
-            }
-        })
-    }
+        }
 
     fun getPaymentMethod(AppSharedPref: AppSharedPref) =
         viewModelScope.launch {
@@ -184,7 +188,7 @@ class PaymentViewModel @Inject constructor(
         }
 
 
-    fun createOrder(reqCreateOrder: ReqCreateOrder) =
+    fun createOrder(reqCreateOrder: ReqCreateOrder, location: Location?) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
@@ -220,9 +224,7 @@ class PaymentViewModel @Inject constructor(
                             RespCommon::class.java
                         )
                         tokenExpiredResp.value = respFail
-                        if (AppSharedPref != null) {
-                            getLogin2()
-                        }
+                        getLogin2(location = location)
                     }
 
                     AppUtility.hideProgressBar()
@@ -251,6 +253,7 @@ class PaymentViewModel @Inject constructor(
         description: String = "desc_payment",
         account: String,
         isCustom: Boolean,
+        location: Location?,
     ) = viewModelScope.launch {
 
         retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
@@ -270,7 +273,7 @@ class PaymentViewModel @Inject constructor(
                     acNo = account,
                     makerId = "12545as",
                     macID = Build.ID,
-                    deviceDetailsDTO = AppUtility.getDeviceDetails(),
+                    deviceDetailsDTO = AppUtility.getDeviceDetails(location),
                     isCustom = isCustom
                 )
             }
@@ -299,7 +302,7 @@ class PaymentViewModel @Inject constructor(
                     )
                     tokenExpiredResp.value = respFail
 
-                    getLogin2()
+                    getLogin2(location)
 
                 } else {
 //                    "Some thing went wrong..try again later".showSnackBar()
@@ -332,6 +335,7 @@ class PaymentViewModel @Inject constructor(
         currency: String = "INR",
         description: String = "descriptionPayment",
         listOfPaullINOneGo: List<PayAll>,
+        location: Location?,
     ) = viewModelScope.launch {
         retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
@@ -349,7 +353,10 @@ class PaymentViewModel @Inject constructor(
                     custId = custId,
                     makerId = "12545as",
                     macID = Build.ID,
-                    payAllInOnGo = ReqPayAlInOnGo(AppUtility.getDeviceDetails(), listOfPaullINOneGo)
+                    payAllInOnGo = ReqPayAlInOnGo(
+                        AppUtility.getDeviceDetails(location = location),
+                        listOfPaullINOneGo
+                    )
                 )
             }
 
@@ -377,7 +384,7 @@ class PaymentViewModel @Inject constructor(
                     )
                     tokenExpiredResp.value = respFail
                     if (AppSharedPref != null) {
-                        getLogin2()
+                        getLogin2(location)
                     }
                 } else {
                     "Some thing went wrong..try again later".showSnackBar()
@@ -393,13 +400,13 @@ class PaymentViewModel @Inject constructor(
 
     }
 
-    fun getLogin2() = viewModelScope.launch {
+    fun getLogin2(location: Location?) = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
                 return apiParams.getLogin(
                     LoginReqNew(
-                        AppUtility.getDeviceDetails(),
+                        AppUtility.getDeviceDetails(location),
                         BuildConfig.PASSWORD,
                         BuildConfig.USERNAME
                     )

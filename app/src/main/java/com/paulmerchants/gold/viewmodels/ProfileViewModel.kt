@@ -1,6 +1,7 @@
 package com.paulmerchants.gold.viewmodels
 
 import android.content.Context
+import android.location.Location
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -100,14 +101,14 @@ class ProfileViewModel @Inject constructor(
         timer?.start()
     }
 
-    fun getCustomerDetails() = viewModelScope.launch {
+    fun getCustomerDetails(location: Location?) = viewModelScope.launch {
         retrofitSetup.callApi(true, object : CallHandler<Response<RespGetCustomer>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetCustomer> {
                 return apiParams.getCustomerDetails(
                     "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                     ReqpendingInterstDueNew(
                         AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
-                        AppUtility.getDeviceDetails()
+                        AppUtility.getDeviceDetails(location)
                     )
                 )
             }
@@ -208,7 +209,7 @@ class ProfileViewModel @Inject constructor(
             })
         }
 
-    fun getOtp(mobileNum: String) =
+    fun getOtp(mobileNum: String,location: Location?) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
@@ -216,7 +217,7 @@ class ProfileViewModel @Inject constructor(
                     return apiParams.getOtp(
 
                         "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
-                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails()),
+                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location)),
                     )
                 }
 
@@ -241,13 +242,13 @@ class ProfileViewModel @Inject constructor(
             })
         }
 
-    fun verifyOtp(mobileNum: String, otp: String) =
+    fun verifyOtp(mobileNum: String, otp: String,location: Location?) =
         viewModelScope.launch {
             retrofitSetup.callApi(true, object : CallHandler<Response<ResponseVerifyOtp>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseVerifyOtp> {
                     return apiParams.verifyOtp(
                         "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
-                        ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails()),
+                        ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails(location)),
                     )
                 }
 

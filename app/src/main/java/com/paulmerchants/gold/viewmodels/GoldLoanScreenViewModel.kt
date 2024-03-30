@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.viewmodels
 
+import android.location.Location
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -55,7 +56,7 @@ class GoldLoanScreenViewModel @Inject constructor(
         isCalledGoldLoanScreen = false
     }
 
-    fun getLoanOutstanding() = viewModelScope.launch {
+    fun getLoanOutstanding(location: Location?) = viewModelScope.launch {
 
         retrofitSetup.callApi(true, object : CallHandler<Response<RespGetLOanOutStanding>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetLOanOutStanding> {
@@ -63,7 +64,7 @@ class GoldLoanScreenViewModel @Inject constructor(
                     "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                     ReqpendingInterstDueNew(
                         AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
-                        AppUtility.getDeviceDetails()
+                        AppUtility.getDeviceDetails(location)
                     )
                 )
             }
