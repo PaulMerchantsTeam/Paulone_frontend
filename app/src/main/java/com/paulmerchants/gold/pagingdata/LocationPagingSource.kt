@@ -1,18 +1,12 @@
 package com.paulmerchants.gold.pagingdata
 
-import android.content.Context
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.bumptech.glide.load.HttpException
-import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.model.newmodel.PmlBranch
-import com.paulmerchants.gold.networks.RetrofitSetup
 import com.paulmerchants.gold.remote.ApiParams
-import com.paulmerchants.gold.security.sharedpref.AppSharedPref
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.IOException
-import java.lang.reflect.Constructor
 import javax.inject.Inject
 
 

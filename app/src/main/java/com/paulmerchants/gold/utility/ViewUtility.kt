@@ -37,12 +37,16 @@ import com.paulmerchants.gold.model.Notifications
 import com.paulmerchants.gold.ui.MainActivity
 
 const val IS_SHOW_TXN = "IS_SHOW_TXN"
-fun Activity.showCustomDialogFoPaymentStatus(message: String, isClick: (Boolean) -> Unit) {
+fun Activity.showCustomDialogFoPaymentStatus(
+    header: String = "",
+    message: String,
+    isClick: (Boolean) -> Unit,
+) {
     val binding = AppCloseDialogBinding.inflate(layoutInflater)
     val dialog = BottomSheetDialog(this)
     dialog.setCancelable(true)
     dialog.setContentView(binding.root)
-    binding.quickPay.text = "Payment Status"
+    binding.quickPay.text = if (header == "") "Payment Status" else header
     binding.upcomDTv.apply {
         text = message
         show()

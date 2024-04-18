@@ -23,7 +23,10 @@ import org.json.JSONObject
 import retrofit2.Response
 import javax.inject.Inject
 
-
+/**
+ * This class is used to call Api and handle response and error
+ * for new development you must use this class.
+ */
 @Suppress("UNCHECKED_CAST")
 class RetrofitSetup @Inject constructor(private val apiParams: ApiParams) {
 
@@ -97,14 +100,13 @@ class RetrofitSetup @Inject constructor(private val apiParams: ApiParams) {
 
                             else -> response.errorBody()?.string().let {
                                 Log.d("TAG", "callApi: ........$it")
-                                try {
-
-                                    callHandler.error(JSONObject(it).getString("responseMessage"))
-
-                                } catch (e: Exception) {
-                                    Log.d("ErrorParsing", "callApi:${e.message} ")
+                                if (it != null) {
+                                    try {
+                                        callHandler.error(JSONObject(it).getString("responseMessage"))
+                                    } catch (e: Exception) {
+                                        Log.d("ErrorParsing", "callApi:${e.message} ")
+                                    }
                                 }
-
                             }
                         }
 

@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/_120sdp"
     android:elevation="@dimen/_6sdp"
+    android:background="@color/splash_screen_two"
     app:cardCornerRadius="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parentTop"
         android:layout_width="match_parent"
+        android:background="@color/splash_screen_two"
         android:layout_height="wrap_content">
 
         <ImageView

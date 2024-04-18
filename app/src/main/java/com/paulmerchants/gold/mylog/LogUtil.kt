@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import com.paulmerchants.gold.BuildConfig
 
+
 object LogUtil {
 
     inline fun runIf(condition: Boolean, block: () -> Unit) {

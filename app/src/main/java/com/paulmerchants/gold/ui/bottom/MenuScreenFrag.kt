@@ -16,6 +16,7 @@ import com.paulmerchants.gold.model.TransDoneModel
 import com.paulmerchants.gold.model.TypeService
 import com.paulmerchants.gold.enums.ServiceType
 import com.paulmerchants.gold.model.ActionItem
+import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -159,6 +160,14 @@ class MenuScreenFrag :
 
     override fun onStart() {
         super.onStart()
+        (activity as MainActivity).checkForDownFromRemoteConfig()
+        (activity as MainActivity).commonViewModel.isRemoteConfigCheck.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it) {
+                    (activity as MainActivity).showUnderMainTainPage()
+                }
+            }
+        }
         setTypeServiceUi()
         setServicesUi()
         myView = CustomViews(requireContext(), binding.linearOne)

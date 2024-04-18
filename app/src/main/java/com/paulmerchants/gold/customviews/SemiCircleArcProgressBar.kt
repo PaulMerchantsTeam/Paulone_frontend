@@ -139,7 +139,7 @@ class SemiCircleArcProgressBar : View {
     //Custom Setter
     fun setPercentWithAnimation(percent: Int) {
         val timer = Timer()
-        timer.scheduleAtFixedRate(object : TimerTask() {
+        timer.schedule(object : TimerTask() {
             var step = 0
             override fun run() {
                 if (step <= percent) setPercent(step++)

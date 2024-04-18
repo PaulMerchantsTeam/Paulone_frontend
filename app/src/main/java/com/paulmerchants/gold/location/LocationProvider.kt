@@ -9,6 +9,7 @@ import android.location.Location
 import android.os.Looper
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
+import com.google.android.gms.location.Priority.*
 
 class LocationProvider(
     private val context: Context,
@@ -21,17 +22,12 @@ class LocationProvider(
     private var locationRequest: LocationRequest = LocationRequest.create().apply {
         interval = 10000 // Update interval in milliseconds
         fastestInterval = 5000 // Fastest update interval in milliseconds
-        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        priority = PRIORITY_HIGH_ACCURACY
     }
-    private var locationCallback: LocationCallback
-
-    init {
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(p0: LocationResult) {
-                p0 ?: return
-                for (location in p0.locations) {
-                    locationListener.onLocationChanged(location)
-                }
+    private var locationCallback: LocationCallback = object : LocationCallback() {
+        override fun onLocationResult(p0: LocationResult) {
+            for (location in p0.locations) {
+                locationListener.onLocationChanged(location)
             }
         }
     }

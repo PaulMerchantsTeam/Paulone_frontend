@@ -1,8 +1,9 @@
 package com.paulmerchants.gold.animations
 
-import android.animation.*
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.content.Context
-import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
@@ -10,7 +11,6 @@ import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
-import com.paulmerchants.gold.R
 
 object AppAnimation {
     fun rotate(iv: ImageView) {

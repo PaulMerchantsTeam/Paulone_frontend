@@ -21,17 +21,24 @@ class ApplyLoanForNewUser :
         super.onStart()
         modifyHeaders()
         binding.apply {
+            header.endIconIv.apply {
+                show()
+                setBackgroundResource(R.drawable.cross_icon)
+                setOnClickListener {
+                    findNavController().navigateUp()
+                }
+            }
             availNowBtn.setOnClickListener {
                 applyForLoanParent.hide()
                 showingTv.show()
                 oneConnectTv.show()
-                availNowBtn.text = getString(R.string.go_to_home)
-                binding.header.backIv.setOnClickListener {
-                    applyForLoanParent.show()
-                    showingTv.hide()
-                    oneConnectTv.hide()
-                    availNowBtn.text = getString(R.string.apply_now)
-                }
+//                availNowBtn.text = getString(R.string.go_to_home)
+//                binding.header.backIv.setOnClickListener {
+//                    applyForLoanParent.show()
+//                    showingTv.hide()
+//                    oneConnectTv.hide()
+//                    availNowBtn.text = getString(R.string.apply_now)
+//                }
             }
         }
 
@@ -39,9 +46,7 @@ class ApplyLoanForNewUser :
     }
 
     private fun modifyHeaders() {
-        binding.header.backIv.setOnClickListener {
-            findNavController().navigateUp()
-        }
+        binding.header.backIv.hide()
         binding.header.titlePageTv.text = getString(R.string.apply_for_loan)
     }
 

@@ -7,10 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.paulmerchants.gold.databinding.YourCardsLayoutBinding
-import com.paulmerchants.gold.model.DueLoans
 import com.paulmerchants.gold.model.PrepaidCardModel
-import com.paulmerchants.gold.utility.hide
-import com.paulmerchants.gold.utility.invisible
 
 class PrePaidCardAdapter(private val onPayDueClicked: (PrepaidCardModel) -> Unit) :
     ListAdapter<PrepaidCardModel, PrePaidCardAdapter.PrepaidCardVIewHolder>(DIFF_CALLBACK) {

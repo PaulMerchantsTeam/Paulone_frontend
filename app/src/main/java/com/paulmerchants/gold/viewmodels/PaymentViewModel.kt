@@ -10,6 +10,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.model.RespCustomersDetails
@@ -56,11 +60,30 @@ class PaymentViewModel @Inject constructor(
     val getPaymentMethod = MutableLiveData<RespPaymentMethod?>()
     val getRespCustomersDetailsLiveData = MutableLiveData<RespCustomCustomerDetail>()
     val isUnderMainLiveData = MutableLiveData<RespUnderMain>()
+    val isRemoteConfigCheck = MutableLiveData<Boolean>()
+    var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
 
     init {
         Log.d(TAG, ": init_$TAG")
+        val configSettings = remoteConfigSettings {
+            minimumFetchIntervalInSeconds = 30
+        }
+        remoteConfig.setConfigSettingsAsync(configSettings)
     }
 
+    fun checkForDownFromRemoteConfig() {
+        remoteConfig.fetchAndActivate().addOnCompleteListener { it ->
+            if (it.isSuccessful) {
+                val updated = it.result
+                Log.d("loadData", ": $updated")
+                val data = remoteConfig.getBoolean("isAppDown")
+                Log.d("loadData", "$data")
+                isRemoteConfigCheck.value = data
+            } else {
+                Log.d("loadData", "Else:")
+            }
+        }
+    }
     fun getUnderMaintenanceStatusCheck() = viewModelScope.launch {
         retrofitSetup.callApi(
             true,

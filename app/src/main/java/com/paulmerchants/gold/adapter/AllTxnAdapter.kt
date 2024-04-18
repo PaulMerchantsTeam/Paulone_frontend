@@ -42,15 +42,18 @@ class AllTxnAdapter(private val showTxn: (Transactions) -> Unit) :
 
         fun bindLast(item: Transactions, showTxn: (Transactions) -> Unit) {
             binding.apply {
-                binding.transReferIdTv.text =
-                    "Amount: ${binding.root.context.getString(R.string.Rs)} ${item.amount}\n" +
-                            "Customer Id: ${item.custId}\n" +
-                            "Transaction Id: ${item.paymentId ?: ""}\n" +
-                            "Receipt Id:  ${item.receiptId}\n" +
-                            "Date: ${AppUtility.formatDateFromMilliSec(item.createdAt)}"
+                with(binding.transReferIdTv) {
+                    text = buildString {
+                        append("Amount: ${binding.root.context.getString(R.string.Rs)} ${item.amount}\n")
+                        append("Customer Id: ${item.custId}\n")
+                        append("Transaction Id: ${item.paymentId ?: ""}\n")
+                        append("Receipt Id:  ${item.receiptId}\n")
+                        append("Date: ${AppUtility.formatDateFromMilliSec(item.createdAt)}")
+                    }
+                }
 
                 if (item.status == "PAID") {
-                    binding.statusTv.text = "${item.status}"
+                    binding.statusTv.text = item.status
                     binding.statusTv.setTextColor(
                         ContextCompat.getColor(
                             binding.root.context,
@@ -58,7 +61,7 @@ class AllTxnAdapter(private val showTxn: (Transactions) -> Unit) :
                         )
                     )
                 } else {
-                    binding.statusTv.text = "FAILED"
+                    binding.statusTv.text = binding.root.context.getString(R.string.failed)
                     binding.statusTv.setTextColor(
                         ContextCompat.getColor(
                             binding.root.context,
@@ -76,19 +79,3 @@ class AllTxnAdapter(private val showTxn: (Transactions) -> Unit) :
 
 
 }
-
-/**
- * "id": 12,
-"orderId": "order_NDnK6PEmzcEpWq",
-"amount": 1892,
-"receiptId": "PaulOne_B7lmXKx921GxR5",
-"status": "PAID",
-"custId": "182005482096",
-"paymentId": "pay_NDnKKJ9GUS3nlZ",
-"createdBy": 1,
-"updatedBy": 1,
-"createdAt": 1702899512000,
-"updatedAt": 1702899530449,
-"processFlag": 1,
-"requestId": "2ADD83E55C61467D8520231218170832161"
- */

@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.paulmerchants.gold.adapterviewholders.MenuServicesHolder
 import com.paulmerchants.gold.databinding.ItemServiceMenuBinding
-import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.MenuServices
 
 class MenuServicesAdapter(

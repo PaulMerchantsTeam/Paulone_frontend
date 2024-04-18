@@ -60,7 +60,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
     override fun getViewBinding() = ActivityMapBinding.inflate(layoutInflater)
     private var cityName: String = ""
-    private val mapLocationAdapter = MapLocationAdapter(::OnLocationClicked, ::onMarkLocation)
+    private val mapLocationAdapter = MapLocationAdapter(::onLocationClicked, ::onMarkLocation)
 
     //    private val places: ArrayList<com.paulmerchants.gold.place.Place> = arrayListOf()
     private val mapViewModel: MapViewModel by viewModels()
@@ -79,7 +79,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         map?.moveCamera(CameraUpdateFactory.newLatLng(pm22))
     }
 
-    private fun OnLocationClicked(pmlBranch: PmlBranch) {
+    private fun onLocationClicked(pmlBranch: PmlBranch) {
         val geoUri =
             "geo:${pmlBranch.branchLat.toDouble()},${pmlBranch.branchLng.toDouble()}?z=15&q=${pmlBranch.branchLat.toDouble()},${pmlBranch.branchLng.toDouble()}(Paul Merchants)"
         val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))

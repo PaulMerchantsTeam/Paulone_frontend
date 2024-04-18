@@ -1,19 +1,10 @@
 package com.paulmerchants.gold.security
 
-import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.security.crypto.EncryptedFile
-import androidx.security.crypto.MasterKeys
-import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.common.LogicSecure
-import dagger.hilt.android.internal.Contexts.getApplication
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.util.encoders.Base64
-import java.io.File
 import java.io.UnsupportedEncodingException
 import java.math.BigInteger
-import java.nio.charset.StandardCharsets
 import java.security.InvalidKeyException
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -29,9 +20,7 @@ import javax.crypto.spec.SecretKeySpec
 
 class SecureFiles : LogicSecure {
 
-    //    SECRETKEY: MobApp#L0AnDeT@ils#SeCUretechpool*20&23
-//    val secretKey = "MobApp#L0AnDeT@ils#SeCUretechpool*20&23"
-    val secret = BuildConfig.SECRET_KEY
+
     override fun getSHA256(key: String): String {
         val md: MessageDigest = MessageDigest.getInstance("SHA-256")
         val messageDigest = md.digest(key.toByteArray())

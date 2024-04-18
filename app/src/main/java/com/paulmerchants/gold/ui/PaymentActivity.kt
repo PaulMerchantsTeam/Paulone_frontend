@@ -121,11 +121,23 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 //        var walletValue = true
         var creditValue = true
         var netBanking = true
-        binding.underMainParent.closeBtn.setOnClickListener {
+        binding.underMainParent.closeBtn.setOnClickListener {0
             finish()
             MainActivity().finish()
         }
-        paymentViewModel.getUnderMaintenanceStatusCheck()
+        paymentViewModel.checkForDownFromRemoteConfig()
+        paymentViewModel.isRemoteConfigCheck.observe(this) {
+            it?.let {
+                if (it) {
+                    binding.underMainParent.root.show()
+                    binding.clOuter.hide()
+                    isDown = it
+                } else {
+                    paymentViewModel.getUnderMaintenanceStatusCheck()
+                }
+            }
+        }
+
         paymentViewModel.isUnderMainLiveData.observe(this) {
             it?.let {
                 if (it.statusCode == "200") {

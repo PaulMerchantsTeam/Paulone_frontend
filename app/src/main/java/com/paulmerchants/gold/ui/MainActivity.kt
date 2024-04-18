@@ -15,15 +15,16 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
@@ -45,25 +46,23 @@ import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.io.File
 import java.lang.ref.WeakReference
-import java.security.MessageDigest
 
+const val TAG = "MAIN_ACTIVITY"
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     private lateinit var appUpdateManager: AppUpdateManager
     private val updateType = AppUpdateType.IMMEDIATE
     lateinit var navOption: NavOptions
-    lateinit var navOptionLeft: NavOptions
-    lateinit var navOptionTop: NavOptions
-    lateinit var navController: NavController
-    lateinit var secureFiles: SecureFiles
+    private lateinit var navOptionLeft: NavOptions
+    private lateinit var navOptionTop: NavOptions
+    private lateinit var navController: NavController
+    private lateinit var secureFiles: SecureFiles
     val commonViewModel: CommonViewModel by viewModels()
     var amount: Double? = null   //will assign dynamically...
     private lateinit var networkCallback: ConnectivityManager.NetworkCallback
     private lateinit var connectivityManager: ConnectivityManager
-    private lateinit var mFusedLocationClient: FusedLocationProviderClient
     lateinit var locationProvider: LocationProvider
     var mLocation: Location? = null
 
@@ -73,7 +72,24 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
     public override val mViewModel: CommonViewModel by viewModels()
     override fun getViewBinding() = ActivityMainBinding.inflate(layoutInflater)
-
+    private val activityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            val resultCode = result.resultCode
+            when (resultCode) {
+                123 -> {
+                    checkForAppUpdate()
+                }
+                -1 -> {
+                    //Downloaded status
+                }
+                Activity.RESULT_CANCELED -> {
+                    checkForAppUpdate()
+                }
+                else -> {
+                    checkForAppUpdate()
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,9 +105,9 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         )
         connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         checkForAppUpdate()
-        if (updateType == AppUpdateType.IMMEDIATE) {
+//        if (updateType == AppUpdateType.IMMEDIATE) { //always immediate
             appUpdateManager.registerListener(installUpdateListener)
-        }
+//        }
         secureFiles = SecureFiles()
         updateLocation()
 
@@ -186,16 +202,6 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                 }
             }
         }
-//        Log.e(
-//            TAG,
-//            "onCreate: ........${
-//                intent?.getBooleanExtra(IS_SHOW_TXN, false)
-//            }",
-//        )
-
-//        if (intent?.getBooleanExtra(IS_SHOW_TXN, false) == true) {
-//            navController.navigate(R.id.transactionFrag)
-//        }
         binding.underMainParent.closeBtn.setOnClickListener {
             finish()
         }
@@ -205,8 +211,6 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                 if (it.statusCode == "200") {
                     if (it.data.down) {
                         showUnderMainTainPage()
-                    } else {
-
                     }
                 }
             }
@@ -254,8 +258,12 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
     }
 
+    fun checkForDownFromRemoteConfig() {
+        commonViewModel.checkForDownFromRemoteConfig()
+    }
 
-    private fun showUnderMainTainPage() {
+
+    fun showUnderMainTainPage() {
         binding.bottomNavigationView.hide()
         binding.batteryMainNavGraph.hide()
         binding.underMainParent.root.show()
@@ -325,17 +333,14 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
     override fun onResume() {
         super.onResume()
-//        if (updateType == AppUpdateType.IMMEDIATE) {
         appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
             if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
                 appUpdateManager.startUpdateFlowForResult(
                     info,
-                    AppUpdateType.IMMEDIATE,
-                    this,
-                    123
+                    activityResultLauncher,
+                    AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
                 )
             }
-//            }
         }
     }
 
@@ -356,9 +361,8 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             if (isUpdateAvailabe && isUpdateAllowed) {
                 appUpdateManager.startUpdateFlowForResult(
                     info,
-                    updateType,
-                    this,
-                    123
+                    activityResultLauncher,
+                    AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
                 )
             }
 
@@ -366,30 +370,8 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        Log.d(TAG, "onActivityResult: ....$requestCode...$resultCode")
-        when {
-            requestCode == 123 && resultCode == 0 -> {
-                checkForAppUpdate()
-            }
 
-            requestCode == 123 && resultCode == -1 -> {
-                //Downloaded status
-            }
-
-            requestCode == Activity.RESULT_CANCELED -> {
-                checkForAppUpdate()
-            }
-
-            else -> {
-                checkForAppUpdate()
-            }
-        }
-
-    }
-
-    fun updateLocation() {
+    private fun updateLocation() {
         locationProvider = LocationProvider(this, object : LocationProvider.LocationListener {
             override fun onLocationChanged(location: Location) {
                 Log.e(
@@ -405,34 +387,15 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (updateType == AppUpdateType.IMMEDIATE) {
+//        if (updateType == AppUpdateType.IMMEDIATE) {
             appUpdateManager.unregisterListener(installUpdateListener)
-        }
-    }
-
-    fun verifyChecksum(file: File, expectedChecksum: String): Boolean {
-        val actualChecksum = generateChecksum(file)
-        return actualChecksum == expectedChecksum
-    }
-
-    private fun generateChecksum(file: File): String {
-        val messageDigest = MessageDigest.getInstance("SHA-256")
-        val inputStream = file.inputStream()
-        val byteArray = ByteArray(8192)
-        var bytesRead = inputStream.read(byteArray)
-        while (bytesRead != -1) {
-            messageDigest.update(byteArray, 0, bytesRead)
-            bytesRead = inputStream.read(byteArray)
-        }
-        inputStream.close()
-        val digestBytes = messageDigest.digest()
-        return digestBytes.joinToString("") { "%02x".format(it) }
+//        }
     }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LocationProvider.REQUEST_LOCATION_PERMISSION) {
@@ -440,7 +403,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                 // Permission granted, start location updates
                 locationProvider.startLocationUpdates()
             } else {
-                Log.e(TAG, "onRequestPermissionsResult: ............no permission....", )
+                Log.e(TAG, "onRequestPermissionsResult: ............no permission....")
 //                locationProvider.startLocationUpdates()
                 // Permission denied, handle accordingly
                 // Display a message informing the user about the necessity of location permission
@@ -451,4 +414,3 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 }
 
 
-const val TAG = "MAIN_ACTIVITY"

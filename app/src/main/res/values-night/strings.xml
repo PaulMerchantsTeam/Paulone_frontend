@@ -31,4 +31,7 @@
     <string name="status">Status:</string>
     <string name="privacy_policy">Privacy policy.</string>
     <string name="we_re_under_maintenance">We\'re under maintenance</string>
+    <string name="raise_a_query">Raise a query</string>
+    <string name="failed">FAILED</string>
+    <string name="check_location">Check location</string>
 </resources>

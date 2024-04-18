@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
@@ -81,18 +82,18 @@ class CommonViewModel @Inject constructor(
     private val secureFiles: SecureFiles = SecureFiles()
     val responseCreateOrder = MutableLiveData<RespCreateOrder?>()
     val isUnderMainLiveData = MutableLiveData<RespUnderMain>()
+    val isRemoteConfigCheck = MutableLiveData<Boolean>()
 //    val placesLive = MutableLiveData<MutableList<Place>?>()
 
     val respPaymentUpdate = MutableLiveData<RespUpdatePaymentStatus?>()
 
-//    init {
-//        val configSettings = remoteConfigSettings {
-//            minimumFetchIntervalInSeconds = 60
-//        }
-//        remoteConfig.setConfigSettingsAsync(configSettings)
-//        remoteConfig.setDefaultsAsync(R.xml.places)
-//        loadData()
-//    }
+    init {
+        val configSettings = remoteConfigSettings {
+            minimumFetchIntervalInSeconds = 30
+        }
+        remoteConfig.setConfigSettingsAsync(configSettings)
+        checkForDownFromRemoteConfig()
+    }
 
     /* fun getLogin() = viewModelScope.launch {
          Log.d("TAG", "getLogin: //../........")
@@ -153,9 +154,11 @@ class CommonViewModel @Inject constructor(
             true,
             object : CallHandler<Response<RespFetchFest>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespFetchFest> {
-                    return apiParams.getFestDetailsForHeaderHomePage("Bearer ${
-                        AppSharedPref.getStringValue(JWT_TOKEN).toString()
-                    }")
+                    return apiParams.getFestDetailsForHeaderHomePage(
+                        "Bearer ${
+                            AppSharedPref.getStringValue(JWT_TOKEN).toString()
+                        }"
+                    )
                 }
 
                 override fun success(response: Response<RespFetchFest>) {
@@ -168,7 +171,7 @@ class CommonViewModel @Inject constructor(
     }
 
 
-    fun getPendingInterestDues(AppSharedPref: AppSharedPref?,location: Location?) =
+    fun getPendingInterestDues(AppSharedPref: AppSharedPref?, location: Location?) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(
@@ -224,7 +227,7 @@ class CommonViewModel @Inject constructor(
                             }
                         } else if (response.code() == 401) {
                             if (AppSharedPref != null) {
-                                getLogin2(AppSharedPref,location)
+                                getLogin2(AppSharedPref, location)
                             }
                             Log.d(
                                 "FAILED_401",
@@ -249,7 +252,11 @@ class CommonViewModel @Inject constructor(
 
         }
 
-    fun createOrder(AppSharedPref: AppSharedPref?, reqCreateOrder: ReqCreateOrder,location: Location?) =
+    fun createOrder(
+        AppSharedPref: AppSharedPref?,
+        reqCreateOrder: ReqCreateOrder,
+        location: Location?,
+    ) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
@@ -291,7 +298,7 @@ class CommonViewModel @Inject constructor(
                         )
                         tokenExpiredResp.value = respFail
                         if (AppSharedPref != null) {
-                            getLogin2(AppSharedPref, location =location)
+                            getLogin2(AppSharedPref, location = location)
                         }
                     }
 
@@ -319,7 +326,7 @@ class CommonViewModel @Inject constructor(
         companyName: String = "PAUL MERCHANTS",
         currency: String = "INR",
         description: String,
-        location: Location?
+        location: Location?,
     ) = viewModelScope.launch {
         retrofitSetup.callApi(false, object : CallHandler<Response<*>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
@@ -369,7 +376,7 @@ class CommonViewModel @Inject constructor(
                     )
                     tokenExpiredResp.value = respFail
                     if (AppSharedPref != null) {
-                        getLogin2(AppSharedPref,location)
+                        getLogin2(AppSharedPref, location)
                     }
                 }
                 AppUtility.hideProgressBar()
@@ -383,7 +390,7 @@ class CommonViewModel @Inject constructor(
 
     }
 
-    fun getLogin2(AppSharedPref: AppSharedPref?,location: Location?) = viewModelScope.launch {
+    fun getLogin2(AppSharedPref: AppSharedPref?, location: Location?) = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
@@ -421,28 +428,29 @@ class CommonViewModel @Inject constructor(
         })
     }
 
-    fun getLoanOutstanding(AppSharedPref: AppSharedPref?,location: Location?) = viewModelScope.launch {
+    fun getLoanOutstanding(AppSharedPref: AppSharedPref?, location: Location?) =
+        viewModelScope.launch {
 
-        retrofitSetup.callApi(
-            true,
-            object : CallHandler<Response<RespGetLOanOutStanding>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetLOanOutStanding> {
-                    return apiParams.getLoanOutstanding(
-                        "Bearer ${
-                            AppSharedPref?.getStringValue(JWT_TOKEN).toString()
-                        }",
-                        ReqpendingInterstDueNew(
-                            AppSharedPref?.getStringValue(CUSTOMER_ID).toString(),
-                            AppUtility.getDeviceDetails(location)
+            retrofitSetup.callApi(
+                true,
+                object : CallHandler<Response<RespGetLOanOutStanding>> {
+                    override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetLOanOutStanding> {
+                        return apiParams.getLoanOutstanding(
+                            "Bearer ${
+                                AppSharedPref?.getStringValue(JWT_TOKEN).toString()
+                            }",
+                            ReqpendingInterstDueNew(
+                                AppSharedPref?.getStringValue(CUSTOMER_ID).toString(),
+                                AppUtility.getDeviceDetails(location)
+                            )
                         )
-                    )
-                }
+                    }
 
-                override fun success(response: Response<RespGetLOanOutStanding>) {
-                    try {
-                        // Get the plain text response
+                    override fun success(response: Response<RespGetLOanOutStanding>) {
+                        try {
+                            // Get the plain text response
 //                    val plainTextResponse = response.body()?.data
-                        // Do something with the plain text response
+                            // Do something with the plain text response
 //                    if (plainTextResponse != null) {
 //                        Log.d("Response", plainTextResponse)
 //                        val decryptData = decryptKey(
@@ -453,27 +461,27 @@ class CommonViewModel @Inject constructor(
 //                            AppUtility.convertStringToJson(decryptData.toString())
 //                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
 //                        respPending?.let { resp ->
-                        if (response.body()?.statusCode == "200") {
-                            getRespGetLoanOutStandingLiveData.value =
-                                response.body()?.data
+                            if (response.body()?.statusCode == "200") {
+                                getRespGetLoanOutStandingLiveData.value =
+                                    response.body()?.data
 
-                        }
+                            }
 //                        }
 //                        println("Str_To_Json------$respPending")
 //                    }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        AppUtility.hideProgressBar()
                     }
-                    AppUtility.hideProgressBar()
-                }
 
-                override fun error(message: String) {
-                    super.error(message)
-                }
-            })
+                    override fun error(message: String) {
+                        super.error(message)
+                    }
+                })
 
 
-    }
+        }
 
     /*fun getLoanDueDate() = viewModelScope.launch {
         try {
@@ -506,7 +514,7 @@ class CommonViewModel @Inject constructor(
         AppUtility.hideProgressBar()
     }*/
 
-    fun getLoanClosureReceipt(AppSharedPref: AppSharedPref?, accNum: String,location: Location?) =
+    fun getLoanClosureReceipt(AppSharedPref: AppSharedPref?, accNum: String, location: Location?) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
@@ -625,7 +633,7 @@ class CommonViewModel @Inject constructor(
         accNum: String,
         fromDat: String,
         toDate: String,
-        location: Location?
+        location: Location?,
     ) = viewModelScope.launch {
 
 
@@ -715,6 +723,20 @@ class CommonViewModel @Inject constructor(
 //            }
 //        }
 //    }
+
+    fun checkForDownFromRemoteConfig() {
+        remoteConfig.fetchAndActivate().addOnCompleteListener { it ->
+            if (it.isSuccessful) {
+                val updated = it.result
+                Log.d("loadData", ": $updated")
+                val data = remoteConfig.getBoolean("isAppDown")
+                Log.d("loadData", "$data")
+                isRemoteConfigCheck.value = data
+            } else {
+                Log.d("loadData", "Else:")
+            }
+        }
+    }
 
 }
 

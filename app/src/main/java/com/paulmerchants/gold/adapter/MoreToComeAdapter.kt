@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.paulmerchants.gold.databinding.BannerItemTvBinding
-import com.paulmerchants.gold.databinding.ItemMoreToComeBinding
 import com.paulmerchants.gold.model.MoreToComeModel
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 

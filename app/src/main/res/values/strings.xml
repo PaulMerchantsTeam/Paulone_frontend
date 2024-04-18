@@ -391,6 +391,9 @@
     <string name="privacy_policy_"><b><u>Privacy &amp; Policy</u></b></string>
     <string name="t_and_c"> and <b><u>Terms &amp; Conditions</u></b></string>
     <string name="we_re_under_maintenance">We\'re under maintenance</string>
+    <string name="raise_a_query">Raise a query</string>
+    <string name="failed">FAILED</string>
+    <string name="check_location">Check location</string>
 
     <string-array name="month">
         <item>January</item>

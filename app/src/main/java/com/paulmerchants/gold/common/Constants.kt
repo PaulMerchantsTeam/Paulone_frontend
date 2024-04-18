@@ -10,7 +10,7 @@ object Constants {
     const val BBPS_HEADER = "BBPS_HEADER"
     const val PAYMENT_STATUS = "PAYMENT_STATUS"
     const val LOGIN_WITH_MPIN = "LOGIN_WITH_MPIN"
-
+    const val PHONE_LOGIN = "PHONE_LOGIN"
 
     const val SHARED_PREF_FILE = "${BuildConfig.VERSION_NAME}_${BuildConfig.VERSION_CODE}_app"
 
@@ -21,10 +21,10 @@ object Constants {
     const val SIGNUP_DONE = "SIGNUP_DONE"
     const val IS_USER_EXIST = "IS_USER_EXIST"
     const val OTP_VERIFIED = "OTP_VERIFIED"
-    const val AMOUNT_PAYABLE ="AMOUNT_PAYABLE"
-    const val CUST_ACC ="CUST_ACC"
-    const val IS_CUSTOM_AMOUNT ="IS_CUSTOM_AMOUNT"
-    const val IS_FROM_ALL_IN_ONE_GO ="IS_FROM_ALL_IN_ONE_GO"
+    const val AMOUNT_PAYABLE = "AMOUNT_PAYABLE"
+    const val CUST_ACC = "CUST_ACC"
+    const val IS_CUSTOM_AMOUNT = "IS_CUSTOM_AMOUNT"
+    const val IS_FROM_ALL_IN_ONE_GO = "IS_FROM_ALL_IN_ONE_GO"
 
 
 }

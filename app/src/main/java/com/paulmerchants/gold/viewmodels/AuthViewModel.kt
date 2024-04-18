@@ -2,12 +2,17 @@ package com.paulmerchants.gold.viewmodels
 
 import android.app.Activity
 import android.location.Location
+import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.BuildConfig
+import com.paulmerchants.gold.R
+import com.paulmerchants.gold.common.Constants.PHONE_LOGIN
 import com.paulmerchants.gold.model.ReqCustomerOtpNew
 import com.paulmerchants.gold.model.ReqSetMPin
 import com.paulmerchants.gold.model.RespGetCustomer
@@ -91,7 +96,12 @@ class AuthViewModel @Inject constructor(
         timer?.start()
     }
 
-    fun getCustomer(mobileNum: String, location: Location?, activity: Activity) =
+    fun getCustomer(
+        navController: NavController,
+        mobileNum: String,
+        location: Location?,
+        activity: Activity,
+    ) =
         viewModelScope.launch {
 
 //        if (mobileNum == "9999988888") {
@@ -122,30 +132,37 @@ class AuthViewModel @Inject constructor(
                                     "TAG",
                                     "getCustomer: -CustomerId---${respCutomer[0]}"
                                 )
-                                if (respCutomer[0].Status == true) {
+                                val customer = respCutomer[0]
+                                if (customer.Status == true) {
                                     getOtp(mobileNum, activity)
-
                                     isCustomerExist.postValue(true)
                                     Log.d(
                                         "TAG",
-                                        "getCustomer: -CustomerId---${respCutomer[0].Cust_ID.toString()}"
+                                        "getCustomer: -CustomerId---${customer.Cust_ID.toString()}"
                                     )
                                     Log.d(
                                         "TAG",
-                                        "getCustomer: -CustName---${respCutomer[0].CustName.toString()}"
+                                        "getCustomer: -CustName---${customer.CustName.toString()}"
                                     )
                                     AppSharedPref.putStringValue(
                                         CUSTOMER_ID,
-                                        respCutomer[0].Cust_ID.toString()
+                                        customer.Cust_ID.toString()
                                     )
                                     AppSharedPref.putStringValue(
-                                        CUSTOMER_NAME, respCutomer[0].CustName.toString()
+                                        CUSTOMER_NAME, customer.CustName.toString()
                                     )
                                 } else {
+                                    //TODO: Show for queries for new customers.
                                     "No active Gold loan found for this number".showSnackBar()
+                                    val bundle = Bundle().apply {
+                                        putString(PHONE_LOGIN, mobileNum)
+                                    }
+                                    navController.navigate(
+                                        R.id.newUserDialog, bundle
+                                    )
                                     Log.i(
                                         "Auth_ViewModel",
-                                        "Error: Status = ${respCutomer[0].Status}"
+                                        "Error: Status = ${customer.Status}"
                                     )
                                 }
                             }

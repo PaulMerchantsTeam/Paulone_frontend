@@ -144,6 +144,16 @@ class GoldLoanScreenFrag :
 
     override fun onStart() {
         super.onStart()
+
+        (activity as MainActivity).checkForDownFromRemoteConfig()
+        (activity as MainActivity).commonViewModel.isRemoteConfigCheck.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it) {
+                    (activity as MainActivity).showUnderMainTainPage()
+                }
+            }
+        }
+
         if (goldScreenViewModel.isCalledGoldLoanScreen) {
             amount = 0
             lifecycleScope.launch(Dispatchers.Main) {

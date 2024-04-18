@@ -53,7 +53,7 @@ class CustomViews(context: Context, val activity: LinearLayout) : View(context) 
 
         val useCenter = false // Whether to include the center of the oval
 
-// Draw the arc
+        // Draw the arc
         canvas?.drawArc(rectF, startAngle, sweepAngle, useCenter, paint)
 
         // Set the foreground color

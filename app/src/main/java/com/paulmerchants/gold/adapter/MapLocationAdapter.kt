@@ -1,20 +1,17 @@
 package com.paulmerchants.gold.adapter
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.paulmerchants.gold.R
 import com.paulmerchants.gold.databinding.ItemLocationAddBinding
 import com.paulmerchants.gold.model.newmodel.PmlBranch
 
 class MapLocationAdapter(
-    private val OnLocationClicked: (PmlBranch) -> Unit,
+    private val onLocationClicked: (PmlBranch) -> Unit,
     private val onMarkLocation: (PmlBranch) -> Unit,
 ) : PagingDataAdapter<PmlBranch, MapLocationAdapter.MapLocationViewHolder>(DIFF_CALLBACK) {
 
@@ -23,7 +20,7 @@ class MapLocationAdapter(
     )
 
     override fun onBindViewHolder(holder: MapLocationViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it, OnLocationClicked,onMarkLocation) }
+        getItem(position)?.let { holder.bind(it, onLocationClicked, onMarkLocation) }
     }
 
     companion object {
@@ -46,13 +43,17 @@ class MapLocationAdapter(
     inner class MapLocationViewHolder(private val binding: ItemLocationAddBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(pmlBranch: PmlBranch, OnLocationClicked: (PmlBranch) -> Unit,onMarkLocation: (PmlBranch) -> Unit) {
+        fun bind(
+            pmlBranch: PmlBranch,
+            onLocationClicked: (PmlBranch) -> Unit,
+            onMarkLocation: (PmlBranch) -> Unit,
+        ) {
             binding.apply {
                 addressLocTv.text = pmlBranch.branchName
-                distanceFromHereTv.text = "Check location"
+                distanceFromHereTv.text = binding.root.context.getString(R.string.check_location)
             }
             binding.checkLocation.setOnClickListener {
-                OnLocationClicked(pmlBranch)
+                onLocationClicked(pmlBranch)
             }
             binding.root.setOnClickListener {
                 onMarkLocation(pmlBranch)

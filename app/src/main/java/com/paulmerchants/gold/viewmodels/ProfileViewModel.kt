@@ -1,29 +1,20 @@
 package com.paulmerchants.gold.viewmodels
 
-import android.content.Context
 import android.location.Location
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.model.ReqCustomerOtpNew
-import com.paulmerchants.gold.model.RequestLogin
 import com.paulmerchants.gold.model.RespCustomersDetails
-import com.paulmerchants.gold.model.RespLogin
 import com.paulmerchants.gold.model.ResponseGetOtp
 import com.paulmerchants.gold.model.ResponseVerifyOtp
-import com.paulmerchants.gold.model.newmodel.LoginNewResp
-import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
-import com.paulmerchants.gold.model.newmodel.ReqResetPin
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
@@ -32,11 +23,9 @@ import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.networks.RetrofitSetup
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
-import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
-import com.paulmerchants.gold.utility.Constants.AUTH_STATUS
 import com.paulmerchants.gold.utility.Constants.CUSTOMER_FULL_DATA
 import com.paulmerchants.gold.utility.Constants.CUST_EMAIL
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
@@ -52,8 +41,10 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val retrofitSetup: RetrofitSetup,
 ) : ViewModel() {
+    companion object{
+        const val TAG = "ProfileViewModel"
+    }
     var isCalled: Boolean = true
-    private val TAG = this.javaClass.name
     val verifyOtp = MutableLiveData<ResponseVerifyOtp>()
 
     var timer: CountDownTimer? = null
@@ -69,26 +60,23 @@ class ProfileViewModel @Inject constructor(
     fun timerStart(millis: Long = 120000L) {
         timer = object : CountDownTimer(millis, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-
-
-                var count = "${millisUntilFinished / 1000}"
                 val inSecond = millisUntilFinished / 1000
-                if (inSecond < 10) {
-                    count = "00:0$inSecond"
+                val count = if (inSecond < 10) {
+                    "00:0$inSecond"
                 } else if (inSecond == 120L) {
-                    count = "2:00"
+                    "2:00"
                 } else if (inSecond > 60L) {
-                    count = if (inSecond - 60 < 10) {
+                    if (inSecond - 60 < 10) {
                         "1:0${inSecond - 60}"
                     } else {
                         "1:${inSecond - 60}"
                     }
                 } else if (inSecond < 60) {
-                    count = "00:$inSecond"
+                    "00:$inSecond"
                 } else {
-                    count = ""
+                    ""
                 }
-                Log.d("TAG", "hideAndShowOtpView: $count") //Didn’t receive? 00:30
+                Log.d("TAG", "hideAndShowOtpView: $count") // Didn't receive? 00:30
                 countNum.postValue(millisUntilFinished / 1000)
                 countStr.postValue(count)
             }
@@ -157,9 +145,6 @@ class ProfileViewModel @Inject constructor(
                 AppUtility.hideProgressBar()
             }
 
-            override fun error(message: String) {
-                super.error(message)
-            }
         })
     }
 
@@ -169,7 +154,7 @@ class ProfileViewModel @Inject constructor(
             retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
                     return apiParams.logOut(
-                        "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}"
+                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}"
                     )
                 }
 
@@ -177,16 +162,7 @@ class ProfileViewModel @Inject constructor(
                     try {
                         // Get the plain text response
                         if (response.body()?.statusCode == "200") {
-                            AppSharedPref?.clearSharedPref()
-                            val backStack = navController.backQueue
-//                            for (i in backStack) {
-//                                Log.d(
-//                                    TAG,
-//                                    "success: ...${i.id}..--------.${i.destination.displayName}"
-//                                )
-//                                i.destination.route?.let { navController.popBackStack(it, true) }
-//                                navController.clearBackStack(i.id)
-//                            }
+                            AppSharedPref.clearSharedPref()
                             val bundle = Bundle().apply {
                                 putBoolean(IS_LOGOUT, true)
                             }
@@ -203,9 +179,6 @@ class ProfileViewModel @Inject constructor(
                     AppUtility.hideProgressBar()
                 }
 
-                override fun error(message: String) {
-                    super.error(message)
-                }
             })
         }
 
@@ -216,7 +189,7 @@ class ProfileViewModel @Inject constructor(
                 override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
                     return apiParams.getOtp(
 
-                        "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                         ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location)),
                     )
                 }
@@ -260,7 +233,7 @@ class ProfileViewModel @Inject constructor(
                                 verifyOtp.value = response.body()
 
                             } else {
-                                "${it.message}".showSnackBar()
+                                it.message.showSnackBar()
                             }
                         }
                     }

@@ -1,6 +1,5 @@
 package com.paulmerchants.gold.ui.auth
 
-import android.location.Location
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -13,22 +12,30 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.paulmerchants.gold.BuildConfig
-import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants.OTP_VERIFIED
 import com.paulmerchants.gold.common.Constants.SIGNUP_DONE
 import com.paulmerchants.gold.databinding.PhoneAuthFragmentBinding
-import com.paulmerchants.gold.location.LocationProvider
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
-import com.paulmerchants.gold.ui.TAG
-import com.paulmerchants.gold.utility.*
+import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.diffColorText
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
 import com.paulmerchants.gold.utility.AppUtility.openUrl
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.IS_LOGOUT
+import com.paulmerchants.gold.utility.InternetUtils
+import com.paulmerchants.gold.utility.disableButton
+import com.paulmerchants.gold.utility.enableButton
+import com.paulmerchants.gold.utility.endProgress
+import com.paulmerchants.gold.utility.hide
+import com.paulmerchants.gold.utility.hideView
+import com.paulmerchants.gold.utility.setTColor
+import com.paulmerchants.gold.utility.shoViewWithAnim
+import com.paulmerchants.gold.utility.show
+import com.paulmerchants.gold.utility.startProgress
 import com.paulmerchants.gold.viewmodels.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -45,10 +52,10 @@ class PhoenNumVerifiactionFragment :
     private var pinValue: Int? = null
     private val authViewModel: AuthViewModel by viewModels()
 
-    companion object {
-        const val REQ_CODE = 123
-        const val REQ_ONE_TAP = 2
-    }
+//    companion object {
+//        const val REQ_CODE = 123
+//        const val REQ_ONE_TAP = 2
+//    }
 
     //    @Inject
 //    lateinit var auth: FirebaseAuth
@@ -108,7 +115,16 @@ class PhoenNumVerifiactionFragment :
 
     override fun onStart() {
         super.onStart()
-        val backStack = findNavController().backQueue/*     for (i in backStack) {
+        (activity as MainActivity).checkForDownFromRemoteConfig()
+        (activity as MainActivity).commonViewModel.isRemoteConfigCheck.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it) {
+                    (activity as MainActivity).showUnderMainTainPage()
+                }
+            }
+        }
+//        val backStack = findNavController().backQueue
+        /*     for (i in backStack) {
                  Log.d(
                      "TAG", "STACK__COUNT_NAME: ...${i.id}..--------.${i.destination.displayName}"
                  )
@@ -122,7 +138,7 @@ class PhoenNumVerifiactionFragment :
         //we are happy to serve you!!
         callMpinNextFocus()
         callMpinConfirmNextFocus()
-        AppSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)?.let {
+        AppSharedPref.getStringValue(Constants.CUSTOMER_NAME)?.let {
             if (it != "") {
                 binding.signUpParentMain.etName.apply {
                     setText(it)
@@ -245,6 +261,7 @@ class PhoenNumVerifiactionFragment :
 //                        if ((activity as MainActivity).mLocation != null) {
                         Log.e("TAG", "onStart: /.....11")
                         authViewModel.getCustomer(
+                            findNavController(),
                             binding.etPhoenNum.text.toString(),
                             (activity as MainActivity).mLocation,
                             requireActivity()
@@ -362,8 +379,8 @@ class PhoenNumVerifiactionFragment :
                     if (binding.etPhoenNum.text.isNotEmpty()) {
                         if ((activity as MainActivity).mLocation != null) {
                             authViewModel.getCustomer(
+                                findNavController(),
                                 binding.etPhoenNum.text.toString(),
-
                                 (activity as MainActivity).mLocation, requireActivity(),
                             )
                         } else {
@@ -396,7 +413,7 @@ class PhoenNumVerifiactionFragment :
         customizeText()
         callMpinNextFocus()
         callMpinConfirmNextFocus()
-        AppSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME)?.let {
+        AppSharedPref?.getStringValue(Constants.CUSTOMER_NAME)?.let {
             if (it != "") {
                 binding.signUpParentMain.etName.apply {
                     setText(it)

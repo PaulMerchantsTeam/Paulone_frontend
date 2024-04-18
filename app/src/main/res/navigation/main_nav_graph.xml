@@ -282,5 +282,10 @@
         android:id="@+id/resetMpinDialog"
         android:name="com.paulmerchants.gold.ui.btmsheetDg.ResetMpinDialog"
         android:label="ResetMpinDialog" />
+    <dialog
+        android:id="@+id/newUserDialog"
+        tools:layout="@layout/applying_for_loan_layout"
+        android:name="com.paulmerchants.gold.ui.btmsheetDg.NewUserDialog"
+        android:label="NewUserDialog" />
 
 </navigation>
