@@ -125,12 +125,12 @@ class PaymentViewModel @Inject constructor(
                 })
         }
 
-    fun getCustomerDetails(AppSharedPref: AppSharedPref, location: Location?) =
+    fun getCustomerDetails(appSharedPref: AppSharedPref, location: Location?) =
         viewModelScope.launch {
             retrofitSetup.callApi(true, object : CallHandler<Response<RespGetCustomer>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetCustomer> {
                     return apiParams.getCustomerDetails(
-                        "Bearer ${AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}",
+                        "Bearer ${appSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}",
                         ReqpendingInterstDueNew(
                             AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
                             AppUtility.getDeviceDetails(location)

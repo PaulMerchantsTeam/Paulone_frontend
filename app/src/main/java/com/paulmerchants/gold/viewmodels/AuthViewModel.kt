@@ -157,9 +157,9 @@ class AuthViewModel @Inject constructor(
                                     val bundle = Bundle().apply {
                                         putString(PHONE_LOGIN, mobileNum)
                                     }
-                                    navController.navigate(
-                                        R.id.newUserDialog, bundle
-                                    )
+//                                    navController.navigate(
+//                                        R.id.newUserDialog, bundle
+//                                    )
                                     Log.i(
                                         "Auth_ViewModel",
                                         "Error: Status = ${customer.Status}"

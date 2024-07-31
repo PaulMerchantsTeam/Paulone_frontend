@@ -20,7 +20,7 @@ class CustomViews(context: Context, val activity: LinearLayout) : View(context) 
     private var mPaint = Paint()
     private val displayMetrics = DisplayMetrics()
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         // Set the paint color and style

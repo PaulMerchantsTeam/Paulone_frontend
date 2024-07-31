@@ -11,6 +11,7 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -165,8 +166,16 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         // Retrieve location and camera position from saved instance state.
         // [START maps_current_place_on_create_save_instance_state]
         if (savedInstanceState != null) {
-            lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION)
-            cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION)
+            lastKnownLocation = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                savedInstanceState.getParcelable(KEY_LOCATION, Location::class.java)
+            } else {
+                savedInstanceState.getParcelable(KEY_LOCATION)
+            }
+            cameraPosition = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                savedInstanceState.getParcelable(KEY_CAMERA_POSITION, CameraPosition::class.java)
+            } else {
+                savedInstanceState.getParcelable(KEY_CAMERA_POSITION)
+            }
         }
 
         binding.viewAllLocation.setOnClickListener {
@@ -672,7 +681,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
     private fun openPlacesDialog() {
         // Ask the user to choose the place where they are now.
         val listener =
-            DialogInterface.OnClickListener { dialog, which -> // The "which" argument contains the position of the selected item.
+            DialogInterface.OnClickListener { _, which -> // The "which" argument contains the position of the selected item.
 
                 val markerLatLng = likelyPlaceLatLngs[which]
                 var markerSnippet = likelyPlaceAddresses[which]

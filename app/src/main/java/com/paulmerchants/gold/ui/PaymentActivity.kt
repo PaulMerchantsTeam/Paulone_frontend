@@ -1,10 +1,12 @@
 package com.paulmerchants.gold.ui
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -51,6 +53,7 @@ import java.lang.ref.WeakReference
 
 @AndroidEntryPoint
 class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>() {
+    private var isReadyForPayment: Boolean = false
     private var payAlllInOneGo: PayAllnOneGoDataTobeSent? = null
     private var amountToPay: Double? = 0.0
     private var customerAcc: String? = null
@@ -104,7 +107,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         payAlllInOneGo =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) bundle?.getParcelable(
                 Constants.PAY_ALL_IN_GO_DATA, PayAllnOneGoDataTobeSent::class.java
-            ) else intent?.getParcelableExtra<PayAllnOneGoDataTobeSent>(Constants.PAY_ALL_IN_GO_DATA) as PayAllnOneGoDataTobeSent?
+            ) else intent?.getParcelableExtra(Constants.PAY_ALL_IN_GO_DATA)
         Log.e(
             "TAGGGGGGG",
             "initialize: -customerAcc-----$customerAcc------$payAlllInOneGo------$amountToPay"
@@ -121,7 +124,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 //        var walletValue = true
         var creditValue = true
         var netBanking = true
-        binding.underMainParent.closeBtn.setOnClickListener {0
+        binding.underMainParent.closeBtn.setOnClickListener {
             finish()
             MainActivity().finish()
         }
@@ -284,7 +287,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         }
         paymentViewModel.getRespCustomersDetailsLiveData.observe(this) {
             it?.let {
-
+                isReadyForPayment = true
                 respCustomerDetail = it
             }
         }
@@ -364,7 +367,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
                 if (input.length <= 4) {
                     val monthPart = input.take(2).toIntOrNull() ?: 0
-                    val yearPart = input.takeLast(2).toIntOrNull() ?: 0
+//                    val yearPart = input.takeLast(2).toIntOrNull() ?: 0
 
                     val isValidMonth = monthPart in 1..12
 //                    val isValidYear = yearPart in 24..40
@@ -433,28 +436,44 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         }
 
         binding.gPayTv.setOnClickListener {
-            initRazorpay()
-            upiIntentGooglePay()
-            amountToPay?.let { it1 -> createOrder(it1, notes = "paying from g_pay_intent") }
+            if (isReadyForPayment) {
+                initRazorpay()
+                upiIntentGooglePay()
+                amountToPay?.let { it1 -> createOrder(it1, notes = "paying from g_pay_intent") }
+            } else {
+                "Please Wait...".showSnackBar()
+            }
         }
         binding.phonePeTv.setOnClickListener {
-            initRazorpay()
-            upiIntentPhonePe()
-            amountToPay?.let { it1 -> createOrder(it1, notes = "paying from phone_pay_intent") }
+            if (isReadyForPayment) {
+                initRazorpay()
+                upiIntentPhonePe()
+                amountToPay?.let { it1 -> createOrder(it1, notes = "paying from phone_pay_intent") }
+            } else {
+                "Please Wait...".showSnackBar()
+            }
         }
         binding.paytmTv.setOnClickListener {
-            initRazorpay()
-            upiIntentPaytm()
-            amountToPay?.let { it1 -> createOrder(it1, notes = "paying from paytm _intent") }
+            if (isReadyForPayment) {
+                initRazorpay()
+                upiIntentPaytm()
+                amountToPay?.let { it1 -> createOrder(it1, notes = "paying from paytm _intent") }
+            } else {
+                "Please Wait...".showSnackBar()
+            }
         }
         binding.otherApps.setOnClickListener {
-            initRazorpay()
-            otherIntent()
-            amountToPay?.let { it1 -> createOrder(it1, notes = "paying from other_app") }
+            if (isReadyForPayment) {
+                initRazorpay()
+                otherIntent()
+                amountToPay?.let { it1 -> createOrder(it1, notes = "paying from other_app") }
+            } else {
+                "Please Wait...".showSnackBar()
+            }
         }
         binding.apply {
             upiTv.setOnClickListener {
-                if (bhmValue) {
+                if (bhmValue && isReadyForPayment) {
                     bhmUpiParent.setBackgroundResource(R.drawable.rect_opem_loans)
                     arrowDowmBhmIv.setImageResource(R.drawable.cross_icon)
                     upiMethodParent.show()
@@ -552,7 +571,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                         }
             */
             nbTv.setOnClickListener {
-                if (creditValue) {
+                if (creditValue && isReadyForPayment) {
                     nbTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.cross_icon, 0)
 //                    arrowDownCreditIv.setImageResource(R.drawable.cross_icon)
                     creditDebitParent.setBackgroundResource(R.drawable.rect_opem_loans)
@@ -588,7 +607,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             }
             creditTv.setOnClickListener {
                 initRazorpay()
-                if (netBanking) {
+                if (netBanking && isReadyForPayment) {
                     arrowDownNbIv.setImageResource(R.drawable.cross_icon)
                     netBankingParentParent.setBackgroundResource(R.drawable.rect_opem_loans)
                     netBankCardParent.show()
@@ -700,16 +719,15 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             "Please disable your mock Location from developer option".showSnackBar()
             return
         }
-
-        if (mLocation == null) {
-            locationProvider.startLocationUpdates()
-            return
+        if (!isLocationEnabled()) {
+            buildAlertMessageNoGps()
         } else {
+            Log.d(TAG, "createOrder: ....api_Calls")
             paymentViewModel.getUnderMaintenanceStatus(
                 reqCreateOrder = ReqCreateOrder(
                     amount = amount,
                     currency = "INR",
-                    custId = AppSharedPref?.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
+                    custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
                         .toString(),
                     notes = Notes(
                         "$notes custId=${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)}",
@@ -726,6 +744,35 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         }
     }
 
+    private fun isLocationEnabled(): Boolean {
+        val locationManager: LocationManager =
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
+
+    private fun buildAlertMessageNoGps() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setMessage("Your Location seems to be disabled, do you want to enable it?")
+            .setCancelable(false)
+            .setPositiveButton(
+                "Yes"
+            ) { dialog, _ ->
+                dialog.dismiss()
+                finish()
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            }
+            .setNegativeButton(
+                "No"
+            ) { dialog, _ ->
+                finish()
+                dialog.cancel()
+            }
+        val alert: AlertDialog = builder.create()
+        alert.show()
+    }
+
     private fun sendRequest() {
         Log.d("TAG", "sendRequest: .......$payload")
         razorpay?.validateFields(payload, object : ValidationListener {
@@ -734,7 +781,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 toggleWebViewVisibility(View.VISIBLE)
                 razorpay?.submit(payload, object : PaymentResultWithDataListener {
                     override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
-                        // Razorpay payment ID and PaymentData passed here after a successful payment
+                        //Razorpay payment ID and PaymentData passed here after a successful payment
                         Log.i(TAG, "onPaymentSuccess: ///////////.....${p1?.paymentId}")
                         toggleWebViewVisibility(View.GONE)
                         if (p1?.paymentId != null) {
@@ -923,9 +970,9 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     bankDialogBuilder.setTitle("Select a bank")
                     bankDialogBuilder.setPositiveButton(
                         "Ok"
-                    ) { dialog, which -> }
+                    ) { _, _ -> }
                     bankDialog = bankDialogBuilder.create()
-                    bankListView.setOnItemClickListener { parent, view, position, id ->
+                    bankListView.setOnItemClickListener { _, _, position, _ ->
                         basePayload()
                         payload.put("method", "netbanking")
                         payload.put("bank", bankKeys[position])
@@ -949,9 +996,9 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     walletDialogBuilder.setTitle("Select a Wallet")
                     walletDialogBuilder.setPositiveButton(
                         "Ok"
-                    ) { dialog, which -> }
+                    ) { _, _ -> }
                     walletDialog = walletDialogBuilder.create()
-                    walletListView.setOnItemClickListener { parent, view, position, id ->
+                    walletListView.setOnItemClickListener { _, _, position, _ ->
                         basePayload()
                         payload.put("method", "wallet")
                         payload.put("wallet", walletNames[position])

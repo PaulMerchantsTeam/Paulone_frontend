@@ -9,7 +9,9 @@ import com.paulmerchants.gold.databinding.MainScreenFragmentBinding
 import com.paulmerchants.gold.utility.hide
 import dagger.hilt.android.AndroidEntryPoint
 
-
+/**
+ * Dummy Sample for fragment
+ */
 @AndroidEntryPoint
 class MainScreenFrag :
     BaseFragment<LauoutUnderMaintanceBinding>(LauoutUnderMaintanceBinding::inflate) {

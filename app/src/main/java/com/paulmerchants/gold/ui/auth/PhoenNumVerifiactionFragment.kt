@@ -178,7 +178,7 @@ class PhoenNumVerifiactionFragment :
             }
 
         }
-        if (AppSharedPref?.getBooleanValue(OTP_VERIFIED) == true) {
+        if (AppSharedPref.getBooleanValue(OTP_VERIFIED)) {
             binding.fillOtpParent.hideView()
             binding.signUpParentMain.root.show()
         }
@@ -229,7 +229,7 @@ class PhoenNumVerifiactionFragment :
                 if (!it.userExist) {
                     hideAndShowSignUpScreen()
                 } else {
-                    AppSharedPref?.putBoolean("IS_USER_EXIST", true)
+                    AppSharedPref.putBoolean("IS_USER_EXIST", true)
                     findNavController().popBackStack(R.id.phoenNumVerifiactionFragment, true)
                     findNavController().navigate(R.id.loginScreenFrag)
                 }
@@ -249,7 +249,7 @@ class PhoenNumVerifiactionFragment :
                     delay(1000)
                 }
                 isOtpVerified = true
-                AppSharedPref?.putBoolean(OTP_VERIFIED, isOtpVerified)
+                AppSharedPref.putBoolean(OTP_VERIFIED, isOtpVerified)
 
             }
         }
@@ -413,7 +413,7 @@ class PhoenNumVerifiactionFragment :
         customizeText()
         callMpinNextFocus()
         callMpinConfirmNextFocus()
-        AppSharedPref?.getStringValue(Constants.CUSTOMER_NAME)?.let {
+        AppSharedPref.getStringValue(Constants.CUSTOMER_NAME)?.let {
             if (it != "") {
                 binding.signUpParentMain.etName.apply {
                     setText(it)
@@ -516,7 +516,7 @@ class PhoenNumVerifiactionFragment :
         )
 
         binding.createMpinAndSuccessMain.root.show()
-        AppSharedPref?.putBoolean(SIGNUP_DONE, true)
+        AppSharedPref.putBoolean(SIGNUP_DONE, true)
         lifecycleScope.launchWhenCreated {
             delay(2000)
             findNavController().popBackStack(R.id.phoenNumVerifiactionFragment, true)

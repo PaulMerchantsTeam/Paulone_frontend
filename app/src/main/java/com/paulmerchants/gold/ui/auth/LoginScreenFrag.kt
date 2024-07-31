@@ -81,8 +81,7 @@ class LoginScreenFrag :
             if (InternetUtils.isNetworkAvailable(requireContext())) {
                 val mobileNumber = AppSharedPref.getStringValue(CUST_MOBILE).toString()
                 showCustomDialogOTPVerify(
-                    mobileNumber,
-                    title = "OTP sent to this number $mobileNumber"
+                    mobileNumber
                 )
                 loginViewModel.getOtp(
                     mobileNumber,
@@ -143,8 +142,6 @@ class LoginScreenFrag :
 
     private fun showCustomDialogOTPVerify(
         mobile: String,
-        type: Int = 0,
-        title: String = "",
     ) {
         val dialogBinding =
             OtpFillLayoutDialogBinding.inflate(this.layoutInflater)
@@ -171,7 +168,7 @@ class LoginScreenFrag :
                 }
             }
         }
-        customDialog?.setOnDismissListener { dgInterface ->
+        customDialog?.setOnDismissListener {
             loginViewModel.timer?.cancel()
         }
         //verify Otp

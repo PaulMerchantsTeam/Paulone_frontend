@@ -3,6 +3,7 @@ package com.paulmerchants.gold.ui.bottom
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -33,7 +34,7 @@ class GoldLoanScreenFrag :
     private var amount: Int = 0
     private var listPayAll: ArrayList<PayAll> = arrayListOf()
     private val lastStatementAdapter =
-        GoldLoanOverViewAdapterProd(::optionsClicked, ::payNowClicked, ::viewDetails)
+        GoldLoanOverViewAdapterProd(::optionsClicked, ::payNowClicked)
     private val goldScreenViewModel: GoldLoanScreenViewModel by viewModels()
 
     override fun GoldLoanScreenFragmentBinding.initialize() {
@@ -96,7 +97,7 @@ class GoldLoanScreenFrag :
         Log.d("TAG", "totalAmount: ....................listPayAll-----------$listPayAll")
     }
 
-    private fun viewDetails(actionItem: RespGetLoanOutStandingItem) {
+//    private fun viewDetails(actionItem: RespGetLoanOutStandingItem) {
 //        if (actionItem.IsClosed == false) {
 //            val bundle = Bundle().apply {
 //                putParcelable(Constants.LOAN_OVERVIEW, actionItem)
@@ -109,7 +110,7 @@ class GoldLoanScreenFrag :
 //            findNavController().navigate(R.id.loanStatementFrag, bundle)
 //        }
 
-    }
+//    }
 
     private fun payNowClicked(actionItem: RespGetLoanOutStandingItem) {
         if (actionItem.closed == false) {
@@ -166,7 +167,12 @@ class GoldLoanScreenFrag :
             binding.apply {
                 goldLoanParentMain.openLoanTv.setOnClickListener {
                     goldLoanParentMain.openLoanTv.setBackgroundResource(R.drawable.rec_sky_loan_blue_solid)
-                    goldLoanParentMain.closedLoanTv.setBackgroundColor(resources.getColor(R.color.splash_screen_two))
+                    goldLoanParentMain.closedLoanTv.setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.splash_screen_two
+                        )
+                    )
                     setUiFoOpenGoldLoans()
                     lastStatementAdapter.notifyDataSetChanged()
                     binding.constraintLayout12.hide()
@@ -175,7 +181,11 @@ class GoldLoanScreenFrag :
 
                 goldLoanParentMain.closedLoanTv.setOnClickListener {
                     goldLoanParentMain.closedLoanTv.setBackgroundResource(R.drawable.rec_sky_loan_blue_solid)
-                    goldLoanParentMain.openLoanTv.setBackgroundColor(resources.getColor(R.color.splash_screen_two))
+                    goldLoanParentMain.openLoanTv.setBackgroundColor(
+                        ContextCompat.getColor(
+                            requireContext(), R.color.splash_screen_two
+                        )
+                    )
                     setUiForClosedGoldLoans()
                     lastStatementAdapter.notifyDataSetChanged()
                     amount = 0

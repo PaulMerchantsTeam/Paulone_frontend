@@ -10,7 +10,6 @@
     tools:context=".ui.bottom.HomeScreenFrag">
 
 
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/parnetMain"
         android:layout_width="match_parent"
@@ -49,6 +48,7 @@
 
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none"
@@ -59,7 +59,9 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_anchor="@+id/nestedScrollView"
+                app:layout_anchorGravity="center">
 
                 <include
                     android:id="@+id/searchProfileParent"
@@ -232,6 +234,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_12sdp"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -268,144 +271,145 @@
                 <include
                     android:id="@+id/moreToCome"
                     layout="@layout/more_to_come"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_17sdp"
                     android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/loanOverViewParent" />
 
-                <include
-                    android:id="@+id/allPaymnetActionParent"
-                    layout="@layout/other_actions"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/loanOverViewParent" />
+                <!--            <include-->
+                <!--                android:id="@+id/allPaymnetActionParent"-->
+                <!--                layout="@layout/other_actions"-->
+                <!--                android:layout_width="0dp"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:visibility="gone"-->
+                <!--                app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                app:layout_constraintStart_toStartOf="parent"-->
+                <!--                app:layout_constraintTop_toBottomOf="@+id/loanOverViewParent" />-->
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/_24sdp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/allPaymnetActionParent">
+                <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+                <!--                android:layout_width="0dp"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:paddingBottom="@dimen/_24sdp"-->
+                <!--                android:visibility="gone"-->
+                <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                app:layout_constraintStart_toStartOf="parent"-->
+                <!--                app:layout_constraintTop_toBottomOf="@+id/allPaymnetActionParent">-->
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/yrCardTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/screen_start_margin"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:lineSpacingExtra="@dimen/_3sdp"
-                        android:text="@string/your_cards"
-                        android:textColor="@color/splash_screen_three"
-                        android:textSize="@dimen/_12ssp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <!--                <com.google.android.material.textview.MaterialTextView-->
+                <!--                    android:id="@+id/yrCardTv"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginStart="@dimen/screen_start_margin"-->
+                <!--                    android:layout_marginTop="@dimen/_10sdp"-->
+                <!--                    android:fontFamily="@font/poppins_bold"-->
+                <!--                    android:lineSpacingExtra="@dimen/_3sdp"-->
+                <!--                    android:text="@string/your_cards"-->
+                <!--                    android:textColor="@color/splash_screen_three"-->
+                <!--                    android:textSize="@dimen/_12ssp"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/yrCardTV2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/screen_end_margin"
-                        android:fontFamily="@font/poppins_regular"
-                        android:lineSpacingExtra="@dimen/_3sdp"
-                        android:text="@string/you_wont_lose_them_from_here"
-                        android:textColor="@color/splash_screen_three"
-                        android:textSize="@dimen/_9ssp"
-                        app:layout_constraintBottom_toBottomOf="@+id/yrCardTv"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/yrCardTv"
-                        app:layout_constraintTop_toTopOf="@+id/yrCardTv" />
+                <!--                <com.google.android.material.textview.MaterialTextView-->
+                <!--                    android:id="@+id/yrCardTV2"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginStart="@dimen/_5sdp"-->
+                <!--                    android:layout_marginEnd="@dimen/screen_end_margin"-->
+                <!--                    android:fontFamily="@font/poppins_regular"-->
+                <!--                    android:lineSpacingExtra="@dimen/_3sdp"-->
+                <!--                    android:text="@string/you_wont_lose_them_from_here"-->
+                <!--                    android:textColor="@color/splash_screen_three"-->
+                <!--                    android:textSize="@dimen/_9ssp"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="@+id/yrCardTv"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toEndOf="@+id/yrCardTv"-->
+                <!--                    app:layout_constraintTop_toTopOf="@+id/yrCardTv" />-->
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/addCardViewParent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/screen_start_margin"
-                        android:layout_marginTop="@dimen/_12sdp"
-                        app:cardCornerRadius="@dimen/_6sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/yrCardTV2">
+                <!--                <com.google.android.material.card.MaterialCardView-->
+                <!--                    android:id="@+id/addCardViewParent"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginHorizontal="@dimen/screen_start_margin"-->
+                <!--                    android:layout_marginTop="@dimen/_12sdp"-->
+                <!--                    app:cardCornerRadius="@dimen/_6sdp"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@+id/yrCardTV2">-->
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/new_user_card_grad_three"
-                            android:visibility="gone">
+                <!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:background="@drawable/new_user_card_grad_three"-->
+                <!--                        android:visibility="gone">-->
 
-                            <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/materialTextView17"
-                                style="@style/text_21_bold_yellow"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_6sdp"
-                                android:layout_marginTop="@dimen/screen_start_margin"
-                                android:text="@string/track_your_cards_like_never_before"
-                                android:textColor="@color/splash_screen_one"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                <!--                        <com.google.android.material.textview.MaterialTextView-->
+                <!--                            android:id="@+id/materialTextView17"-->
+                <!--                            style="@style/text_21_bold_yellow"-->
+                <!--                            android:layout_width="wrap_content"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:layout_marginStart="@dimen/_6sdp"-->
+                <!--                            android:layout_marginTop="@dimen/screen_start_margin"-->
+                <!--                            android:text="@string/track_your_cards_like_never_before"-->
+                <!--                            android:textColor="@color/splash_screen_one"-->
+                <!--                            app:layout_constraintStart_toStartOf="parent"-->
+                <!--                            app:layout_constraintTop_toTopOf="parent" />-->
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="payonline"
-                                android:src="@drawable/undraw_pay_online_card"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
+                <!--                        <ImageView-->
+                <!--                            android:layout_width="wrap_content"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:contentDescription="payonline"-->
+                <!--                            android:src="@drawable/undraw_pay_online_card"-->
+                <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                            app:layout_constraintEnd_toEndOf="parent" />-->
 
-                            <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/addCardBtn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/screen_start_margin"
-                                android:layout_marginTop="@dimen/_23sdp"
-                                android:layout_marginBottom="@dimen/_17sdp"
-                                android:background="@drawable/rec_one_yellow_btn"
-                                android:padding="@dimen/_7sdp"
-                                android:text="@string/add_now"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/materialTextView17" />
+                <!--                        <com.google.android.material.textview.MaterialTextView-->
+                <!--                            android:id="@+id/addCardBtn"-->
+                <!--                            android:layout_width="wrap_content"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:layout_marginStart="@dimen/screen_start_margin"-->
+                <!--                            android:layout_marginTop="@dimen/_23sdp"-->
+                <!--                            android:layout_marginBottom="@dimen/_17sdp"-->
+                <!--                            android:background="@drawable/rec_one_yellow_btn"-->
+                <!--                            android:padding="@dimen/_7sdp"-->
+                <!--                            android:text="@string/add_now"-->
+                <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                            app:layout_constraintStart_toStartOf="parent"-->
+                <!--                            app:layout_constraintTop_toBottomOf="@+id/materialTextView17" />-->
 
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </com.google.android.material.card.MaterialCardView>
+                <!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
+                <!--                </com.google.android.material.card.MaterialCardView>-->
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/prepaidCardRv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_8sdp"
-                        android:layout_marginTop="@dimen/_12sdp"
+                <!--                <androidx.recyclerview.widget.RecyclerView-->
+                <!--                    android:id="@+id/prepaidCardRv"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginStart="@dimen/_8sdp"-->
+                <!--                    android:layout_marginTop="@dimen/_12sdp"-->
 
-                        android:orientation="horizontal"
-                        android:visibility="visible"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/yrCardTv"
-                        tools:itemCount="2"
-                        tools:listitem="@layout/your_cards_layout" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <!--                    android:orientation="horizontal"-->
+                <!--                    android:visibility="visible"-->
+                <!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@+id/yrCardTv"-->
+                <!--                    tools:itemCount="2"-->
+                <!--                    tools:listitem="@layout/your_cards_layout" />-->
+                <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.core.widget.NestedScrollView>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

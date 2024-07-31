@@ -19,6 +19,4 @@ class FirebaseModule {
     fun provideAnalytics(): FirebaseAnalytics {
         return Firebase.analytics
     }
-
-
 }

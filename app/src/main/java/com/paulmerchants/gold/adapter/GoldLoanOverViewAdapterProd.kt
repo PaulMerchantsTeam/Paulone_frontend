@@ -19,7 +19,7 @@ import kotlin.math.absoluteValue
 class GoldLoanOverViewAdapterProd(
     private val optionsClicked: (RespGetLoanOutStandingItem, Boolean) -> Unit,
     private val pyNowButtonClicked: (RespGetLoanOutStandingItem) -> Unit,
-    private val viewDetails: (RespGetLoanOutStandingItem) -> Unit,
+//    private val viewDetails: (RespGetLoanOutStandingItem) -> Unit,
 ) : ListAdapter<RespGetLoanOutStandingItem, GoldLoanOverViewAdapterProd.GoldLoanOverViewHolder>(
     DIFF_CALLBACK
 ) {
@@ -31,7 +31,7 @@ class GoldLoanOverViewAdapterProd(
     )
 
     override fun onBindViewHolder(holder: GoldLoanOverViewHolder, position: Int) {
-        holder.bindLast(getItem(position), optionsClicked, viewDetails, pyNowButtonClicked)
+        holder.bindLast(getItem(position), optionsClicked, pyNowButtonClicked)
     }
 
     companion object {
@@ -54,14 +54,13 @@ class GoldLoanOverViewAdapterProd(
         fun bindLast(
             actionItem: RespGetLoanOutStandingItem,
             optionsClicked: (RespGetLoanOutStandingItem, Boolean) -> Unit,
-            viewDetails: (RespGetLoanOutStandingItem) -> Unit,
             pyNowButtonClicked: (RespGetLoanOutStandingItem) -> Unit,
         ) {
             var isSelected = false
             binding.apply {
                 loanNumTv.text = actionItem.AcNo.toString()
                 viewDetailsBtn.setOnClickListener {
-                    viewDetails(actionItem)
+//                    viewDetails(actionItem)
                 }
                 loanClosedBtn.setOnClickListener {
                     pyNowButtonClicked(actionItem)
