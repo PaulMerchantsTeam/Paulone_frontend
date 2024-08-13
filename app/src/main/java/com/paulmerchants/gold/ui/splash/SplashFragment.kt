@@ -66,8 +66,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
             }"
         )
 
-        if (AppSharedPref.getBooleanValue(LOGIN_WITH_MPIN) == true
-            || AppSharedPref.getBooleanValue(SIGNUP_DONE) == true
+        if (AppSharedPref.getBooleanValue(LOGIN_WITH_MPIN) || AppSharedPref.getBooleanValue(SIGNUP_DONE)
         ) {
             findNavController().popBackStack(R.id.splashFragment, true)
             findNavController().navigate(
@@ -75,10 +74,9 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 null,
                 (activity as MainActivity).navOption
             )
-        } else if (AppSharedPref.getBooleanValue(OTP_VERIFIED) == true
-            && AppSharedPref.getBooleanValue(
+        } else if (AppSharedPref.getBooleanValue(OTP_VERIFIED) && AppSharedPref.getBooleanValue(
                 IS_USER_EXIST
-            ) == true
+            )
         ) {
             findNavController().popBackStack(R.id.splashFragment, true)
             findNavController().navigate(

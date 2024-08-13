@@ -52,27 +52,6 @@ class PhoenNumVerifiactionFragment :
     private var pinValue: Int? = null
     private val authViewModel: AuthViewModel by viewModels()
 
-//    companion object {
-//        const val REQ_CODE = 123
-//        const val REQ_ONE_TAP = 2
-//    }
-
-    //    @Inject
-//    lateinit var auth: FirebaseAuth
-//    lateinit var mGoogleClient: GoogleSignInClient
-
-//    val onSignInResult =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: androidx.activity.result.ActivityResult ->
-//            when (result.resultCode) {
-//                REQ_ONE_TAP -> {
-//                    try {
-//
-//                    }catch (e:ApiException){}
-//
-//                }
-//            }
-//        }
-
     override fun PhoneAuthFragmentBinding.initialize() {
         changeStatusBarWithReqdColor(requireActivity(), R.color.pg_color)
         pinValue = arguments?.getInt("ProfileChangePin", 0)
@@ -421,25 +400,6 @@ class PhoenNumVerifiactionFragment :
                 }
             }
         }
-//        binding.signUpParentMain.googleSignInTv.setOnClickListener {
-//            //flow_remaining...
-//            googleSignUpScreen()
-//        }
-
-    }
-
-    private fun signInWithSaveCredential() {
-        signInRequest = BeginSignInRequest.builder().setGoogleIdTokenRequestOptions(
-            BeginSignInRequest.GoogleIdTokenRequestOptions.builder().setSupported(true)
-                // Your server's client ID, not your Android client ID.
-//                    .setServerClientId(getString(R.string.your_web_client_id))
-                // Only show accounts previously used to sign in.
-                .setFilterByAuthorizedAccounts(true).build()
-        ).build()
-    }
-
-
-    private fun googleSignUpScreen() {
 
     }
 
@@ -453,11 +413,6 @@ class PhoenNumVerifiactionFragment :
             "",
             binding.signUpParentMain.createAccTitleTv
         )
-//        diffColorText(
-//            getString(R.string.already_have_an_acc),
-//            getString(R.string.log_in),
-//            binding.signUpParentMain.alreadyHaveAccTv
-//        )
     }
 
 
