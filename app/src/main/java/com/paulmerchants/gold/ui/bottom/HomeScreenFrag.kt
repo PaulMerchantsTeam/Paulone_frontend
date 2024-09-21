@@ -9,11 +9,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
+import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MoreToComeAdapter
 import com.paulmerchants.gold.adapter.UpcomingLoanAdapter
@@ -83,10 +85,13 @@ class HomeScreenFrag :
         (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(this) {
             it?.let {
                 if (it.statusCode == "200") {
-                    if (it.data.down) {
+                    if (it.data.down && it.data.id == 1) {
                         findNavController().navigate(R.id.mainScreenFrag)
                         (activity as MainActivity).binding.bottomNavigationView.hide()
-                    } else {
+                    } else if(it.data.down && it.data.id == 2){
+
+                    }
+                    else {
                         setUpNetworkCallbackFOrDueLoans()
                     }
                 }
@@ -137,7 +142,11 @@ class HomeScreenFrag :
             Log.i(TAG, "onRefresh: ....called")
 
             if (InternetUtils.isNetworkAvailable(requireContext())) {
-                (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+                Log.d(com.paulmerchants.gold.ui.TAG, "onAvailable: ...........internet")
+//                 if(!BuildConfig.DEBUG){
+                     (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+
+//                 }
             } else {
                 lifecycleScope.launch {
                     noInternetDialog()
@@ -325,7 +334,38 @@ class HomeScreenFrag :
         Log.d(TAG, "onPause: ...........")
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).commonViewModel.getPendingInterestDuesLiveData.observe(
+            viewLifecycleOwner
+        ) {
+            it?.let { gepPendingRespObj ->
+                (activity as MainActivity).commonViewModel.notZero =
+                    gepPendingRespObj.pendingInterestDuesResponseData.filter {getPendingInterestItem->
+                        getPendingInterestItem.payableAmount != 0.0
+                    }
+                Log.i(
+                    TAG,
+                    "setUpComingDueLoans: ${(activity as MainActivity).commonViewModel.notZero}"
+                )
+                for (i in gepPendingRespObj.pendingInterestDuesResponseData) {
+                    i.currentDate = gepPendingRespObj.currentDate
+                }
+                if ((activity as MainActivity).commonViewModel.notZero.isNotEmpty()) {
+                    upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
+                    binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
+                    binding.rvUpcomingDueLoans.show()
+                } else {
+                    binding.noIntHaveParent.root.show()
+                }
+                binding.swiperefresh.isRefreshing = false
+                binding.shimmmerParent.hideShim()
 
+            }
+        }
+
+
+    }
     private fun setUpComingDueLoans() {
         binding.shimmmerParent.showShimmer()
         (activity as MainActivity).commonViewModel.getPendingInterestDues(
@@ -363,7 +403,6 @@ class HomeScreenFrag :
                 }
                 binding.swiperefresh.isRefreshing = false
                 binding.shimmmerParent.hideShim()
-
             }
         }
 

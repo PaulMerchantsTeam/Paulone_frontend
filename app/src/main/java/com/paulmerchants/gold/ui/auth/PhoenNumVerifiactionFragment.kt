@@ -384,6 +384,8 @@ class PhoenNumVerifiactionFragment :
         }
     }
 
+
+
     private fun hideAndShowSignUpScreen() {
         authViewModel.timer?.cancel()
         authViewModel.countNum.postValue(0L)

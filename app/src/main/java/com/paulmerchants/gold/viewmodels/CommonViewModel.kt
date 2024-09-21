@@ -732,11 +732,13 @@ class CommonViewModel @Inject constructor(
                 val data = remoteConfig.getBoolean("isAppDown")
                 Log.d("loadData", "$data")
                 isRemoteConfigCheck.value = data
+
             } else {
                 Log.d("loadData", "Else:")
             }
         }
     }
+
 
 }
 

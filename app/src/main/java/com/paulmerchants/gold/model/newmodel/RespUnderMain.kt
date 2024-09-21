@@ -17,4 +17,9 @@ data class RespUnderMain(
     val errorMessage: String,
 )
 
-data class DataDown(@SerializedName("down") val down: Boolean)
+data class DataDown(
+    @SerializedName("down") val down: Boolean,
+    @SerializedName("id") val id: Int,
+    @SerializedName("startTime") val startTime: String?,
+    @SerializedName("endTime") val endTime: String?,
+)

@@ -9,7 +9,7 @@ import com.paulmerchants.gold.adapterviewholders.TransDoneHolder
 import com.paulmerchants.gold.databinding.ItemTransactionServicesBinding
 import com.paulmerchants.gold.model.TransDoneModel
 
-class TransacDoneAdapter(private val onTransactionClicked: (TransDoneModel) -> Unit) :
+class TransDoneAdapter(private val onTransactionClicked: (TransDoneModel) -> Unit) :
     ListAdapter<TransDoneModel, TransDoneHolder>(DIFF_CALLBACK) {
 
 

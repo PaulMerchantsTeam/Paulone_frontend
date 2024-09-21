@@ -3,7 +3,7 @@ package com.paulmerchants.gold.model.newmodel
 import com.google.gson.annotations.SerializedName
 
 data class Transactions(
-    @SerializedName("amount") val amount: Int,
+    @SerializedName("amount") val amount: Double,
     @SerializedName("createdAt") val createdAt: Long,
     @SerializedName("createdBy") val createdBy: Int,
     @SerializedName("custId") val custId: String,
@@ -15,5 +15,16 @@ data class Transactions(
     @SerializedName("requestId") val requestId: String,
     @SerializedName("status") val status: String,
     @SerializedName("updatedAt") val updatedAt: Long,
-    @SerializedName("updatedBy") val updatedBy: Int,
-)
+    @SerializedName("accNo") val accNo: String,
+    @SerializedName("submit") val submit: Boolean,
+    @SerializedName("valueDate") val valueDate: String,
+    @SerializedName("makerId") val makerId: String,
+    @SerializedName("macId") val macId: String,
+
+
+    )
+
+
+
+
+

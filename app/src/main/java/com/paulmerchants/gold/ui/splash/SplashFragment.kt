@@ -15,7 +15,6 @@ import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants.IS_USER_EXIST
-import com.paulmerchants.gold.common.Constants.LOGIN_DONE
 import com.paulmerchants.gold.common.Constants.LOGIN_WITH_MPIN
 import com.paulmerchants.gold.common.Constants.OTP_VERIFIED
 import com.paulmerchants.gold.common.Constants.SIGNUP_DONE

@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 
 open class BaseFragment<T : ViewBinding>(private val inflateMethod: (LayoutInflater, ViewGroup?, Boolean) -> T) :
@@ -20,7 +18,9 @@ open class BaseFragment<T : ViewBinding>(private val inflateMethod: (LayoutInfla
     val binding: T get() = _binding!!
 
     // Make it open, so it can be overridden in child fragments
-    open fun T.initialize() {}
+    open fun T.initialize() {
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

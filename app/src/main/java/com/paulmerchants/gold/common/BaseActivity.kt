@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
-import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Abstract Activity which binds [ViewModel] [VM] and [ViewBinding] [VB]
@@ -24,7 +23,7 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
     }
 
     /**
-     * It returns [VB] which is assigned to [mViewBinding] and used in [onCreate]
+     * It returns [VB] which is assigned to mViewBinding and used in [onCreate]
      */
     abstract fun getViewBinding(): VB
 }

@@ -1,22 +1,13 @@
 package com.paulmerchants.gold.adapter
 
 
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.paulmerchants.gold.adapterviewholders.UpcomingLoansViewHolder
 import com.paulmerchants.gold.databinding.ItemUpcomingDueLoanBinding
-
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
-import com.paulmerchants.gold.model.newmodel.GepPendingRespObj
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
-import java.util.Calendar
-import java.util.Date
-import java.util.concurrent.TimeUnit
 
 
 /**

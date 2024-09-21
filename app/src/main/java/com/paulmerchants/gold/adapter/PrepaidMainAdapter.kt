@@ -53,7 +53,7 @@ class PrepaidMainAdapter(private val viewBtnClicked: (ActionItem, Boolean) -> Un
                         expTv.show()
                         cvvTv.show()
                         getDetailsBtn.show()
-//                            otpDescTv.show()
+
                         viewCardBtn.text = ""
                         viewCardBtn.setCompoundDrawablesWithIntrinsicBounds(
                             0,
@@ -70,7 +70,7 @@ class PrepaidMainAdapter(private val viewBtnClicked: (ActionItem, Boolean) -> Un
                         expTv.hide()
                         cvvTv.hide()
                         getDetailsBtn.hide()
-//                            otpDescTv.hide()
+
                         viewCardBtn.text = binding.root.context.getString(R.string.view_card)
                         viewCardBtn.setCompoundDrawablesWithIntrinsicBounds(
                             0,

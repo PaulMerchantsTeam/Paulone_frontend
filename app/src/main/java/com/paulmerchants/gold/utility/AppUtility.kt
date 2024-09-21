@@ -37,6 +37,7 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
@@ -79,12 +80,19 @@ import java.io.UnsupportedEncodingException
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
 import java.security.Security
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoUnit
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.StringTokenizer
 import java.util.concurrent.TimeUnit
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -94,6 +102,7 @@ import javax.crypto.IllegalBlockSizeException
 import javax.crypto.NoSuchPaddingException
 import javax.crypto.ShortBufferException
 import javax.crypto.spec.SecretKeySpec
+
 
 /**
  * android:background=”?android:attr/selectableItemBackground”: this creates ripple effect with border.
@@ -865,50 +874,167 @@ object AppUtility {
             e.printStackTrace()
         }
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getHourMinuteSecond(dateTimeString: String): Triple<Int, Int, Int>? {
+        // Split the dateTimeString into date and time components
+        val parts = dateTimeString.split(" ")
+        if (parts.size < 2) return null
 
-}
+        val time = parts[1]
 
-fun decryptKey(key: String, strToDecrypt: String?): String? {
-    Security.addProvider(BouncyCastleProvider())
-    var keyBytes: ByteArray
+        return try {
+            // Parse the time using LocalTime
+            val localTime = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm:ss"))
 
-    try {
-        keyBytes = key.toByteArray(charset("UTF8"))
-        val skey = SecretKeySpec(keyBytes, "AES")
-        val input = org.bouncycastle.util.encoders.Base64.decode(strToDecrypt?.trim { it <= ' ' }
-            ?.toByteArray(charset("UTF8")))
+            // Extract hour, minute, and second
+            val hour = localTime.hour
+            val minute = localTime.minute
+            val second = localTime.second
 
-        synchronized(Cipher::class.java) {
-            val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
-            cipher.init(Cipher.DECRYPT_MODE, skey)
+            // Print the time display
+            println("Time Display: $localTime") // 24-hour format
 
-            val plainText = ByteArray(cipher.getOutputSize(input.size))
-            var ptLength = cipher.update(input, 0, input.size, plainText, 0)
-            ptLength += cipher.doFinal(plainText, ptLength)
-            val decryptedString = String(plainText)
-            return decryptedString.trim { it <= ' ' }
+            Triple(hour, minute, second)
+        } catch (e: DateTimeParseException) {
+            e.printStackTrace()
+            null
         }
-    } catch (uee: UnsupportedEncodingException) {
-        uee.printStackTrace()
-    } catch (ibse: IllegalBlockSizeException) {
-        ibse.printStackTrace()
-    } catch (bpe: BadPaddingException) {
-        bpe.printStackTrace()
-    } catch (ike: InvalidKeyException) {
-        ike.printStackTrace()
-    } catch (nspe: NoSuchPaddingException) {
-        nspe.printStackTrace()
-    } catch (nsae: NoSuchAlgorithmException) {
-        nsae.printStackTrace()
-    } catch (e: ShortBufferException) {
-        e.printStackTrace()
     }
 
-    return null
-}
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun  getHourMinuteSecond1(dateTimeString: String): Triple<Int, Int, Int>? {
+
+        val startTime = "2013-02-27 21:06:30"
+        val tk = StringTokenizer(dateTimeString)
+        val date = tk.nextToken()
+        val time = tk.nextToken()
+
+        val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+        val sdf1 = SimpleDateFormat("hh:mm:ss")
+        val sdfs = SimpleDateFormat("hh:mm:ss a")
+        val dt: Date
+        return try {
+            dt = sdf1.parse(time)
+            val tm = sdfs.format(dt)
+            val hour = dt.hours
+            val minute = dt.minutes
+            val second = dt.seconds
+            println("Time Display: $dt") // <-- I got result here
+            println("Time Display: $tm") // <-- I got result here
+            println("Time Display: $time") // <-- I got result here
+
+            Triple(hour, minute, second)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+         null
+        }
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun validateQRTime(QRexpire: String): Boolean {
+    // Fix the input format by replacing the space before the time zone with a '+'
+     val fixedQRexpire = QRexpire.replace(" ", "+")
+    // Define the formatter to parse the given timestamp
+     val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+   //  Parse the QRexpire string to ZonedDateTime
+     val qrExpireTime = ZonedDateTime.parse(fixedQRexpire, formatter)
+   //  Get the current time in IST (Asia/Kolkata time zone)
+     val currentISTTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"))
+   //  Compare the QRexpire time with the current IST time
+
+      return qrExpireTime.isAfter(currentISTTime)    }
+
+    }
+
+    fun decryptKey(key: String, strToDecrypt: String?): String? {
+        Security.addProvider(BouncyCastleProvider())
+        var keyBytes: ByteArray
+
+        try {
+            keyBytes = key.toByteArray(charset("UTF8"))
+            val skey = SecretKeySpec(keyBytes, "AES")
+            val input =
+                org.bouncycastle.util.encoders.Base64.decode(strToDecrypt?.trim { it <= ' ' }
+                    ?.toByteArray(charset("UTF8")))
+
+            synchronized(Cipher::class.java) {
+                val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
+                cipher.init(Cipher.DECRYPT_MODE, skey)
+
+                val plainText = ByteArray(cipher.getOutputSize(input.size))
+                var ptLength = cipher.update(input, 0, input.size, plainText, 0)
+                ptLength += cipher.doFinal(plainText, ptLength)
+                val decryptedString = String(plainText)
+                return decryptedString.trim { it <= ' ' }
+            }
+        } catch (uee: UnsupportedEncodingException) {
+            uee.printStackTrace()
+        } catch (ibse: IllegalBlockSizeException) {
+            ibse.printStackTrace()
+        } catch (bpe: BadPaddingException) {
+            bpe.printStackTrace()
+        } catch (ike: InvalidKeyException) {
+            ike.printStackTrace()
+        } catch (nspe: NoSuchPaddingException) {
+            nspe.printStackTrace()
+        } catch (nsae: NoSuchAlgorithmException) {
+            nsae.printStackTrace()
+        } catch (e: ShortBufferException) {
+            e.printStackTrace()
+        }
+
+        return null
+    }
 
 
-fun main() {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun main() {
+        val dateTime = "2024-09-19 00:50:30 AM"
+        val startTime = "2013-02-27 21:06:30"
+        val tk = StringTokenizer(dateTime)
+        val date = tk.nextToken()
+        val time = tk.nextToken()
+
+        val sdf1 = SimpleDateFormat("hh:mm:ss")
+        val sdfs = SimpleDateFormat("hh:mm:ss a")
+        val dt: Date
+        try {
+            dt = sdf1.parse(time)
+            val hour = dt.hours
+            val minute = dt.minutes
+            val second = dt.seconds
+            println("Time Display: $dt") // <-- I got result here
+             // <-- I got result here
+            println("Time Display: $time") // <-- I got result here
+
+            println("Time Display: " + sdfs.format(dt)) // <-- I got result here
+            println("Time Display: $time $hour  $minute, $second") // <-- I got result here
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+
+//        val givenDateString = "Tue Apr 23 16:08:28 GMT+05:30 2013"
+//        val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy")
+//        try {
+//            val mDate = sdf.parse(givenDateString)
+//            val timeInMilliseconds = mDate.time
+//            println("Date in milli :: $timeInMilliseconds")
+//        } catch (e: ParseException) {
+//            e.printStackTrace()
+//        }
+//        val dateTime = "2024-09-19 06:00:00 PM"
+//        val d = ZonedDateTime.parse(dateTime)
+//        val dateTimeString = "2015-03-04T00:00:00.000Z"
+//        val formattedTime1 = convertTo12HourFormat(dateTimeString)
+//
+//        println("Formatted time1: $formattedTime1")
+
+//        val timeString = "06:00:00 PM"
+//        val formattedTime = AppUtility.convertTimeOnly(timeString)
+
+//        println("Formatted time: $d")
+//        validateQRTime("")
 //    val a = decryptKey(
 //        "38665180BC70B97BA443CACF2BFDEE67",
 //        "KnxvW5yEeCfAWhhz0yRS4gKd9ENrCE9WAuV99u1jutL2r+M1XnP7V5Vc+p/h1jcsNtsqN3QITsqnFysPwSwOi9LGknlLZCkpcdCUXESdl9V06HDP/D0byNhENEAgBLHSUSlYJ7TgmpAGOn+l+wl6t6Cdu6KyQZHiNbmo0QO+Y47wiyw83OJdrFGHCKK6VhaRCKnITtZkqAxknnExD4DsRV8nTWwm20posgRa62P7RVOKUJAINR0zaI6RqdRHC8bSHit1GOITfSUMs6eFviMn3VqoLx8G7JcME3amZDF/JQWeTaUz09KpCMpLk1ARHO2l2J9+gduLOwYLhRIcwcWQ4SKiW0ArUXmna23k0C/bfU3UrVyPD7KiWH4uBFCenRRahuPWoU+5/6QlA2U4wJbdKw=="
@@ -924,7 +1050,7 @@ fun main() {
 //    println(getCurrentDate())
 //    println(getEncodedApiKey())
 //    println(AppUtility.getDateFormat("2024-06-20T00:00:00"))
-}
+    }
 
 
 

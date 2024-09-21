@@ -197,9 +197,12 @@ class GoldLoanScreenFrag :
             (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(this) {
                 it?.let {
                     if (it.statusCode == "200") {
-                        if (it.data.down) {
+                        if (it.data.down && it.data.id == 1) {
                             findNavController().navigate(R.id.mainScreenFrag)
                             (activity as MainActivity).binding.bottomNavigationView.hide()
+                        }
+                        else if(it.data.down && it.data.id == 2){
+//                            hideAndShowNumTimerDown()
                         } else {
                             setUpNetworkCallbackFOrDueLoans()
                         }

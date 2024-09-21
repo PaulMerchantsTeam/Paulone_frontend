@@ -66,7 +66,7 @@ class LoginScreenFrag :
             checkForDownFromRemoteConfig()
             commonViewModel.isRemoteConfigCheck.observe(viewLifecycleOwner) {
                 it?.let {
-                    if (it) {
+                    if (it ) {
                         (activity as MainActivity).showUnderMainTainPage()
                     }
                 }

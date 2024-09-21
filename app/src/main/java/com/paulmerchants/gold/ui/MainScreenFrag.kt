@@ -1,12 +1,7 @@
 package com.paulmerchants.gold.ui
 
-import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
-import com.paulmerchants.gold.databinding.CreditScoreScreenBinding
 import com.paulmerchants.gold.databinding.LauoutUnderMaintanceBinding
-import com.paulmerchants.gold.databinding.LayoutCreditScoreRvBinding
-import com.paulmerchants.gold.databinding.MainScreenFragmentBinding
-import com.paulmerchants.gold.utility.hide
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

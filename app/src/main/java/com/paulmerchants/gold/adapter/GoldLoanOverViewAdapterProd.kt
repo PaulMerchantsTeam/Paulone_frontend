@@ -14,13 +14,12 @@ import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
-import kotlin.math.absoluteValue
 
 class GoldLoanOverViewAdapterProd(
     private val optionsClicked: (RespGetLoanOutStandingItem, Boolean) -> Unit,
     private val pyNowButtonClicked: (RespGetLoanOutStandingItem) -> Unit,
-//    private val viewDetails: (RespGetLoanOutStandingItem) -> Unit,
-) : ListAdapter<RespGetLoanOutStandingItem, GoldLoanOverViewAdapterProd.GoldLoanOverViewHolder>(
+
+    ) : ListAdapter<RespGetLoanOutStandingItem, GoldLoanOverViewAdapterProd.GoldLoanOverViewHolder>(
     DIFF_CALLBACK
 ) {
 
@@ -60,7 +59,7 @@ class GoldLoanOverViewAdapterProd(
             binding.apply {
                 loanNumTv.text = actionItem.AcNo.toString()
                 viewDetailsBtn.setOnClickListener {
-//                    viewDetails(actionItem)
+
                 }
                 loanClosedBtn.setOnClickListener {
                     pyNowButtonClicked(actionItem)
@@ -91,35 +90,14 @@ class GoldLoanOverViewAdapterProd(
             binding.apply {
                 if (actionItem.closed != true) {
                     binding.apply {
-//                        parentOpenLoan.show()
+
                         ovrDueParentArrow.show()
                         intDueAmountTitleTv.show()
                         intDueAmountTv.show()
-//                        clickPayParent.show()
 
-//                        outStaTitleTv.text =
-//                            binding.root.context.getString(R.string.due_date)
-//                        outStandValueTv.text =
-//                            AppUtility.getDateFormat(actionItem.dueDate)?.trim().toString()
-//                        val duedate = AppUtility.numberOfDaysWrtCurrent(actionItem.dueDate)
-//                        val duedate = AppUtility.getCurrentDateOnly()
                         overDueDaysTv.text = "Due till date\n${actionItem.currentDate}"
-//                        when {
-//                            duedate.toInt() < 0 -> {
-//                                Log.d("TAG", "bind: ----< than 0")
-//                                ovrDueParentArrow.setBackgroundResource(R.drawable.rect_due_green)
-//                                overDueDaysTv.text = "Due in ${duedate.absoluteValue} days"
-//                            }
-//
-//                            else -> {
-//                                Log.d("TAG", "bind: ----else ---- ")
-//                                ovrDueParentArrow.setBackgroundResource(R.drawable.rectangle_due_red)
-//                                overDueDaysTv.text = "Overdue by $duedate days"
-//                            }
-//                        }
-//                        actionItem.InterestDue?.let {
-//                            intDueAmountTv.text = "INR ${actionItem.OutStanding?.plus(it)}"
-//                        }
+
+
 
                         intDueAmountTv.text =
                             if (actionItem.payableAmount != null) "INR ${actionItem.payableAmount}" else ""
@@ -170,8 +148,5 @@ class GoldLoanOverViewAdapterProd(
         isShowCustomPay = isShow
     }
 
-//    fun setSelectedPosition(i: Int) {
-//        isSelected = i
-//    }
 
 }

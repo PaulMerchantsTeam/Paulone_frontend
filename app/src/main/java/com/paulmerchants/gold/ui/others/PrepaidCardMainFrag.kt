@@ -5,7 +5,7 @@ import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MenuServicesAdapter
 import com.paulmerchants.gold.adapter.PrepaidMainAdapter
-import com.paulmerchants.gold.adapter.TransacDoneAdapter
+import com.paulmerchants.gold.adapter.TransDoneAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.PrepaidScreenFragBinding
 import com.paulmerchants.gold.enums.ServiceType
@@ -24,7 +24,7 @@ class PrepaidCardMainFrag :
         ::onMenuServiceTitleClicked
     )
     private val prepaidMainAdapter = PrepaidMainAdapter(::viewBtnClicked)
-    private val transacDoneAdapter = TransacDoneAdapter(::onTransactionClicked)
+    private val transacDoneAdapter = TransDoneAdapter(::onTransactionClicked)
     private fun onTransactionClicked(transDoneModel: TransDoneModel) {
         findNavController().navigate(R.id.transactionDoneScreenFrag)
     }

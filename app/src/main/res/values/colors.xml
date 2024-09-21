@@ -64,6 +64,14 @@
     <color name="due_2days_red">#E43700</color>
     <color name="due_yellow">#E4A400</color>
     <color name="green_due">#67B800</color>
+    <color name="green_maintenance">#57B793</color>
+    <color name="stay_tuned"> #3F72AF</color>
+    <color name="grey_color">#263238</color>
+    <color name="grey_maintenance"> #2F2F2F</color>
+
+
+
+
 
     <color name="back_blue_light">#E0E6EF</color>
     <color name="back_blue_light2">#F2F3F6</color>

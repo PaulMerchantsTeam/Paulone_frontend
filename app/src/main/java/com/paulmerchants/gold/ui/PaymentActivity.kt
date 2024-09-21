@@ -136,7 +136,9 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     binding.clOuter.hide()
                     isDown = it
                 } else {
-                    paymentViewModel.getUnderMaintenanceStatusCheck()
+//                    if(!BuildConfig.DEBUG) {
+                        paymentViewModel.getUnderMaintenanceStatusCheck()
+//                    }
                 }
             }
         }
@@ -144,11 +146,16 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         paymentViewModel.isUnderMainLiveData.observe(this) {
             it?.let {
                 if (it.statusCode == "200") {
-                    if (it.data.down) {
+                    if (it.data.down && it.data.id == 1) {
                         binding.underMainParent.root.show()
                         binding.clOuter.hide()
                         isDown = it.data.down
-                    } else {
+                    }else if (it.data.down && it.data.id == 2){
+                        binding.underMainTimerParent.root.show()
+                        binding.clOuter.hide()
+                        isDown = it.data.down
+                    }
+                    else {
                         paymentViewModel.getCustomerDetails(AppSharedPref, mLocation)
                         paymentViewModel.getPaymentMethod(AppSharedPref)
                     }
@@ -715,7 +722,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     private fun createOrder(amount: Double, notes: String) {
         Log.d("TAG", "createOrder: ......$amount")
 
-        if (mLocation?.isMock == true) {
+        if (BuildConfig.DEBUG && mLocation?.isMock == true) {
             "Please disable your mock Location from developer option".showSnackBar()
             return
         }
@@ -723,24 +730,26 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             buildAlertMessageNoGps()
         } else {
             Log.d(TAG, "createOrder: ....api_Calls")
-            paymentViewModel.getUnderMaintenanceStatus(
-                reqCreateOrder = ReqCreateOrder(
-                    amount = amount,
-                    currency = "INR",
-                    custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
-                        .toString(),
-                    notes = Notes(
-                        "$notes custId=${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)}",
-                        "Loan Acc Number: $customerAcc"
-                    ),
-                    receipt = "${AppUtility.getCurrentDate()}_${BuildConfig.VERSION_NAME}",
-                    accNo = customerAcc.toString(),
-                    makerId = "12545as",
-                    submit = true,
-                    macId = Build.ID,
-                    valueDate = AppUtility.getCurrentDate()
-                ), mLocation
-            )
+//            if (!BuildConfig.DEBUG) {
+                paymentViewModel.getUnderMaintenanceStatus(
+                    reqCreateOrder = ReqCreateOrder(
+                        amount = amount,
+                        currency = "INR",
+                        custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
+                            .toString(),
+                        notes = Notes(
+                            "$notes custId=${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)}",
+                            "Loan Acc Number: $customerAcc"
+                        ),
+                        receipt = "${AppUtility.getCurrentDate()}_${BuildConfig.VERSION_NAME}",
+                        accNo = customerAcc.toString(),
+                        makerId = "12545as",
+                        submit = true,
+                        macId = Build.ID,
+                        valueDate = AppUtility.getCurrentDate()
+                    ), mLocation
+                )
+//            }
         }
     }
 

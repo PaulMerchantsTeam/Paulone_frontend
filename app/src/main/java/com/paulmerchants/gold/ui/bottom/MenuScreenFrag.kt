@@ -5,7 +5,8 @@ import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MenuServicesAdapter
-import com.paulmerchants.gold.adapter.TransacDoneAdapter
+import com.paulmerchants.gold.adapter.TransDoneAdapter
+
 import com.paulmerchants.gold.adapter.TypeServiceAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
@@ -147,7 +148,7 @@ class MenuScreenFrag :
 
     }
 
-    private val transacDoneAdapter = TransacDoneAdapter(::onTransactionClicked)
+    private val transDoneAdapter = TransDoneAdapter(::onTransactionClicked)
 
     private fun onTransactionClicked(transDoneModel: TransDoneModel) {
         findNavController().navigate(R.id.transactionDoneScreenFrag)
@@ -331,8 +332,8 @@ class MenuScreenFrag :
         )
         val listService =
             listOf(trans1, trans2, trans3)
-        transacDoneAdapter.submitList(listService)
-        binding.servicesRv.adapter = transacDoneAdapter
+        transDoneAdapter.submitList(listService)
+        binding.servicesRv.adapter = transDoneAdapter
     }
 
 

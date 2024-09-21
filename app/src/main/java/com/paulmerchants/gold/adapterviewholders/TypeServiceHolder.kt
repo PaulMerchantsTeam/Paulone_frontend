@@ -8,7 +8,7 @@ import com.paulmerchants.gold.model.TypeService
 class TypeServiceHolder(private val binding: ItemOptionMenuBinding) :
     ViewHolder(binding.root) {
 
-    //    android:background="@drawable/rec_back_btn_41_empty"
+
 
     fun bind(
         actionItem: TypeService,

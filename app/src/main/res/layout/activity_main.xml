@@ -46,6 +46,13 @@
         layout="@layout/lauout_under_maintance"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <include
+        android:id="@+id/underMainTimerParent"
+        android:visibility="gone"
+        layout="@layout/layout_under_maintance_timer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

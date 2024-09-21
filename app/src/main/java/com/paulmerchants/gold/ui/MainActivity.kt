@@ -10,13 +10,16 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -30,6 +33,7 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
+import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.MainNavGraphDirections
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
@@ -47,6 +51,12 @@ import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.util.concurrent.TimeUnit
 
 const val TAG = "MAIN_ACTIVITY"
 
@@ -66,6 +76,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     lateinit var locationProvider: LocationProvider
     var mLocation: Location? = null
 
+
     companion object {
         lateinit var context: WeakReference<Context>
     }
@@ -79,25 +90,28 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                 123 -> {
                     checkForAppUpdate()
                 }
+
                 -1 -> {
                     //Downloaded status
                 }
+
                 Activity.RESULT_CANCELED -> {
                     checkForAppUpdate()
                 }
+
                 else -> {
                     checkForAppUpdate()
                 }
             }
         }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         context = WeakReference(this)
         AppSharedPref.start(this)
         appUpdateManager = AppUpdateManagerFactory.create(this)
-//        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         AppUtility.changeStatusBarWithReqdColor(this, R.color.splash_screen_two)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
@@ -105,9 +119,9 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         )
         connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         checkForAppUpdate()
-//        if (updateType == AppUpdateType.IMMEDIATE) { //always immediate
-            appUpdateManager.registerListener(installUpdateListener)
-//        }
+
+        appUpdateManager.registerListener(installUpdateListener)
+
         secureFiles = SecureFiles()
         updateLocation()
 
@@ -131,14 +145,11 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-//            Log.d("TAG", "onCreate:${destination.displayName} ")
+
 
             if (
                 destination.id == R.id.mainScreenFrag ||
                 destination.id == R.id.homeScreenFrag ||
-//                destination.id == R.id.goldLoanScreenFrag ||
-//                destination.id == R.id.billsAndMoreScreenFrag ||
-//                destination.id == R.id.locateUsFrag ||
                 destination.id == R.id.menuScreenFrag
             ) {
                 binding.bottomNavigationView.show()
@@ -159,12 +170,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                         // If the home destination is not on the back stack, navigate to it
                         navController.navigate(homeDestinationId)
                     }
-//                    navController.apply {
-//                        navigate(R.id.homeScreenFrag)
-//                    }
                     true
-
-
                 }
 
                 R.id.goldLoanScreenFrag -> {
@@ -172,16 +178,9 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                     true
                 }
 
-//                R.id.billsAndMoreScreenFrag -> {
-//                    navController.navigate(
-//                        MainNavGraphDirections.actionToBillsAndMore(),
-//                        navOptionTop
-//                    )
-//                    true
-//                }
 
                 R.id.locateUsFrag -> {
-//                    navController.navigate(MainNavGraphDirections.actionToLocateUs())
+
                     startActivity(
                         Intent(this, MapActivity::class.java),
                         ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
@@ -189,13 +188,6 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                     true
                 }
 
-//                R.id.menuScreenFrag -> {
-//                    navController.navigate(
-//                        MainNavGraphDirections.actionToMenuScreen(),
-//                        navOptionTop
-//                    )
-//                    true
-//                }
 
                 else -> {
                     false
@@ -205,22 +197,37 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         binding.underMainParent.closeBtn.setOnClickListener {
             finish()
         }
+
+
+
         setUpNetworkCallbackFOrDueLoans()
         commonViewModel.isUnderMainLiveData.observe(this) {
             it?.let {
-                if (it.statusCode == "200") {
-                    if (it.data.down) {
-                        showUnderMainTainPage()
+                if (it.statusCode == "200" && it.data.down && it.data.id == 1) {
+                    showUnderMainTainPage()
+                } else if (it.statusCode == "200" && it.data.down && it.data.id == 2) {
+                    it.data.endTime?.let { endTime ->
+                        showUnderMainTainTimerPage(endTime)
                     }
+
+                } else if (!it.data.down) {
+//                    showUnderMainTainTimerPage(it.data.endTime?: "2024-09-21 12:56:30")
+//                    binding.bottomNavigationView.show()
+//                    binding.batteryMainNavGraph.show()
+                    binding.underMainTimerParent.root.hide()
+                    binding.underMainParent.root.hide()
+                    navController.navigate(R.id.loginScreenFrag)
+                    navController.clearBackStack(R.id.splashFragment)
                 }
             }
         }
-
-        if (AppUtility.isUsbDebuggingEnabled(this)) {
-            "Please turn off the debug mode".showSnackBar()
-            return
-        } else {
-            Log.i("TAG", "NO_DEBUG_MODE_ENABLED")
+        if (!BuildConfig.DEBUG) {
+            if (AppUtility.isUsbDebuggingEnabled(this)) {
+                "Please turn off the debug mode".showSnackBar()
+                return
+            } else {
+                Log.i("TAG", "NO_DEBUG_MODE_ENABLED")
+            }
         }
 
 
@@ -232,17 +239,19 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             override fun onAvailable(network: Network) {
                 // Network connection is available, perform actions here
                 // For example:
-                // fetchData()
+//                if (!BuildConfig.DEBUG) {
                 Log.d(TAG, "onAvailable: ...........internet")
                 lifecycleScope.launch {
                     commonViewModel.getUnderMaintenanceStatus()
                 }
+//                }
+
             }
 
             override fun onLost(network: Network) {
                 // Network connection is lost, handle accordingly
                 // For example:
-                // showNoInternetMessage()
+
                 Log.d(TAG, "onLost: ..................")
                 lifecycleScope.launch {
                     noInternetDialog()
@@ -269,6 +278,115 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         binding.underMainParent.root.show()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun showUnderMainTainTimerPage(endTime: String) {
+        binding.bottomNavigationView.hide()
+        binding.batteryMainNavGraph.hide()
+        binding.underMainTimerParent.root.show()
+        startDailyCountdown(endTime)
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun startDailyCountdown(endTime: String = "2024-09-20 14:40:30") {
+
+        val endTimeFormat = AppUtility.getHourMinuteSecond(endTime)
+//        endTimeFormat?.let {
+        val targetTime = LocalTime.of(
+            endTimeFormat?.first!!, endTimeFormat.second,
+            endTimeFormat.third
+        )
+
+        // Get the current time (India Standard Time)
+        val currentTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"))
+
+        // Get the time today when the countdown should end (today's 3:00:00 PM)
+        var targetISTTime = currentTime.with(targetTime)
+
+        // If the current time is already past 3:00 PM, set the target to tomorrow at 3:00 PM
+            if (currentTime.isAfter(targetISTTime)) {
+                targetISTTime = targetISTTime.plusDays(1)
+            }
+
+        // Calculate the difference between now and the target time in milliseconds
+        val millisUntilTarget = ChronoUnit.MILLIS.between(currentTime, targetISTTime)
+
+        // Start the countdown timer from now until the target time
+        object : CountDownTimer(millisUntilTarget, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                // Calculate hours, minutes, and seconds remaining
+                val hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished)
+                val minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60
+                val seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60
+
+                // Update your TextView with the countdown time
+                if (hours.toInt() == 0) {
+                    binding.underMainTimerParent.timerTextView.text =
+                        String.format("%02d:%02d", minutes, seconds)
+
+                } else {
+                    binding.underMainTimerParent.timerTextViewBg.text =
+                        "88:88:88"
+                    binding.underMainTimerParent.timerTextView.text =
+                        String.format("%02d:%02d:%02d", hours, minutes, seconds)
+
+
+                }
+
+            }
+
+            override fun onFinish() {
+                // Reset or refresh your UI, or restart the countdown for the next day if needed
+                binding.underMainTimerParent.timerTextView.text = "00:00"
+                setUpNetworkCallbackFOrDueLoans()
+                navController.navigate(R.id.loginScreenFrag)
+                navController.clearBackStack(R.id.splashFragment)
+
+            }
+        }.start()
+//        }
+    }
+/*@RequiresApi(Build.VERSION_CODES.O)
+fun startDailyCountdown(endTime: String = "2024-09-20 14:40:30") {
+
+    val endTimeFormat = AppUtility.getHourMinuteSecond(endTime)
+
+    endTimeFormat?.let {
+        val targetTime = LocalTime.of(endTimeFormat.first, endTimeFormat.second, endTimeFormat.third)
+
+        val currentTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"))
+        var targetISTTime = currentTime.with(targetTime)
+
+        if (currentTime.isAfter(targetISTTime)) {
+            targetISTTime = targetISTTime.plusDays(1)
+        }
+
+        val millisUntilTarget = ChronoUnit.MILLIS.between(currentTime, targetISTTime)
+
+        object : CountDownTimer(millisUntilTarget, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                val hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished)
+                val minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60
+                val seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60
+
+                // Update the UI in 24-hour format
+                binding.underMainTimerParent.timerTextView.text =
+                    String.format("%02d:%02d:%02d", hours, minutes, seconds)
+            }
+
+            override fun onFinish() {
+                binding.underMainTimerParent.timerTextView.text = "00:00:00"
+                setUpNetworkCallbackFOrDueLoans()
+                navController.navigate(R.id.loginScreenFrag)
+                navController.clearBackStack(R.id.splashFragment)
+            }
+        }.start()
+    }
+}*/
+
+
     fun changeHeader(hBinding: HeaderLayoutBinding, title: String, endIcon: Int) {
         hBinding.apply {
             titlePageTv.text = title
@@ -283,51 +401,12 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     }
 
 
-//    override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
-//        Log.i(
-//            TAG,
-//            "onPaymentSuccess: ......$p0........${p1?.orderId}.....${p1?.paymentId}------${p1?.signature}"
-//        )
-//        commonViewModel.paymentData.postValue(StatusPayment(true, p1))
-//        updatePaymentStatusToServer(StatusPayment("captured", p1))
-//    }
-
-//    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
-//        Log.i(
-//            TAG,
-//            "onPaymentError: -----------$p0.---$p1...${p2?.orderId}.....${p2?.paymentId}------${p2?.signature}"
-//        )
-//      commonViewModel.paymentData.postValue(StatusPayment(false, p2))
-//        updatePaymentStatusToServer(StatusPayment("not_captured", p2))
-//    }
-
-//    private fun updatePaymentStatusToServer(statusData: StatusPayment) {
-//        Log.d(TAG, "updatePaymentStatusToServer: $amount....$statusData")
-//        if (amount != null) {
-//            amount?.let {
-//                commonViewModel.updatePaymentStatus(
-//                    appSharedPref = appSharedPref,
-//                    status = statusData.status,
-//                    razorpay_payment_id = statusData.paymentData?.paymentId.toString(),
-//                    razorpay_order_id = statusData.paymentData?.orderId.toString(),
-//                    razorpay_signature = statusData.paymentData?.signature.toString(),
-//                    custId = appSharedPref?.getStringValue(Constants.CUSTOMER_ID).toString(),
-//                    amount = amount,
-//                    contactCount = 0, description = "desc_payment"
-//                )
-//            }
-//        } else {
-//            "Amount: Some thing went wrong".showSnackBar()
-//        }
-//    }
-
     private val installUpdateListener = InstallStateUpdatedListener { state ->
         if (state.installStatus() == InstallStatus.DOWNLOADED) {
             Toast.makeText(applicationContext, "Download Successful.", Toast.LENGTH_SHORT).show()
-//            lifecycleScope.launch {
-//                delay(5.seconds)
+
             appUpdateManager.completeUpdate()
-//            }
+
         }
     }
 
@@ -353,11 +432,9 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
             val isUpdateAvailabe = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
             val isUpdateAllowed = when (updateType) {
-//                AppUpdateType.FLEXIBLE -> info.isFlexibleUpdateAllowed
                 AppUpdateType.IMMEDIATE -> info.isImmediateUpdateAllowed
                 else -> false
             }
-
             if (isUpdateAvailabe && isUpdateAllowed) {
                 appUpdateManager.startUpdateFlowForResult(
                     info,
@@ -365,8 +442,6 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                     AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
                 )
             }
-
-
         }
     }
 
@@ -387,9 +462,9 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-//        if (updateType == AppUpdateType.IMMEDIATE) {
-            appUpdateManager.unregisterListener(installUpdateListener)
-//        }
+
+        appUpdateManager.unregisterListener(installUpdateListener)
+
     }
 
     override fun onRequestPermissionsResult(

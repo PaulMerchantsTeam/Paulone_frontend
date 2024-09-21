@@ -394,6 +394,13 @@
     <string name="raise_a_query">Raise a query</string>
     <string name="failed">FAILED</string>
     <string name="check_location">Check location</string>
+    <string name="due_till_date">Due till date</string>
+    <string name="creating_strokes_of_innovation_nand_insight">Creating strokes of innovation\nand insight</string>
+    <string name="stay_tuned">Stay Tuned!</string>
+    <string name="refresh">Refresh</string>
+    <string name="_00_00">00:00</string>
+    <string name="_88_00">88:88</string>
+    <string name="maintenance_image">Maintenance image</string>
 
     <string-array name="month">
         <item>January</item>
