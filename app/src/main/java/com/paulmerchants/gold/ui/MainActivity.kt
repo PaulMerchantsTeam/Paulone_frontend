@@ -2,6 +2,7 @@ package com.paulmerchants.gold.ui
 
 import android.app.Activity
 import android.app.ActivityOptions
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,9 +14,13 @@ import android.net.NetworkRequest
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.SystemClock
+import android.provider.Settings
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -33,6 +38,7 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
+import com.itextpdf.xmp.XMPDateTimeFactory.getCurrentDateTime
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.MainNavGraphDirections
 import com.paulmerchants.gold.R
@@ -51,10 +57,12 @@ import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
+import java.time.Instant
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 
@@ -79,6 +87,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
     companion object {
         lateinit var context: WeakReference<Context>
+
     }
 
     public override val mViewModel: CommonViewModel by viewModels()
@@ -104,6 +113,40 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                 }
             }
         }
+    private fun isAutomaticDateTimeEnabled(context: Context): Boolean {
+        return Settings.Global.getInt(context.contentResolver, Settings.Global.AUTO_TIME, 0) == 1
+    }
+
+    private fun showDateTimeSettingsDialog() {
+        // Inflate the custom dialog layout
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.setting_change_dialog, null)
+
+        // Create the dialog
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false) // Prevent dialog dismissal on back press
+            .create()
+
+        // Get references to the buttons
+        val openSettingsButton: Button = dialogView.findViewById(R.id.button_open_settings)
+        val exitAppButton: Button = dialogView.findViewById(R.id.button_exit_app)
+
+        // Set onClickListener for the "Open Settings" button
+        openSettingsButton.setOnClickListener {
+            startActivity(Intent(Settings.ACTION_DATE_SETTINGS))
+            dialog.dismiss() // Dismiss the dialog
+            finish() // Close the app after redirecting
+        }
+
+        // Set onClickListener for the "Exit App" button
+        exitAppButton.setOnClickListener {
+            dialog.dismiss() // Dismiss the dialog
+            finish() // Close the app
+        }
+
+        // Show the dialog
+        dialog.show()
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,13 +160,13 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
         )
-        connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         checkForAppUpdate()
 
         appUpdateManager.registerListener(installUpdateListener)
 
         secureFiles = SecureFiles()
-        updateLocation()
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.battery_main_nav_graph) as NavHostFragment
@@ -140,100 +183,112 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         navOptionTop = NavOptions.Builder().setEnterAnim(R.anim.slide_in_bottom)
             .setExitAnim(R.anim.slide_out_bottom).setPopEnterAnim(R.anim.slide_in_left)
             .setPopExitAnim(R.anim.slide_out_right).build()
-        binding.bottomNavigationView.itemIconTintList = null
-        binding.bottomNavigationView.setupWithNavController(navController)
+        updateLocation()
+        if (!isAutomaticDateTimeEnabled(this)) {
+            showDateTimeSettingsDialog()
+        } else {
+            // Proceed with the app
 
 
-        navController.addOnDestinationChangedListener { _, destination, _ ->
+
+            binding.bottomNavigationView.itemIconTintList = null
+            binding.bottomNavigationView.setupWithNavController(navController)
 
 
-            if (
-                destination.id == R.id.mainScreenFrag ||
-                destination.id == R.id.homeScreenFrag ||
-                destination.id == R.id.menuScreenFrag
-            ) {
-                binding.bottomNavigationView.show()
-            } else {
-                binding.bottomNavigationView.visibility = View.GONE
-            }
-        }
-        binding.bottomNavigationView.setOnItemSelectedListener {
-            val homeDestinationId = R.id.homeScreenFrag
-            val currentBackStackEntry = navController.currentBackStackEntry
-            val backStackIds = currentBackStackEntry?.destination?.id
-            when (it.itemId) {
-                R.id.homeScreenFrag -> {
-                    if (backStackIds != null && backStackIds == homeDestinationId) {
-                        // If the home destination is already on the back stack, pop the back stack
-                        navController.popBackStack(homeDestinationId, false)
-                    } else {
-                        // If the home destination is not on the back stack, navigate to it
-                        navController.navigate(homeDestinationId)
-                    }
-                    true
-                }
-
-                R.id.goldLoanScreenFrag -> {
-                    navController.navigate(MainNavGraphDirections.actionToGoldLoan())
-                    true
-                }
+            navController.addOnDestinationChangedListener { _, destination, _ ->
 
 
-                R.id.locateUsFrag -> {
-
-                    startActivity(
-                        Intent(this, MapActivity::class.java),
-                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
-                    )
-                    true
-                }
-
-
-                else -> {
-                    false
+                if (
+                    destination.id == R.id.mainScreenFrag ||
+                    destination.id == R.id.homeScreenFrag ||
+                    destination.id == R.id.menuScreenFrag
+                ) {
+                    binding.bottomNavigationView.show()
+                } else {
+                    binding.bottomNavigationView.visibility = View.GONE
                 }
             }
-        }
-        binding.underMainParent.closeBtn.setOnClickListener {
-            finish()
-        }
-
-
-
-        setUpNetworkCallbackFOrDueLoans()
-        commonViewModel.isUnderMainLiveData.observe(this) {
-            it?.let {
-                if (it.statusCode == "200" && it.data.down && it.data.id == 1) {
-                    showUnderMainTainPage()
-                } else if (it.statusCode == "200" && it.data.down && it.data.id == 2) {
-                    it.data.endTime?.let { endTime ->
-                        showUnderMainTainTimerPage(endTime)
+            binding.bottomNavigationView.setOnItemSelectedListener {
+                val homeDestinationId = R.id.homeScreenFrag
+                val currentBackStackEntry = navController.currentBackStackEntry
+                val backStackIds = currentBackStackEntry?.destination?.id
+                when (it.itemId) {
+                    R.id.homeScreenFrag -> {
+                        if (backStackIds != null && backStackIds == homeDestinationId) {
+                            // If the home destination is already on the back stack, pop the back stack
+                            navController.popBackStack(homeDestinationId, false)
+                        } else {
+                            // If the home destination is not on the back stack, navigate to it
+                            navController.navigate(homeDestinationId)
+                        }
+                        true
                     }
 
-                } else if (!it.data.down) {
-//                    showUnderMainTainTimerPage(it.data.endTime?: "2024-09-21 12:56:30")
-//                    binding.bottomNavigationView.show()
-//                    binding.batteryMainNavGraph.show()
-                    binding.underMainTimerParent.root.hide()
-                    binding.underMainParent.root.hide()
-                    navController.navigate(R.id.loginScreenFrag)
-                    navController.clearBackStack(R.id.splashFragment)
+                    R.id.goldLoanScreenFrag -> {
+                        navController.navigate(MainNavGraphDirections.actionToGoldLoan())
+                        true
+                    }
+
+
+                    R.id.locateUsFrag -> {
+
+                        startActivity(
+                            Intent(this, MapActivity::class.java),
+                            ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                        )
+                        true
+                    }
+
+
+                    else -> {
+                        false
+                    }
                 }
             }
-        }
-        if (!BuildConfig.DEBUG) {
-            if (AppUtility.isUsbDebuggingEnabled(this)) {
-                "Please turn off the debug mode".showSnackBar()
-                return
-            } else {
-                Log.i("TAG", "NO_DEBUG_MODE_ENABLED")
+            binding.underMainParent.closeBtn.setOnClickListener {
+                finish()
             }
-        }
 
+
+
+            setUpNetworkCallbackFOrDueLoans()
+            commonViewModel.isUnderMainLiveData.observe(this) {
+                it?.let {
+                    if (it.statusCode == "200" && it.data.down && it.data.id == 1) {
+                        showUnderMainTainPage()
+                    } else if (it.statusCode == "200" && it.data.down && it.data.id == 2) {
+                        it.data.endTime?.let { endTime ->
+                            showUnderMainTainTimerPage(
+                                endTime
+
+                            )
+                        }
+                        navController.navigate(R.id.loginScreenFrag)
+                        navController.popBackStack()
+
+
+                    } else if (!it.data.down) {
+                        binding.batteryMainNavGraph.show()
+                        binding.underMainTimerParent.root.hide()
+                        binding.underMainParent.root.hide()
+
+                    }
+
+                }
+            }
+            if (!BuildConfig.DEBUG) {
+                if (AppUtility.isUsbDebuggingEnabled(this)) {
+                    "Please turn off the debug mode".showSnackBar()
+                    return
+                } else {
+                    Log.i("TAG", "NO_DEBUG_MODE_ENABLED")
+                }
+            }
+
+
+        }
 
     }
-
-
     private fun setUpNetworkCallbackFOrDueLoans() {
         networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
@@ -279,36 +334,43 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun showUnderMainTainTimerPage(endTime: String) {
+    fun showUnderMainTainTimerPage(endTime: String ) {
         binding.bottomNavigationView.hide()
         binding.batteryMainNavGraph.hide()
         binding.underMainTimerParent.root.show()
-        startDailyCountdown(endTime)
+
+            startDailyCountdown(endTime )
+
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun startDailyCountdown(endTime: String = "2024-09-20 14:40:30") {
+    fun startDailyCountdown(endTime: String = "2024-09-20 14:40:30" ) {
 
         val endTimeFormat = AppUtility.getHourMinuteSecond(endTime)
-//        endTimeFormat?.let {
+
+
         val targetTime = LocalTime.of(
             endTimeFormat?.first!!, endTimeFormat.second,
             endTimeFormat.third
         )
 
+
         // Get the current time (India Standard Time)
         val currentTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"))
+
 
         // Get the time today when the countdown should end (today's 3:00:00 PM)
         var targetISTTime = currentTime.with(targetTime)
 
+
         // If the current time is already past 3:00 PM, set the target to tomorrow at 3:00 PM
-            if (currentTime.isAfter(targetISTTime)) {
-                targetISTTime = targetISTTime.plusDays(1)
-            }
+        if (currentTime.isAfter(targetISTTime)) {
+            targetISTTime = targetISTTime.plusDays(1)
+        }
 
         // Calculate the difference between now and the target time in milliseconds
+       
         val millisUntilTarget = ChronoUnit.MILLIS.between(currentTime, targetISTTime)
 
         // Start the countdown timer from now until the target time
@@ -340,51 +402,13 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                 // Reset or refresh your UI, or restart the countdown for the next day if needed
                 binding.underMainTimerParent.timerTextView.text = "00:00"
                 setUpNetworkCallbackFOrDueLoans()
-                navController.navigate(R.id.loginScreenFrag)
-                navController.clearBackStack(R.id.splashFragment)
+
+//                navController.clearBackStack(R.id.splashFragment)
 
             }
         }.start()
 //        }
     }
-/*@RequiresApi(Build.VERSION_CODES.O)
-fun startDailyCountdown(endTime: String = "2024-09-20 14:40:30") {
-
-    val endTimeFormat = AppUtility.getHourMinuteSecond(endTime)
-
-    endTimeFormat?.let {
-        val targetTime = LocalTime.of(endTimeFormat.first, endTimeFormat.second, endTimeFormat.third)
-
-        val currentTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"))
-        var targetISTTime = currentTime.with(targetTime)
-
-        if (currentTime.isAfter(targetISTTime)) {
-            targetISTTime = targetISTTime.plusDays(1)
-        }
-
-        val millisUntilTarget = ChronoUnit.MILLIS.between(currentTime, targetISTTime)
-
-        object : CountDownTimer(millisUntilTarget, 1000) {
-
-            override fun onTick(millisUntilFinished: Long) {
-                val hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished)
-                val minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60
-                val seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60
-
-                // Update the UI in 24-hour format
-                binding.underMainTimerParent.timerTextView.text =
-                    String.format("%02d:%02d:%02d", hours, minutes, seconds)
-            }
-
-            override fun onFinish() {
-                binding.underMainTimerParent.timerTextView.text = "00:00:00"
-                setUpNetworkCallbackFOrDueLoans()
-                navController.navigate(R.id.loginScreenFrag)
-                navController.clearBackStack(R.id.splashFragment)
-            }
-        }.start()
-    }
-}*/
 
 
     fun changeHeader(hBinding: HeaderLayoutBinding, title: String, endIcon: Int) {
@@ -410,8 +434,11 @@ fun startDailyCountdown(endTime: String = "2024-09-20 14:40:30") {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
+
+
         appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
             if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
                 appUpdateManager.startUpdateFlowForResult(

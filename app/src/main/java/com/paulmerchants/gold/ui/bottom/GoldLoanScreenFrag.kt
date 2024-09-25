@@ -3,6 +3,7 @@ package com.paulmerchants.gold.ui.bottom
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +20,9 @@ import com.paulmerchants.gold.model.newmodel.PayAllnOneGoDataTobeSent
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.PaymentActivity
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.getTwoDigitAfterDecimal
+import com.paulmerchants.gold.utility.AppUtility.hideShim
+import com.paulmerchants.gold.utility.AppUtility.showShimmer
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
@@ -42,6 +46,64 @@ class GoldLoanScreenFrag :
             backIv.setOnClickListener { findNavController().navigateUp() }
             titlePageTv.text = getString(R.string.loan_overview)
             subTitle.hide()
+        }
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
+
+    }
+    private fun observeViewModel() {
+        (activity as MainActivity).commonViewModel.isRemoteConfigCheck.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it) {
+                    (activity as MainActivity).showUnderMainTainPage()
+                }
+            }
+        }
+        (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.statusCode == "200") {
+                    if (it.data.down && it.data.id == 1) {
+                        findNavController().navigate(R.id.mainScreenFrag)
+                        (activity as MainActivity).binding.bottomNavigationView.hide()
+                    } else if (it.data.down && it.data.id == 2) {
+                        findNavController().navigate(R.id.loginScreenFrag)
+                        (activity as MainActivity).binding.bottomNavigationView.hide()
+                        (activity as MainActivity).binding.underMainTimerParent.root.show()
+                    }
+                    else if (!it.data.down){
+//
+                        (activity as MainActivity).binding.underMainTimerParent.root.hide()
+                        setUpNetworkCallbackFOrDueLoans()
+                    }
+                    else {
+                        setUpNetworkCallbackFOrDueLoans()
+                    }
+                }
+            }
+        }
+
+
+
+
+        goldScreenViewModel.getRespGetLoanOutStandingLiveData.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.getLoanOutstandingResponseData.size != 0) {
+                    if (it.getLoanOutstandingResponseData.size == 1) {
+                        hideViews()
+                    }
+                    goldScreenViewModel.respGetLoanOutStanding =
+                        it.getLoanOutstandingResponseData as ArrayList<RespGetLoanOutStandingItem>
+                    for (i in it.getLoanOutstandingResponseData) {
+                        i.currentDate = it.currentDate
+                    }
+
+                    setUiFoOpenGoldLoans()
+                } else {
+                    hideViews()
+                }
+            }
         }
     }
 
@@ -145,15 +207,8 @@ class GoldLoanScreenFrag :
 
     override fun onStart() {
         super.onStart()
-
+        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
         (activity as MainActivity).checkForDownFromRemoteConfig()
-        (activity as MainActivity).commonViewModel.isRemoteConfigCheck.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it) {
-                    (activity as MainActivity).showUnderMainTainPage()
-                }
-            }
-        }
 
         if (goldScreenViewModel.isCalledGoldLoanScreen) {
             amount = 0
@@ -194,42 +249,7 @@ class GoldLoanScreenFrag :
                 }
             }
 
-            (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(this) {
-                it?.let {
-                    if (it.statusCode == "200") {
-                        if (it.data.down && it.data.id == 1) {
-                            findNavController().navigate(R.id.mainScreenFrag)
-                            (activity as MainActivity).binding.bottomNavigationView.hide()
-                        }
-                        else if(it.data.down && it.data.id == 2){
-//                            hideAndShowNumTimerDown()
-                        } else {
-                            setUpNetworkCallbackFOrDueLoans()
-                        }
-                    }
-                }
-            }
 
-
-
-            goldScreenViewModel.getRespGetLoanOutStandingLiveData.observe(viewLifecycleOwner) {
-                it?.let {
-                    if (it.getLoanOutstandingResponseData.size != 0) {
-                        if (it.getLoanOutstandingResponseData.size == 1) {
-                            hideViews()
-                        }
-                        goldScreenViewModel.respGetLoanOutStanding =
-                            it.getLoanOutstandingResponseData as ArrayList<RespGetLoanOutStandingItem>
-                        for (i in it.getLoanOutstandingResponseData) {
-                            i.currentDate = it.currentDate
-                        }
-
-                        setUiFoOpenGoldLoans()
-                    } else {
-                        hideViews()
-                    }
-                }
-            }
 
             binding.payAllBtn.setOnClickListener {
                 if (amount > 0) {
@@ -288,7 +308,7 @@ class GoldLoanScreenFrag :
 
         for (i in open) {
             if (i.payableAmount != null) {
-                totalAmount += i.payableAmount
+                totalAmount += getTwoDigitAfterDecimal(i.payableAmount).toFloat()
             }
         }
 
@@ -298,7 +318,7 @@ class GoldLoanScreenFrag :
                     "You have ",
                     "${open.size}",
                     " active loan, and the interest due is up to ",
-                    "INR $totalAmount", "", "", binding.goldLoanParentMain.lonOverDesc
+                    "INR ${getTwoDigitAfterDecimal(totalAmount).toFloat()}", "", "", binding.goldLoanParentMain.lonOverDesc
                 )
             }
 
@@ -307,7 +327,7 @@ class GoldLoanScreenFrag :
                     "You have ",
                     "${open.size}",
                     " active loans, and their total interest due is up to ",
-                    "INR $totalAmount", "", "", binding.goldLoanParentMain.lonOverDesc
+                    "INR ${getTwoDigitAfterDecimal(totalAmount).toFloat()}", "", "", binding.goldLoanParentMain.lonOverDesc
                 )
             }
 

@@ -118,6 +118,7 @@
                     android:background="@drawable/edit_text_rect_8"
                     android:fontFamily="@font/poppins_semi_bold"
                     android:hint="abc@gmail.com"
+                    android:maxLength="320"
                     android:inputType="textEmailAddress"
                     android:paddingHorizontal="@dimen/_10sdp"
                     android:textColor="@color/splash_screen_one"

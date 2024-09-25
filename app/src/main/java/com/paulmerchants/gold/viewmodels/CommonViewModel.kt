@@ -134,7 +134,7 @@ class CommonViewModel @Inject constructor(
      */
     fun getUnderMaintenanceStatus() = viewModelScope.launch {
         retrofitSetup.callApi(
-            true,
+            false,
             object : CallHandler<Response<RespUnderMain>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
                     return apiParams.isUnderMaintenance()
@@ -411,6 +411,7 @@ class CommonViewModel @Inject constructor(
                         it
                     )
                 }
+
                 response.body()?.token?.let {
                     AppSharedPref?.putStringValue(
                         JWT_TOKEN,

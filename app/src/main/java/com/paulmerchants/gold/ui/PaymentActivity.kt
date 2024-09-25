@@ -1,6 +1,5 @@
 package com.paulmerchants.gold.ui
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -10,6 +9,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
@@ -50,6 +50,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.ref.WeakReference
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>() {
@@ -67,6 +72,8 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     private val paymentViewModel: PaymentViewModel by viewModels()
     private var respCustomerDetail: RespCustomCustomerDetail? = null
     private var isDown: Boolean = false
+
+    //    private lateinit var navController: NavController
     override fun getViewBinding() = PaymentsModeNewBinding.inflate(layoutInflater)
     override val mViewModel: PaymentViewModel by viewModels()
     lateinit var locationProvider: LocationProvider
@@ -87,6 +94,9 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         context = WeakReference(this)
+//        val navHostFragment =
+//            supportFragmentManager.findFragmentById(R.id.battery_main_nav_graph) as NavHostFragment
+//        navController = navHostFragment.navController
         AppUtility.changeStatusBarWithReqdColor(this, R.color.pg_color)
         val bundle = intent.extras
         amountToPay = bundle?.getDouble(Constants.AMOUNT_PAYABLE, 0.0)
@@ -137,7 +147,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     isDown = it
                 } else {
 //                    if(!BuildConfig.DEBUG) {
-                        paymentViewModel.getUnderMaintenanceStatusCheck()
+                    paymentViewModel.getUnderMaintenanceStatusCheck()
 //                    }
                 }
             }
@@ -150,12 +160,24 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                         binding.underMainParent.root.show()
                         binding.clOuter.hide()
                         isDown = it.data.down
-                    }else if (it.data.down && it.data.id == 2){
-                        binding.underMainTimerParent.root.show()
+                    } else if (it.data.down && it.data.id == 2) {
                         binding.clOuter.hide()
+
+                        it.data.endTime?.let { endTime ->
+                            showUnderMainTainTimerPage(endTime)
+                        }
+
                         isDown = it.data.down
-                    }
-                    else {
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK  or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                        finish()
+                        // Kotlin code to navigate from PaymentActivity to MainActivity
+
+
+                    } else {
+                        binding.clOuter.show()
+                        binding.underMainTimerParent.root.hide()
                         paymentViewModel.getCustomerDetails(AppSharedPref, mLocation)
                         paymentViewModel.getPaymentMethod(AppSharedPref)
                     }
@@ -480,22 +502,13 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         }
         binding.apply {
             upiTv.setOnClickListener {
+                Log.d(TAG, "onCreate: bhmValue && isReadyForPayment  false")
                 if (bhmValue && isReadyForPayment) {
+                    Log.d(TAG, "onCreate: bhmValue && isReadyForPayment")
                     bhmUpiParent.setBackgroundResource(R.drawable.rect_opem_loans)
                     arrowDowmBhmIv.setImageResource(R.drawable.cross_icon)
                     upiMethodParent.show()
-                    verifyUpiBtn.setOnClickListener {
-                        if (AppUtility.validateUPI(binding.enterUpiEt.text.toString())) {
-                            initRazorpay()
-                            upiCollect(binding.enterUpiEt.text.toString())
-                            amountToPay?.let { it1 ->
-                                createOrder(
-                                    it1, notes = "paying from upi_collect"
-                                )
-                            }
-                        } else {
-                            "Please enter valid UPI Id".showSnackBar()
-                        }
+
 
 //                        showCustomDialogOTPVerify(
 //                            requireContext(),
@@ -508,7 +521,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 //                        upiMethodParent.hide()
 //                        arrowDowmBhmIv.setImageResource(R.drawable.arrow_down_black)
 //                        bhmUpiParent.setBackgroundResource(R.drawable.card_sky_rect_6)
-                    }
+//                    }
 
 
 //                    upiMethodParent.startAnimation(
@@ -541,6 +554,23 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     arrowDowmBhmIv.setImageResource(R.drawable.arrow_down_black)
                     bhmUpiParent.setBackgroundResource(R.drawable.card_sky_rect_6)
                     bhmValue = true
+                }
+                verifyUpiBtn.setOnClickListener {
+                    if (binding.enterUpiEt.text.toString().isNotEmpty()) {
+                        if (AppUtility.validateUPI(binding.enterUpiEt.text.toString())) {
+
+                            Log.d(TAG, "onCreate: validate upi")
+                            initRazorpay()
+                            upiCollect(binding.enterUpiEt.text.toString())
+                            amountToPay?.let { it1 ->
+                                createOrder(
+                                    it1, notes = "paying from upi_collect"
+                                )
+                            }
+                        } else {
+                            "Please enter valid UPI Id".showSnackBar()
+                        }
+                    }
                 }
             }/*
                         walletParent.setOnClickListener {
@@ -722,33 +752,33 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     private fun createOrder(amount: Double, notes: String) {
         Log.d("TAG", "createOrder: ......$amount")
 
-        if (BuildConfig.DEBUG && mLocation?.isMock == true) {
-            "Please disable your mock Location from developer option".showSnackBar()
-            return
-        }
+        /*  if (BuildConfig.DEBUG && mLocation?.isMock == true) {
+              "Please disable your mock Location from developer option".showSnackBar()
+              return
+          }*/
         if (!isLocationEnabled()) {
             buildAlertMessageNoGps()
         } else {
             Log.d(TAG, "createOrder: ....api_Calls")
 //            if (!BuildConfig.DEBUG) {
-                paymentViewModel.getUnderMaintenanceStatus(
-                    reqCreateOrder = ReqCreateOrder(
-                        amount = amount,
-                        currency = "INR",
-                        custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
-                            .toString(),
-                        notes = Notes(
-                            "$notes custId=${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)}",
-                            "Loan Acc Number: $customerAcc"
-                        ),
-                        receipt = "${AppUtility.getCurrentDate()}_${BuildConfig.VERSION_NAME}",
-                        accNo = customerAcc.toString(),
-                        makerId = "12545as",
-                        submit = true,
-                        macId = Build.ID,
-                        valueDate = AppUtility.getCurrentDate()
-                    ), mLocation
-                )
+            paymentViewModel.getUnderMaintenanceStatus(
+                reqCreateOrder = ReqCreateOrder(
+                    amount = amount,
+                    currency = "INR",
+                    custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
+                        .toString(),
+                    notes = Notes(
+                        "$notes custId=${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)}",
+                        "Loan Acc Number: $customerAcc"
+                    ),
+                    receipt = "${AppUtility.getCurrentDate()}_${BuildConfig.VERSION_NAME}",
+                    accNo = customerAcc.toString(),
+                    makerId = "12545as",
+                    submit = true,
+                    macId = Build.ID,
+                    valueDate = AppUtility.getCurrentDate()
+                ), mLocation
+            )
 //            }
         }
     }
@@ -1155,6 +1185,75 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 endIconIv.hide()
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun showUnderMainTainTimerPage(endTime: String) {
+
+        binding.underMainTimerParent.root.show()
+        startDailyCountdown(endTime)
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun startDailyCountdown(endTime: String = "2024-09-20 14:40:30") {
+
+        val endTimeFormat = AppUtility.getHourMinuteSecond(endTime)
+
+        val targetTime = LocalTime.of(
+            endTimeFormat?.first!!, endTimeFormat.second,
+            endTimeFormat.third
+        )
+
+        // Get the current time (India Standard Time)
+        val currentTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"))
+
+        // Get the time today when the countdown should end (today's 3:00:00 PM)
+        var targetISTTime = currentTime.with(targetTime)
+
+        // If the current time is already past 3:00 PM, set the target to tomorrow at 3:00 PM
+        if (currentTime.isAfter(targetISTTime)) {
+            targetISTTime = targetISTTime.plusDays(1)
+        }
+
+        // Calculate the difference between now and the target time in milliseconds
+        val millisUntilTarget = ChronoUnit.MILLIS.between(currentTime, targetISTTime)
+
+        // Start the countdown timer from now until the target time
+        object : CountDownTimer(millisUntilTarget, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                // Calculate hours, minutes, and seconds remaining
+                val hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished)
+                val minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60
+                val seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60
+
+                // Update your TextView with the countdown time
+                if (hours.toInt() == 0) {
+                    binding.underMainTimerParent.timerTextView.text =
+                        String.format("%02d:%02d", minutes, seconds)
+
+                } else {
+                    binding.underMainTimerParent.timerTextViewBg.text =
+                        "88:88:88"
+                    binding.underMainTimerParent.timerTextView.text =
+                        String.format("%02d:%02d:%02d", hours, minutes, seconds)
+
+
+                }
+
+            }
+
+            override fun onFinish() {
+                // Reset or refresh your UI, or restart the countdown for the next day if needed
+                binding.underMainTimerParent.timerTextView.text = "00:00"
+                paymentViewModel.getUnderMaintenanceStatusCheck()
+
+//                navController.clearBackStack(R.id.splashFragment)
+
+            }
+        }.start()
+//        }
     }
 
     override fun onStop() {

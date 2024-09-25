@@ -31,7 +31,9 @@ import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.LocateUsScreenFragmentBinding
+import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.hide
+import com.paulmerchants.gold.utility.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -79,6 +81,32 @@ class LocateUsFrag :
 
     override fun onStart() {
         super.onStart()
+//        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+//        (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(this) {
+//            it?.let {
+//                if (it.statusCode == "200") {
+//                    if (it.data.down && it.data.id == 1) {
+//                        findNavController().navigate(R.id.mainScreenFrag)
+//                        (activity as MainActivity).binding.bottomNavigationView.hide()
+//                    } else if (it.data.down && it.data.id == 2) {
+//                        findNavController().navigate(R.id.loginScreenFrag)
+//                        (activity as MainActivity).binding.bottomNavigationView.hide()
+//                        (activity as MainActivity).binding.underMainTimerParent.root.show()
+//                    }
+//                    else if (!it.data.down){
+////
+//                        (activity as MainActivity).binding.underMainTimerParent.root.hide()
+//
+//                    }
+//                    else {
+////                        (activity as MainActivity).binding.bottomNavigationView.show()
+////                        (activity as MainActivity).binding.underMainTimerParent.root.hide()
+//
+//                    }
+//                }
+//            }
+//        }
+
         // [START_EXCLUDE silent]
         // Construct a PlacesClient
         Places.initialize(requireContext(), getString(R.string.MAPS_API_KEY))

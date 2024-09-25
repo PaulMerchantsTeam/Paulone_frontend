@@ -15,7 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
-import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MoreToComeAdapter
 import com.paulmerchants.gold.adapter.UpcomingLoanAdapter
@@ -30,6 +29,7 @@ import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
+import com.paulmerchants.gold.utility.AppUtility.getTwoDigitAfterDecimal
 import com.paulmerchants.gold.utility.AppUtility.hideShim
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
 import com.paulmerchants.gold.utility.AppUtility.showShimmer
@@ -41,15 +41,198 @@ import com.paulmerchants.gold.utility.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+/*   override fun onStart() {
+        super.onStart()
+        setupUI()
+        handleInternetStatus()
+        registerBackButtonHandler()
+        setProfileUI()
+    }
+
+    private fun setupUI() {
+        changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
+        navController = findNavController()
+        secureFiles = SecureFiles()
+        (activity as MainActivity).locationProvider.startLocationUpdates()
+        setupBanner()
+    }
+
+    private fun handleInternetStatus() {
+        if (InternetUtils.isNetworkAvailable(requireContext())) {
+            (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+        } else {
+            lifecycleScope.launch { noInternetDialog() }
+            binding.swiperefresh.isRefreshing = false
+        }
+
+        observeMaintenanceStatus()
+    }
+
+    private fun observeMaintenanceStatus() {
+        (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(this) {
+            it?.let { status ->
+                when {
+                    status.data.down && status.data.id == 1 -> navController.navigate(R.id.mainScreenFrag)
+                    status.data.down && status.data.id == 2 -> {
+                        navController.navigate(R.id.loginScreenFrag)
+                        (activity as MainActivity).binding.bottomNavigationView.hide()
+                        (activity as MainActivity).binding.underMainTimerParent.root.show()
+                    }
+
+                    else -> setupNetworkCallbackForDueLoans()
+                }
+            }
+        }
+    }
+
+    private fun setupNetworkCallbackForDueLoans() {
+        networkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                lifecycleScope.launch {
+                    binding.swiperefresh.isRefreshing = true
+                    setupUpcomingDueLoans()
+                }
+            }
+
+            override fun onLost(network: Network) {
+                lifecycleScope.launch { noInternetDialog() }
+            }
+        }
+
+        val networkRequest =
+            NetworkRequest.Builder().addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                .build()
+        connectivityManager =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        connectivityManager.registerNetworkCallback(networkRequest, networkCallback!!)
+    }
+
+    private fun registerBackButtonHandler() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                navController.navigate(R.id.appCloseDialog)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    private fun setProfileUI() {
+        val userName =
+            AppSharedPref.getStringValue(Constants.CUSTOMER_NAME)?.substringBefore(" ") ?: "User"
+        val firstLetter = AppSharedPref.getStringValue(Constants.CUSTOMER_NAME)?.first() ?: 'U'
+        binding.searchProfileParent.userName.text = "Hey $userName"
+        binding.searchProfileParent.firtLetterUser.text = firstLetter.toString()
+        setupSearchProfile()
+    }
+
+    private fun setupSearchProfile() {
+        binding.searchProfileParent.apply {
+            searchView.setOnClickListener { clearSearchAnimation() }
+            searchView.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) = clearSearchAnimation()
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    clearSearchAnimation()
+                    if (s.isNullOrEmpty()) clearSearchAnimation()
+                }
+
+                override fun afterTextChanged(s: Editable?) {}
+            })
+        }
+    }
+
+    private fun clearSearchAnimation() {
+        (activity as MainActivity).commonViewModel.isStartAnim.postValue(false)
+        binding.searchProfileParent.searchView.clearAnimation()
+    }
+
+    private fun setupBanner() {
+        moreToComeAdapter.submitList(bannerList)
+        binding.moreToCome.viewPagerMoreToCome.adapter = moreToComeAdapter
+        TabLayoutMediator(
+            binding.moreToCome.tabLayout,
+            binding.moreToCome.viewPagerMoreToCome
+        ) { _, _ -> }.attach()
+    }
+
+    private fun onPayDueClicked(dueLoan: GetPendingInrstDueRespItem) {
+        if (InternetUtils.isNetworkAvailable(requireContext())) {
+            (activity as MainActivity).commonViewModel.dueLoanSelected = dueLoan
+            val bundle = Bundle().apply { putParcelable(DUE_LOAN_DATA, dueLoan) }
+            navController.navigate(R.id.quickPayDialog, bundle)
+        } else {
+            noInternetDialog()
+        }
+    }
+
+    private fun setupUpcomingDueLoans() {
+        binding.shimmmerParent.showShimmer()
+        (activity as MainActivity).commonViewModel.getPendingInterestDues(
+            AppSharedPref,
+            (activity as MainActivity).mLocation
+        )
+        (activity as MainActivity).commonViewModel.getLoanOutstanding(
+            AppSharedPref,
+            (activity as MainActivity).mLocation
+        )
+
+        (activity as MainActivity).commonViewModel.getPendingInterestDuesLiveData.observe(
+            viewLifecycleOwner
+        ) { pendingDueResp ->
+            pendingDueResp?.let {
+                setupDueLoansRecyclerView(it.pendingInterestDuesResponseData, it.currentDate)
+                binding.swiperefresh.isRefreshing = false
+                binding.shimmmerParent.hideShim()
+            }
+        }
+    }
+
+    private fun setupDueLoansRecyclerView(
+        dueLoans: List<GetPendingInrstDueRespItem>,
+        currentDate: String
+    ) {
+        if (dueLoans.isNotEmpty()) {
+            upcomingLoanAdapter.submitList(dueLoans)
+            binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
+            binding.rvUpcomingDueLoans.show()
+        } else {
+            binding.noIntHaveParent.root.show()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterObservers()
+    }
+
+    override fun onDestroyView() {
+        networkCallback?.let { connectivityManager.unregisterNetworkCallback(it) }
+        super.onDestroyView()
+    }
+
+    private fun unregisterObservers() {
+        (activity as MainActivity).commonViewModel.apply {
+            respPaymentUpdate.removeObservers(this@HomeScreenFrag)
+            paymentData.removeObservers(this@HomeScreenFrag)
+            tokenExpiredResp.removeObservers(this@HomeScreenFrag)
+            isStartAnim.removeObservers(this@HomeScreenFrag)
+        }
+    }
+}*/
 
 @AndroidEntryPoint
 class HomeScreenFrag :
     BaseFragment<DummyHomeScreenFragmentBinding>(DummyHomeScreenFragmentBinding::inflate) {
 
     private val upcomingLoanAdapter = UpcomingLoanAdapter(::onPayDueClicked)
+    private val moreToComeAdapter = MoreToComeAdapter()
     private lateinit var secureFiles: SecureFiles
     private lateinit var navController: NavController
-    private val moreToComeAdapter = MoreToComeAdapter()
     private lateinit var connectivityManager: ConnectivityManager
     private var networkCallback: ConnectivityManager.NetworkCallback? = null
 
@@ -59,48 +242,145 @@ class HomeScreenFrag :
             MoreToComeModel(
                 R.drawable.one_place_to_iv,
                 1,
-                "One place\n to pay bills",
+                "One place to pay bills",
                 "Rent, Electricity, Mobile Bill & more"
             ),
             MoreToComeModel(
                 R.drawable.no_more_delay_pay,
                 2,
-                "No more delay\n in paying bills",
+                "No more delay in paying bills",
                 "Get timely notifications of payments"
-            ),
+            )
         )
     }
 
+    override fun DummyHomeScreenFragmentBinding.initialize() {}
 
-    override fun DummyHomeScreenFragmentBinding.initialize() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
-        navController = findNavController()
-        secureFiles = SecureFiles()
-        (activity as MainActivity).locationProvider.startLocationUpdates()
-        (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(this) {
+    private fun observeViewModel() {
+        binding.shimmmerParent.showShimmer()
+
+        (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.statusCode == "200") {
                     if (it.data.down && it.data.id == 1) {
                         findNavController().navigate(R.id.mainScreenFrag)
                         (activity as MainActivity).binding.bottomNavigationView.hide()
-                    } else if(it.data.down && it.data.id == 2){
-
-                    }
-                    else {
+                    } else if (it.data.down && it.data.id == 2) {
+                        findNavController().navigate(R.id.loginScreenFrag)
+                        (activity as MainActivity).binding.bottomNavigationView.hide()
+                        (activity as MainActivity).binding.underMainTimerParent.root.show()
+                    } else if (!it.data.down) {
+//
+                        (activity as MainActivity).binding.underMainTimerParent.root.hide()
+                        setUpNetworkCallbackFOrDueLoans()
+                    } else {
+//                        (activity as MainActivity).binding.bottomNavigationView.show()
+//                        (activity as MainActivity).binding.underMainTimerParent.root.hide()
                         setUpNetworkCallbackFOrDueLoans()
                     }
                 }
             }
         }
+        (activity as MainActivity).commonViewModel.getRespGetLoanOutStandingLiveData.observe(
+            viewLifecycleOwner
+        ) {
+            // Handle logic here
+            it?.let {
+                for (i in it.getLoanOutstandingResponseData) {
+                    i.currentDate = it.currentDate
+                }
+                setLoanOverView(it.getLoanOutstandingResponseData)
+            }
+
+        }
+        (activity as MainActivity).commonViewModel.getPendingInterestDuesLiveData.observe(
+            viewLifecycleOwner
+        ) {
+            it?.let { gepPendingRespObj ->
+                (activity as MainActivity).commonViewModel.notZero =
+                    gepPendingRespObj.pendingInterestDuesResponseData.filter { getPendingInterestItem ->
+                        getPendingInterestItem.payableAmount != 0.0
+                    }
+                Log.i(
+                    TAG,
+                    "setUpComingDueLoans: ${(activity as MainActivity).commonViewModel.notZero}"
+                )
+                for (i in gepPendingRespObj.pendingInterestDuesResponseData) {
+                    i.currentDate = gepPendingRespObj.currentDate
+                }
+                if ((activity as MainActivity).commonViewModel.notZero.isNotEmpty()) {
+                    upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
+                    binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
+                    binding.rvUpcomingDueLoans.show()
+                } else {
+                    binding.noIntHaveParent.root.show()
+                }
+                binding.swiperefresh.isRefreshing = false
+                binding.shimmmerParent.hideShim()
+            }
+        }
+
+        if (view != null) {
+            parentFragment?.viewLifecycleOwner?.let { lifecycleOwner ->
+                (activity as MainActivity).commonViewModel.tokenExpiredResp.observe(lifecycleOwner) { resp ->
+                    resp?.let {
+                        showSnackBar(it.errorMessage)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
+        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+        (activity as MainActivity).commonViewModel.getPendingInterestDues(
+            AppSharedPref,
+            (activity as MainActivity).mLocation
+        )
+        (activity as MainActivity).commonViewModel.getLoanOutstanding(
+            AppSharedPref,
+            (activity as MainActivity).mLocation
+        )
+
+        navController = findNavController()
+        secureFiles = SecureFiles()
+        (activity as MainActivity).locationProvider.startLocationUpdates()
+        /*(activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(this) {
+            it?.let {
+                if (it.statusCode == "200") {
+                    if (it.data.down && it.data.id == 1) {
+                        findNavController().navigate(R.id.mainScreenFrag)
+                        (activity as MainActivity).binding.bottomNavigationView.hide()
+                    } else if (it.data.down && it.data.id == 2) {
+                        findNavController().navigate(R.id.loginScreenFrag)
+                        (activity as MainActivity).binding.bottomNavigationView.hide()
+                        (activity as MainActivity).binding.underMainTimerParent.root.show()
+                    }
+                    else if (!it.data.down){
+//
+                        (activity as MainActivity).binding.underMainTimerParent.root.hide()
+                        setUpNetworkCallbackFOrDueLoans()
+                    }
+                        else {
+//                        (activity as MainActivity).binding.bottomNavigationView.show()
+//                        (activity as MainActivity).binding.underMainTimerParent.root.hide()
+                        setUpNetworkCallbackFOrDueLoans()
+                    }
+                }
+            }
+        }*/
 
         // This callback will only be called when MyFragment is at least Started.
         val callback: OnBackPressedCallback =
-            object : OnBackPressedCallback(true) { /* enabled by default */
+            object : OnBackPressedCallback(true) { // enabled by default
                 override fun handleOnBackPressed() {
                     // Handle the back button event
                     Log.d("TAG", "handleOnBackPressed: ..........pressed")
@@ -109,51 +389,37 @@ class HomeScreenFrag :
             }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
 
-        Log.d(
-            TAG,
-            "onStart: .......MOBILE-----....${
-                AppSharedPref.getStringValue(
-                    Constants.CUST_MOBILE,
-                )
-            }-------------------$.${
-                AppSharedPref.getStringValue(
-                    Constants.CUSTOMER_NAME,
-                )
-            }"
-        )
-
         setProfileUi()
         // Get the system service for connectivity
         connectivityManager =
             requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         setUpBanner()
-        if (view != null) {
+        /*if (view != null) {
             parentFragment?.viewLifecycleOwner?.let { lifecycleOwner ->
-                (activity as MainActivity).commonViewModel.tokenExpiredResp.observe(lifecycleOwner) {resp->
+                (activity as MainActivity).commonViewModel.tokenExpiredResp.observe(lifecycleOwner) { resp ->
                     resp?.let {
                         showSnackBar(it.errorMessage)
                     }
                 }
             }
-        }
-
+        }*/
 
         binding.swiperefresh.setOnRefreshListener {
-            Log.i(TAG, "onRefresh: ....called")
 
             if (InternetUtils.isNetworkAvailable(requireContext())) {
                 Log.d(com.paulmerchants.gold.ui.TAG, "onAvailable: ...........internet")
-//                 if(!BuildConfig.DEBUG){
-                     (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
 
-//                 }
-            } else {
+
+                binding.swiperefresh.isRefreshing = false
+
+            }   else {
                 lifecycleScope.launch {
                     noInternetDialog()
                 }
                 binding.swiperefresh.isRefreshing = false
             }
         }
+
     }
 
 
@@ -165,7 +431,8 @@ class HomeScreenFrag :
                 // fetchData()
                 Log.d(TAG, "onAvailable: ...........internet")
                 lifecycleScope.launch {
-                    setUpComingDueLoans()
+                    binding.swiperefresh.isRefreshing = true
+
                 }
             }
 
@@ -210,7 +477,7 @@ class HomeScreenFrag :
 
         // Unregister the network callback to avoid memory leaks
         networkCallback?.let { connectivityManager.unregisterNetworkCallback(it) }
-        parentFragment?.viewLifecycleOwner?.let {lOwner->
+        parentFragment?.viewLifecycleOwner?.let { lOwner ->
             (activity as MainActivity).commonViewModel.respPaymentUpdate.removeObservers(lOwner)
             (activity as MainActivity).commonViewModel.paymentData.removeObservers(lOwner)
             (activity as MainActivity).commonViewModel.tokenExpiredResp.removeObservers(lOwner)
@@ -247,6 +514,7 @@ class HomeScreenFrag :
         }
 
     }
+
     private fun setProfileUi() {
         val userFirstName =
             AppUtility.getFirstName(
@@ -334,49 +602,27 @@ class HomeScreenFrag :
         Log.d(TAG, "onPause: ...........")
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).commonViewModel.getPendingInterestDuesLiveData.observe(
+
+    /*    private fun setUpComingDueLoans() {
+            binding.shimmmerParent.showShimmer()
+            (activity as MainActivity).commonViewModel.getPendingInterestDues(
+                AppSharedPref,
+                (activity as MainActivity).mLocation
+            )
+            (activity as MainActivity).commonViewModel.getLoanOutstanding(
+                AppSharedPref,
+                (activity as MainActivity).mLocation
+            )
+            *//*(activity as MainActivity).commonViewModel.getRespGetLoanOutStandingLiveData.observe(
             viewLifecycleOwner
         ) {
-            it?.let { gepPendingRespObj ->
-                (activity as MainActivity).commonViewModel.notZero =
-                    gepPendingRespObj.pendingInterestDuesResponseData.filter {getPendingInterestItem->
-                        getPendingInterestItem.payableAmount != 0.0
-                    }
-                Log.i(
-                    TAG,
-                    "setUpComingDueLoans: ${(activity as MainActivity).commonViewModel.notZero}"
-                )
-                for (i in gepPendingRespObj.pendingInterestDuesResponseData) {
-                    i.currentDate = gepPendingRespObj.currentDate
+            it?.let {
+                for (i in it.getLoanOutstandingResponseData) {
+                    i.currentDate = it.currentDate
                 }
-                if ((activity as MainActivity).commonViewModel.notZero.isNotEmpty()) {
-                    upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
-                    binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
-                    binding.rvUpcomingDueLoans.show()
-                } else {
-                    binding.noIntHaveParent.root.show()
-                }
-                binding.swiperefresh.isRefreshing = false
-                binding.shimmmerParent.hideShim()
-
+                setLoanOverView(it.getLoanOutstandingResponseData)
             }
         }
-
-
-    }
-    private fun setUpComingDueLoans() {
-        binding.shimmmerParent.showShimmer()
-        (activity as MainActivity).commonViewModel.getPendingInterestDues(
-            AppSharedPref,
-            (activity as MainActivity).mLocation
-        )
-        (activity as MainActivity).commonViewModel.getLoanOutstanding(
-            AppSharedPref,
-            (activity as MainActivity).mLocation
-        )
-
 //            (activity as MainActivity).commonViewModel.isCalled = true
 //        }
         (activity as MainActivity).commonViewModel.getPendingInterestDuesLiveData.observe(
@@ -384,7 +630,7 @@ class HomeScreenFrag :
         ) {
             it?.let { gepPendingRespObj ->
                 (activity as MainActivity).commonViewModel.notZero =
-                    gepPendingRespObj.pendingInterestDuesResponseData.filter {getPendingInterestItem->
+                    gepPendingRespObj.pendingInterestDuesResponseData.filter { getPendingInterestItem ->
                         getPendingInterestItem.payableAmount != 0.0
                     }
                 Log.i(
@@ -415,8 +661,8 @@ class HomeScreenFrag :
                 }
                 setLoanOverView(it.getLoanOutstandingResponseData)
             }
-        }
-    }
+        }*//*
+    }*/
 
     private fun setLoanOverView(resp: List<RespGetLoanOutStandingItem>) {
         var totalAmount = 0.0
@@ -426,10 +672,14 @@ class HomeScreenFrag :
             for (i in resp) {
                 i.payableAmount?.let {
                     totalAmount += i.payableAmount
+
+
                 }
             }
             Log.d(TAG, "setLoanOverView: ......${totalAmount}")
-            loanOverViewCardParent.totalLoanAmountTv.text = "INR $totalAmount"
+
+            loanOverViewCardParent.totalLoanAmountTv.text =
+                "INR ${getTwoDigitAfterDecimal(totalAmount).toFloat()}"
             loanOverViewCardParent.viewLoanBtn.setOnClickListener {
                 findNavController().navigate(R.id.goldLoanScreenFrag)
 

@@ -130,7 +130,6 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                                     putString(CUST_ACC, dueLoans?.acNo.toString())
                                     putBoolean(IS_CUSTOM_AMOUNT, true)
                                 }
-
                                 findNavController().navigate(R.id.paymentModesFragNew, bundle)
                                 dismiss()
                             } else {
@@ -139,7 +138,7 @@ class QuickPayDialog : BottomSheetDialogFragment() {
 //                        createOrder(
 //                            quickPayPopupBinding.customPayEt.text.toString().toDouble()
 //                        )
-//                        dismiss()
+                        dismiss()
 //                        findNavController().navigate(R.id.quickPayMainFrag)
                         }
                     } else {
@@ -151,7 +150,7 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                     }
                 }
             } else {
-//                dismiss()
+                dismiss()
                 dueLoans?.payableAmount?.let {
                     val bundle = Bundle().apply {
                         putDouble("AMOUNT_PAYABLE", it)
@@ -163,6 +162,7 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                     startActivity(intent)
 //                    findNavController().navigate(R.id.paymentModesFragNew, bundle)
 //                    createOrder(it1)
+
                 }
 
             }

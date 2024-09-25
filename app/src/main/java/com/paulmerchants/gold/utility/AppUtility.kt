@@ -80,6 +80,7 @@ import java.io.UnsupportedEncodingException
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
 import java.security.Security
+import java.text.DecimalFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -247,6 +248,12 @@ object AppUtility {
         // Matching the UPI and regular expression
         val matcher: Matcher = upiPatt.matcher(upi)
         return matcher.matches()
+    }
+
+    fun getTwoDigitAfterDecimal(totalAmount:Double):String{
+        val decimalFormat: DecimalFormat = DecimalFormat("#.00")
+        val formattedNumber: String = decimalFormat.format(totalAmount)
+        return formattedNumber
     }
 
     private lateinit var dialog: AlertDialog

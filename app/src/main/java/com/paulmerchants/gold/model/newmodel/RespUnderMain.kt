@@ -22,4 +22,5 @@ data class DataDown(
     @SerializedName("id") val id: Int,
     @SerializedName("startTime") val startTime: String?,
     @SerializedName("endTime") val endTime: String?,
+    @SerializedName("currentTime") val currentTime: String?,
 )
