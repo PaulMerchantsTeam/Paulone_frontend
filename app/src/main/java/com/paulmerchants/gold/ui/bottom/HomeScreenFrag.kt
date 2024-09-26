@@ -268,11 +268,15 @@ class HomeScreenFrag :
         (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.statusCode == "200") {
+//                    binding.swiperefresh.isRefreshing = false
+
                     if (it.data.down && it.data.id == 1) {
                         findNavController().navigate(R.id.mainScreenFrag)
                         (activity as MainActivity).binding.bottomNavigationView.hide()
                     } else if (it.data.down && it.data.id == 2) {
+                        navController.popBackStack(R.id.homeScreenFrag,true)
                         findNavController().navigate(R.id.loginScreenFrag)
+
                         (activity as MainActivity).binding.bottomNavigationView.hide()
                         (activity as MainActivity).binding.underMainTimerParent.root.show()
                     } else if (!it.data.down) {
@@ -291,11 +295,14 @@ class HomeScreenFrag :
             viewLifecycleOwner
         ) {
             // Handle logic here
+
             it?.let {
                 for (i in it.getLoanOutstandingResponseData) {
                     i.currentDate = it.currentDate
                 }
                 setLoanOverView(it.getLoanOutstandingResponseData)
+                binding.swiperefresh.isRefreshing = false
+
             }
 
         }
@@ -409,6 +416,7 @@ class HomeScreenFrag :
             if (InternetUtils.isNetworkAvailable(requireContext())) {
                 Log.d(com.paulmerchants.gold.ui.TAG, "onAvailable: ...........internet")
 
+                (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
 
                 binding.swiperefresh.isRefreshing = false
 

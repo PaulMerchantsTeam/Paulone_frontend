@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -13,10 +14,9 @@
         android:layout_marginHorizontal="@dimen/_12sdp"
         android:layout_marginTop="@dimen/_80sdp"
         android:contentDescription="@string/maintenance_image"
-
-        android:src="@drawable/maintenance_image"
+        android:src="@drawable/maintenance"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.483"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
@@ -26,44 +26,50 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_60sdp"
         android:layout_gravity="center"
-        android:layout_marginTop="-160dp"
 
         android:background="@drawable/bg_round_corner_timer"
         android:fontFamily="@font/digital_mono"
         android:fontFeatureSettings="tnum"
         android:gravity="center"
         android:paddingHorizontal="@dimen/_6sdp"
+        android:paddingVertical="@dimen/_3sdp"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="1"
         android:text="@string/_88_00"
         android:textAlignment="center"
         android:textColor="@color/grey_maintenance"
-        android:textSize="@dimen/_50ssp"
+        android:textSize="@dimen/_50sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/maintenance_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/maintenance_image" />
+        app:layout_constraintTop_toTopOf="@+id/maintenance_image"
+        app:layout_constraintVertical_bias="0.65" />
+
 
     <TextView
         android:id="@+id/timerTextView"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_60sdp"
         android:layout_gravity="center"
-        android:paddingHorizontal="@dimen/_6sdp"
-        android:layout_marginTop="-160dp"
         android:fontFamily="@font/digital_mono"
+        android:paddingVertical="@dimen/_3sdp"
         android:fontFeatureSettings="tnum"
         android:gravity="center"
+        android:paddingHorizontal="@dimen/_6sdp"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="1"
         android:text="@string/_00_00"
         android:textAlignment="center"
         android:textColor="@color/green_maintenance"
-        android:textSize="@dimen/_50ssp"
+        android:textSize="@dimen/_50sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/maintenance_image"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/maintenance_image" />
+        app:layout_constraintTop_toTopOf="@+id/maintenance_image"
+        app:layout_constraintVertical_bias="0.65" />
 
     <TextView
         android:id="@+id/stayTunedTextView"

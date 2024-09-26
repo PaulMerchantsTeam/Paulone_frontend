@@ -501,6 +501,23 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             }
         }
         binding.apply {
+            verifyUpiBtn.setOnClickListener {
+                if (binding.enterUpiEt.text.toString().isNotEmpty()) {
+                    if (AppUtility.validateUPI(binding.enterUpiEt.text.toString())) {
+
+                        Log.d(TAG, "onCreate: validate upi")
+                        initRazorpay()
+                        upiCollect(binding.enterUpiEt.text.toString())
+                        amountToPay?.let { it1 ->
+                            createOrder(
+                                it1, notes = "paying from upi_collect"
+                            )
+                        }
+                    } else {
+                        "Please enter valid UPI Id".showSnackBar()
+                    }
+                }
+            }
             upiTv.setOnClickListener {
                 Log.d(TAG, "onCreate: bhmValue && isReadyForPayment  false")
                 if (bhmValue && isReadyForPayment) {
@@ -555,23 +572,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     bhmUpiParent.setBackgroundResource(R.drawable.card_sky_rect_6)
                     bhmValue = true
                 }
-                verifyUpiBtn.setOnClickListener {
-                    if (binding.enterUpiEt.text.toString().isNotEmpty()) {
-                        if (AppUtility.validateUPI(binding.enterUpiEt.text.toString())) {
 
-                            Log.d(TAG, "onCreate: validate upi")
-                            initRazorpay()
-                            upiCollect(binding.enterUpiEt.text.toString())
-                            amountToPay?.let { it1 ->
-                                createOrder(
-                                    it1, notes = "paying from upi_collect"
-                                )
-                            }
-                        } else {
-                            "Please enter valid UPI Id".showSnackBar()
-                        }
-                    }
-                }
             }/*
                         walletParent.setOnClickListener {
                             if (walletValue) {

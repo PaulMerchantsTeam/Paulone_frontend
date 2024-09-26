@@ -25,6 +25,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -43,6 +44,7 @@ import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.MainNavGraphDirections
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
+import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.ActivityMainBinding
 import com.paulmerchants.gold.databinding.HeaderLayoutBinding
 import com.paulmerchants.gold.location.LocationProvider
@@ -116,6 +118,10 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     private fun isAutomaticDateTimeEnabled(context: Context): Boolean {
         return Settings.Global.getInt(context.contentResolver, Settings.Global.AUTO_TIME, 0) == 1
     }
+    private fun isAutomaticTimeZoneEnabled(context: Context): Boolean {
+        return Settings.Global.getInt(context.contentResolver, Settings.Global.AUTO_TIME_ZONE, 0) == 1
+    }
+
 
     private fun showDateTimeSettingsDialog() {
         // Inflate the custom dialog layout
@@ -184,7 +190,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             .setExitAnim(R.anim.slide_out_bottom).setPopEnterAnim(R.anim.slide_in_left)
             .setPopExitAnim(R.anim.slide_out_right).build()
         updateLocation()
-        if (!isAutomaticDateTimeEnabled(this)) {
+        if (!isAutomaticDateTimeEnabled(this) && !isAutomaticTimeZoneEnabled(this)) {
             showDateTimeSettingsDialog()
         } else {
             // Proceed with the app
@@ -263,8 +269,19 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
                             )
                         }
-                        navController.navigate(R.id.loginScreenFrag)
-                        navController.popBackStack()
+                        if ( AppSharedPref.getBooleanValue(
+                                Constants.SIGNUP_DONE
+                            )){
+                            navController.navigate(R.id.loginScreenFrag)
+                            navController.popBackStack(R.id.homeScreenFrag,true)
+                        }
+                        else{
+                            navController.popBackStack(R.id.homeScreenFrag,true)
+                        }
+
+
+//                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+
 
 
                     } else if (!it.data.down) {
@@ -345,7 +362,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun startDailyCountdown(endTime: String = "2024-09-20 14:40:30" ) {
+    fun startDailyCountdown(endTime: String ) {
 
         val endTimeFormat = AppUtility.getHourMinuteSecond(endTime)
 
@@ -355,7 +372,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             endTimeFormat.third
         )
 
-
+        Log.d(TAG, "startDailyCountdown: ")
         // Get the current time (India Standard Time)
         val currentTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"))
 

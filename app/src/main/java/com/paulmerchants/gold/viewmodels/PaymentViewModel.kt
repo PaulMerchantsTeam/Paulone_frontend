@@ -116,8 +116,9 @@ class PaymentViewModel @Inject constructor(
                             if (response.body()?.statusCode == "200") {
                                 if (response.body()?.data?.down == false) {
                                     createOrder(reqCreateOrder, location = location)
-                                } else {
-                                    "App is under maintenance. Please try after some time".showSnackBarForPayment()
+                                } else  {
+                                    isUnderMainLiveData.value = response.body()
+//                                    "App is under maintenance. Please try after some time".showSnackBarForPayment()
                                 }
                             }
                         }

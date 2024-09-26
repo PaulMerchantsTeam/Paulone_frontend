@@ -9,11 +9,14 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -40,6 +43,7 @@ import com.paulmerchants.gold.utility.disableButton
 import com.paulmerchants.gold.utility.enableButton
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.setServicesUi
+import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -63,13 +67,41 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
 
     private val profileViewModel: ProfileViewModel by viewModels()
     private var customDialog: androidx.appcompat.app.AlertDialog? = null
+
     override fun ProfileLayoutBinding.initialize() {
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.statusCode == "200") {
+                    if (it.data.down && it.data.id == 1) {
+                        findNavController().navigate(R.id.mainScreenFrag)
+                        (activity as MainActivity).binding.bottomNavigationView.hide()
+                    } else if (it.data.down && it.data.id == 2) {
+                        findNavController().popBackStack(R.id.homeScreenFrag,true)
+                        findNavController().navigate(R.id.loginScreenFrag)
+
+                        (activity as MainActivity).binding.bottomNavigationView.hide()
+                        (activity as MainActivity).binding.underMainTimerParent.root.show()
+                    } else if (!it.data.down) {
+//
+                        (activity as MainActivity).binding.underMainTimerParent.root.hide()
+
+                    } else {
+
+                    }
+                }
+            }
+        }
     }
 
     override fun onStart() {
         super.onStart()
         binding.appVersion.text = "Paul One ${BuildConfig.VERSION_NAME}"
+        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
         val backStack = findNavController().backQueue
 //        for (i in backStack) {
 //            showLogI("${i.id}..--------.${i.destination.displayName}")

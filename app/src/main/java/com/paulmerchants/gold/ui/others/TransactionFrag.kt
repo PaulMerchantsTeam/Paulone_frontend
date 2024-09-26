@@ -2,6 +2,7 @@ package com.paulmerchants.gold.ui.others
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +21,8 @@ import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
+import com.paulmerchants.gold.utility.hide
+import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.TxnViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -31,7 +34,30 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
 
     private val txnViewModel: TxnViewModel by viewModels()
     private val allTxnAdapter = AllTxnAdapter(::showTxn)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.statusCode == "200") {
+                    if (it.data.down && it.data.id == 1) {
+                        findNavController().navigate(R.id.mainScreenFrag)
+                        (activity as MainActivity).binding.bottomNavigationView.hide()
+                    } else if (it.data.down && it.data.id == 2) {
+                        findNavController().popBackStack(R.id.homeScreenFrag,true)
+                        findNavController().navigate(R.id.loginScreenFrag)
+                        (activity as MainActivity).binding.bottomNavigationView.hide()
+                        (activity as MainActivity).binding.underMainTimerParent.root.show()
+                    } else if (!it.data.down) {
+//
+                        (activity as MainActivity).binding.underMainTimerParent.root.hide()
 
+                    } else {
+
+                    }
+                }
+            }
+        }
+    }
     private fun showTxn(transactions: Transactions) {
         if (transactions.orderId != null) {
             val bundle = Bundle().apply {
@@ -52,7 +78,7 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
 
         binding.chip2.performClick()
         getTxnHistory(11)
-
+        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
         binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
             val chip: Chip? = group.findViewById(checkedId)
             chip?.let { chipView ->
