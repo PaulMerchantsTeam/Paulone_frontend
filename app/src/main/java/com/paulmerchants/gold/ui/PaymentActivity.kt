@@ -22,6 +22,9 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
@@ -30,10 +33,12 @@ import com.paulmerchants.gold.databinding.PaymentsModeNewBinding
 import com.paulmerchants.gold.location.LocationProvider
 import com.paulmerchants.gold.model.newmodel.Notes
 import com.paulmerchants.gold.model.newmodel.PayAllnOneGoDataTobeSent
+import com.paulmerchants.gold.model.newmodel.PaymentDetail
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
 import com.paulmerchants.gold.model.newmodel.StatusPayment
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
+import com.paulmerchants.gold.ui.others.PaymentConfirmed
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showCustomDialogForRenewCard
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
@@ -73,7 +78,6 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     private var respCustomerDetail: RespCustomCustomerDetail? = null
     private var isDown: Boolean = false
 
-    //    private lateinit var navController: NavController
     override fun getViewBinding() = PaymentsModeNewBinding.inflate(layoutInflater)
     override val mViewModel: PaymentViewModel by viewModels()
     lateinit var locationProvider: LocationProvider
@@ -94,9 +98,8 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         context = WeakReference(this)
-//        val navHostFragment =
-//            supportFragmentManager.findFragmentById(R.id.battery_main_nav_graph) as NavHostFragment
-//        navController = navHostFragment.navController
+
+
         AppUtility.changeStatusBarWithReqdColor(this, R.color.pg_color)
         val bundle = intent.extras
         amountToPay = bundle?.getDouble(Constants.AMOUNT_PAYABLE, 0.0)
@@ -327,6 +330,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 if (it.status == "200") {
                     Log.d(TAG, "ojnnnnnn: /.................$it")
 
+
                     showCustomDialogFoPaymentStatus(
                         message = "${it.message}\n Payment has been collected. It will be reflected in you loan account in a few minutes.",
                         isClick = {
@@ -339,16 +343,26 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 //                        )
 //
 //                    }
-//                findNavController().navigateUp()
-//                    findNavController().popBackStack(R.id.paymentModesFragNew, true)
-//                    findNavController().navigate(R.id.paidReceiptFrag, bundle)
-                    /*val paymentStatus = Bundle().apply {
+//                navController.navigateUp()
+//                    navController.popBackStack(R.id.paymentModesFragNew, true)
+//                    navController.navigate(R.id.paidReceiptFrag, bundle)
+                   /* val paymentStatus = Bundle().apply {
                         putParcelable(Constants.PAYMENT_STATUS,it)
                     }*/
 //                    findNavController().navigate(R.id.transactionDoneScreenFrag)
 
 //                    (activity as MainActivity).commonViewModel.getPendingInterestDues((activity as MainActivity)?.appSharedPref)
                 } else {
+//                    val bundle = Bundle().apply {
+//                        putString(
+//                            com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
+//                            it.data.paymentId
+//                        )
+//
+//                    }
+//                    navController.navigateUp()
+//                    navController.popBackStack(R.id.paymentModesFragNew, true)
+//                    navController.navigate(R.id.paidReceiptFrag, bundle)
                     showCustomDialogFoPaymentStatus(message = it.message, isClick = {
 
                     })

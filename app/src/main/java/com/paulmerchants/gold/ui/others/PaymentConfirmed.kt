@@ -28,9 +28,9 @@ class PaymentConfirmed :
         super.onResume()
         binding.apply {
             headerLoanConfirmed.backIv.hide()
-            headerLoanConfirmed.endIconIv.show()
-            headerLoanConfirmed.titlePageTv.setText(headerValue.toString())
-            headerLoanConfirmed.endIconIv.setImageResource(R.drawable.bbps)
+            headerLoanConfirmed.endIconIv.hide()
+//            headerLoanConfirmed.titlePageTv.setText(headerValue.toString())
+//            headerLoanConfirmed.endIconIv.setImageResource(R.drawable.bbps)
             gotoHomeBtn.setOnClickListener {
       }
             lifecycleScope.launch {
