@@ -86,6 +86,8 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     lateinit var locationProvider: LocationProvider
     var mLocation: Location? = null
 
+    private var paymentId: String? = null
+
 
     companion object {
         lateinit var context: WeakReference<Context>
@@ -162,6 +164,16 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         AppSharedPref.start(this)
         appUpdateManager = AppUpdateManagerFactory.create(this)
         AppUtility.changeStatusBarWithReqdColor(this, R.color.splash_screen_two)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.battery_main_nav_graph) as NavHostFragment
+        navController = navHostFragment.navController
+
+        val bundle = intent.extras
+        paymentId = bundle?.getString( com.paulmerchants.gold.utility.Constants.PAYMENT_ID )
+        if (!paymentId.isNullOrEmpty()){
+            navController.navigate(R.id.paymentConfirmed)
+        }
+
         window.setFlags(
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
             WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
@@ -174,9 +186,6 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
         secureFiles = SecureFiles()
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.battery_main_nav_graph) as NavHostFragment
-        navController = navHostFragment.navController
 
 
         navOption = NavOptions.Builder().setEnterAnim(R.anim.slide_in_right)
@@ -272,10 +281,21 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                         if ( AppSharedPref.getBooleanValue(
                                 Constants.SIGNUP_DONE
                             )){
-                            navController.navigate(R.id.loginScreenFrag)
-                            navController.popBackStack(R.id.homeScreenFrag,true)
+
+                            if (paymentId.isNullOrEmpty()){
+                                navController.navigate(R.id.loginScreenFrag)
+                                navController.popBackStack(R.id.homeScreenFrag,true)
+                            }
+                            else{
+                                val bundleHomeLoan = Bundle().apply {
+                                    putString(com.paulmerchants.gold.utility.Constants.PAYMENT_ID, paymentId)
+                                }
+                                navController.navigate(R.id.paymentConfirmed,bundleHomeLoan)
+                            }
+
                         }
                         else{
+
                             navController.popBackStack(R.id.homeScreenFrag,true)
                         }
 
@@ -306,6 +326,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         }
 
     }
+
     private fun setUpNetworkCallbackFOrDueLoans() {
         networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
@@ -454,7 +475,52 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
+        commonViewModel.isUnderMainLiveData.observe(this) {
+            it?.let {
+                if (it.statusCode == "200" && it.data.down && it.data.id == 1) {
+                    showUnderMainTainPage()
+                } else if (it.statusCode == "200" && it.data.down && it.data.id == 2) {
+                    it.data.endTime?.let { endTime ->
+                        showUnderMainTainTimerPage(
+                            endTime
 
+                        )
+                    }
+                    if ( AppSharedPref.getBooleanValue(
+                            Constants.SIGNUP_DONE
+                        )){
+
+                        if (paymentId.isNullOrEmpty()){
+                            navController.navigate(R.id.loginScreenFrag)
+                            navController.popBackStack(R.id.homeScreenFrag,true)
+                        }
+                        else{
+                            val bundleHomeLoan = Bundle().apply {
+                                putString(com.paulmerchants.gold.utility.Constants.PAYMENT_ID, paymentId)
+                            }
+                            navController.navigate(R.id.paymentConfirmed,bundleHomeLoan)
+                        }
+
+                    }
+                    else{
+
+                        navController.popBackStack(R.id.homeScreenFrag,true)
+                    }
+
+
+//                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+
+
+
+                } else if (!it.data.down) {
+                    binding.batteryMainNavGraph.show()
+                    binding.underMainTimerParent.root.hide()
+                    binding.underMainParent.root.hide()
+
+                }
+
+            }
+        }
 
         appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
             if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {

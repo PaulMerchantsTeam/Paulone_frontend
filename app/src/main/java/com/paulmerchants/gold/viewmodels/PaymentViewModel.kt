@@ -304,7 +304,7 @@ class PaymentViewModel @Inject constructor(
 
             override fun success(response: Response<*>) {
                 Log.d("TAG", "success: ......${response.body()}")
-                if (response.isSuccessful) {
+                if (response.code() == 200) {
                     try {
                         val gson = Gson()
                         val respSuccess: RespUpdatePaymentStatus? = gson.fromJson(
@@ -329,6 +329,7 @@ class PaymentViewModel @Inject constructor(
                     getLogin2(location)
 
                 } else {
+
 //                    "Some thing went wrong..try again later".showSnackBar()
                     activity.showCustomDialogFoPaymentStatus(
                         message = response.message(),

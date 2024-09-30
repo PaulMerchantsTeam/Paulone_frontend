@@ -33,4 +33,5 @@ data class EntityPayment(
     @SerializedName("tax") val tax: Int?,
     @SerializedName("vpa") val vpa: String?,
     @SerializedName("wallet") val wallet: String?,
+    @SerializedName("updated_at") val updated_at: Long?,
 )

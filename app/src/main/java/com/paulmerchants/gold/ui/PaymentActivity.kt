@@ -22,9 +22,6 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
@@ -33,12 +30,10 @@ import com.paulmerchants.gold.databinding.PaymentsModeNewBinding
 import com.paulmerchants.gold.location.LocationProvider
 import com.paulmerchants.gold.model.newmodel.Notes
 import com.paulmerchants.gold.model.newmodel.PayAllnOneGoDataTobeSent
-import com.paulmerchants.gold.model.newmodel.PaymentDetail
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
 import com.paulmerchants.gold.model.newmodel.StatusPayment
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
-import com.paulmerchants.gold.ui.others.PaymentConfirmed
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showCustomDialogForRenewCard
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
@@ -172,7 +167,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
                         isDown = it.data.down
                         val intent = Intent(this, MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK  or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
                         finish()
                         // Kotlin code to navigate from PaymentActivity to MainActivity
@@ -327,9 +322,16 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             it?.let {
                 Log.d(TAG, "ojnnnnnn: /.................${it.status}")
 
-                if (it.status == "200") {
+                if (it.statusCode == "200") {
                     Log.d(TAG, "ojnnnnnn: /.................$it")
+                    val bundle = Bundle().apply {
+                        putString(
+                            com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
+                            it.data.paymentId
+                        )
 
+
+                    }
 
                     showCustomDialogFoPaymentStatus(
                         message = "${it.message}\n Payment has been collected. It will be reflected in you loan account in a few minutes.",
@@ -346,13 +348,25 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 //                navController.navigateUp()
 //                    navController.popBackStack(R.id.paymentModesFragNew, true)
 //                    navController.navigate(R.id.paidReceiptFrag, bundle)
-                   /* val paymentStatus = Bundle().apply {
-                        putParcelable(Constants.PAYMENT_STATUS,it)
-                    }*/
+                    /* val paymentStatus = Bundle().apply {
+                         putParcelable(Constants.PAYMENT_STATUS,it)
+                     }*/
 //                    findNavController().navigate(R.id.transactionDoneScreenFrag)
 
 //                    (activity as MainActivity).commonViewModel.getPendingInterestDues((activity as MainActivity)?.appSharedPref)
                 } else {
+//                    val bundle = Bundle().apply {
+//                        putString(
+//                            com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
+//                            it.data.paymentId
+//                        )
+//
+//
+//                    }
+//                    val intent = Intent(this, MainActivity::class.java)
+//                    intent.putExtras(bundle)
+//                    startActivity(intent)
+//                    finish()
 //                    val bundle = Bundle().apply {
 //                        putString(
 //                            com.paulmerchants.gold.utility.Constants.PAYMENT_ID,

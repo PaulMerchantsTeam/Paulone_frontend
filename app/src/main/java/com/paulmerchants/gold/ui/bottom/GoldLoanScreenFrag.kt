@@ -187,10 +187,10 @@ class GoldLoanScreenFrag :
                 putString(Constants.CUST_ACC, actionItem.AcNo.toString())
             }
             goldScreenViewModel.isCalledGoldLoanScreen = true
-            val intent = Intent(requireContext(), PaymentActivity::class.java)
-            intent.putExtras(bundle)
-            startActivity(intent)
-//            findNavController().navigate(R.id.paymentModesFragNew, bundle)
+//            val intent = Intent(requireContext(), PaymentActivity::class.java)
+//            intent.putExtras(bundle)
+//            startActivity(intent)
+            findNavController().navigate(R.id.paymentModesFragNew, bundle)
         }
     }
 
@@ -265,9 +265,9 @@ class GoldLoanScreenFrag :
 //                    putBoolean(IS_FROM_ALL_IN_ONE_GO, true)
                     }
                     goldScreenViewModel.isCalledGoldLoanScreen = true
-                    val intent = Intent(requireContext(), PaymentActivity::class.java)
-                    intent.putExtras(bundle)
-                    startActivity(intent)
+//                    "val intent = Intent(requireContext(), PaymentActivity::class.java)
+//                    intent.putExtras(bundle)
+//                    startActivity(intent)"
                     findNavController().navigate(R.id.paymentModesFragNew, bundle)
                 } else {
                     lastStatementAdapter.isShowSelctOption(true)

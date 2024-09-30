@@ -157,10 +157,10 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                         putString(CUST_ACC, dueLoans?.acNo.toString())
                         putBoolean(IS_CUSTOM_AMOUNT, false)
                     }
-                    val intent = Intent(requireContext(), PaymentActivity::class.java)
-                    intent.putExtras(bundle)
-                    startActivity(intent)
-//                    findNavController().navigate(R.id.paymentModesFragNew, bundle)
+//                    val intent = Intent(requireContext(), PaymentActivity::class.java)
+//                    intent.putExtras(bundle)
+//                    startActivity(intent)
+                    findNavController().navigate(R.id.paymentModesFragNew, bundle)
 //                    createOrder(it1)
 
                 }
