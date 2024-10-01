@@ -14,7 +14,6 @@ import android.net.NetworkRequest
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.SystemClock
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,7 +24,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -39,7 +37,6 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
-import com.itextpdf.xmp.XMPDateTimeFactory.getCurrentDateTime
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.MainNavGraphDirections
 import com.paulmerchants.gold.R
@@ -59,11 +56,8 @@ import com.paulmerchants.gold.viewmodels.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
-import java.time.Instant
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
@@ -121,7 +115,11 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         return Settings.Global.getInt(context.contentResolver, Settings.Global.AUTO_TIME, 0) == 1
     }
     private fun isAutomaticTimeZoneEnabled(context: Context): Boolean {
-        return Settings.Global.getInt(context.contentResolver, Settings.Global.AUTO_TIME_ZONE, 0) == 1
+        return Settings.Global.getInt(
+            context.contentResolver,
+            Settings.Global.AUTO_TIME_ZONE,
+            0
+        ) == 1
     }
 
 
@@ -169,8 +167,8 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         navController = navHostFragment.navController
 
         val bundle = intent.extras
-        paymentId = bundle?.getString( com.paulmerchants.gold.utility.Constants.PAYMENT_ID )
-        if (!paymentId.isNullOrEmpty()){
+        paymentId = bundle?.getString(com.paulmerchants.gold.utility.Constants.PAYMENT_ID)
+        if (!paymentId.isNullOrEmpty()) {
             navController.navigate(R.id.paymentConfirmed)
         }
 
@@ -203,7 +201,6 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             showDateTimeSettingsDialog()
         } else {
             // Proceed with the app
-
 
 
             binding.bottomNavigationView.itemIconTintList = null
@@ -278,30 +275,31 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
                             )
                         }
-                        if ( AppSharedPref.getBooleanValue(
+                        if (AppSharedPref.getBooleanValue(
                                 Constants.SIGNUP_DONE
-                            )){
+                            )
+                        ) {
 
-                            if (paymentId.isNullOrEmpty()){
+                            if (paymentId.isNullOrEmpty()) {
                                 navController.navigate(R.id.loginScreenFrag)
-                                navController.popBackStack(R.id.homeScreenFrag,true)
-                            }
-                            else{
+                                navController.popBackStack(R.id.homeScreenFrag, true)
+                            } else {
                                 val bundleHomeLoan = Bundle().apply {
-                                    putString(com.paulmerchants.gold.utility.Constants.PAYMENT_ID, paymentId)
+                                    putString(
+                                        com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
+                                        paymentId
+                                    )
                                 }
-                                navController.navigate(R.id.paymentConfirmed,bundleHomeLoan)
+                                navController.navigate(R.id.paymentConfirmed, bundleHomeLoan)
                             }
 
-                        }
-                        else{
+                        } else {
 
-                            navController.popBackStack(R.id.homeScreenFrag,true)
+                            navController.popBackStack(R.id.homeScreenFrag, true)
                         }
 
 
 //                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-
 
 
                     } else if (!it.data.down) {
@@ -372,18 +370,18 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun showUnderMainTainTimerPage(endTime: String ) {
+    fun showUnderMainTainTimerPage(endTime: String) {
         binding.bottomNavigationView.hide()
         binding.batteryMainNavGraph.hide()
         binding.underMainTimerParent.root.show()
 
-            startDailyCountdown(endTime )
+        startDailyCountdown(endTime)
 
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun startDailyCountdown(endTime: String ) {
+    fun startDailyCountdown(endTime: String) {
 
         val endTimeFormat = AppUtility.getHourMinuteSecond(endTime)
 
@@ -408,7 +406,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         }
 
         // Calculate the difference between now and the target time in milliseconds
-       
+
         val millisUntilTarget = ChronoUnit.MILLIS.between(currentTime, targetISTTime)
 
         // Start the countdown timer from now until the target time
@@ -475,6 +473,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         super.onResume()
+
         commonViewModel.isUnderMainLiveData.observe(this) {
             it?.let {
                 if (it.statusCode == "200" && it.data.down && it.data.id == 1) {
@@ -486,30 +485,31 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
                         )
                     }
-                    if ( AppSharedPref.getBooleanValue(
+                    if (AppSharedPref.getBooleanValue(
                             Constants.SIGNUP_DONE
-                        )){
+                        )
+                    ) {
 
-                        if (paymentId.isNullOrEmpty()){
+                        if (paymentId.isNullOrEmpty()) {
                             navController.navigate(R.id.loginScreenFrag)
-                            navController.popBackStack(R.id.homeScreenFrag,true)
-                        }
-                        else{
+                            navController.popBackStack(R.id.homeScreenFrag, true)
+                        } else {
                             val bundleHomeLoan = Bundle().apply {
-                                putString(com.paulmerchants.gold.utility.Constants.PAYMENT_ID, paymentId)
+                                putString(
+                                    com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
+                                    paymentId
+                                )
                             }
-                            navController.navigate(R.id.paymentConfirmed,bundleHomeLoan)
+                            navController.navigate(R.id.paymentConfirmed, bundleHomeLoan)
                         }
 
-                    }
-                    else{
+                    } else {
 
-                        navController.popBackStack(R.id.homeScreenFrag,true)
+                        navController.popBackStack(R.id.homeScreenFrag, true)
                     }
 
 
 //                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-
 
 
                 } else if (!it.data.down) {
@@ -555,6 +555,11 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+
+
+    }
 
     private fun updateLocation() {
         locationProvider = LocationProvider(this, object : LocationProvider.LocationListener {

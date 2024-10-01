@@ -1,17 +1,27 @@
 package com.paulmerchants.gold.common
 
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
+import com.paulmerchants.gold.MyLifecycleObserver
+import com.paulmerchants.gold.R
 
 
 open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInflater, ViewGroup?, Boolean) -> T) :
-    Fragment() {
+    Fragment(),MyLifecycleObserver.DialogListener {
 
+        private lateinit var myLifecycleObserver:MyLifecycleObserver
     private var _binding: T? = null
 
     // This can be accessed by the child fragments
@@ -21,6 +31,12 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
     // Make it open, so it can be overridden in child fragments
     open fun T.initialize() {
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+          myLifecycleObserver = MyLifecycleObserver(requireContext(),this)
+        ProcessLifecycleOwner.get().lifecycle.addObserver(myLifecycleObserver)
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,4 +51,59 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        // Initialize and register the ContentObserver
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+    }
+
+
+    override fun showAutoTimeDisabledDialog() {
+        // Inflate the custom dialog layout
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.setting_change_dialog, null)
+
+        // Create the dialog
+        val dialog = AlertDialog.Builder(context)
+            .setView(dialogView)
+            .setCancelable(false) // Prevent dialog dismissal on back press
+            .create()
+
+        // Get references to the buttons
+        val openSettingsButton: Button = dialogView.findViewById(R.id.button_open_settings)
+        val exitAppButton: Button = dialogView.findViewById(R.id.button_exit_app)
+
+        // Set onClickListener for the "Open Settings" button
+        openSettingsButton.setOnClickListener {
+            requireContext().startActivity(Intent(Settings.ACTION_DATE_SETTINGS))
+            dialog.dismiss() // Dismiss the dialog
+            closeApp() // Close the app after redirecting
+        }
+
+        // Set onClickListener for the "Exit App" button
+        exitAppButton.setOnClickListener {
+            dialog.dismiss() // Dismiss the dialog
+            closeApp() // Close the app
+        }
+
+        // Show the dialog
+        dialog.show()
+    }
+    private fun closeApp() {
+        if (context is Activity) {
+            (context as Activity).finishAffinity() // Closes the app
+        } else {
+            // For non-activity contexts (e.g., in services), use this approach
+            System.exit(0)  // Force close the app
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        lifecycle.removeObserver(myLifecycleObserver)
+    }
 }

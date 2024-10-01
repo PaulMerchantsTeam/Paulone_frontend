@@ -51,10 +51,7 @@ class PaymentConfirmed :
     override fun onResume() {
         super.onResume()
         binding.apply {
-            headerLoanConfirmed.backIv.hide()
-            headerLoanConfirmed.endIconIv.hide()
-//            headerLoanConfirmed.titlePageTv.setText(headerValue.toString())
-//            headerLoanConfirmed.endIconIv.setImageResource(R.drawable.bbps)
+
             gotoHomeBtn.setOnClickListener {
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.homeScreenFrag)
@@ -63,6 +60,19 @@ class PaymentConfirmed :
                 val phone = "18001371333"
                 val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
                 startActivity(intent)
+            }
+            downLoadReceiptTv.setOnClickListener{
+
+                val screenBitmap = AppUtility.getScreenBitmap( paymentConfirmMainParent)
+                val pdfWidth = 500f
+                val pdfHeight = 870f
+                AppUtility.saveAsPdf(
+                    requireContext(),
+                    pdfWidth,
+                    pdfHeight,
+                    screenBitmap,
+                    R.color.open_loans
+                )
             }
             lifecycleScope.launch {
                 delay(2000)
@@ -79,6 +89,19 @@ class PaymentConfirmed :
    // 82233213123
     private fun setData(it: RespPayReceipt) {
         binding.apply {
+            paymentConfirmIv.setImageResource(
+                if (it.data.entityPayment?.captured == true) {
+                    R.drawable.pay_confirm_tick_icon
+                } else {
+                    R.drawable.baseline_error
+                }
+            )
+            paymetConfirmTv.text =
+                if (it.data.entityPayment?.captured == true) {
+                   "PAYMENT CONFIRMED!!"
+                } else {
+                  "PAYMENT FAILED!!"
+                }
 
             transIdTv.text = it.data.entityPayment?.paymentId
             accountNoTv.text =it.data.accNo

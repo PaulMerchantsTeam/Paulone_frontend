@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/paymentConfirmMainParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/paymentConfirmMainParent"
     android:background="@color/splash_screen_two">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -11,65 +11,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
+        android:background="@color/splash_screen_two"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <include
-            android:id="@+id/header_loan_confirmed"
-            layout="@layout/header_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_62sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/paymentConfirmIv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_24sdp"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_marginTop="@dimen/_40sdp"
             android:src="@drawable/pay_confirm_tick_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/header_loan_confirmed" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/paymetConfirmTv"
             style="@style/text_16_bold_blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/screen_start_margin"
+            android:layout_marginTop="@dimen/_20sdp"
             android:text="@string/payment_confirmed"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/paymentConfirmIv" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/timeTakeTv"
-            style="@style/text_12_poppins_medium_sky"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_55sdp"
-            android:layout_marginEnd="@dimen/_55sdp"
-            android:text="@string/it_may_take_upto_24_hours_to_reflect_the_payment_in_billers_portal"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/paymetConfirmTv" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/paymetRecieptcard"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/screen_start_margin"
+            android:layout_marginHorizontal="@dimen/screen_start_margin"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
             app:cardCornerRadius="@dimen/_6sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/timeTakeTv"
+            app:layout_constraintTop_toBottomOf="@+id/paymetConfirmTv"
             app:strokeColor="@color/open_loans"
             app:strokeWidth="@dimen/_1sdp">
 
@@ -77,15 +58,16 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/splash_screen_two">
+                android:background="@color/splash_screen_two"
+
+                android:padding="@dimen/_8sdp">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tractionIdTv"
                     style="@style/text_11_medium_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:layout_marginVertical="@dimen/_3sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:text="@string/transaction_id"
                     android:textColor="@color/splash_screen_three"
                     app:layout_constraintStart_toStartOf="parent"
@@ -96,8 +78,7 @@
                     style="@style/text_11_semi_bold_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:text="(#1029343356)"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -107,8 +88,7 @@
                     style="@style/text_11_medium_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:text="@string/account_number"
                     android:textColor="@color/splash_screen_three"
                     app:layout_constraintStart_toStartOf="parent"
@@ -118,9 +98,9 @@
                     android:id="@+id/accountNoTv"
                     style="@style/text_11_semi_bold_blue"
                     android:layout_width="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+
                     android:text="654054XXXXXXX4"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/transIdTv" />
@@ -130,8 +110,7 @@
                     style="@style/text_11_medium_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:text="@string/customer_name"
                     android:textColor="@color/splash_screen_three"
                     app:layout_constraintStart_toStartOf="parent"
@@ -142,8 +121,7 @@
                     style="@style/text_11_semi_bold_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:text="Prithvi"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/accountNoTv" />
@@ -153,8 +131,7 @@
                     style="@style/text_11_medium_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:text="@string/transaction_date_time"
                     android:textColor="@color/splash_screen_three"
                     app:layout_constraintStart_toStartOf="parent"
@@ -165,8 +142,7 @@
                     style="@style/text_11_semi_bold_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:text=" 07/03/23 ; 06:15"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/customerNameTv" />
@@ -176,8 +152,7 @@
                     style="@style/text_11_medium_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:text="@string/mode_of_payment"
                     android:textColor="@color/splash_screen_three"
                     app:layout_constraintStart_toStartOf="parent"
@@ -188,165 +163,43 @@
                     style="@style/text_11_semi_bold_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:text="Prepaid Card - XXXX 4536"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/transDteAndTimeTv" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/billerNameTv"
-                    style="@style/text_11_medium_blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:text="@string/biller_name"
-                    android:visibility="gone"
-                    android:textColor="@color/splash_screen_three"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/payementModeTv" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/billNameTv"
-                    style="@style/text_11_semi_bold_blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:text="HDFC Bank"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/modeOfPaymentTv" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/billNumTv"
-                    style="@style/text_11_medium_blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:text="@string/bill_number"
-                    android:visibility="gone"
-                    android:textColor="@color/splash_screen_three"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/billerNameTv" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/billNumberTv"
-                    style="@style/text_11_semi_bold_blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:text="123456"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/billNameTv" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/bbpsTransIdTv"
-                    style="@style/text_11_medium_blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:text="@string/bbps_transaction_id"
-                    android:visibility="gone"
-                    android:textColor="@color/splash_screen_three"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/billNumTv" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/trabnsIdTv"
-                    style="@style/text_11_semi_bold_blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:visibility="gone"
-                    android:text="342323456"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/billNumberTv" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/approvalNumTv"
-                    style="@style/text_11_medium_blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:visibility="gone"
-                    android:text="@string/approval_number"
-                    android:textColor="@color/splash_screen_three"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bbpsTransIdTv" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/approvalNumberTv"
-                    style="@style/text_11_semi_bold_blue"
-                    android:layout_width="wrap_content"
-                    android:visibility="gone"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:text="564334 "
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/trabnsIdTv" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/custConFeesTv"
-                    style="@style/text_11_medium_blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:visibility="gone"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:text="@string/customer_convenience_fees"
-                    android:textColor="@color/splash_screen_three"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/approvalNumTv" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/customerConFeesTv"
-                    style="@style/text_11_semi_bold_blue"
-                    android:layout_width="wrap_content"
-                    android:visibility="gone"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
-                    android:text="342323456"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/approvalNumberTv" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/amntPaidTv"
                     style="@style/text_11_medium_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
                     android:text="@string/amount_paid"
                     android:textColor="@color/splash_screen_three"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/custConFeesTv" />
+                    app:layout_constraintTop_toBottomOf="@+id/payementModeTv" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/amountPaidTv"
                     style="@style/text_11_semi_bold_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_3sdp"
-                    android:layout_margin="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
                     android:text="342323456"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/customerConFeesTv" />
+                    app:layout_constraintTop_toBottomOf="@+id/modeOfPaymentTv" />
+
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
+
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/downLoadReceiptTv"
@@ -358,7 +211,7 @@
             android:layout_marginEnd="@dimen/_55sdp"
             android:text="@string/download_receipt"
             android:textAlignment="center"
-            android:visibility="gone"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/paymetRecieptcard" />
@@ -400,7 +253,6 @@
         android:layout_height="match_parent"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -427,6 +279,7 @@
             android:gravity="center"
             android:text="Confirming payment.\nThis may take up sometime!"
             android:textColor="@color/splash_screen_three"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -436,17 +289,13 @@
             android:id="@+id/animatedIv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scaleType="fitXY"
             android:src="@drawable/blue_wave_anim"
             android:visibility="gone"
-            android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

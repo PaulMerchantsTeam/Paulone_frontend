@@ -926,7 +926,7 @@ object AppUtility {
     }
     public fun getDate(milliSeconds: Long): String {
         // Create a DateFormatter object for displaying date in specified format.
-        val formatter = SimpleDateFormat("dd/MM/yyyy ; HH:mm")
+        val formatter = SimpleDateFormat("dd/MM/yyyy; HH:mm")
 
         // Create a calendar object that will convert the date and time value in milliseconds to date.
         val calendar = Calendar.getInstance();
@@ -980,6 +980,8 @@ fun decryptKey(key: String, strToDecrypt: String?): String? {
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun main() {
+
+    println(AppUtility.getDate(1727786821000))
     val dateTime = "2024-09-19 00:50:30 AM"
     val startTime = "2013-02-27 21:06:30"
     val tk = StringTokenizer(dateTime)

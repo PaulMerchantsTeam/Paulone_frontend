@@ -433,6 +433,8 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="time_setting_not_automatic">Time Setting Not Automatic</string>
+    <string name="enable_time_zone_text">We have detected that the Automatic Time and Timezone setting are not enabled on your phone. For security reasons and proper functioning of the app please enable these settings.</string>
 
     <!--  • = \u2022,   ● = \u25CF,   ○ = \u25CB,   ▪ = \u25AA,   ■ = \u25A0,   □ = \u25A1,   ► = \u25BA-->
 </resources>
