@@ -104,7 +104,7 @@ class PaymentViewModel @Inject constructor(
     fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder, location: Location?) =
         viewModelScope.launch {
             retrofitSetup.callApi(
-                true,
+                false,
                 object : CallHandler<Response<RespUnderMain>> {
                     override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
                         return apiParams.isUnderMaintenance()
@@ -128,7 +128,7 @@ class PaymentViewModel @Inject constructor(
 
     fun getCustomerDetails(appSharedPref: AppSharedPref, location: Location?) =
         viewModelScope.launch {
-            retrofitSetup.callApi(true, object : CallHandler<Response<RespGetCustomer>> {
+            retrofitSetup.callApi(false, object : CallHandler<Response<RespGetCustomer>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetCustomer> {
                     return apiParams.getCustomerDetails(
                         "Bearer ${appSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}",
@@ -193,7 +193,7 @@ class PaymentViewModel @Inject constructor(
     fun getPaymentMethod(AppSharedPref: AppSharedPref) =
         viewModelScope.launch {
 
-            retrofitSetup.callApi(true, object : CallHandler<Response<RespPaymentMethod>> {
+            retrofitSetup.callApi(false, object : CallHandler<Response<RespPaymentMethod>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespPaymentMethod> {
                     return apiParams.getPaymentMethod(
                         "Bearer ${AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}"
@@ -215,7 +215,7 @@ class PaymentViewModel @Inject constructor(
     fun createOrder(reqCreateOrder: ReqCreateOrder, location: Location?) =
         viewModelScope.launch {
 
-            retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
+            retrofitSetup.callApi(false, object : CallHandler<Response<*>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
                     return apiParams.createOrder(
                         "Bearer ${AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}",

@@ -23,7 +23,7 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
 
     protected abstract val mViewModel: VM
     private lateinit var myLifecycleObserver: MyLifecycleObserver
-
+    private var dialog: AlertDialog? = null
     lateinit var binding: VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +43,7 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
         val dialogView = LayoutInflater.from(this).inflate(R.layout.setting_change_dialog, null)
 
         // Create the dialog
-        val dialog = AlertDialog.Builder(this)
+          dialog = AlertDialog.Builder(this)
             .setView(dialogView)
             .setCancelable(false) // Prevent dialog dismissal on back press
             .create()
@@ -55,18 +55,18 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
         // Set onClickListener for the "Open Settings" button
         openSettingsButton.setOnClickListener {
              startActivity(Intent(Settings.ACTION_DATE_SETTINGS))
-            dialog.dismiss() // Dismiss the dialog
-            closeApp() // Close the app after redirecting
+            dialog?.dismiss() // Dismiss the dialog
+             // Close the app after redirecting
         }
 
         // Set onClickListener for the "Exit App" button
         exitAppButton.setOnClickListener {
-            dialog.dismiss() // Dismiss the dialog
+            dialog?.dismiss() // Dismiss the dialog
             closeApp() // Close the app
         }
 
         // Show the dialog
-        dialog.show()
+        dialog?.show()
     }
     private fun closeApp() {
         if (this is Activity) {
@@ -75,6 +75,11 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
             // For non-activity contexts (e.g., in services), use this approach
             System.exit(0)  // Force close the app
         }
+    }
+
+    override fun dismissAutoTimeDisabledDialog() {
+        dialog?.dismiss()
+
     }
 
     override fun onDestroy() {

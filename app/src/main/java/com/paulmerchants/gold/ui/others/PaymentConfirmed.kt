@@ -2,6 +2,10 @@ package com.paulmerchants.gold.ui.others
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +30,7 @@ class PaymentConfirmed :
     BaseFragment<LoanEmiPaymentConfirmedBinding>(LoanEmiPaymentConfirmedBinding::inflate) {
     var headerValue :String? = null
     var paymentId :String? = null
+
     private val txnReceiptViewModel: TxnReceiptViewModel by viewModels()
     override fun LoanEmiPaymentConfirmedBinding.initialize() {
 
@@ -35,21 +40,27 @@ class PaymentConfirmed :
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        paymentId?.let {
-            txnReceiptViewModel.getPaidReceipt(
-                it
-            )
-        }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         txnReceiptViewModel.paidReceipt.observe(viewLifecycleOwner) {
             it?.let {
                 setData(it)
             }
         }
     }
-    override fun onResume() {
-        super.onResume()
+
+
+    override fun onStart() {
+        super.onStart()
+
+        paymentId?.let {
+            txnReceiptViewModel.getPaidReceipt(
+                it
+            )
+        }
+
         binding.apply {
 
             gotoHomeBtn.setOnClickListener {
@@ -77,15 +88,24 @@ class PaymentConfirmed :
             lifecycleScope.launch {
                 delay(2000)
                 loadingParent.hide()
-                paymentConfirmedParent.show()
-                paymentConfirmedParent.startAnimation(
+
+                    paymentConfirmedParent.startAnimation(
                         AnimationUtils.loadAnimation(
                             requireContext(), R.anim.slide_up
                         ))
+
+
+                paymentConfirmedParent.show()
+
+                paymentConfirmedParent.clearAnimation()
             }
 
         }
     }
+
+
+
+
    // 82233213123
     private fun setData(it: RespPayReceipt) {
         binding.apply {
@@ -103,22 +123,22 @@ class PaymentConfirmed :
                   "PAYMENT FAILED!!"
                 }
 
-            transIdTv.text = it.data.entityPayment?.paymentId
-            accountNoTv.text =it.data.accNo
+            transIdTv.text = it.data.entityPayment?.paymentId?: "NA"
+            accountNoTv.text =it.data.accNo?: "NA"
             customerNameTv.text =  AppSharedPref.getStringValue(
                 com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME,
-            )?.substringBefore(" ")
+            )?.substringBefore(" ")?: "NA"
 //            transDteAndTimeTv.text = it.data.entityPayment?.created_at
             transDteAndTimeTv.text = it.data.entityPayment?.updated_at?.let { it1 ->
                 AppUtility.getDate (
                     it1
                 )
-            }
-            modeOfPaymentTv.text = it.data.entityPayment?.method
+            }?: "NA"
+            modeOfPaymentTv.text = it.data.entityPayment?.method?: "NA"
             amountPaidTv.text =  "${getString(R.string.Rs)} ${it.data.entityPayment?.amount?.let { it1 ->
                 AppUtility.getTwoDigitAfterDecimal(
                     it1.toDouble())
-            }}"
+            }?: "NA"}"
 
 
         }

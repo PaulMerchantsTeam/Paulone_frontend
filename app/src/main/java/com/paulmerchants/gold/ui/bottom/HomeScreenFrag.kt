@@ -284,8 +284,7 @@ class HomeScreenFrag :
                         (activity as MainActivity).binding.underMainTimerParent.root.hide()
                         setUpNetworkCallbackFOrDueLoans()
                     } else {
-//                        (activity as MainActivity).binding.bottomNavigationView.show()
-//                        (activity as MainActivity).binding.underMainTimerParent.root.hide()
+
                         setUpNetworkCallbackFOrDueLoans()
                     }
                 }
@@ -294,7 +293,7 @@ class HomeScreenFrag :
         (activity as MainActivity).commonViewModel.getRespGetLoanOutStandingLiveData.observe(
             viewLifecycleOwner
         ) {
-            // Handle logic here
+
 
             it?.let {
                 for (i in it.getLoanOutstandingResponseData) {
@@ -310,6 +309,8 @@ class HomeScreenFrag :
             viewLifecycleOwner
         ) {
             it?.let { gepPendingRespObj ->
+                binding.swiperefresh.isRefreshing = false
+                binding.shimmmerParent.hideShim()
                 (activity as MainActivity).commonViewModel.notZero =
                     gepPendingRespObj.pendingInterestDuesResponseData.filter { getPendingInterestItem ->
                         getPendingInterestItem.payableAmount != 0.0
@@ -321,6 +322,7 @@ class HomeScreenFrag :
                 for (i in gepPendingRespObj.pendingInterestDuesResponseData) {
                     i.currentDate = gepPendingRespObj.currentDate
                 }
+
                 if ((activity as MainActivity).commonViewModel.notZero.isNotEmpty()) {
                     upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
                     binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
@@ -328,8 +330,7 @@ class HomeScreenFrag :
                 } else {
                     binding.noIntHaveParent.root.show()
                 }
-                binding.swiperefresh.isRefreshing = false
-                binding.shimmmerParent.hideShim()
+
             }
         }
 
@@ -611,69 +612,11 @@ class HomeScreenFrag :
     }
 
 
-    /*    private fun setUpComingDueLoans() {
-            binding.shimmmerParent.showShimmer()
-            (activity as MainActivity).commonViewModel.getPendingInterestDues(
-                AppSharedPref,
-                (activity as MainActivity).mLocation
-            )
-            (activity as MainActivity).commonViewModel.getLoanOutstanding(
-                AppSharedPref,
-                (activity as MainActivity).mLocation
-            )
-            *//*(activity as MainActivity).commonViewModel.getRespGetLoanOutStandingLiveData.observe(
-            viewLifecycleOwner
-        ) {
-            it?.let {
-                for (i in it.getLoanOutstandingResponseData) {
-                    i.currentDate = it.currentDate
-                }
-                setLoanOverView(it.getLoanOutstandingResponseData)
-            }
-        }
-//            (activity as MainActivity).commonViewModel.isCalled = true
-//        }
-        (activity as MainActivity).commonViewModel.getPendingInterestDuesLiveData.observe(
-            viewLifecycleOwner
-        ) {
-            it?.let { gepPendingRespObj ->
-                (activity as MainActivity).commonViewModel.notZero =
-                    gepPendingRespObj.pendingInterestDuesResponseData.filter { getPendingInterestItem ->
-                        getPendingInterestItem.payableAmount != 0.0
-                    }
-                Log.i(
-                    TAG,
-                    "setUpComingDueLoans: ${(activity as MainActivity).commonViewModel.notZero}"
-                )
-                for (i in gepPendingRespObj.pendingInterestDuesResponseData) {
-                    i.currentDate = gepPendingRespObj.currentDate
-                }
-                if ((activity as MainActivity).commonViewModel.notZero.isNotEmpty()) {
-                    upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
-                    binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
-                    binding.rvUpcomingDueLoans.show()
-                } else {
-                    binding.noIntHaveParent.root.show()
-                }
-                binding.swiperefresh.isRefreshing = false
-                binding.shimmmerParent.hideShim()
-            }
-        }
 
-        (activity as MainActivity).commonViewModel.getRespGetLoanOutStandingLiveData.observe(
-            viewLifecycleOwner
-        ) {
-            it?.let {
-                for (i in it.getLoanOutstandingResponseData) {
-                    i.currentDate = it.currentDate
-                }
-                setLoanOverView(it.getLoanOutstandingResponseData)
-            }
-        }*//*
-    }*/
 
     private fun setLoanOverView(resp: List<RespGetLoanOutStandingItem>) {
         var totalAmount = 0.0
+        binding.shimmerCardLoanOverView.hideShim()
         binding.apply {
             loanOverViewCardParent.youHaveTotalLoanTv.text =
                 "You are having ${resp.size} active loans totalling interest due up to"
@@ -694,8 +637,10 @@ class HomeScreenFrag :
             }
             loanOverViewCardParent.youHaveTotalLoanTv.show()
         }
-        binding.shimmerCardLoanOverView.hideShim()
+
         binding.loanOverViewCardParent.root.show()
     }
+
+
 
 }

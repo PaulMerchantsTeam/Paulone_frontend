@@ -54,7 +54,7 @@ class TxnReceiptViewModel @Inject constructor(
                     if (response.body()?.statusCode == "200") {
                         paidReceipt.value = response.body()
                     } else {
-                        "${response.body()?.message}".showSnackBar()
+//                        "${response.body()?.message}".showSnackBar()
                     }
 
 

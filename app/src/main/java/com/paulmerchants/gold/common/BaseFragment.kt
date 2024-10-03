@@ -20,6 +20,7 @@ import com.paulmerchants.gold.R
 
 open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInflater, ViewGroup?, Boolean) -> T) :
     Fragment(),MyLifecycleObserver.DialogListener {
+    private var autoTimeDialog: AlertDialog? = null
 
         private lateinit var myLifecycleObserver:MyLifecycleObserver
     private var _binding: T? = null
@@ -33,11 +34,11 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-          myLifecycleObserver = MyLifecycleObserver(requireContext(),this)
-        ProcessLifecycleOwner.get().lifecycle.addObserver(myLifecycleObserver)
-    }
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//          myLifecycleObserver = MyLifecycleObserver(requireContext(),this)
+//        ProcessLifecycleOwner.get().lifecycle.addObserver(myLifecycleObserver)
+//    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,6 +48,8 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
 
         // Calling the extension function
         binding.initialize()
+        myLifecycleObserver = MyLifecycleObserver(requireContext(), this)
+        ProcessLifecycleOwner.get().lifecycle.addObserver(myLifecycleObserver)
         // replaced _binding!! with binding
         return binding.root
     }
@@ -63,12 +66,13 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
     }
 
 
+
     override fun showAutoTimeDisabledDialog() {
         // Inflate the custom dialog layout
         val dialogView = LayoutInflater.from(context).inflate(R.layout.setting_change_dialog, null)
 
         // Create the dialog
-        val dialog = AlertDialog.Builder(context)
+          autoTimeDialog = AlertDialog.Builder(context)
             .setView(dialogView)
             .setCancelable(false) // Prevent dialog dismissal on back press
             .create()
@@ -80,19 +84,24 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
         // Set onClickListener for the "Open Settings" button
         openSettingsButton.setOnClickListener {
             requireContext().startActivity(Intent(Settings.ACTION_DATE_SETTINGS))
-            dialog.dismiss() // Dismiss the dialog
-            closeApp() // Close the app after redirecting
+            autoTimeDialog?.dismiss() // Dismiss the dialog
+
         }
 
         // Set onClickListener for the "Exit App" button
         exitAppButton.setOnClickListener {
-            dialog.dismiss() // Dismiss the dialog
+            autoTimeDialog?.dismiss() // Dismiss the dialog
             closeApp() // Close the app
         }
 
         // Show the dialog
-        dialog.show()
+        autoTimeDialog?.show()
     }
+
+    override fun dismissAutoTimeDisabledDialog() {
+        autoTimeDialog?.dismiss()
+    }
+
     private fun closeApp() {
         if (context is Activity) {
             (context as Activity).finishAffinity() // Closes the app
@@ -100,6 +109,11 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
             // For non-activity contexts (e.g., in services), use this approach
             System.exit(0)  // Force close the app
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
     }
 
     override fun onDetach() {

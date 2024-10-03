@@ -623,7 +623,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                         Log.i(TAG, "onPaymentSuccess: ///////////.....${p1?.paymentId}")
                         toggleWebViewVisibility(View.GONE)
                         if (p1?.paymentId != null) {
-                            "Payment Success".showSnackBar()
+//                            "Payment Success".showSnackBar()
                             if (payAlllInOneGo != null) {
                                 updatePaymentStatusToServerToAllInOneGo(
                                     StatusPayment("captured", p1)
@@ -642,7 +642,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
                     override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
                         // Error code and description is passed here
-                        "Payment Failed".showSnackBar()
+//                        "Payment Failed".showSnackBar()
                         Log.i(TAG, "onPaymentError: ----${p2?.paymentId}")
                         toggleWebViewVisibility(View.GONE)
 //                        if (p2?.paymentId != null) {

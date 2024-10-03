@@ -175,7 +175,7 @@ class CommonViewModel @Inject constructor(
         viewModelScope.launch {
 
             retrofitSetup.callApi(
-                true,
+                false,
                 object : CallHandler<Response<RespPendingInterstDue>> {
                     override suspend fun sendRequest(apiParams: ApiParams): Response<RespPendingInterstDue> {
                         return apiParams.getPendingInterestDues(
@@ -259,7 +259,7 @@ class CommonViewModel @Inject constructor(
     ) =
         viewModelScope.launch {
 
-            retrofitSetup.callApi(true, object : CallHandler<Response<*>> {
+            retrofitSetup.callApi(false, object : CallHandler<Response<*>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
                     return apiParams.createOrder(
                         "Bearer ${
@@ -392,7 +392,7 @@ class CommonViewModel @Inject constructor(
 
     fun getLogin2(AppSharedPref: AppSharedPref?, location: Location?) = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
-        retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
+        retrofitSetup.callApi(false, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
                 return apiParams.getLogin(
                     LoginReqNew(
@@ -433,7 +433,7 @@ class CommonViewModel @Inject constructor(
         viewModelScope.launch {
 
             retrofitSetup.callApi(
-                true,
+                false,
                 object : CallHandler<Response<RespGetLOanOutStanding>> {
                     override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetLOanOutStanding> {
                         return apiParams.getLoanOutstanding(
@@ -518,7 +518,7 @@ class CommonViewModel @Inject constructor(
     fun getLoanClosureReceipt(AppSharedPref: AppSharedPref?, accNum: String, location: Location?) =
         viewModelScope.launch {
 
-            retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
+            retrofitSetup.callApi(false, object : CallHandler<Response<RespCommon>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
                     return apiParams.getLoanClosureReceipt(
                         "Bearer ${
@@ -638,7 +638,7 @@ class CommonViewModel @Inject constructor(
     ) = viewModelScope.launch {
 
 
-        retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
+        retrofitSetup.callApi(false, object : CallHandler<Response<RespCommon>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
                 return apiParams.getLoanStatement(
                     "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
