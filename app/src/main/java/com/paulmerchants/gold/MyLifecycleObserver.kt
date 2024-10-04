@@ -24,15 +24,18 @@ class MyLifecycleObserver(private val context: Context, private val listener: Di
     fun onResume() {
 
         // Handle the onResume event
+        try {
+            if (isAutomaticDateTimeEnabled(context) && isAutomaticTimeZoneEnabled(context)) {
+                // Auto time is disabled - show the dialog
+                listener.dismissAutoTimeDisabledDialog()
 
-
-        if (isAutomaticDateTimeEnabled(context) && isAutomaticTimeZoneEnabled(context)) {
-            // Auto time is disabled - show the dialog
-            listener.dismissAutoTimeDisabledDialog()
-
-        } else {
-            listener.showAutoTimeDisabledDialog()
+            } else {
+                listener.showAutoTimeDisabledDialog()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+
 
     }
 

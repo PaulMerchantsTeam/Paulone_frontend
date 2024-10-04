@@ -34,6 +34,7 @@ import android.view.PixelCopy
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -327,7 +328,10 @@ object AppUtility {
         view.draw(canvas)
         return bitmap
     }
-
+    fun hideKeyboardFromView(view: View, context: Context) {
+        val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
     fun saveAsPdf(
         context: Context,
         pdfWidth: Float,
@@ -358,7 +362,6 @@ object AppUtility {
             val image = Image.getInstance(stream.toByteArray())
             image.scaleToFit(document.pageSize.width, document.pageSize.height)
             document.add(image)
-
             document.close()
             fileOutputStream.close()
 

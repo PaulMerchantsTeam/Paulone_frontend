@@ -20,6 +20,7 @@ import com.paulmerchants.gold.R
 
 open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInflater, ViewGroup?, Boolean) -> T) :
     Fragment(),MyLifecycleObserver.DialogListener {
+    private var isDialogOpen = false
     private var autoTimeDialog: AlertDialog? = null
 
         private lateinit var myLifecycleObserver:MyLifecycleObserver
@@ -62,13 +63,18 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
 
     override fun onStop() {
         super.onStop()
-
+        autoTimeDialog?.dismiss()
+        isDialogOpen = false
     }
+
 
 
 
     override fun showAutoTimeDisabledDialog() {
         // Inflate the custom dialog layout
+        if (!isDialogOpen){
+            isDialogOpen = true
+
         val dialogView = LayoutInflater.from(context).inflate(R.layout.setting_change_dialog, null)
 
         // Create the dialog
@@ -85,21 +91,24 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
         openSettingsButton.setOnClickListener {
             requireContext().startActivity(Intent(Settings.ACTION_DATE_SETTINGS))
             autoTimeDialog?.dismiss() // Dismiss the dialog
-
+            isDialogOpen = false
         }
 
         // Set onClickListener for the "Exit App" button
         exitAppButton.setOnClickListener {
             autoTimeDialog?.dismiss() // Dismiss the dialog
+            isDialogOpen = false
             closeApp() // Close the app
         }
 
         // Show the dialog
         autoTimeDialog?.show()
     }
+    }
 
     override fun dismissAutoTimeDisabledDialog() {
         autoTimeDialog?.dismiss()
+        isDialogOpen = false
     }
 
     private fun closeApp() {
@@ -113,11 +122,13 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
 
     override fun onPause() {
         super.onPause()
-
+        autoTimeDialog?.dismiss()
+        isDialogOpen = false
     }
 
     override fun onDetach() {
         super.onDetach()
+        autoTimeDialog?.dismiss()
         lifecycle.removeObserver(myLifecycleObserver)
     }
 }

@@ -25,7 +25,7 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
     private lateinit var myLifecycleObserver: MyLifecycleObserver
     private var dialog: AlertDialog? = null
     lateinit var binding: VB
-
+    var isDialogOpen: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = getViewBinding()
@@ -40,6 +40,9 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
     abstract fun getViewBinding(): VB
     override fun showAutoTimeDisabledDialog() {
         // Inflate the custom dialog layout
+        if(!isDialogOpen){
+            isDialogOpen = true
+
         val dialogView = LayoutInflater.from(this).inflate(R.layout.setting_change_dialog, null)
 
         // Create the dialog
@@ -57,6 +60,7 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
              startActivity(Intent(Settings.ACTION_DATE_SETTINGS))
             dialog?.dismiss() // Dismiss the dialog
              // Close the app after redirecting
+            isDialogOpen = false
         }
 
         // Set onClickListener for the "Exit App" button
@@ -64,9 +68,10 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
             dialog?.dismiss() // Dismiss the dialog
             closeApp() // Close the app
         }
-
+            isDialogOpen = false
         // Show the dialog
         dialog?.show()
+    }
     }
     private fun closeApp() {
         if (this is Activity) {
@@ -78,12 +83,23 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
     }
 
     override fun dismissAutoTimeDisabledDialog() {
+        isDialogOpen = false
         dialog?.dismiss()
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        dialog?.dismiss()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        dialog?.dismiss()
+    }
     override fun onDestroy() {
         super.onDestroy()
+        dialog?.dismiss()
         lifecycle.removeObserver(myLifecycleObserver)
     }
 }

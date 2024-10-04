@@ -79,10 +79,10 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     var mLocation: Location? = null
 //    var isUpiIntent = false
 //    var isUpiCollect = false
+enum class PaymentMode {
+    UPI_COLLECT, UPI_INTENT, DebitCard, Netbanking, CreditCard, Wallet
+}
 
-    enum class PaymentMode {
-        UPI_COLLECT, UPI_INTENT, DebitCard, Netbanking, CreditCard, Wallet
-    }
 
     companion object {
         lateinit var context: WeakReference<Context>
@@ -601,7 +601,8 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     bhmValue = true
                 }
 
-            }/*
+            }
+            /*
                         walletParent.setOnClickListener {
                             if (walletValue) {
                                 arrowDownWalletIv.setImageResource(R.drawable.cross_icon)
@@ -1115,6 +1116,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
         showCustomDialogForRenewCard(onOkClick = {

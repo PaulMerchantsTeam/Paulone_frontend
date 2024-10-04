@@ -325,6 +325,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
     }
 
+
     private fun setUpNetworkCallbackFOrDueLoans() {
         networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {

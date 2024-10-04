@@ -57,7 +57,7 @@ fun Activity.showCustomDialogFoPaymentStatus(
     binding.loginParentBtn.setOnClickListener {
         isClick(true)
         dialog.dismiss()
-        finish()
+//        finish()
     }
     dialog.show()
 }
