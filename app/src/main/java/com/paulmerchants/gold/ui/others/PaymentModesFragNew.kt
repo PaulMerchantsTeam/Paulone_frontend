@@ -571,7 +571,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         } else {
             Log.d(TAG, "createOrder: ....api_Calls")
 //            if (!BuildConfig.DEBUG) {
-            (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus(
+            paymentViewModel.getUnderMaintenanceStatus(
                 reqCreateOrder = ReqCreateOrder(
                     amount = amount,
                     currency = "INR",
@@ -588,6 +588,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                     macId = Build.ID,
                     valueDate = AppUtility.getCurrentDate()
                 ), mLocation
+//                , findNavController = findNavController()
             )
 //            }
         }
@@ -1242,17 +1243,21 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                     // Handle the back button event
                     Log.d("TAG", "handleOnBackPressed: ..........pressed")
                     toggleWebViewVisibility(View.GONE)
-//                    findNavController().navigate(R.id.paymentCloseDialog)
-//                   requireActivity(). showCustomDialogForRenewCard(onOkClick = {
-//                        if (it) {
-//                            if (binding.webview.visibility == View.VISIBLE) {
-//                                razorpay?.onBackPressed()
-//                               toggleWebViewVisibility(View.GONE)
-//                            } else {
-//                                findNavController().popBackStack()
-//                            }
-//                        }
-//                    })
+                    findNavController().navigate(R.id.paymentCloseDialog)
+                   requireActivity(). showCustomDialogForRenewCard(onOkClick = {
+
+                        if (it) {
+                            if (binding.webview.visibility == View.VISIBLE) {
+                                razorpay?.onBackPressed()
+                               toggleWebViewVisibility(View.GONE)
+                                Log.d("TAG", "handleOnBackPressed: ..........dialog")
+
+                            } else {
+                                Log.d("TAG", "handleOnBackPressed: ..........popup")
+                                findNavController().popBackStack()
+                            }
+                        }
+                    })
                 }
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
@@ -1323,7 +1328,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             }
         })
         Log.d(TAG, "onStart: ${binding.enterExpireDateEt.text}")
-        ( activity as MainActivity).commonViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
+       paymentViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
             it?.let {
                 Log.d(TAG, "onCreate: ...................$it")
                 if (it.statusCode == "200") {
@@ -1576,6 +1581,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 }
             }
         }
+
         /*    paymentViewModel.isUnderMainLiveData.observe(viewLifecycleOwner) {
                 it?.let {
                     if (it.statusCode == "200") {

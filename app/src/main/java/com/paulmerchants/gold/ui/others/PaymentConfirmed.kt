@@ -7,18 +7,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
+import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.LoanEmiPaymentConfirmedBinding
+import com.paulmerchants.gold.databinding.PaymentsModeNewBinding
 import com.paulmerchants.gold.model.newmodel.RespPayReceipt
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
+import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.ui.PaymentActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
+import com.paulmerchants.gold.viewmodels.PaymentViewModel
 import com.paulmerchants.gold.viewmodels.TxnReceiptViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -27,81 +33,77 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PaymentConfirmed :
-    BaseFragment<LoanEmiPaymentConfirmedBinding>(LoanEmiPaymentConfirmedBinding::inflate) {
+    BaseActivity<TxnReceiptViewModel, LoanEmiPaymentConfirmedBinding>()
+      {
     var headerValue :String? = null
     var paymentId :String? = null
 
-    private val txnReceiptViewModel: TxnReceiptViewModel by viewModels()
-    override fun LoanEmiPaymentConfirmedBinding.initialize() {
-
-        headerValue = arguments?.getString(Constants.BBPS_HEADER, "")
-
-        paymentId = arguments?.getString(com.paulmerchants.gold.utility.Constants.PAYMENT_ID)
-
-    }
+          override fun getViewBinding() = LoanEmiPaymentConfirmedBinding.inflate(layoutInflater)
+          override val mViewModel: TxnReceiptViewModel by viewModels()
 
 
+          override fun onCreate(savedInstanceState: Bundle?) {
+              super.onCreate(savedInstanceState)
+              val bundle = intent.extras
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        txnReceiptViewModel.paidReceipt.observe(viewLifecycleOwner) {
-            it?.let {
-                setData(it)
-            }
-        }
-    }
+              paymentId = bundle?.getString( com.paulmerchants.gold.utility.Constants.PAYMENT_ID)
+              paymentId = ""
+              paymentId?.let {
+                  mViewModel.getPaidReceipt(
+                      it
+                  )
+              }
 
+              binding.apply {
 
-    override fun onStart() {
-        super.onStart()
+                  gotoHomeBtn.setOnClickListener {
+                      finish()
+                      PaymentActivity().finish()
+                  }
+                  needHelpBtn.setOnClickListener{
+                      val phone = "18001371333"
+                      val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+                      startActivity(intent)
+                  }
+                  downLoadReceiptTv.setOnClickListener{
 
-        paymentId?.let {
-            txnReceiptViewModel.getPaidReceipt(
-                it
-            )
-        }
+                      val screenBitmap = AppUtility.getScreenBitmap( paymentConfirmMainParent)
+                      val pdfWidth = 500f
+                      val pdfHeight = 870f
+                      AppUtility.saveAsPdf(
+                          this@PaymentConfirmed,
+                          pdfWidth,
+                          pdfHeight,
+                          screenBitmap,
+                          R.color.open_loans
+                      )
+                  }
+                  lifecycleScope.launch {
+                      delay(2000)
+                      loadingParent.hide()
 
-        binding.apply {
-
-            gotoHomeBtn.setOnClickListener {
-                findNavController().popBackStack()
-                findNavController().navigate(R.id.homeScreenFrag)
-      }
-            needHelpBtn.setOnClickListener{
-                val phone = "18001371333"
-                val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
-                startActivity(intent)
-            }
-            downLoadReceiptTv.setOnClickListener{
-
-                val screenBitmap = AppUtility.getScreenBitmap( paymentConfirmMainParent)
-                val pdfWidth = 500f
-                val pdfHeight = 870f
-                AppUtility.saveAsPdf(
-                    requireContext(),
-                    pdfWidth,
-                    pdfHeight,
-                    screenBitmap,
-                    R.color.open_loans
-                )
-            }
-            lifecycleScope.launch {
-                delay(2000)
-                loadingParent.hide()
-
-                    paymentConfirmedParent.startAnimation(
-                        AnimationUtils.loadAnimation(
-                            requireContext(), R.anim.slide_up
-                        ))
+                      paymentConfirmedParent.startAnimation(
+                          AnimationUtils.loadAnimation(
+                             this@PaymentConfirmed, R.anim.slide_up
+                          ))
 
 
-                paymentConfirmedParent.show()
+                      paymentConfirmedParent.show()
 
-                paymentConfirmedParent.clearAnimation()
-            }
+                      paymentConfirmedParent.clearAnimation()
+                  }
 
-        }
-    }
+              }
+              mViewModel.paidReceipt.observe(this) {
+                  it?.let {
+                      setData(it)
+                  }
+              }
+          }
+
+
+
+
 
 
 

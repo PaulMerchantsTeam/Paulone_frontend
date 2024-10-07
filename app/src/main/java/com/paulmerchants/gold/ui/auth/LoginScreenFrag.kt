@@ -61,8 +61,10 @@ class LoginScreenFrag :
 
     override fun onStart() {
         super.onStart()
+
         setupMpinEditTextFocus()
         (activity as? MainActivity)?.apply {
+           commonViewModel. getUnderMaintenanceStatus()
             checkForDownFromRemoteConfig()
             commonViewModel.isRemoteConfigCheck.observe(viewLifecycleOwner) {
                 it?.let {

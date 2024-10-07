@@ -187,10 +187,10 @@ class GoldLoanScreenFrag :
                 putString(Constants.CUST_ACC, actionItem.AcNo.toString())
             }
             goldScreenViewModel.isCalledGoldLoanScreen = true
-//            val intent = Intent(requireContext(), PaymentActivity::class.java)
-//            intent.putExtras(bundle)
-//            startActivity(intent)
-            findNavController().navigate(R.id.paymentModesFragNew, bundle)
+            val intent = Intent(requireContext(), PaymentActivity ::class.java)
+            intent.putExtras(bundle)
+            startActivity(intent)
+//            findNavController().navigate(R.id.paymentModesFragNew, bundle)
         }
     }
 

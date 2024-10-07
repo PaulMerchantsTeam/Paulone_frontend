@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -16,6 +17,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
+import com.paulmerchants.gold.R
 import com.paulmerchants.gold.model.RespCustomersDetails
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
@@ -84,7 +86,7 @@ class PaymentViewModel @Inject constructor(
             }
         }
     }
-   /* fun getUnderMaintenanceStatusCheck() = viewModelScope.launch {
+    fun getUnderMaintenanceStatusCheck() = viewModelScope.launch {
         retrofitSetup.callApi(
             true,
             object : CallHandler<Response<RespUnderMain>> {
@@ -99,7 +101,7 @@ class PaymentViewModel @Inject constructor(
                     }
                 }
             })
-    }*/
+    }
 
     fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder, location: Location?) =
         viewModelScope.launch {
@@ -117,6 +119,7 @@ class PaymentViewModel @Inject constructor(
                                 if (response.body()?.data?.down == false) {
                                     createOrder(reqCreateOrder, location = location)
                                 } else  {
+//                                    findNavController.navigate(R.id.loginScreenFrag)
                                     isUnderMainLiveData.value = response.body()
 //                                    "App is under maintenance. Please try after some time".showSnackBarForPayment()
                                 }
@@ -412,7 +415,13 @@ class PaymentViewModel @Inject constructor(
                         getLogin2(location)
                     }
                 } else {
-                    "Some thing went wrong..try again later".showSnackBar()
+                    val gson = Gson()
+                    val respFail: RespUpdatePaymentStatus? = gson.fromJson(
+                        gson.toJsonTree(response.body()).asJsonObject,
+                        RespUpdatePaymentStatus::class.java
+                    )
+                    respPaymentUpdate.value = respFail
+//                    "Some thing went wrong..try again later".showSnackBar()
                 }
                 AppUtility.hideProgressBar()
             }
