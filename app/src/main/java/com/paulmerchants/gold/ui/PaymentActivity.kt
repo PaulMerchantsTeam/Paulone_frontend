@@ -145,7 +145,7 @@ enum class PaymentMode {
                     isDown = it
                 } else {
 //                    if(!BuildConfig.DEBUG) {
-                    paymentViewModel.getUnderMaintenanceStatusCheck()
+//                    paymentViewModel.getUnderMaintenanceStatusCheck()
 //                    }
                 }
             }
@@ -1278,7 +1278,7 @@ enum class PaymentMode {
             override fun onFinish() {
                 // Reset or refresh your UI, or restart the countdown for the next day if needed
                 binding.underMainTimerParent.timerTextView.text = "00:00"
-                paymentViewModel.getUnderMaintenanceStatusCheck()
+//                paymentViewModel.getUnderMaintenanceStatusCheck()
 
 //                navController.clearBackStack(R.id.splashFragment)
 

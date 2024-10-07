@@ -84,7 +84,7 @@ class PaymentViewModel @Inject constructor(
             }
         }
     }
-    fun getUnderMaintenanceStatusCheck() = viewModelScope.launch {
+   /* fun getUnderMaintenanceStatusCheck() = viewModelScope.launch {
         retrofitSetup.callApi(
             true,
             object : CallHandler<Response<RespUnderMain>> {
@@ -99,7 +99,7 @@ class PaymentViewModel @Inject constructor(
                     }
                 }
             })
-    }
+    }*/
 
     fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder, location: Location?) =
         viewModelScope.launch {

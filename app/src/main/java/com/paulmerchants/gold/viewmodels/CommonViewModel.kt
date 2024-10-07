@@ -148,7 +148,116 @@ class CommonViewModel @Inject constructor(
                 }
             })
     }
+    fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder, location: Location?) =
+        viewModelScope.launch {
+            retrofitSetup.callApi(
+                false,
+                object : CallHandler<Response<RespUnderMain>> {
+                    override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
+                        return apiParams.isUnderMaintenance()
+                    }
 
+                    override fun success(response: Response<RespUnderMain>) {
+                        Log.d("TAG", "success: ......${response.body()}")
+                        if (response.isSuccessful) {
+                            if (response.body()?.statusCode == "200") {
+                                if (response.body()?.data?.down == false) {
+                                    createOrder(reqCreateOrder, location = location)
+                                } else  {
+                                    isUnderMainLiveData.value = response.body()
+//                                    "App is under maintenance. Please try after some time".showSnackBarForPayment()
+                                }
+                            }
+                        }
+                    }
+                })
+        }
+    fun createOrder(reqCreateOrder: ReqCreateOrder, location: Location?) =
+        viewModelScope.launch {
+
+            retrofitSetup.callApi(false, object : CallHandler<Response<*>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<*> {
+                    return apiParams.createOrder(
+                        "Bearer ${AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}",
+                        reqCreateOrder
+                    )
+                }
+
+                override fun success(response: Response<*>) {
+                    Log.d("TAG", "success: ......${response.body()}")
+                    if (response.isSuccessful) {
+                        try {
+                            val gson = Gson()
+                            val respSuccess: RespCreateOrder? = gson.fromJson(
+                                gson.toJsonTree(response.body()).asJsonObject,
+                                RespCreateOrder::class.java
+                            )
+                            // Get the plain text response
+                            val plainTextResponse = respSuccess?.data
+                            // Do something with the plain text response
+                            Log.d("TAG", "success: .,..$plainTextResponse.")
+                            responseCreateOrder.value = respSuccess
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else if (response.code() == 401) {
+                        Log.d("FAILED_401", "400000111111: ...............${response.body()}")
+                        val gson = Gson()
+                        val respFail: RespCommon? = gson.fromJson(
+                            gson.toJsonTree(response.body()).asJsonObject,
+                            RespCommon::class.java
+                        )
+                        tokenExpiredResp.value = respFail
+                        getLogin2(location = location)
+                    }
+
+                    AppUtility.hideProgressBar()
+                }
+
+                override fun error(message: String) {
+                    super.error(message)
+                    Log.d("TAG", "error: ......$message")
+                }
+            })
+
+        }
+    fun getLogin2(location: Location?) = viewModelScope.launch {
+        Log.d("TAG", "getLogin: //../........")
+        retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
+            override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
+                return apiParams.getLogin(
+                    LoginReqNew(
+                        AppUtility.getDeviceDetails(location),
+                        BuildConfig.PASSWORD,
+                        BuildConfig.USERNAME
+                    )
+                )
+            }
+
+            override fun success(response: Response<LoginNewResp>) {
+                Log.d("TAG", "success: ......$response")
+                response.body()?.statusCode?.let {
+                    AppSharedPref.putStringValue(
+                        Constants.AUTH_STATUS,
+                        it
+                    )
+                }
+                response.body()?.token?.let {
+                    AppSharedPref.putStringValue(
+                        Constants.JWT_TOKEN,
+                        it
+                    )
+                }
+                AppUtility.hideProgressBar()
+            }
+
+            override fun error(message: String) {
+                super.error(message)
+                Log.d("TAG", "error: ......$message")
+                AppUtility.hideProgressBar()
+            }
+        })
+    }
     fun getFestDetailsForHeaderHomePage() = viewModelScope.launch {
         retrofitSetup.callApi(
             true,

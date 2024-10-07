@@ -155,7 +155,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 amountToPay?.let { it1 -> createOrder(it1, notes = "paying from debit_or_credit") }
             }
         }
-        paymentViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
+        ( activity as MainActivity).commonViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
             it?.let {
                 Log.d(TAG, "onCreate: ...................$it")
                 if (it.statusCode == "200") {
@@ -571,7 +571,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         } else {
             Log.d(TAG, "createOrder: ....api_Calls")
 //            if (!BuildConfig.DEBUG) {
-            paymentViewModel.getUnderMaintenanceStatus(
+            (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus(
                 reqCreateOrder = ReqCreateOrder(
                     amount = amount,
                     currency = "INR",
@@ -1035,7 +1035,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             override fun onFinish() {
                 // Reset or refresh your UI, or restart the countdown for the next day if needed
                 binding.underMainTimerParent.timerTextView.text = "00:00"
-                paymentViewModel.getUnderMaintenanceStatusCheck()
+//                paymentViewModel.getUnderMaintenanceStatusCheck()
 
 //                navController.clearBackStack(R.id.splashFragment)
 
@@ -1235,6 +1235,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 }
             }
         }
+
         val callback: OnBackPressedCallback =
             object : OnBackPressedCallback(true) { //* enabled by default *//*
                 override fun handleOnBackPressed() {
@@ -1242,6 +1243,16 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                     Log.d("TAG", "handleOnBackPressed: ..........pressed")
                     toggleWebViewVisibility(View.GONE)
 //                    findNavController().navigate(R.id.paymentCloseDialog)
+//                   requireActivity(). showCustomDialogForRenewCard(onOkClick = {
+//                        if (it) {
+//                            if (binding.webview.visibility == View.VISIBLE) {
+//                                razorpay?.onBackPressed()
+//                               toggleWebViewVisibility(View.GONE)
+//                            } else {
+//                                findNavController().popBackStack()
+//                            }
+//                        }
+//                    })
                 }
             }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
@@ -1312,7 +1323,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             }
         })
         Log.d(TAG, "onStart: ${binding.enterExpireDateEt.text}")
-        paymentViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
+        ( activity as MainActivity).commonViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
             it?.let {
                 Log.d(TAG, "onCreate: ...................$it")
                 if (it.statusCode == "200") {
@@ -1605,7 +1616,8 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
                 } else {
 //                    if(!BuildConfig.DEBUG) {
-                    paymentViewModel.getUnderMaintenanceStatusCheck()
+                    (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+//                    paymentViewModel.getUnderMaintenanceStatusCheck()
 //                    }
                 }
             }
