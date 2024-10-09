@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import com.paulmerchants.gold.databinding.ProgressLayoutBinding
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.ui.PaymentActivity
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -144,16 +145,35 @@ class RetrofitSetup @Inject constructor(private val apiParams: ApiParams) {
     private lateinit var dialog: AlertDialog
 
     private fun progressBarAlert() = try {
-        hideProgressBar()
-        MainActivity.context.get()?.let {
-            val builder = AlertDialog.Builder(it)
-            val layout = ProgressLayoutBinding.inflate(LayoutInflater.from(it))
-            builder.setCancelable(false)
-            builder.setView(layout.root)
-            dialog = builder.create()
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.show()
-        }
+
+     hideProgressBar()
+            MainActivity.context.get()?.let {
+                val builder = AlertDialog.Builder(it)
+                val layout = ProgressLayoutBinding.inflate(LayoutInflater.from(it))
+                builder.setCancelable(false)
+                builder.setView(layout.root)
+                dialog = builder.create()
+                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.show()
+            }
+
+//        else if (PaymentActivity.context.get() != null) {
+//
+//            PaymentActivity.context.get()?.let {
+//                val builder = AlertDialog.Builder(it)
+//                val layout = ProgressLayoutBinding.inflate(LayoutInflater.from(it))
+//                builder.setCancelable(false)
+//                builder.setView(layout.root)
+//                dialog = builder.create()
+//                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//                dialog.show()
+//            }
+////            hideProgressBar()
+//        } else {
+//            hideProgressBar()
+//
+//        }
+
     } catch (e: Exception) {
         e.printStackTrace()
     }

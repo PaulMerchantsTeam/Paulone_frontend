@@ -50,6 +50,7 @@ import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.Constants.GO_TO_HOME
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.CommonViewModel
@@ -70,6 +71,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     private val updateType = AppUpdateType.IMMEDIATE
     lateinit var navOption: NavOptions
     private lateinit var navOptionLeft: NavOptions
+    private   var goToHomeFragment: Boolean = false
     private lateinit var navOptionTop: NavOptions
     private lateinit var navController: NavController
     private lateinit var secureFiles: SecureFiles
@@ -167,9 +169,11 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         navController = navHostFragment.navController
 
         val bundle = intent.extras
-        paymentId = bundle?.getString(com.paulmerchants.gold.utility.Constants.PAYMENT_ID)
-        if (!paymentId.isNullOrEmpty()) {
-            navController.navigate(R.id.paymentConfirmed)
+        if (bundle != null) {
+            goToHomeFragment = bundle.getBoolean(GO_TO_HOME)
+        }
+        if (goToHomeFragment) {
+            navController.navigate(R.id.homeScreenFrag)
         }
 
         window.setFlags(

@@ -43,7 +43,9 @@ import com.paulmerchants.gold.utility.AppUtility.showSnackBarForPayment
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.IS_SHOW_TXN
 import com.paulmerchants.gold.utility.decryptKey
+import com.paulmerchants.gold.utility.showCustomDialogFoPaymentError
 import com.paulmerchants.gold.utility.showCustomDialogFoPaymentStatus
+import com.paulmerchants.gold.utility.showCustomDialogForError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -332,9 +334,15 @@ class PaymentViewModel @Inject constructor(
                     getLogin2(location)
 
                 } else {
-
+                    val gson = Gson()
+                    val respSuccess: RespUpdatePaymentStatus? = gson.fromJson(
+                        gson.toJsonTree(response.body()).asJsonObject,
+                        RespUpdatePaymentStatus::class.java
+                    )
+//                        respSuccess?.message.showSnackBar()
+                    respPaymentUpdate.value = respSuccess
 //                    "Some thing went wrong..try again later".showSnackBar()
-                    activity.showCustomDialogFoPaymentStatus(
+                    activity.showCustomDialogFoPaymentError(
                         message = response.message(),
                         isClick = {
 
@@ -345,6 +353,11 @@ class PaymentViewModel @Inject constructor(
 
             override fun error(message: String) {
                 super.error(message)
+                activity.showCustomDialogFoPaymentError(
+                    message = "Something wrong please try again later",
+                    isClick = {
+
+                    })
                 Log.d("TAG", "error: ......$message")
             }
         })

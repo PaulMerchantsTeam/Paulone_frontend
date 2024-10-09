@@ -4,8 +4,8 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.view.View
 import android.view.ViewGroup
@@ -30,11 +30,11 @@ import com.paulmerchants.gold.adapter.MenuServicesAdapter
 import com.paulmerchants.gold.adapter.NotificationAdapter
 import com.paulmerchants.gold.databinding.AppCloseDialogBinding
 import com.paulmerchants.gold.databinding.DialogPinRestSuccessBinding
+import com.paulmerchants.gold.databinding.ErrorDialogBinding
 import com.paulmerchants.gold.enums.BbpsType
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.MenuServices
 import com.paulmerchants.gold.model.Notifications
-import com.paulmerchants.gold.ui.MainActivity
 
 const val IS_SHOW_TXN = "IS_SHOW_TXN"
 fun Activity.showCustomDialogFoPaymentStatus(
@@ -58,6 +58,63 @@ fun Activity.showCustomDialogFoPaymentStatus(
         isClick(true)
         dialog.dismiss()
 //        finish()
+    }
+    dialog.show()
+}
+fun Activity.showCustomDialogFoPaymentError(
+    header: String = "",
+    message: String,
+    isClick: (Boolean) -> Unit,
+) {
+    val binding = AppCloseDialogBinding.inflate(layoutInflater)
+    val dialog = BottomSheetDialog(this)
+    dialog.setCancelable(true)
+    dialog.setContentView(binding.root)
+//    binding.quickPay.text = if (header == "") "Payment Status" else header
+    binding.upcomDTv.apply {
+        text = message
+
+        show()
+    }
+    binding.img.show()
+    binding.quickPay.hide()
+    binding.cancelDgBtn.setOnClickListener {
+        dialog.dismiss()
+    }
+    binding.loginParentBtn.setOnClickListener {
+        isClick(true)
+        dialog.dismiss()
+//        finish()
+    }
+    dialog.show()
+}
+fun Activity.showCustomDialogForError(
+    header: String = "",
+    message: String,
+    isClick: (Boolean) -> Unit,
+) {
+    val binding = ErrorDialogBinding.inflate(layoutInflater)
+
+    val dialog = AlertDialog.Builder(this)
+        .setView(binding.root)
+        .setCancelable(false) // Prevent dialog dismissal on back press
+        .create()
+
+    binding.dialogTitle.text = if (header == "") "Payment Status" else header
+
+    binding.dialogMessage.apply {
+        setTextColor(getColor(R.color.black))
+
+        text = message
+        show()
+    }
+
+
+
+    binding.buttonOk.setOnClickListener {
+        isClick(true)
+        dialog.dismiss()
+
     }
     dialog.show()
 }

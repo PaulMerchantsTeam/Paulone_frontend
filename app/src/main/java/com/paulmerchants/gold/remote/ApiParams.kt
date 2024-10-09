@@ -28,6 +28,7 @@ import com.paulmerchants.gold.model.newmodel.RespGetLOanOutStanding
 import com.paulmerchants.gold.model.newmodel.RespLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.RespPaidSingleReceipt
 import com.paulmerchants.gold.model.newmodel.RespPayReceipt
+import com.paulmerchants.gold.model.newmodel.RespPayReceiptNew
 import com.paulmerchants.gold.model.newmodel.RespPaymentMethod
 import com.paulmerchants.gold.model.newmodel.RespPendingInterstDue
 import com.paulmerchants.gold.model.newmodel.RespResetFogetMpin
@@ -304,6 +305,11 @@ interface ApiParams {
         @Header("Authorization") auth: String,
         @Path("paymentId") paymentId: String,
     ): Response<RespPayReceipt>
+    @GET("payments/transaction-receipts-new/{paymentId}")   //
+    suspend fun getPaidReceiptNew(
+        @Header("Authorization") auth: String,
+        @Path("paymentId") paymentId: String,
+    ): Response<RespPayReceiptNew>
 
     @GET("/branch/search-by-branch-name/Paul Merchants")   //
     suspend fun searchBranch(

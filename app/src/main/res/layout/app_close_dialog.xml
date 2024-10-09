@@ -6,6 +6,20 @@
     android:layout_height="wrap_content"
     android:background="@drawable/card_top_radius_19">
 
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_8sdp"
+        android:src="@drawable/baseline_error"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/quickPay"
+
+          />
     <TextView
         android:id="@+id/quickPay"
         android:layout_width="wrap_content"
@@ -16,20 +30,22 @@
         android:text="@string/do_you_want_to_close_this_app"
         android:textColor="@color/splash_screen_one"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/img"
+        />
 
 
     <ImageView
         android:id="@+id/cancelDgBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
         android:layout_margin="@dimen/_8sdp"
         android:src="@drawable/x_circle"
-        app:layout_constraintBottom_toBottomOf="@+id/quickPay"
+        app:layout_constraintBottom_toBottomOf="@+id/img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.91"
-        app:layout_constraintStart_toEndOf="@+id/quickPay"
-        app:layout_constraintTop_toTopOf="@+id/quickPay" />
+        app:layout_constraintStart_toEndOf="@+id/img"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/upcomDTv"
@@ -38,6 +54,7 @@
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_17sdp"
         android:fontFamily="@font/poppins_bold"
+        android:textAlignment="center"
         android:text="Do you want to close this app?"
         android:textColor="@color/splash_screen_one"
         android:textSize="@dimen/_10ssp"

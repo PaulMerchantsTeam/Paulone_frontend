@@ -7,10 +7,9 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.TransacReceiptBinding
 import com.paulmerchants.gold.model.newmodel.RespPayReceipt
-import com.paulmerchants.gold.security.sharedpref.AppSharedPref
-import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.Constants.PAYMENT_ID
+import com.paulmerchants.gold.utility.showCustomDialogForError
 import com.paulmerchants.gold.viewmodels.TxnReceiptViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,7 +34,20 @@ class PaidReceiptFrag :
         }
         txnReceiptViewModel.paidReceipt.observe(viewLifecycleOwner) {
             it?.let {
+                if (it.data.entityPayment == null && it.data.accNo == null) {
+
+
+                    requireActivity().showCustomDialogForError(
+                        header = "Error!",
+                        message = "Unable to retrieve the transaction details. Please try again in few moments.",
+                        isClick = {
+//                            findNavController().navigateUp()
+                            findNavController().popBackStack()
+                        })
+                }
                 setData(it)
+
+
             }
         }
 
@@ -72,7 +84,7 @@ class PaidReceiptFrag :
 
     private fun setData(it: RespPayReceipt) {
         binding.apply {
-            amountPaid.text = "${getString(R.string.Rs)}${it.data.entityPayment?.amount}"
+            amountPaid.text = "${getString(R.string.Rs)}${it.data.entityPayment?.amount ?: "NA"}"
             paymentConfirmIv.setImageResource(
                 if (it.data.entityPayment?.captured == true) {
                     R.drawable.pay_confirm_tick_icon
@@ -82,13 +94,14 @@ class PaidReceiptFrag :
             )
             statusPaymnet.text =
                 if (it.data.entityPayment?.captured == true) "SUCCESS!" else "FAIL!"
-            dateOfTrans.text = it.data.entityPayment?.created_at
+            dateOfTrans.text = it.data.entityPayment?.created_at ?: "NA"
             transIdNumTv.text = it.data.entityPayment?.paymentId ?: "NA"
-            paidFromNameTv.text = it.data.entityPayment?.method
-            transTypeTv.text = it.data.entityPayment?.email
-            viewRefNumTv.text = it.data.entityPayment?.contact
+            paidFromNameTv.text = it.data.entityPayment?.method ?: "NA"
+            transTypeTv.text = it.data.entityPayment?.email ?: "NA"
+            viewRefNumTv.text = it.data.entityPayment?.contact ?: "NA"
             paidToNameTv.text = it.data.accNo ?: "NA"
-            reasonOFCancelTv.text = it.data.entityPayment?.error_reason
+            reasonOFCancelTv.text = it.data.entityPayment?.error_reason ?: "NA"
+            custToNameTv.text = it.data.custId ?: "NA"
 //            cardNumTv.text = ""
 //            paidToNameTv.text = ""
 //            paidToCardNumTv.text = ""

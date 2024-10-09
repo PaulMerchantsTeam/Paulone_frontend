@@ -185,6 +185,7 @@ class GoldLoanScreenFrag :
 
                 }
                 putString(Constants.CUST_ACC, actionItem.AcNo.toString())
+
             }
             goldScreenViewModel.isCalledGoldLoanScreen = true
             val intent = Intent(requireContext(), PaymentActivity ::class.java)

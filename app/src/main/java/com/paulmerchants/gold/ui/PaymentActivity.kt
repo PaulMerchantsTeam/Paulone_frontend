@@ -22,9 +22,6 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
@@ -33,17 +30,19 @@ import com.paulmerchants.gold.databinding.PaymentsModeNewBinding
 import com.paulmerchants.gold.location.LocationProvider
 import com.paulmerchants.gold.model.newmodel.Notes
 import com.paulmerchants.gold.model.newmodel.PayAllnOneGoDataTobeSent
-import com.paulmerchants.gold.model.newmodel.PaymentDetail
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
 import com.paulmerchants.gold.model.newmodel.StatusPayment
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.others.PaymentConfirmed
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.hideProgressBar
+import com.paulmerchants.gold.utility.AppUtility.progressBarAlert
 import com.paulmerchants.gold.utility.AppUtility.showCustomDialogForRenewCard
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
+import com.paulmerchants.gold.utility.showCustomDialogFoPaymentError
 import com.paulmerchants.gold.utility.showCustomDialogFoPaymentStatus
 import com.paulmerchants.gold.viewmodels.PaymentViewModel
 import com.razorpay.PaymentData
@@ -63,6 +62,7 @@ import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>() {
+
     private var isReadyForPayment: Boolean = false
     private var payAlllInOneGo: PayAllnOneGoDataTobeSent? = null
     private var amountToPay: Double? = 0.0
@@ -91,6 +91,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
     companion object {
         lateinit var context: WeakReference<Context>
+
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -172,7 +173,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
                         isDown = it.data.down
                         val intent = Intent(this, MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK  or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
                         finish()
                         // Kotlin code to navigate from PaymentActivity to MainActivity
@@ -236,10 +237,10 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 //                            if (!isUpiCollect && !isUpiIntent) {
 //                                binding.bhmUpiParent.hide()
 //                            } else {
-                        Log.e(
-                            TAG,
-                            "onCreate: ..${paymentMethods.method}......${paymentMethods.value}",
-                        )
+                        /* Log.e(
+                             TAG,
+                             "onCreate: ..${paymentMethods.method}......${paymentMethods.value}",
+                         )*/
                         if (paymentMethods.value) {
                             binding.upiMethodParent.show()
                         } else {
@@ -326,28 +327,36 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         paymentViewModel.respPaymentUpdate.observe(this) {
             it?.let {
                 Log.d(TAG, "ojnnnnnn: /.................${it.status}")
-
-                if (it.status == "200") {
+                hideProgressBar()
+                if (it.statusCode == "200") {
+                    hideProgressBar()
                     Log.d(TAG, "ojnnnnnn: /.................$it")
+                    val bundle = Bundle().apply {
+                        putString(
+                            com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
 
+                            it.data.paymentId
+                        )
+
+
+                    }
+                    val intent = Intent(this, PaymentConfirmed::class.java)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
+                    finish()
 
 //                    showCustomDialogFoPaymentStatus(
 //                        message = "${it.message}\n Payment has been collected. It will be reflected in you loan account in a few minutes.",
 //                        isClick = {
 //
 //                        })
-                    val bundle = Bundle().apply {
-                        putString(
-                            com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
-                            it.data.paymentId
-                        )
-
-                    }
-                    val intent = Intent(this, PaymentConfirmed::class.java)
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK  or Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent,bundle)
-//                    finish()
-
+//                    val bundle = Bundle().apply {
+//                        putString(
+//                            com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
+//                            it.data.paymentId
+//                        )
+//
+//                    }
 //                navController.navigateUp()
 //                    navController.popBackStack(R.id.paymentModesFragNew, true)
 //                    navController.navigate(R.id.paidReceiptFrag, bundle)
@@ -358,22 +367,53 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
 //                    (activity as MainActivity).commonViewModel.getPendingInterestDues((activity as MainActivity)?.appSharedPref)
                 } else {
-                    val bundle = Bundle().apply {
-                        putString(
-                            com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
-                            it.data.paymentId
-                        )
-
-                    }
+                    hideProgressBar()
+//                    val bundle = Bundle().apply {
+//                        putString(
+//                            com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
+//                            ORDER_ID
+////                            it.data.paymentId
+//                        )
+//
+//
+//                    }
 //                    val intent = Intent(this, PaymentConfirmed::class.java)
-////                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK  or Intent.FLAG_ACTIVITY_NEW_TASK)
-//                    startActivity(intent,bundle)
+//                    intent.putExtras(bundle)
+//                    startActivity(intent)
+//                    finish()
+                  /*   val bundle = Bundle().apply {
+                         putString(
+                             com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
+                             it.data.orderId
+                         )
+
+
+                     }
+                     val intent = Intent(this,PaymentConfirmed::class.java)
+                     intent.putExtras(bundle)
+                     startActivity(intent)
+                     finish()*/
+//                    val intent = Intent(this@PaymentActivity,PaymentConfirmed::class.java)
+//                    intent.putExtras(bundle)
+//                    startActivity(intent )
+//                    val intent = Intent(this, MainActivity::class.java)
+//                    intent.putExtras(bundle)
+//                    startActivity(intent)
+//                    finish()
+//                    val bundle = Bundle().apply {
+//                        putString(
+//                            com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
+//                            it.data.paymentId
+//                        )
+//
+//                    }
 //                    navController.navigateUp()
 //                    navController.popBackStack(R.id.paymentModesFragNew, true)
 //                    navController.navigate(R.id.paidReceiptFrag, bundle)
-                    showCustomDialogFoPaymentStatus(message = it.message, isClick = {
+                    showCustomDialogFoPaymentError(
+                        message = it.message, isClick = {
 
-                    })
+                        })
                 }
             }
         }
@@ -464,6 +504,8 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                         }
                     }
                     payload.put("order_id", it.data.orderId)
+
+
                     try {
                         sendRequest()
                     } catch (e: java.lang.Exception) {
@@ -847,7 +889,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                         Log.i(TAG, "onPaymentSuccess: ///////////.....${p1?.paymentId}")
                         toggleWebViewVisibility(View.GONE)
                         if (p1?.paymentId != null) {
-                            "Payment Success".showSnackBar()
+//                            "Payment Success".showSnackBar()
                             if (payAlllInOneGo != null) {
                                 updatePaymentStatusToServerToAllInOneGo(
                                     StatusPayment("captured", p1)
@@ -866,7 +908,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
                     override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
                         // Error code and description is passed here
-                        "Payment Failed".showSnackBar()
+//                        "Payment Failed".showSnackBar()
                         Log.i(TAG, "onPaymentError: ----${p2?.paymentId}")
                         toggleWebViewVisibility(View.GONE)
 //                        if (p2?.paymentId != null) {
@@ -953,6 +995,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         Log.d(TAG, "updatePaymentStatusToServer: $amountToPay....$statusData")
         if (customerAcc != null && amountToPay != null) {
             amountToPay?.let {
+                progressBarAlert(this@PaymentActivity)
                 paymentViewModel.updatePaymentStatus(
                     this,
                     status = statusData.status,
@@ -979,6 +1022,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         Log.d(TAG, "updatePaymentStatusToServer: $amountToPay....$statusData")
         if (amountToPay != null) {
             amountToPay?.let {
+                progressBarAlert(this@PaymentActivity)
                 payAlllInOneGo?.payAll?.let { payAllGo ->
                     paymentViewModel.updatePaymentStatusAllInOneGo(
                         status = statusData.status,
@@ -1111,6 +1155,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
     override fun onBackPressed() {
         super.onBackPressed()
+        hideProgressBar()
         showCustomDialogForRenewCard(onOkClick = {
             if (it) {
                 if (binding.webview.visibility == View.VISIBLE) {

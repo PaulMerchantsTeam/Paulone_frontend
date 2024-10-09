@@ -146,6 +146,7 @@
     <string name="mobile_number">Mobile Number</string>
     <string name="your_bank_lender_name">Your Bank/Lender Name</string>
     <string name="account_number">Account Number</string>
+
     <string name="edit_profile">Edit Profile</string>
     <string name="personal_information">Personal Information</string>
     <string name="change_profile_picture"><u>Change profile picture</u></string>
@@ -200,6 +201,10 @@
     <string name="updated_credit_paid">Timely updated with new credit applications</string>
 
     <string name="need_help_call_us">Need Help? Call us!</string>
+    <string name="need_help_call_us_coloured">
+    Need Help?
+    <font color="#FF0000"> Call us!</font>
+</string>
     <string name="go_to_home">Go to Home</string>
     <string name="add_upi_id_here">Add UPI ID here</string>
     <string name="save_this_upi_id_for_future_use">Save this UPI id for future use</string>
@@ -435,6 +440,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="time_setting_not_automatic">Time Setting Not Automatic</string>
     <string name="enable_time_zone_text">We have detected that the Automatic Time and Timezone setting are not enabled on your phone. For security reasons and proper functioning of the app please enable these settings.</string>
+    <string name="error">Error!</string>
+    <string name="unable_to_retrieve_the_transaction_details_please_try_again_in_few_moments">Unable to retrieve the transaction details. Please try again in few moments.</string>
 
     <!--  • = \u2022,   ● = \u25CF,   ○ = \u25CB,   ▪ = \u25AA,   ■ = \u25A0,   □ = \u25A1,   ► = \u25BA-->
 </resources>

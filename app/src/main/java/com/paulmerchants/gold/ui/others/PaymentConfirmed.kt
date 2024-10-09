@@ -18,6 +18,7 @@ import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.LoanEmiPaymentConfirmedBinding
 import com.paulmerchants.gold.databinding.PaymentsModeNewBinding
 import com.paulmerchants.gold.model.newmodel.RespPayReceipt
+import com.paulmerchants.gold.model.newmodel.RespPayReceiptNew
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.PaymentActivity
@@ -44,12 +45,13 @@ class PaymentConfirmed :
 
           override fun onCreate(savedInstanceState: Bundle?) {
               super.onCreate(savedInstanceState)
+              setContentView(binding.root)
               val bundle = intent.extras
 
               paymentId = bundle?.getString( com.paulmerchants.gold.utility.Constants.PAYMENT_ID)
-              paymentId = ""
+
               paymentId?.let {
-                  mViewModel.getPaidReceipt(
+                  mViewModel.getPaidReceiptNew(
                       it
                   )
               }
@@ -57,8 +59,12 @@ class PaymentConfirmed :
               binding.apply {
 
                   gotoHomeBtn.setOnClickListener {
+                      val intent = Intent(this@PaymentConfirmed, MainActivity::class.java)
+                      intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                      intent.putExtra(com.paulmerchants.gold.utility.Constants.GO_TO_HOME, true) // Pass a flag to navigate to HomeFragment
+                      startActivity(intent)
                       finish()
-                      PaymentActivity().finish()
+//
                   }
                   needHelpBtn.setOnClickListener{
                       val phone = "18001371333"
@@ -94,7 +100,7 @@ class PaymentConfirmed :
                   }
 
               }
-              mViewModel.paidReceipt.observe(this) {
+              mViewModel.paidReceiptNew.observe(this) {
                   it?.let {
                       setData(it)
                   }
@@ -109,35 +115,35 @@ class PaymentConfirmed :
 
 
    // 82233213123
-    private fun setData(it: RespPayReceipt) {
+    private fun setData(it: RespPayReceiptNew) {
         binding.apply {
             paymentConfirmIv.setImageResource(
-                if (it.data.entityPayment?.captured == true) {
+                if (it.data?.paymentDetailsDTO?.captured == true) {
                     R.drawable.pay_confirm_tick_icon
                 } else {
                     R.drawable.baseline_error
                 }
             )
             paymetConfirmTv.text =
-                if (it.data.entityPayment?.captured == true) {
+                if (it.data?.paymentDetailsDTO?.captured == true) {
                    "PAYMENT CONFIRMED!!"
                 } else {
                   "PAYMENT FAILED!!"
                 }
 
-            transIdTv.text = it.data.entityPayment?.paymentId?: "NA"
-            accountNoTv.text =it.data.accNo?: "NA"
+            transIdTv.text = it.data?.paymentDetailsDTO?.id?: "NA"
+            accountNoTv.text =it.data?.accNo?: "NA"
             customerNameTv.text =  AppSharedPref.getStringValue(
                 com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME,
             )?.substringBefore(" ")?: "NA"
 //            transDteAndTimeTv.text = it.data.entityPayment?.created_at
-            transDteAndTimeTv.text = it.data.entityPayment?.updated_at?.let { it1 ->
+            transDteAndTimeTv.text = it.data?.paymentDetailsDTO?.created_at?.let { it1 ->
                 AppUtility.getDate (
                     it1
                 )
             }?: "NA"
-            modeOfPaymentTv.text = it.data.entityPayment?.method?: "NA"
-            amountPaidTv.text =  "${getString(R.string.Rs)} ${it.data.entityPayment?.amount?.let { it1 ->
+            modeOfPaymentTv.text = it.data?.paymentDetailsDTO?.method?: "NA"
+            amountPaidTv.text =  "${getString(R.string.Rs)} ${it.data?.paymentDetailsDTO?.amount?.let { it1 ->
                 AppUtility.getTwoDigitAfterDecimal(
                     it1.toDouble())
             }?: "NA"}"

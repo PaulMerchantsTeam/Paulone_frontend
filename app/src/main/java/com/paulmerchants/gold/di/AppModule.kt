@@ -37,7 +37,7 @@ class AppModule {
             ExternalPreferredCacheDiskCacheFactory.DEFAULT_DISK_CACHE_SIZE.toLong()
         )
     }
-   /* var trustAllCerts: Array<TrustManager> = arrayOf<TrustManager>(object : X509TrustManager {
+    var trustAllCerts: Array<TrustManager> = arrayOf<TrustManager>(object : X509TrustManager {
         override fun checkClientTrusted(chain: Array<X509Certificate?>?, authType: String?) {
         }
 
@@ -48,25 +48,25 @@ class AppModule {
             return arrayOfNulls<X509Certificate>(0)
         }
     }
-    )*/
+    )
     @Provides
     @Singleton
     fun provideOkHttpClient(
         cache: Cache
     ): OkHttpClient = if (BuildConfig.DEBUG) {
-       /* val sslContext = SSLContext.getInstance("SSL")
-        sslContext.init(null, trustAllCerts, SecureRandom())*/
+        val sslContext = SSLContext.getInstance("SSL")
+        sslContext.init(null, trustAllCerts, SecureRandom())
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         OkHttpClient.Builder()
             .readTimeout(10, TimeUnit.MINUTES)
             .connectTimeout(10, TimeUnit.MINUTES)
             .addInterceptor(loggingInterceptor)
-       /* .sslSocketFactory(
+        .sslSocketFactory(
             sslContext.getSocketFactory(),
             trustAllCerts.get(0) as X509TrustManager
         )
-            .hostnameVerifier { hostname, session -> true }*/
+            .hostnameVerifier { hostname, session -> true }
     .cache(cache)
             .build()
     } else OkHttpClient.Builder()

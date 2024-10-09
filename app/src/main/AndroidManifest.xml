@@ -50,6 +50,12 @@
         <activity
             android:name=".ui.PaymentActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.others.PaymentConfirmed"
+            android:exported="false"
+            >
+
+        </activity>
 
         <profileable
             android:shell="true"

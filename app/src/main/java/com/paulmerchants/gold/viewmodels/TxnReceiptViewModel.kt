@@ -10,6 +10,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.paulmerchants.gold.model.newmodel.RespPaidSingleReceipt
 import com.paulmerchants.gold.model.newmodel.RespPayReceipt
+import com.paulmerchants.gold.model.newmodel.RespPayReceiptNew
 import com.paulmerchants.gold.model.newmodel.RespTxnHistory
 import com.paulmerchants.gold.model.newmodel.Transactions
 import com.paulmerchants.gold.networks.CallHandler
@@ -34,6 +35,7 @@ class TxnReceiptViewModel @Inject constructor(
 
     private val TAG = this.javaClass.name
     val paidReceipt = MutableLiveData<RespPayReceipt>()
+    val paidReceiptNew = MutableLiveData<RespPayReceiptNew>()
 
     init {
         Log.d(TAG, ": init_$TAG")
@@ -53,6 +55,34 @@ class TxnReceiptViewModel @Inject constructor(
                     Log.d("TAG", "success: ..getTxnHistory....${response.body()}")
                     if (response.body()?.statusCode == "200") {
                         paidReceipt.value = response.body()
+                    } else {
+//                        "${response.body()?.message}".showSnackBar()
+                    }
+
+
+                }
+
+                override fun error(message: String) {
+                    super.error(message)
+                    Log.d("TAG", "error: ......$message")
+                }
+            })
+
+        }
+    fun getPaidReceiptNew( paymentId: String) =
+        viewModelScope.launch {
+            retrofitSetup.callApi(true, object : CallHandler<Response<RespPayReceiptNew>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<RespPayReceiptNew> {
+                    return apiParams.getPaidReceiptNew(
+                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
+                        paymentId
+                    )
+                }
+
+                override fun success(response: Response<RespPayReceiptNew>) {
+                    Log.d("TAG", "success: ..getTxnHistory....${response.body()}")
+                    if (response.body()?.statusCode == "200") {
+                        paidReceiptNew.value = response.body()
                     } else {
 //                        "${response.body()?.message}".showSnackBar()
                     }

@@ -346,7 +346,6 @@ object AppUtility {
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         val outputFilename = "statement.pdf"
         val outputFile = File(outputPath, outputFilename)
-
         try {
             val fileOutputStream = FileOutputStream(outputFile)
             PdfWriter.getInstance(document, fileOutputStream)
@@ -860,17 +859,17 @@ object AppUtility {
      * Progress Bar Layout
      * */
 
-    fun progressBarAlert() = try {
+    fun progressBarAlert(context: Context) = try {
         hideProgressBar()
-        MainActivity.context.get()?.let {
-            val builder = AlertDialog.Builder(it)
-            val layout = ProgressLayoutBinding.inflate(LayoutInflater.from(it))
+
+            val builder = AlertDialog.Builder(context)
+            val layout = ProgressLayoutBinding.inflate(LayoutInflater.from(context))
             builder.setCancelable(false)
             builder.setView(layout.root)
             dialog = builder.create()
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog.show()
-        }
+
     } catch (e: Exception) {
         e.printStackTrace()
     }

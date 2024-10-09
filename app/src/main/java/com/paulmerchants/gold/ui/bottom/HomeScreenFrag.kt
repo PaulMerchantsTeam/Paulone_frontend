@@ -326,8 +326,11 @@ class HomeScreenFrag :
                 if ((activity as MainActivity).commonViewModel.notZero.isNotEmpty()) {
                     upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
                     binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
+                    binding.noIntHaveParent.root.hide()
                     binding.rvUpcomingDueLoans.show()
+
                 } else {
+                    binding.rvUpcomingDueLoans.hide()
                     binding.noIntHaveParent.root.show()
                 }
 
