@@ -3,14 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <domain-config>
         <domain includeSubdomains="true">prod.paulgold.in</domain>
-
-        <trust-anchors>
-            <certificates src="system" />
-            <certificates src="user" />
-        </trust-anchors>
-    </domain-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">uat.paulpaygifty.com</domain>
         <trust-anchors>
             <certificates src="system" />
             <certificates src="user" />

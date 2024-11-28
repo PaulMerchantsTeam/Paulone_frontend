@@ -478,7 +478,6 @@ class HomeScreenFrag :
         (activity as MainActivity).commonViewModel.paymentData.removeObservers(this)
         (activity as MainActivity).commonViewModel.tokenExpiredResp.removeObservers(this)
         (activity as MainActivity).commonViewModel.isStartAnim.removeObservers(this)
-
         (activity as MainActivity).commonViewModel.respPaymentUpdate.postValue(null)
         (activity as MainActivity).commonViewModel.tokenExpiredResp.postValue(null)
         (activity as MainActivity).commonViewModel.paymentData.postValue(null)
@@ -508,7 +507,7 @@ class HomeScreenFrag :
 
         }.attach()
     }
-
+         
     private fun onPayDueClicked(dueLoans: GetPendingInrstDueRespItem) {
         if (InternetUtils.isNetworkAvailable(requireContext())) {
             (activity as MainActivity).commonViewModel.dueLoanSelected = dueLoans
@@ -540,6 +539,7 @@ class HomeScreenFrag :
                 Constants.CUSTOMER_NAME,
             )?.substringBefore(" ")
         }"
+
         binding.searchProfileParent.firtLetterUser.text = "${
             AppSharedPref.getStringValue(
                 Constants.CUSTOMER_NAME,

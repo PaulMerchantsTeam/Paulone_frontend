@@ -32,7 +32,7 @@ android {
 
     buildTypes {
         release {
-            debuggable true
+            debuggable false
             minifyEnabled true
             shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -46,17 +46,25 @@ android {
             buildConfigField "String", "TERMS_CONDITION", "\"https://prod.paulgold.in/paulgoldv01/conditions/terms-conditions\""
         }
         debug {
-//            buildConfigField "String", "BASE_URL", "\"https://prod.paulgold.in/p/\""
-            buildConfigField "String", "BASE_URL", "\"https://uat.paulpaygifty.com/paulgoldv01/\""
-            buildConfigField "String", "SECRET_KEY", "\"`MobApp#L0AnDeT@ils#SeCUretechpool*20&2`3\""
-            buildConfigField "String", "SECRET_KEY_GEN", "\"09C427004E85E561ED607E0038946EBF\""
-//            buildConfigField "String", "SECRET_KEY", "\"MobApp#L0AnDeT@ils#SeCUretechpool*20&23\""
-//            buildConfigField "String", "SECRET_KEY_GEN", "\"m1vmZNPeHjMBb1nqF5srJhky\""
+            buildConfigField "String", "RAZORPAY_KEY", "\"rzp_live_me6vHPlVFbR2rA\""
+            buildConfigField "String", "BASE_URL", "\"https://prod.paulgold.in/paulgoldv01/\""
             buildConfigField "String", "PASSWORD", "\"FU510N@pro\""
             buildConfigField "String", "USERNAME", "\"pml\""
-            buildConfigField "String", "RAZORPAY_KEY", "\"rzp_test_sC3pnynLq27dfw\""
-            buildConfigField "String", "PRIVACY_POLICY", "\"https://uat.paulpaygifty.com/paulgoldv01/conditions/privacy-policy\""
-            buildConfigField "String", "TERMS_CONDITION", "\"https://uat.paulpaygifty.com/paulgoldv01/conditions/terms-conditions\""
+            buildConfigField "String", "SECRET_KEY", "\"`MobApp#L0AnDeT@ils#SeCUretechpool*20&2`3\""
+            buildConfigField "String", "SECRET_KEY_GEN", "\"09C427004E85E561ED607E0038946EBF\""
+            buildConfigField "String", "PRIVACY_POLICY", "\"https://prod.paulgold.in/paulgoldv01/conditions/privacy-policy\""
+            buildConfigField "String", "TERMS_CONDITION", "\"https://prod.paulgold.in/paulgoldv01/conditions/terms-conditions\""
+
+//            buildConfigField "String", "BASE_URL", "\"https://uat.paulpaygifty.com/paulgoldv01/\""
+//            buildConfigField "String", "SECRET_KEY", "\"`MobApp#L0AnDeT@ils#SeCUretechpool*20&2`3\""
+//            buildConfigField "String", "SECRET_KEY_GEN", "\"09C427004E85E561ED607E0038946EBF\""
+////            buildConfigField "String", "SECRET_KEY", "\"MobApp#L0AnDeT@ils#SeCUretechpool*20&23\""
+////            buildConfigField "String", "SECRET_KEY_GEN", "\"m1vmZNPeHjMBb1nqF5srJhky\""
+//            buildConfigField "String", "PASSWORD", "\"FU510N@pro\""
+//            buildConfigField "String", "USERNAME", "\"pml\""
+//            buildConfigField "String", "RAZORPAY_KEY", "\"rzp_test_sC3pnynLq27dfw\""
+//            buildConfigField "String", "PRIVACY_POLICY", "\"https://uat.paulpaygifty.com/paulgoldv01/conditions/privacy-policy\""
+//            buildConfigField "String", "TERMS_CONDITION", "\"https://uat.paulpaygifty.com/paulgoldv01/conditions/terms-conditions\""
         }
 
         benchmark {
@@ -68,7 +76,7 @@ android {
 //        debug {
 //            firebaseAppDistribution {
 //                releaseNotes "adding distribution type"
-//                testers = "dev.prithvi.19@gmail.com, swatibj08@gmail.com"
+//                testers = "dev.prithvi.19@gmail.com, swatibj08@gm*il.com"
 //            }
 //        }
 //        release {
@@ -196,4 +204,7 @@ dependencies {
     implementation("com.google.android.play:app-update-ktx:2.1.0")
 
     implementation("com.google.android.play:integrity:1.3.0")
+
+    implementation 'com.aheaditec.talsec.security:TalsecSecurity-Community:9.6.0'
+    implementation "org.mindrot:jbcrypt:0.4"
 }

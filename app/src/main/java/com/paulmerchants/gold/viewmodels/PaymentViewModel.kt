@@ -37,6 +37,7 @@ import com.paulmerchants.gold.networks.RetrofitSetup
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
+import com.paulmerchants.gold.ui.PaymentActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.AppUtility.showSnackBarForPayment
@@ -48,6 +49,8 @@ import com.paulmerchants.gold.utility.showCustomDialogFoPaymentStatus
 import com.paulmerchants.gold.utility.showCustomDialogForError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import org.mindrot.jbcrypt.BCrypt
+
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -90,7 +93,8 @@ class PaymentViewModel @Inject constructor(
     }
     fun getUnderMaintenanceStatusCheck() = viewModelScope.launch {
         retrofitSetup.callApi(
-            true,
+            false,
+
             object : CallHandler<Response<RespUnderMain>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
                     return apiParams.isUnderMaintenance()
@@ -101,6 +105,7 @@ class PaymentViewModel @Inject constructor(
                     if (response.isSuccessful) {
                         isUnderMainLiveData.value = response.body()
                     }
+                    AppUtility.hideProgressBar()
                 }
             })
     }
@@ -126,14 +131,16 @@ class PaymentViewModel @Inject constructor(
 //                                    "App is under maintenance. Please try after some time".showSnackBarForPayment()
                                 }
                             }
+                            AppUtility.hideProgressBar()
                         }
+
                     }
                 })
         }
 
     fun getCustomerDetails(appSharedPref: AppSharedPref, location: Location?) =
         viewModelScope.launch {
-            retrofitSetup.callApi(false, object : CallHandler<Response<RespGetCustomer>> {
+            retrofitSetup.callApi(true, object : CallHandler<Response<RespGetCustomer>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetCustomer> {
                     return apiParams.getCustomerDetails(
                         "Bearer ${appSharedPref.getStringValue(Constants.JWT_TOKEN).toString()}",
@@ -448,6 +455,15 @@ class PaymentViewModel @Inject constructor(
     }
 
     fun getLogin2(location: Location?) = viewModelScope.launch {
+        var requestid = AppUtility.generateUDID()
+        val randomid = requestid
+        val hashedPassword = BCrypt.hashpw(BuildConfig.PASSWORD, BCrypt.gensalt(12)).trim()
+        val hashedUserName = BCrypt.hashpw(BuildConfig.USERNAME, BCrypt.gensalt(12)).trim()
+//        map["X-Sign-Id"] = Utility.getSHA512(
+//            Utility.formattedString(
+//                mobile, hashed, randomid, Config.SALT
+//            )
+//        )
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -49,6 +50,53 @@
         android:src="@drawable/bbps"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/titlePageTv" />
+
+    <TextView
+        android:id="@+id/timerTextViewBg"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_round_corner_timer"
+        android:fontFamily="@font/digital_mono"
+        android:fontFeatureSettings="tnum"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/_6sdp"
+        android:paddingVertical="@dimen/_3sdp"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:text="@string/_88_00"
+        android:textAlignment="center"
+        android:textColor="@color/grey_maintenance"
+        android:textSize="@dimen/_30sdp"
+android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteY="39dp" />
+
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/digital_mono"
+        android:fontFeatureSettings="tnum"
+        android:gravity="center"
+        android:visibility="gone"
+        android:paddingHorizontal="@dimen/_6sdp"
+        android:paddingVertical="@dimen/_3sdp"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
+        android:text="@string/_00_00"
+        android:textAlignment="center"
+        android:textColor="@color/green_maintenance"
+        android:textSize="@dimen/_30sdp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/titlePageTv" />
 </androidx.constraintlayout.widget.ConstraintLayout>

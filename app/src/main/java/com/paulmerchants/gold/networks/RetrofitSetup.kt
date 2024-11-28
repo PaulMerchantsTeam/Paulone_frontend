@@ -2,6 +2,7 @@ package com.paulmerchants.gold.networks
 
 
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
@@ -33,7 +34,9 @@ class RetrofitSetup @Inject constructor(private val apiParams: ApiParams) {
 
     fun <T> callApi(
         progress: Boolean,
-        callHandler: CallHandler<T>,
+
+        callHandler: CallHandler<T>
+
     ) {
 
         /**
@@ -53,7 +56,13 @@ class RetrofitSetup @Inject constructor(private val apiParams: ApiParams) {
         CoroutineScope(Dispatchers.IO + coRoutineExceptionHandler + Job()).launch {
             flow {
                 withContext(Dispatchers.Main) {
-                    if (progress) progressBarAlert()
+                    if (progress) {
+
+                            progressBarAlert()
+
+
+                    }
+
                 }
                 emit(callHandler.sendRequest(apiParams = apiParams) as Response<*>)
             }.flowOn(Dispatchers.IO).catch { error ->
@@ -178,7 +187,23 @@ class RetrofitSetup @Inject constructor(private val apiParams: ApiParams) {
         e.printStackTrace()
     }
 
-
+//    private fun progressBarAlertPayment() = try {
+//
+//        hideProgressBar()
+//          PaymentActivity.context.get()?.let {
+//                val builder = AlertDialog.Builder(it)
+//                val layout = ProgressLayoutBinding.inflate(LayoutInflater.from(it))
+//                builder.setCancelable(false)
+//                builder.setView(layout.root)
+//                dialog = builder.create()
+//                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//                dialog.show()
+//            }
+//
+//
+//    } catch (e: Exception) {
+//        e.printStackTrace()
+//    }
     /** Hide Progress Bar */
     private fun hideProgressBar() {
         try {

@@ -78,7 +78,9 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.UnsupportedEncodingException
+import java.math.BigInteger
 import java.security.InvalidKeyException
+import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.security.Security
 import java.text.DecimalFormat
@@ -95,6 +97,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.StringTokenizer
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -716,6 +719,23 @@ object AppUtility {
         e.printStackTrace()
     }
 
+    fun generateUDID(): String {
+        return UUID.randomUUID().toString()
+    }
+    fun getSHA512(input: String): String {
+        val md: MessageDigest = MessageDigest.getInstance("SHA-512")
+        val messageDigest = md.digest(input.toByteArray())
+        // Convert byte array into signum representation
+        val no = BigInteger(1, messageDigest)
+        // Convert message digest into hex value
+        var hashtext: String = no.toString(16)
+        // Add preceding 0s to make it 32 bit
+        while (hashtext.length < 32) {
+            hashtext = hashtext
+        }
+        // return the HashText
+        return hashtext
+    }
     fun numberOfDaysWrtCurrent(date: String): Long {
         val daysDifference: Long
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -861,7 +881,6 @@ object AppUtility {
 
     fun progressBarAlert(context: Context) = try {
         hideProgressBar()
-
             val builder = AlertDialog.Builder(context)
             val layout = ProgressLayoutBinding.inflate(LayoutInflater.from(context))
             builder.setCancelable(false)
@@ -910,8 +929,6 @@ object AppUtility {
             null
         }
     }
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun validateQRTime(QRexpire: String): Boolean {
         // Fix the input format by replacing the space before the time zone with a '+'

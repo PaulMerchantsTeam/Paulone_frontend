@@ -10,8 +10,7 @@ object AppSharedPref {
     private lateinit var preferences: SharedPreferences
 
     fun start(context: Context) {
-        val mainKeyAlias =
-            MasterKey.Builder(context, "$SHARED_PREF_FILE")
+        val mainKeyAlias = MasterKey.Builder(context, "$SHARED_PREF_FILE")
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()
         preferences = EncryptedSharedPreferences.create(
             context,

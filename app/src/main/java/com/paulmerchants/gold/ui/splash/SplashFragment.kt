@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
@@ -31,6 +32,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.mindrot.jbcrypt.BCrypt
+
 
 @AndroidEntryPoint
 class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding::inflate) {
@@ -93,6 +96,11 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
 
     override fun onStart() {
         super.onStart()
+        val hashedPassword = BCrypt.hashpw(BuildConfig.PASSWORD, BCrypt.gensalt(12)).trim()
+        val hashedUserName = BCrypt.hashpw(BuildConfig.USERNAME, BCrypt.gensalt(12)).trim()
+       val checkpw = BCrypt.checkpw(BuildConfig.PASSWORD, hashedPassword)
+
+        Log.d(TAG, "onStart:$hashedPassword  $hashedUserName $checkpw")
         connectivityManager =
             requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         binding.nextBtn.setOnClickListener {

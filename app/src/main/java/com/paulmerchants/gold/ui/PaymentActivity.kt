@@ -22,6 +22,7 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.lifecycleScope
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
@@ -51,6 +52,8 @@ import com.razorpay.PaymentResultWithDataListener
 import com.razorpay.Razorpay
 import com.razorpay.ValidationListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.ref.WeakReference
@@ -381,18 +384,18 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 //                    intent.putExtras(bundle)
 //                    startActivity(intent)
 //                    finish()
-                  /*   val bundle = Bundle().apply {
-                         putString(
-                             com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
-                             it.data.orderId
-                         )
+                    /*   val bundle = Bundle().apply {
+                           putString(
+                               com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
+                               it.data.orderId
+                           )
 
 
-                     }
-                     val intent = Intent(this,PaymentConfirmed::class.java)
-                     intent.putExtras(bundle)
-                     startActivity(intent)
-                     finish()*/
+                       }
+                       val intent = Intent(this,PaymentConfirmed::class.java)
+                       intent.putExtras(bundle)
+                       startActivity(intent)
+                       finish()*/
 //                    val intent = Intent(this@PaymentActivity,PaymentConfirmed::class.java)
 //                    intent.putExtras(bundle)
 //                    startActivity(intent )
@@ -529,24 +532,60 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         }
 
         binding.gPayTv.setOnClickListener {
+            binding.gPayTv.isEnabled = false
+            binding.phonePeTv.isEnabled = false
+            binding.paytmTv.isEnabled = false
+            binding.otherApps.isEnabled = false
+
+            progressBarAlert(this@PaymentActivity)
+
             if (isReadyForPayment) {
+
                 initRazorpay()
                 upiIntentGooglePay()
                 amountToPay?.let { it1 -> createOrder(it1, notes = "paying from g_pay_intent") }
             } else {
                 "Please Wait...".showSnackBar()
             }
+            lifecycleScope.launch {
+                delay(5000) // Delay for 5 seconds
+                binding.gPayTv.isEnabled = true
+                binding.phonePeTv.isEnabled = true
+                binding.paytmTv.isEnabled = true
+                binding.otherApps.isEnabled = true
+            }
+
         }
         binding.phonePeTv.setOnClickListener {
+            binding.gPayTv.isEnabled = false
+            binding.phonePeTv.isEnabled = false
+            binding.paytmTv.isEnabled = false
+            binding.otherApps.isEnabled = false
+            progressBarAlert(this@PaymentActivity)
+
             if (isReadyForPayment) {
+
                 initRazorpay()
                 upiIntentPhonePe()
                 amountToPay?.let { it1 -> createOrder(it1, notes = "paying from phone_pay_intent") }
             } else {
                 "Please Wait...".showSnackBar()
             }
+            lifecycleScope.launch {
+                delay(5000) // Delay for 5 seconds
+                binding.gPayTv.isEnabled = true
+                binding.phonePeTv.isEnabled = true
+                binding.paytmTv.isEnabled = true
+                binding.otherApps.isEnabled = true
+            }
         }
         binding.paytmTv.setOnClickListener {
+            binding.gPayTv.isEnabled = false
+            binding.phonePeTv.isEnabled = false
+            binding.paytmTv.isEnabled = false
+            binding.otherApps.isEnabled = false
+            progressBarAlert(this@PaymentActivity)
+
             if (isReadyForPayment) {
                 initRazorpay()
                 upiIntentPaytm()
@@ -554,14 +593,34 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             } else {
                 "Please Wait...".showSnackBar()
             }
+            lifecycleScope.launch {
+                delay(5000) // Delay for 5 seconds
+                binding.gPayTv.isEnabled = true
+                binding.phonePeTv.isEnabled = true
+                binding.paytmTv.isEnabled = true
+                binding.otherApps.isEnabled = true
+            }
         }
         binding.otherApps.setOnClickListener {
+            binding.gPayTv.isEnabled = false
+            binding.phonePeTv.isEnabled = false
+            binding.paytmTv.isEnabled = false
+            binding.otherApps.isEnabled = false
+            progressBarAlert(this@PaymentActivity)
+
             if (isReadyForPayment) {
                 initRazorpay()
                 otherIntent()
                 amountToPay?.let { it1 -> createOrder(it1, notes = "paying from other_app") }
             } else {
                 "Please Wait...".showSnackBar()
+            }
+            lifecycleScope.launch {
+                delay(5000) // Delay for 5 seconds
+                binding.gPayTv.isEnabled = true
+                binding.phonePeTv.isEnabled = true
+                binding.paytmTv.isEnabled = true
+                binding.otherApps.isEnabled = true
             }
         }
         binding.apply {
@@ -877,6 +936,26 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         alert.show()
     }
 
+    private fun sessionExpiredMsg() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setMessage("Your Session is Expired, Please try again later")
+            .setCancelable(false)
+            .setPositiveButton(
+                "OK"
+            ) { dialog, _ ->
+                dialog.dismiss()
+
+
+                val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finish()
+            }
+
+        val alert: AlertDialog = builder.create()
+        alert.show()
+    }
+
     private fun sendRequest() {
         Log.d("TAG", "sendRequest: .......$payload")
         razorpay?.validateFields(payload, object : ValidationListener {
@@ -899,7 +978,6 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                                     StatusPayment("captured", p1), false
                                     //                                                isCustomPay ?: false
                                 )
-
                             }
                         } else {
                             "Unable to initiate the payment\nplease try again later".showSnackBar()
@@ -922,7 +1000,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                             } else {
                                 updatePaymentStatusToServer(
                                     StatusPayment("not_captured", p2), false
-//                                                isCustomPay ?: false
+//                                               isCustomPay ?: false
                                 )
                             }
 //                            }
@@ -931,7 +1009,6 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 //                        else {
 //                            "Payment failed.Please try again.".showSnackBar()
 //                        }
-
                     }
                 })
             }
@@ -940,9 +1017,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 Log.e(TAG, "onValidationError: ..........$p0")
             }
         })
-
     }
-
 
     override fun onPause() {
         super.onPause()
@@ -1324,10 +1399,73 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 //        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onStart() {
+        super.onStart()
+        startTimeCountdown()
+        binding.headerBillMore.timerTextView.show()
+        binding.headerBillMore.timerTextViewBg.show()
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun startTimeCountdown() {
+//            val now = LocalDateTime.now()
+//            val nowPlus10 = now.plusMinutes(10)
+//            println("Current time: $now")
+//            println("Time after 10 minutes: $nowPlus10")
+
+        // Get the current time (India Standard Time)
+        val currentTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"))
+
+        // Get the time today when the countdown should end (today's 3:00:00 PM)
+        var targetISTTime = currentTime.plusMinutes(1)
+
+        // If the current time is already past 3:00 PM, set the target to tomorrow at 3:00 PM
+//        if (currentTime.isAfter(targetISTTime)) {
+//            targetISTTime = targetISTTime.plusDays(1)
+//        }
+
+        // Calculate the difference between now and the target time in milliseconds
+        val millisUntilTarget = ChronoUnit.MILLIS.between(currentTime, targetISTTime)
+
+        // Start the countdown timer from now until the target time
+        object : CountDownTimer(millisUntilTarget, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                // Calculate hours, minutes, and seconds remaining
+                val hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished)
+                val minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60
+                val seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60
+
+                // Update your TextView with the countdown time
+                if (hours.toInt() == 0) {
+                    binding.headerBillMore.timerTextView.text =
+                        String.format("%02d:%02d", minutes, seconds)
+
+                } else {
+                    binding.headerBillMore.timerTextViewBg.text =
+                        "88:88:88"
+                    binding.headerBillMore.timerTextView.text =
+                        String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                }
+            }
+
+            override fun onFinish() {
+                // Reset or refresh your UI, or restart the countdown for the next day if needed
+//                binding.underMainTimerParent.timerTextView.text = "00:00"
+//                paymentViewModel.getUnderMaintenanceStatusCheck()
+
+                sessionExpiredMsg()
+//                navController.clearBackStack(R.id.splashFragment)
+
+            }
+        }.start()
+//        }
+    }
+
     override fun onStop() {
         super.onStop()
         locationProvider.stopLocationUpdates()
     }
-
-
 }
