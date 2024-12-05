@@ -5,7 +5,7 @@ import com.paulmerchants.gold.model.newmodel.DeviceDetailsDTO
 
 
 data class ReqCustomerOtpNew(
-        @SerializedName("mobileNo") val  mobileNo: String,
+        @SerializedName("mobile_no") val  mobile_no: String,
         @SerializedName("otp") val  otp: String,
-        @SerializedName("deviceDetailsDTO") val deviceDetailsDTO: DeviceDetailsDTO,
+        @SerializedName("device_details_dto") val device_details_dto: DeviceDetailsDTO,
 )

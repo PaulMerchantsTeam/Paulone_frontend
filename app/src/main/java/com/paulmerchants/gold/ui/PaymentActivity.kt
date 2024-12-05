@@ -162,7 +162,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
         paymentViewModel.isUnderMainLiveData.observe(this) {
             it?.let {
-                if (it.statusCode == "200") {
+                if (it.status_code ==200) {
                     if (it.data.down && it.data.id == 1) {
                         binding.underMainParent.root.show()
                         binding.clOuter.hide()
@@ -170,7 +170,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     } else if (it.data.down && it.data.id == 2) {
                         binding.clOuter.hide()
 
-                        it.data.endTime?.let { endTime ->
+                        it.data.end_time?.let { endTime ->
                             showUnderMainTainTimerPage(endTime)
                         }
 

@@ -47,17 +47,17 @@ import retrofit2.http.Query
 
 interface ApiParams {
 
-    @POST("auth/pml-login")
-    suspend fun getLogin(
-        @Body login: LoginReqNew,
-    ): Response<LoginNewResp>
+//    @POST("auth/pml-login")
+//    suspend fun getLogin(
+//        @Body login: LoginReqNew,
+//    ): Response<LoginNewResp>
 
-    @GET("isdown/")
+    @GET("isdown")
     suspend fun isUnderMaintenance(): Response<RespUnderMain>
 
     @POST("api/login_mpin")
     suspend fun loginWithMpin(
-        @Header("Authorization") Authorization: String,
+
         @Body login: ReqLoginWithMpin,
     ): Response<RespLoginWithMpin>
 
@@ -75,15 +75,14 @@ interface ApiParams {
 
     @POST("otp/get-otp")
     suspend fun getOtp(
-        @Header("Authorization") Authorization: String,
         @Body reqCustomerNew: ReqCustomerNew,
     ): Response<ResponseGetOtp>
 
     @POST("otp/validate-otp")
     suspend fun verifyOtp(
-        @Header("Authorization") Authorization: String,
+
         @Body reqCustomerOtpNew: ReqCustomerOtpNew,
-    ): Response<ResponseVerifyOtp>
+    ): Response<ResponseGetOtp>
 
     /**
      * {"status":"SUCCESS","statusCode":"200","message":"Successfully Validate Your OTP: 9196",
@@ -180,12 +179,12 @@ interface ApiParams {
         @Body payAllInOnGo: ReqPayAlInOnGo,
     ): Response<*>
 
-    @GET("methods/")   //RespLoanDueDate
+    @GET("methods")   //RespLoanDueDate
     suspend fun getPaymentMethod(
         @Header("Authorization") auth: String,
     ): Response<RespPaymentMethod>
 
-    @GET("fest/")   //RespLoanDueDate
+    @GET("fest")   //RespLoanDueDate
     suspend fun getFestDetailsForHeaderHomePage(
         @Header("Authorization") auth: String,
     ): Response<RespFetchFest>

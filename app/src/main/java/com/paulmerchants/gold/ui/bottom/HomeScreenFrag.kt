@@ -267,7 +267,7 @@ class HomeScreenFrag :
 
         (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.statusCode == "200") {
+                if (it.status_code ==200) {
 //                    binding.swiperefresh.isRefreshing = false
 
                     if (it.data.down && it.data.id == 1) {

@@ -76,7 +76,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.statusCode == "200") {
+                if (it.status_code ==200) {
                     if (it.data.down && it.data.id == 1) {
                         findNavController().navigate(R.id.mainScreenFrag)
                         (activity as MainActivity).binding.bottomNavigationView.hide()
@@ -152,7 +152,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
         settingUi()
         profileViewModel.verifyOtp.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.statusCode == "200") {
+                if (it.status_code == 200) {
                     showLogD("onStart: .=======${it.data}")
                     customDialog?.dismiss()
                     val bundle = Bundle().apply {

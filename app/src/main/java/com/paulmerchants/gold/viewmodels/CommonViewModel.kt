@@ -148,7 +148,7 @@ class CommonViewModel @Inject constructor(
                 }
             })
     }
-    fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder, location: Location?) =
+    /*fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder, location: Location?) =
         viewModelScope.launch {
             retrofitSetup.callApi(
                 false,
@@ -160,7 +160,7 @@ class CommonViewModel @Inject constructor(
                     override fun success(response: Response<RespUnderMain>) {
                         Log.d("TAG", "success: ......${response.body()}")
                         if (response.isSuccessful) {
-                            if (response.body()?.statusCode == "200") {
+                            if (response.body()?.status_code ==200) {
                                 if (response.body()?.data?.down == false) {
                                     createOrder(reqCreateOrder, location = location)
                                 } else  {
@@ -171,7 +171,7 @@ class CommonViewModel @Inject constructor(
                         }
                     }
                 })
-        }
+        }*/
     fun createOrder(reqCreateOrder: ReqCreateOrder, location: Location?) =
         viewModelScope.launch {
 
@@ -208,7 +208,7 @@ class CommonViewModel @Inject constructor(
                             RespCommon::class.java
                         )
                         tokenExpiredResp.value = respFail
-                        getLogin2(location = location)
+//                        getLogin2(location = location)
                     }
 
                     AppUtility.hideProgressBar()
@@ -221,7 +221,7 @@ class CommonViewModel @Inject constructor(
             })
 
         }
-    fun getLogin2(location: Location?) = viewModelScope.launch {
+/*    fun getLogin2(location: Location?) = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
@@ -257,7 +257,7 @@ class CommonViewModel @Inject constructor(
                 AppUtility.hideProgressBar()
             }
         })
-    }
+    }*/
     fun getFestDetailsForHeaderHomePage() = viewModelScope.launch {
         retrofitSetup.callApi(
             true,
@@ -336,7 +336,7 @@ class CommonViewModel @Inject constructor(
                             }
                         } else if (response.code() == 401) {
                             if (AppSharedPref != null) {
-                                getLogin2(AppSharedPref, location)
+//                                getLogin2(AppSharedPref, location)
                             }
                             Log.d(
                                 "FAILED_401",
@@ -407,7 +407,7 @@ class CommonViewModel @Inject constructor(
                         )
                         tokenExpiredResp.value = respFail
                         if (AppSharedPref != null) {
-                            getLogin2(AppSharedPref, location = location)
+//                            getLogin2(AppSharedPref, location = location)
                         }
                     }
 
@@ -485,7 +485,7 @@ class CommonViewModel @Inject constructor(
                     )
                     tokenExpiredResp.value = respFail
                     if (AppSharedPref != null) {
-                        getLogin2(AppSharedPref, location)
+//                        getLogin2(AppSharedPref, location)
                     }
                 }
                 AppUtility.hideProgressBar()
@@ -499,7 +499,7 @@ class CommonViewModel @Inject constructor(
 
     }
 
-    fun getLogin2(AppSharedPref: AppSharedPref?, location: Location?) = viewModelScope.launch {
+  /*  fun getLogin2(AppSharedPref: AppSharedPref?, location: Location?) = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(false, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
@@ -536,7 +536,7 @@ class CommonViewModel @Inject constructor(
                 AppUtility.hideProgressBar()
             }
         })
-    }
+    }*/
 
     fun getLoanOutstanding(AppSharedPref: AppSharedPref?, location: Location?) =
         viewModelScope.launch {

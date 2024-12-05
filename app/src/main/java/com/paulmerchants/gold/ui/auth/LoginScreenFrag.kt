@@ -98,7 +98,7 @@ class LoginScreenFrag :
 
         loginViewModel.verifyOtp.observe(viewLifecycleOwner) { verifyOtpResponse ->
             verifyOtpResponse?.let {
-                if (it.statusCode == "200") {
+                if (it.status_code == 200) {
                     Log.e("TAG", "onStart: .=======${it.data}")
                     customDialog?.dismiss()
                     loginViewModel.timer?.cancel()

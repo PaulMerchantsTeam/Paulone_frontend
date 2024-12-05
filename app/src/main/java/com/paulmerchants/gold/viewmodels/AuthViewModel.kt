@@ -2,27 +2,18 @@ package com.paulmerchants.gold.viewmodels
 
 import android.app.Activity
 import android.location.Location
-import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
-import com.paulmerchants.gold.BuildConfig
-import com.paulmerchants.gold.R
-import com.paulmerchants.gold.common.Constants.PHONE_LOGIN
 import com.paulmerchants.gold.model.ReqCustomerOtpNew
 import com.paulmerchants.gold.model.ReqSetMPin
-import com.paulmerchants.gold.model.RespGetCustomer
 import com.paulmerchants.gold.model.RespSetMpin
 import com.paulmerchants.gold.model.ResponseGetOtp
 import com.paulmerchants.gold.model.ResponseVerifyOtp
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
-import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
-import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
 import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.networks.RetrofitSetup
 import com.paulmerchants.gold.remote.ApiParams
@@ -30,12 +21,9 @@ import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
-import com.paulmerchants.gold.utility.Constants
-import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
 import com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
-import com.paulmerchants.gold.utility.decryptKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -54,7 +42,7 @@ class AuthViewModel @Inject constructor(
     var isCustomerExist = MutableLiveData<Boolean>()
     var isOtpVerify = MutableLiveData<Boolean>()
     var isMPinSet = MutableLiveData<Boolean>()
-    val verifyOtp = MutableLiveData<ResponseVerifyOtp>()
+    val verifyOtp = MutableLiveData<ResponseGetOtp>()
     var enteredMobileTemp: String = ""
     val getTokenResp = MutableLiveData<Response<LoginNewResp>>()
 
@@ -96,93 +84,93 @@ class AuthViewModel @Inject constructor(
         timer?.start()
     }
 
-    fun getCustomer(
-        navController: NavController,
-        mobileNum: String,
-        location: Location?,
-        activity: Activity,
-    ) =
-        viewModelScope.launch {
-
-//        if (mobileNum == "9999988888") {
-//            isCustomerExist.postValue(true)
-//            return@launch
-//        }
-
-            retrofitSetup.callApi(true, object : CallHandler<Response<RespCutomerInfo>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<RespCutomerInfo> {
-                    return apiParams.getCustomer(
-                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
-                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location)),
-                    )
-                }
-
-                override fun success(response: Response<RespCutomerInfo>) {
-                    if (response.isSuccessful) {
-                        try {
-                            val decryptData = decryptKey(
-                                BuildConfig.SECRET_KEY_GEN, response.body()?.data
-                            )
-                            val respCutomer: RespGetCustomer? =
-                                AppUtility.convertStringToJson(decryptData.toString())
-                            Log.d("TAG", "success: .,cucucucu....$respCutomer")
-                            //getting initially first customer
-                            if (respCutomer != null) {
-                                Log.d(
-                                    "TAG",
-                                    "getCustomer: -CustomerId---${respCutomer[0]}"
-                                )
-                                val customer = respCutomer[0]
-                                if (customer.Status == true) {
-                                    getOtp(mobileNum, activity)
-                                    isCustomerExist.postValue(true)
-                                    Log.d(
-                                        "TAG",
-                                        "getCustomer: -CustomerId---${customer.Cust_ID.toString()}"
-                                    )
-                                    Log.d(
-                                        "TAG",
-                                        "getCustomer: -CustName---${customer.CustName.toString()}"
-                                    )
-                                    AppSharedPref.putStringValue(
-                                        CUSTOMER_ID,
-                                        customer.Cust_ID.toString()
-                                    )
-                                    AppSharedPref.putStringValue(
-                                        CUSTOMER_NAME, customer.CustName.toString()
-                                    )
-                                } else {
-                                    //TODO: Show for queries for new customers.
-                                    "No active Gold loan found for this number".showSnackBar()
-                                    val bundle = Bundle().apply {
-                                        putString(PHONE_LOGIN, mobileNum)
-                                    }
-//                                    navController.navigate(
-//                                        R.id.newUserDialog, bundle
+//    fun getCustomer(
+//        navController: NavController,
+//        mobileNum: String,
+//        location: Location?,
+//        activity: Activity,
+//    ) =
+//        viewModelScope.launch {
+//
+////        if (mobileNum == "9999988888") {
+////            isCustomerExist.postValue(true)
+////            return@launch
+////        }
+//
+//            retrofitSetup.callApi(true, object : CallHandler<Response<RespCutomerInfo>> {
+//                override suspend fun sendRequest(apiParams: ApiParams): Response<RespCutomerInfo> {
+//                    return apiParams.getCustomer(
+//                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
+//                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location)),
+//                    )
+//                }
+//
+//                override fun success(response: Response<RespCutomerInfo>) {
+//                    if (response.isSuccessful) {
+//                        try {
+//                            val decryptData = decryptKey(
+//                                BuildConfig.SECRET_KEY_GEN, response.body()?.data
+//                            )
+//                            val respCutomer: RespGetCustomer? =
+//                                AppUtility.convertStringToJson(decryptData.toString())
+//                            Log.d("TAG", "success: .,cucucucu....$respCutomer")
+//                            //getting initially first customer
+//                            if (respCutomer != null) {
+//                                Log.d(
+//                                    "TAG",
+//                                    "getCustomer: -CustomerId---${respCutomer[0]}"
+//                                )
+//                                val customer = respCutomer[0]
+//                                if (customer.Status == true) {
+//                                    getOtp(mobileNum, activity)
+//                                    isCustomerExist.postValue(true)
+//                                    Log.d(
+//                                        "TAG",
+//                                        "getCustomer: -CustomerId---${customer.Cust_ID.toString()}"
 //                                    )
-                                    Log.i(
-                                        "Auth_ViewModel",
-                                        "Error: Status = ${customer.Status}"
-                                    )
-                                }
-                            }
-                        } catch (e: Exception) {
-                            Log.d("TAG", "success: ........${e.message}")
-                        }
-                    } else if (response.code() == 401) {
-                        getLogin2(location)
-                    } else {
-
-                    }
-
-                }
-
-                override fun error(message: String) {
-                    super.error(message)
-                    Log.d("TAG", "error: ......$message")
-                }
-            })
-        }
+//                                    Log.d(
+//                                        "TAG",
+//                                        "getCustomer: -CustName---${customer.CustName.toString()}"
+//                                    )
+//                                    AppSharedPref.putStringValue(
+//                                        CUSTOMER_ID,
+//                                        customer.Cust_ID.toString()
+//                                    )
+//                                    AppSharedPref.putStringValue(
+//                                        CUSTOMER_NAME, customer.CustName.toString()
+//                                    )
+//                                } else {
+//                                    //TODO: Show for queries for new customers.
+//                                    "No active Gold loan found for this number".showSnackBar()
+//                                    val bundle = Bundle().apply {
+//                                        putString(PHONE_LOGIN, mobileNum)
+//                                    }
+////                                    navController.navigate(
+////                                        R.id.newUserDialog, bundle
+////                                    )
+//                                    Log.i(
+//                                        "Auth_ViewModel",
+//                                        "Error: Status = ${customer.Status}"
+//                                    )
+//                                }
+//                            }
+//                        } catch (e: Exception) {
+//                            Log.d("TAG", "success: ........${e.message}")
+//                        }
+//                    } else if (response.code() == 401) {
+////                        getLogin2(location)
+//                    } else {
+//
+//                    }
+//
+//                }
+//
+//                override fun error(message: String) {
+//                    super.error(message)
+//                    Log.d("TAG", "error: ......$message")
+//                }
+//            })
+//        }
 
     fun getOtp(mobileNum: String, activity: Activity) =
         viewModelScope.launch {
@@ -190,8 +178,6 @@ class AuthViewModel @Inject constructor(
             retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
                     return apiParams.getOtp(
-
-                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
                         ReqCustomerNew(
                             mobileNum,
                             AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
@@ -200,7 +186,14 @@ class AuthViewModel @Inject constructor(
                 }
 
                 override fun success(response: Response<ResponseGetOtp>) {
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            if(it.status_code == 200){
+                                isCustomerExist.postValue(true)
+                            }
+                        }
 
+                    }
 //                    val decryptData = decryptKey(
 //                        BuildConfig.SECRET_KEY_GEN, response.body()?.data
 //                    )
@@ -216,50 +209,50 @@ class AuthViewModel @Inject constructor(
             })
         }
 
-    fun getLogin2(location: Location?) = viewModelScope.launch {
-        Log.d("TAG", "getLogin: //../........")
-        retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
-            override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
-                return apiParams.getLogin(
-                    LoginReqNew(
-                        AppUtility.getDeviceDetails(location),
-                        BuildConfig.PASSWORD,
-                        BuildConfig.USERNAME
-                    )
-                )
-            }
+    /*   fun getLogin2(location: Location?) = viewModelScope.launch {
+           Log.d("TAG", "getLogin: //../........")
+           retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
+               override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
+                   return apiParams.getLogin(
+                       LoginReqNew(
+                           AppUtility.getDeviceDetails(location),
+                           BuildConfig.PASSWORD,
+                           BuildConfig.USERNAME
+                       )
+                   )
+               }
 
-            override fun success(response: Response<LoginNewResp>) {
-                Log.d("TAG", "success: ......$response")
-                if (response.isSuccessful) {
-                    response.body()?.statusCode?.let {
-                        AppSharedPref.putStringValue(
-                            Constants.AUTH_STATUS,
-                            it
-                        )
-                    }
-                    response.body()?.token?.let { AppSharedPref.putStringValue(JWT_TOKEN, it) }
-                    getTokenResp.value = response
-                } else {
-                    Log.e("TAG", "success: .........")
-                }
-                AppUtility.hideProgressBar()
-            }
+               override fun success(response: Response<LoginNewResp>) {
+                   Log.d("TAG", "success: ......$response")
+                   if (response.isSuccessful) {
+                       response.body()?.statusCode?.let {
+                           AppSharedPref.putStringValue(
+                               Constants.AUTH_STATUS,
+                               it
+                           )
+                       }
+                       response.body()?.token?.let { AppSharedPref.putStringValue(JWT_TOKEN, it) }
+                       getTokenResp.value = response
+                   } else {
+                       Log.e("TAG", "success: .........")
+                   }
+                   AppUtility.hideProgressBar()
+               }
 
-            override fun error(message: String) {
-                super.error(message)
-                Log.d("TAG", "error: ......$message")
-                AppUtility.hideProgressBar()
-            }
-        })
-    }
+               override fun error(message: String) {
+                   super.error(message)
+                   Log.d("TAG", "error: ......$message")
+                   AppUtility.hideProgressBar()
+               }
+           })
+       }*/
 
     fun verifyOtp(mobileNum: String, otp: String, location: Location?) =
         viewModelScope.launch {
-            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseVerifyOtp>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseVerifyOtp> {
+            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
                     return apiParams.verifyOtp(
-                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
+
                         ReqCustomerOtpNew(
                             mobileNum,
                             otp,
@@ -268,10 +261,10 @@ class AuthViewModel @Inject constructor(
                     )
                 }
 
-                override fun success(response: Response<ResponseVerifyOtp>) {
+                override fun success(response: Response<ResponseGetOtp>) {
                     if (response.isSuccessful) {
                         response.body()?.let {
-                            if (it.statusCode == "200") {
+                            if (it.status_code == 200) {
                                 AppSharedPref.putStringValue(CUST_MOBILE, mobileNum)
                                 isOtpVerify.postValue(true)
                                 verifyOtp.value = response.body()

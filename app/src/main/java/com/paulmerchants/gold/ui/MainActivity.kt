@@ -270,10 +270,10 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             setUpNetworkCallbackFOrDueLoans()
             commonViewModel.isUnderMainLiveData.observe(this) {
                 it?.let {
-                    if (it.statusCode == "200" && it.data.down && it.data.id == 1) {
+                    if (it.status_code == 200 && it.data.down && it.data.id == 1) {
                         showUnderMainTainPage()
-                    } else if (it.statusCode == "200" && it.data.down && it.data.id == 2) {
-                        it.data.endTime?.let { endTime ->
+                    } else if (it.status_code == 200 && it.data.down && it.data.id == 2) {
+                        it.data.end_time?.let { endTime ->
                             showUnderMainTainTimerPage(
                                 endTime
 
@@ -481,10 +481,10 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
         commonViewModel.isUnderMainLiveData.observe(this) {
             it?.let {
-                if (it.statusCode == "200" && it.data.down && it.data.id == 1) {
+                if (it.status_code == 200 && it.data.down && it.data.id == 1) {
                     showUnderMainTainPage()
-                } else if (it.statusCode == "200" && it.data.down && it.data.id == 2) {
-                    it.data.endTime?.let { endTime ->
+                } else if (it.status_code == 200 && it.data.down && it.data.id == 2) {
+                    it.data.end_time?.let { endTime ->
                         showUnderMainTainTimerPage(
                             endTime
 

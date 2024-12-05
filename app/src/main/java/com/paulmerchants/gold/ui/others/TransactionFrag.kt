@@ -38,7 +38,7 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.statusCode == "200") {
+                if (it.status_code ==200) {
                     if (it.data.down && it.data.id == 1) {
                         findNavController().navigate(R.id.mainScreenFrag)
                         (activity as MainActivity).binding.bottomNavigationView.hide()

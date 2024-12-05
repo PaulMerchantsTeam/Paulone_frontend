@@ -278,7 +278,9 @@ object AppUtility {
         BuildConfig.VERSION_CODE.toString(),
         Build.MODEL,
         location?.latitude.toString(),
-        location?.longitude.toString()
+        location?.longitude.toString(),
+        "Android",
+        Build.BRAND
     )
 
     fun blurTextView(blurredTextView: TextView, context: Context) {

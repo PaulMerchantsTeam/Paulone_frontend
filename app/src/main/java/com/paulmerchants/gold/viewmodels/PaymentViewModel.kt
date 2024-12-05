@@ -122,7 +122,7 @@ class PaymentViewModel @Inject constructor(
                     override fun success(response: Response<RespUnderMain>) {
                         Log.d("TAG", "success: ......${response.body()}")
                         if (response.isSuccessful) {
-                            if (response.body()?.statusCode == "200") {
+                            if (response.body()?.status_code ==200) {
                                 if (response.body()?.data?.down == false) {
                                     createOrder(reqCreateOrder, location = location)
                                 } else  {
@@ -260,7 +260,7 @@ class PaymentViewModel @Inject constructor(
                             RespCommon::class.java
                         )
                         tokenExpiredResp.value = respFail
-                        getLogin2(location = location)
+//                        getLogin2(location = location)
                     }
 
                     AppUtility.hideProgressBar()
@@ -338,7 +338,7 @@ class PaymentViewModel @Inject constructor(
                     )
                     tokenExpiredResp.value = respFail
 
-                    getLogin2(location)
+//                    getLogin2(location)
 
                 } else {
                     val gson = Gson()
@@ -432,7 +432,7 @@ class PaymentViewModel @Inject constructor(
                     )
                     tokenExpiredResp.value = respFail
                     if (AppSharedPref != null) {
-                        getLogin2(location)
+//                        getLogin2(location)
                     }
                 } else {
                     val gson = Gson()
@@ -454,7 +454,7 @@ class PaymentViewModel @Inject constructor(
 
     }
 
-    fun getLogin2(location: Location?) = viewModelScope.launch {
+/*    fun getLogin2(location: Location?) = viewModelScope.launch {
         var requestid = AppUtility.generateUDID()
         val randomid = requestid
         val hashedPassword = BCrypt.hashpw(BuildConfig.PASSWORD, BCrypt.gensalt(12)).trim()
@@ -499,7 +499,7 @@ class PaymentViewModel @Inject constructor(
                 AppUtility.hideProgressBar()
             }
         })
-    }
+    }*/
 
 
 }

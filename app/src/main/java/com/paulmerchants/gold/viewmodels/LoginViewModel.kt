@@ -50,7 +50,7 @@ class LoginViewModel @Inject constructor(
     val getTokenResp = MutableLiveData<Response<LoginNewResp>>()
     private val TAG = this.javaClass.name
     val txnHistoryData = MutableLiveData<RespTxnHistory>()
-    val verifyOtp = MutableLiveData<ResponseVerifyOtp>()
+    val verifyOtp = MutableLiveData<ResponseGetOtp>()
 
     init {
         Log.d(TAG, ": init_$TAG")
@@ -102,7 +102,7 @@ class LoginViewModel @Inject constructor(
                 override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
                     return apiParams.getOtp(
 
-                        "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+
                         ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location)),
                     )
                 }
@@ -129,18 +129,18 @@ class LoginViewModel @Inject constructor(
         }
     fun verifyOtp(AppSharedPref: AppSharedPref?, mobileNum: String, otp: String,location: Location?) =
         viewModelScope.launch {
-            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseVerifyOtp>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseVerifyOtp> {
+            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
                     return apiParams.verifyOtp(
-                        "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+
                         ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails(location)),
                     )
                 }
 
-                override fun success(response: Response<ResponseVerifyOtp>) {
+                override fun success(response: Response<ResponseGetOtp>) {
                     if (response.isSuccessful) {
                         response.body()?.let {
-                            if (it.statusCode == "200") {
+                            if (it.status_code == 200) {
                                 AppSharedPref?.putStringValue(Constants.CUST_MOBILE, mobileNum)
                                 verifyOtp.value = response.body()
 
@@ -170,7 +170,7 @@ class LoginViewModel @Inject constructor(
             retrofitSetup.callApi(true, object : CallHandler<Response<RespLoginWithMpin>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespLoginWithMpin> {
                     return apiParams.loginWithMpin(
-                        "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}",
+
                         reqLoginWithMpin
                     )
                 }
@@ -178,7 +178,7 @@ class LoginViewModel @Inject constructor(
                 override fun success(response: Response<RespLoginWithMpin>) {
                     Log.d("TAG", "success: ..loginWithMpin....${response.body()}")
                     if (response.isSuccessful) {
-                        if (response.body()?.statusCode == "200") {
+                        if (response.body()?.status_code == "200") {
                             if (response.body()?.data == true) {  //user exist with valid credential..
                                 "${response.body()?.message}".showSnackBar()
                                 navController.popBackStack(R.id.loginScreenFrag, true)
@@ -191,7 +191,7 @@ class LoginViewModel @Inject constructor(
 
                         }
                     } else if (response.code() == 401) {
-                        getLogin2(AppSharedPref, location = location)
+//                        getLogin2(AppSharedPref, location = location)
                     }
 
                 }
@@ -205,7 +205,7 @@ class LoginViewModel @Inject constructor(
         }
 
 
-    fun getLogin2(AppSharedPref: AppSharedPref?,location: Location?) = viewModelScope.launch {
+    /*fun getLogin2(AppSharedPref: AppSharedPref?,location: Location?) = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
@@ -241,7 +241,7 @@ class LoginViewModel @Inject constructor(
                 AppUtility.hideProgressBar()
             }
         })
-    }
+    }*/
 
     /**
      * FAILED_CASE

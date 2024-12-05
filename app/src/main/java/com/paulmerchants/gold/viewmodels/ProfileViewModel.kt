@@ -45,7 +45,7 @@ class ProfileViewModel @Inject constructor(
         const val TAG = "ProfileViewModel"
     }
     var isCalled: Boolean = true
-    val verifyOtp = MutableLiveData<ResponseVerifyOtp>()
+    val verifyOtp = MutableLiveData<ResponseGetOtp>()
 
     var timer: CountDownTimer? = null
     val countNum = MutableLiveData<Long>()
@@ -189,7 +189,7 @@ class ProfileViewModel @Inject constructor(
                 override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
                     return apiParams.getOtp(
 
-                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
+
                         ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location)),
                     )
                 }
@@ -217,18 +217,18 @@ class ProfileViewModel @Inject constructor(
 
     fun verifyOtp(mobileNum: String, otp: String,location: Location?) =
         viewModelScope.launch {
-            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseVerifyOtp>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseVerifyOtp> {
+            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
                     return apiParams.verifyOtp(
-                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
+
                         ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails(location)),
                     )
                 }
 
-                override fun success(response: Response<ResponseVerifyOtp>) {
+                override fun success(response: Response<ResponseGetOtp>) {
                     if (response.isSuccessful) {
                         response.body()?.let {
-                            if (it.statusCode == "200") {
+                            if (it.status_code ==200) {
                                 AppSharedPref.putStringValue(CUST_MOBILE, mobileNum)
                                 verifyOtp.value = response.body()
 

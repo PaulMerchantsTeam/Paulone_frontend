@@ -36,7 +36,7 @@ class SplashViewModel @Inject constructor(
         Log.d(TAG, ": init_")
     }
 
-    fun getLogin2(location: Location?) = viewModelScope.launch {
+/*    fun getLogin2(location: Location?) = viewModelScope.launch {
         Log.d("TAG", "getLogin: //../........")
         retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
             override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
@@ -62,7 +62,7 @@ class SplashViewModel @Inject constructor(
 //                AppUtility.hideProgressBar()
             }
         })
-    }
+    }*/
 
     /*
         fun getLogin2(context: Context) = viewModelScope.launch {

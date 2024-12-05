@@ -6,6 +6,7 @@ import android.widget.Toast
 import com.aheaditec.talsec_security.security.api.Talsec
 import com.aheaditec.talsec_security.security.api.TalsecConfig
 import com.aheaditec.talsec_security.security.api.ThreatListener
+import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import dagger.hilt.android.HiltAndroidApp
 import kotlin.system.exitProcess
@@ -15,9 +16,9 @@ import kotlin.system.exitProcess
 class GoldApplication : Application(), ThreatListener.ThreatDetected {
     companion object {
 
-        private const val PACKAGE_NAME = "com.paulmerchants.gold"
+        private const val PACKAGE_NAME = BuildConfig.APPLICATION_ID
         private val expectedSigningCertificateHashBase64 =
-            arrayOf("tQiceFwrHAeXl9mUu6P3vOqGiJyJA2gleIL6Hrd+Ia8=")
+            arrayOf(BuildConfig.SIGN_IN)
         private const val MAIL_ADDRESS = "pmldevspace@gmail.com"
         private val supportedAlternativeStores = emptyArray<String>()
         private const val IS_PROD = false

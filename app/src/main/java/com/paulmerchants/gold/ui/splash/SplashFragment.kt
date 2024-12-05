@@ -240,12 +240,12 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         delay(1000)
         animateSecondScreen(R.color.splash_screen_two, R.color.splash_screen_one)
         delay(1000)
-        try {
-            AppUtility.progressBarAlert(requireContext())
-            splashViewModel.getLogin2((activity as MainActivity).mLocation)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+//        try {
+//            AppUtility.progressBarAlert(requireContext())
+////            splashViewModel.getLogin2((activity as MainActivity).mLocation)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
         showFirstPageIntro()
     }
 

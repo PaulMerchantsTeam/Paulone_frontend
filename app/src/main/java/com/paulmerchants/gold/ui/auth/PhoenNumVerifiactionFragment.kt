@@ -109,9 +109,9 @@ class PhoenNumVerifiactionFragment :
                  )
              }*/
         if (authViewModel.isFrmLogout == true) {
-            (activity as MainActivity).commonViewModel.getLogin2(
-                AppSharedPref, (activity as MainActivity).mLocation
-            )
+//            (activity as MainActivity).commonViewModel.getLogin2(
+//                AppSharedPref, (activity as MainActivity).mLocation
+//            )
         }
         //Welcome to Paul Gold,
         //we are happy to serve you!!
@@ -205,7 +205,7 @@ class PhoenNumVerifiactionFragment :
         }
         authViewModel.verifyOtp.observe(viewLifecycleOwner) {
             it?.let {
-                if (!it.userExist) {
+                if (!it.user_exist) {
                     hideAndShowSignUpScreen()
                 } else {
                     AppSharedPref.putBoolean("IS_USER_EXIST", true)
@@ -239,12 +239,13 @@ class PhoenNumVerifiactionFragment :
                     if (binding.etPhoenNum.text.isNotEmpty()) {
 //                        if ((activity as MainActivity).mLocation != null) {
                         Log.e("TAG", "onStart: /.....11")
-                        authViewModel.getCustomer(
-                            findNavController(),
-                            binding.etPhoenNum.text.toString(),
-                            (activity as MainActivity).mLocation,
-                            requireActivity()
-                        )
+//                        authViewModel.getCustomer(
+//                            findNavController(),
+//                            binding.etPhoenNum.text.toString(),
+//                            (activity as MainActivity).mLocation,
+//                            requireActivity()
+//                        )
+                        authViewModel.getOtp(binding.etPhoenNum.text.toString(),requireActivity() )
 //                        } else {
 //                            Log.e("TAG", "onStart: /////---12")
 //                            (activity as MainActivity).updateLocation()
@@ -352,23 +353,23 @@ class PhoenNumVerifiactionFragment :
             }
         }
 
-        authViewModel.getTokenResp.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it.code() == 200) {
-                    if (binding.etPhoenNum.text.isNotEmpty()) {
-                        if ((activity as MainActivity).mLocation != null) {
-                            authViewModel.getCustomer(
-                                findNavController(),
-                                binding.etPhoenNum.text.toString(),
-                                (activity as MainActivity).mLocation, requireActivity(),
-                            )
-                        } else {
-                            (activity as MainActivity).locationProvider.startLocationUpdates()
-                        }
-                    }
-                }
-            }
-        }
+//        authViewModel.getTokenResp.observe(viewLifecycleOwner) {
+//            it?.let {
+//                if (it.code() == 200) {
+//                    if (binding.etPhoenNum.text.isNotEmpty()) {
+//                        if ((activity as MainActivity).mLocation != null) {
+////                            authViewModel.getCustomer(
+////                                findNavController(),
+////                                binding.etPhoenNum.text.toString(),
+////                                (activity as MainActivity).mLocation, requireActivity(),
+////                            )
+//                        } else {
+//                            (activity as MainActivity).locationProvider.startLocationUpdates()
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun hideAndShowNumInputView() {
