@@ -80,6 +80,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     private val paymentViewModel: PaymentViewModel by viewModels()
     private var respCustomerDetail: RespCustomCustomerDetail? = null
     private var isDown: Boolean = false
+    private var countDownTimer: CountDownTimer? = null
 
     override fun getViewBinding() = PaymentsModeNewBinding.inflate(layoutInflater)
     override val mViewModel: PaymentViewModel by viewModels()
@@ -1023,6 +1024,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         super.onPause()
         Log.d(TAG, "onPause:......")
         paymentViewModel.isCalled = false
+        countDownTimer?.cancel()
     }
 
     override fun onRequestPermissionsResult(
@@ -1404,33 +1406,23 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         super.onStart()
         startTimeCountdown()
         binding.headerBillMore.timerTextView.show()
-        binding.headerBillMore.timerTextViewBg.show()
+//        binding.headerBillMore.timerTextViewBg.show()
 
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun startTimeCountdown() {
-//            val now = LocalDateTime.now()
-//            val nowPlus10 = now.plusMinutes(10)
-//            println("Current time: $now")
-//            println("Time after 10 minutes: $nowPlus10")
-
         // Get the current time (India Standard Time)
         val currentTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"))
 
         // Get the time today when the countdown should end (today's 3:00:00 PM)
-        var targetISTTime = currentTime.plusMinutes(1)
-
-        // If the current time is already past 3:00 PM, set the target to tomorrow at 3:00 PM
-//        if (currentTime.isAfter(targetISTTime)) {
-//            targetISTTime = targetISTTime.plusDays(1)
-//        }
+        val targetISTTime = currentTime.plusMinutes(10)
 
         // Calculate the difference between now and the target time in milliseconds
         val millisUntilTarget = ChronoUnit.MILLIS.between(currentTime, targetISTTime)
 
         // Start the countdown timer from now until the target time
-        object : CountDownTimer(millisUntilTarget, 1000) {
+        countDownTimer = object : CountDownTimer(millisUntilTarget, 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
                 // Calculate hours, minutes, and seconds remaining
@@ -1444,24 +1436,20 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                         String.format("%02d:%02d", minutes, seconds)
 
                 } else {
-                    binding.headerBillMore.timerTextViewBg.text =
-                        "88:88:88"
+//                    binding.headerBillMore.timerTextViewBg.text =
+//                        "88:88:88"
                     binding.headerBillMore.timerTextView.text =
                         String.format("%02d:%02d:%02d", hours, minutes, seconds)
                 }
             }
 
             override fun onFinish() {
-                // Reset or refresh your UI, or restart the countdown for the next day if needed
-//                binding.underMainTimerParent.timerTextView.text = "00:00"
-//                paymentViewModel.getUnderMaintenanceStatusCheck()
-
+                // Handle countdown completion
                 sessionExpiredMsg()
-//                navController.clearBackStack(R.id.splashFragment)
-
             }
-        }.start()
-//        }
+        }
+
+        countDownTimer?.start()
     }
 
     override fun onStop() {

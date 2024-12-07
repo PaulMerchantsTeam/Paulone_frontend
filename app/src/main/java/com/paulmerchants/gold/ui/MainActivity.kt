@@ -328,7 +328,15 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         }
 
     }
+//    override fun shouldSkipTimeout(): Boolean {
+//        // Custom logic for skipping timeout in MainActivity
+//        return false
+//    }
 
+//    override fun isLoginViewNew(): Boolean {
+//        // Custom logic for detecting LoginViewNew
+//        return false
+//    }
 
     private fun setUpNetworkCallbackFOrDueLoans() {
         networkCallback = object : ConnectivityManager.NetworkCallback() {

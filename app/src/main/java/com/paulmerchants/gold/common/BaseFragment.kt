@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
@@ -12,18 +11,17 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.paulmerchants.gold.MyLifecycleObserver
 import com.paulmerchants.gold.R
 
 
-open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInflater, ViewGroup?, Boolean) -> T) :
-    Fragment(),MyLifecycleObserver.DialogListener {
+open class BaseFragment<T : ViewBinding>(private val inflateMethod: (LayoutInflater, ViewGroup?, Boolean) -> T) :
+    Fragment(), MyLifecycleObserver.DialogListener {
     private var isDialogOpen = false
     private var autoTimeDialog: AlertDialog? = null
 
-        private lateinit var myLifecycleObserver:MyLifecycleObserver
+    private lateinit var myLifecycleObserver: MyLifecycleObserver
     private var _binding: T? = null
 
     // This can be accessed by the child fragments
@@ -35,7 +33,7 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
 
     }
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    //    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 //        super.onViewCreated(view, savedInstanceState)
 //          myLifecycleObserver = MyLifecycleObserver(requireContext(),this)
 //        ProcessLifecycleOwner.get().lifecycle.addObserver(myLifecycleObserver)
@@ -51,6 +49,7 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
         binding.initialize()
         myLifecycleObserver = MyLifecycleObserver(requireContext(), this)
         ProcessLifecycleOwner.get().lifecycle.addObserver(myLifecycleObserver)
+
         // replaced _binding!! with binding
         return binding.root
     }
@@ -61,49 +60,63 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
 
     }
 
+    override fun onResume() {
+        super.onResume()
+//        (activity as? BaseActivity<*, *>)?.onResume()
+    }
+
     override fun onStop() {
         super.onStop()
         autoTimeDialog?.dismiss()
         isDialogOpen = false
+
     }
 
+    open fun shouldSkipTimeout(): Boolean = false
 
 
+//    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+//        val handled = super.dispatchTouchEvent(ev)
+//        // Notify fragment about user interaction
+//        (supportFragmentManager.findFragmentById(R.id.fragment_container) as? YourFragment)?.onUserInteraction()
+//        return handled
+//    }
 
     override fun showAutoTimeDisabledDialog() {
         // Inflate the custom dialog layout
-        if (!isDialogOpen){
+        if (!isDialogOpen) {
             isDialogOpen = true
 
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.setting_change_dialog, null)
+            val dialogView =
+                LayoutInflater.from(context).inflate(R.layout.setting_change_dialog, null)
 
-        // Create the dialog
-          autoTimeDialog = AlertDialog.Builder(context)
-            .setView(dialogView)
-            .setCancelable(false) // Prevent dialog dismissal on back press
-            .create()
+            // Create the dialog
+            autoTimeDialog = AlertDialog.Builder(context)
+                .setView(dialogView)
+                .setCancelable(false) // Prevent dialog dismissal on back press
+                .create()
 
-        // Get references to the buttons
-        val openSettingsButton: Button = dialogView.findViewById(R.id.button_open_settings)
-        val exitAppButton: Button = dialogView.findViewById(R.id.button_exit_app)
+            // Get references to the buttons
+            val openSettingsButton: Button = dialogView.findViewById(R.id.button_open_settings)
+            val exitAppButton: Button = dialogView.findViewById(R.id.button_exit_app)
 
-        // Set onClickListener for the "Open Settings" button
-        openSettingsButton.setOnClickListener {
-            requireContext().startActivity(Intent(Settings.ACTION_DATE_SETTINGS))
-            autoTimeDialog?.dismiss() // Dismiss the dialog
-            isDialogOpen = false
+            // Set onClickListener for the "Open Settings" button
+            openSettingsButton.setOnClickListener {
+                requireContext().startActivity(Intent(Settings.ACTION_DATE_SETTINGS))
+                autoTimeDialog?.dismiss() // Dismiss the dialog
+                isDialogOpen = false
+            }
+
+            // Set onClickListener for the "Exit App" button
+            exitAppButton.setOnClickListener {
+                autoTimeDialog?.dismiss() // Dismiss the dialog
+                isDialogOpen = false
+                closeApp() // Close the app
+            }
+
+            // Show the dialog
+            autoTimeDialog?.show()
         }
-
-        // Set onClickListener for the "Exit App" button
-        exitAppButton.setOnClickListener {
-            autoTimeDialog?.dismiss() // Dismiss the dialog
-            isDialogOpen = false
-            closeApp() // Close the app
-        }
-
-        // Show the dialog
-        autoTimeDialog?.show()
-    }
     }
 
     override fun dismissAutoTimeDisabledDialog() {
@@ -124,6 +137,7 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
         super.onPause()
         autoTimeDialog?.dismiss()
         isDialogOpen = false
+
     }
 
     override fun onDetach() {
@@ -131,4 +145,6 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
         autoTimeDialog?.dismiss()
         lifecycle.removeObserver(myLifecycleObserver)
     }
+
+
 }

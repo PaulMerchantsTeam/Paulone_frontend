@@ -53,50 +53,52 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/titlePageTv" />
 
-    <TextView
-        android:id="@+id/timerTextViewBg"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_gravity="center"
-        android:background="@drawable/bg_round_corner_timer"
-        android:fontFamily="@font/digital_mono"
-        android:fontFeatureSettings="tnum"
-        android:gravity="center"
-        android:paddingHorizontal="@dimen/_6sdp"
-        android:paddingVertical="@dimen/_3sdp"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="1"
-        android:text="@string/_88_00"
-        android:textAlignment="center"
-        android:textColor="@color/grey_maintenance"
-        android:textSize="@dimen/_30sdp"
-android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteY="39dp" />
+<!--    <TextView-->
+<!--        android:id="@+id/timerTextViewBg"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="@dimen/_20sdp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginEnd="32dp"-->
+<!--        android:background="@drawable/bg_round_payment_timer"-->
+<!--        android:fontFamily="@font/digital_mono"-->
+<!--        android:fontFeatureSettings="tnum"-->
+<!--        android:gravity="center"-->
+<!--        android:paddingHorizontal="@dimen/_6sdp"-->
+<!--        android:paddingVertical="@dimen/_3sdp"-->
+<!--        android:shadowDx="1"-->
+<!--        android:shadowDy="1"-->
+<!--        android:shadowRadius="1"-->
+<!--        android:text="@string/_88_00"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="@dimen/_18sdp"-->
+<!--        android:visibility="visible"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/titlePageTv"-->
+<!--        />-->
 
     <TextView
         android:id="@+id/timerTextView"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/_30sdp"
+        android:layout_height="@dimen/_20sdp"
         android:layout_gravity="center"
+        android:layout_marginEnd="20dp"
         android:fontFamily="@font/digital_mono"
         android:fontFeatureSettings="tnum"
         android:gravity="center"
-        android:visibility="gone"
         android:paddingHorizontal="@dimen/_6sdp"
-        android:paddingVertical="@dimen/_3sdp"
+
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="1"
         android:text="@string/_00_00"
         android:textAlignment="center"
-        android:textColor="@color/green_maintenance"
-        android:textSize="@dimen/_30sdp"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-
+        android:textColor="@color/red_txt"
+        android:textSize="@dimen/_18sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/titlePageTv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/titlePageTv" />
+        app:layout_constraintTop_toTopOf="@+id/titlePageTv"
+         />
 </androidx.constraintlayout.widget.ConstraintLayout>

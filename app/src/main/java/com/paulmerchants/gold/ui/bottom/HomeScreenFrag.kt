@@ -612,6 +612,9 @@ class HomeScreenFrag :
     override fun onPause() {
         super.onPause()
         Log.d(TAG, "onPause: ...........")
+//        lifecycleScope.launch {
+//            noInternetDialog()
+//        }
     }
 
 
