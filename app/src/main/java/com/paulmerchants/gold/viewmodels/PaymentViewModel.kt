@@ -57,6 +57,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
     private val retrofitSetup: RetrofitSetup,
+    private val apiParams: ApiParams,
 ) : ViewModel() {
     private val TAG = this.javaClass.name
 
@@ -91,7 +92,7 @@ class PaymentViewModel @Inject constructor(
             }
         }
     }
-    fun getUnderMaintenanceStatusCheck() = viewModelScope.launch {
+    fun getUnderMaintenanceStatusCheck1() = viewModelScope.launch {
         retrofitSetup.callApi(
             false,
 
@@ -109,8 +110,74 @@ class PaymentViewModel @Inject constructor(
                 }
             })
     }
+    fun getUnderMaintenanceStatusCheck() = viewModelScope.launch {
+        try {
 
-    fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder, location: Location?) =
+            val response = apiParams.isUnderMaintenance1()
+            // Get the plain text response
+            val plainTextResponse = response.string()
+
+            // Do something with the plain text response
+            Log.d("Response", plainTextResponse)
+
+            val decryptData = decryptKey(
+                BuildConfig.SECRET_KEY_UAT,
+                plainTextResponse
+            )
+            println("decrypt-----$decryptData")
+            val gson = Gson()
+//           val  typeToken = object : TypeToken<BaseResponse<RespUnderMain>>() {}
+//            val respPending = gson.fromJson<BaseResponse<DataDown>>(decryptData.toString(),typeToken.type)
+            val respPending = gson.fromJson (decryptData.toString(),RespUnderMain::class.java)
+
+            isUnderMainLiveData.value = respPending
+            println("Str_To_Json------$respPending")
+
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        AppUtility.hideProgressBar()
+    }
+    fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder, location: Location?) = viewModelScope.launch {
+        try {
+
+            val response = apiParams.isUnderMaintenance1()
+            // Get the plain text response
+            val plainTextResponse = response.string()
+
+            // Do something with the plain text response
+            Log.d("Response", plainTextResponse)
+
+            val decryptData = decryptKey(
+                BuildConfig.SECRET_KEY_UAT,
+                plainTextResponse
+            )
+            println("decrypt-----$decryptData")
+            val gson = Gson()
+//           val  typeToken = object : TypeToken<BaseResponse<RespUnderMain>>() {}
+//            val respPending = gson.fromJson<BaseResponse<DataDown>>(decryptData.toString(),typeToken.type)
+            val respPending = gson.fromJson (decryptData.toString(),RespUnderMain::class.java)
+            if (respPending.status_code ==200) {
+                if (respPending?.data?.down == false) {
+                    createOrder(reqCreateOrder, location = location)
+                } else  {
+//                                    findNavController.navigate(R.id.loginScreenFrag)
+                    isUnderMainLiveData.value = respPending
+//                                    "App is under maintenance. Please try after some time".showSnackBarForPayment()
+                }
+            }
+
+
+            println("Str_To_Json------$respPending")
+
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        AppUtility.hideProgressBar()
+    }
+    fun getUnderMaintenanceStatus1(reqCreateOrder: ReqCreateOrder, location: Location?) =
         viewModelScope.launch {
             retrofitSetup.callApi(
                 false,

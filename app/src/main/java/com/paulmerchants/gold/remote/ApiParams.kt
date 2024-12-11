@@ -8,6 +8,7 @@ import com.paulmerchants.gold.model.RespSetMpin
 import com.paulmerchants.gold.model.ResponseGetOtp
 import com.paulmerchants.gold.model.ResponseVerifyOtp
 import com.paulmerchants.gold.model.newmodel.DeviceDetailsDTO
+import com.paulmerchants.gold.model.newmodel.EncryptedRequest
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReGetLoanClosureReceipNew
@@ -53,6 +54,8 @@ interface ApiParams {
 //    ): Response<LoginNewResp>
 
     @GET("is-down")
+    suspend fun isUnderMaintenance1():  ResponseBody
+ @GET("is-down")
     suspend fun isUnderMaintenance(): Response<RespUnderMain>
 
     @POST("api/login_mpin")
@@ -73,8 +76,12 @@ interface ApiParams {
         @Body reqCustomerNew: ReqCustomerNew,
     ): Response<RespCutomerInfo>   //RespGetCustomer
 
-    @POST("otp/get-otp")
+    @POST("otp/send")
     suspend fun getOtp(
+        @Body data: String,
+    ): ResponseBody
+    @POST("otp/get-otp")
+    suspend fun getOtp1(
         @Body reqCustomerNew: ReqCustomerNew,
     ): Response<ResponseGetOtp>
 

@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.common.Constants.PHONE_LOGIN
 import com.paulmerchants.gold.model.ReqCustomerOtpNew
@@ -17,9 +18,11 @@ import com.paulmerchants.gold.model.RespGetCustomer
 import com.paulmerchants.gold.model.RespSetMpin
 import com.paulmerchants.gold.model.ResponseGetOtp
 import com.paulmerchants.gold.model.ResponseVerifyOtp
+import com.paulmerchants.gold.model.newmodel.EncryptedRequest
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
 import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
+import com.paulmerchants.gold.model.newmodel.RespUnderMain
 import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.networks.RetrofitSetup
 import com.paulmerchants.gold.remote.ApiParams
@@ -31,7 +34,9 @@ import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
 import com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
+import com.paulmerchants.gold.utility.convertJsonToString
 import com.paulmerchants.gold.utility.decryptKey
+import com.paulmerchants.gold.utility.encryptKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -40,6 +45,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val retrofitSetup: RetrofitSetup,
+    private val apiParams: ApiParams,
 ) : ViewModel() {
     //    val pass = "FU510N@pro"
 //    val userId = "pml"
@@ -180,7 +186,7 @@ class AuthViewModel @Inject constructor(
             })
         }
 
-    fun getOtp(mobileNum: String, activity: Activity) =
+ /*   fun getOtp(mobileNum: String, activity: Activity) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
@@ -189,7 +195,8 @@ class AuthViewModel @Inject constructor(
                         ReqCustomerNew(
                             mobileNum,
                             AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
-                        ),
+                        )
+                        ,
                     )
                 }
 
@@ -215,7 +222,45 @@ class AuthViewModel @Inject constructor(
                     Log.d("TAG", "error: ......$message")
                 }
             })
+        }*/
+
+    fun getOtp(mobileNum: String, activity: Activity) =
+        viewModelScope.launch {
+            try {
+                val gson = Gson()
+        val request =   ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails((activity as MainActivity).mLocation))
+                val jsonString = gson.toJson(request)
+                val response = encryptKey(BuildConfig.SECRET_KEY_UAT,jsonString.toString())?.let {
+                    apiParams.getOtp(
+                        it
+                    )`
+                }
+                // Get the plain text response
+                val plainTextResponse = response?.string()
+
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse.toString())
+
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_UAT,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+
+//           val  typeToken = object : TypeToken<BaseResponse<RespUnderMain>>() {}
+//            val respPending = gson.fromJson<BaseResponse<DataDown>>(decryptData.toString(),typeToken.type)
+                val respPending = gson.fromJson (decryptData.toString(), ResponseGetOtp::class.java)
+
+                println("Str_To_Json------$respPending")
+
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            AppUtility.hideProgressBar()
+
         }
+
 
     /*   fun getLogin2(location: Location?) = viewModelScope.launch {
            Log.d("TAG", "getLogin: //../........")

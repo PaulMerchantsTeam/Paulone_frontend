@@ -100,7 +100,7 @@ class LoginViewModel @Inject constructor(
 
             retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
-                    return apiParams.getOtp(
+                    return apiParams.getOtp1(
 
 
                         ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location)),

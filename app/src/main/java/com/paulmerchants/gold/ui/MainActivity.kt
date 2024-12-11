@@ -270,9 +270,9 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
             setUpNetworkCallbackFOrDueLoans()
             commonViewModel.isUnderMainLiveData.observe(this) {
                 it?.let {
-                    if (it.status_code == 200 && it.data.down && it.data.id == 1) {
+                    if (it.status_code == 200 && it.data?.down == true && it.data.id == 1) {
                         showUnderMainTainPage()
-                    } else if (it.status_code == 200 && it.data.down && it.data.id == 2) {
+                    } else if (it.status_code == 200 && it.data?.down == true && it.data.id == 2) {
                         it.data.end_time?.let { endTime ->
                             showUnderMainTainTimerPage(
                                 endTime
@@ -306,7 +306,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 //                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
 
-                    } else if (!it.data.down) {
+                    } else if (it.data?.down == false) {
                         binding.batteryMainNavGraph.show()
                         binding.underMainTimerParent.root.hide()
                         binding.underMainParent.root.hide()
@@ -481,9 +481,9 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
         commonViewModel.isUnderMainLiveData.observe(this) {
             it?.let {
-                if (it.status_code == 200 && it.data.down && it.data.id == 1) {
+                if (it.status_code == 200 && it.data?.down == true && it.data.id == 1) {
                     showUnderMainTainPage()
-                } else if (it.status_code == 200 && it.data.down && it.data.id == 2) {
+                } else if (it.status_code == 200 && it.data?.down == true && it.data.id == 2) {
                     it.data.end_time?.let { endTime ->
                         showUnderMainTainTimerPage(
                             endTime
@@ -517,7 +517,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 //                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
 
-                } else if (!it.data.down) {
+                } else if (it.data?.down == false) {
                     binding.batteryMainNavGraph.show()
                     binding.underMainTimerParent.root.hide()
                     binding.underMainParent.root.hide()

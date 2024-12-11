@@ -50,6 +50,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
 import com.itextpdf.text.Image
@@ -107,6 +108,7 @@ import javax.crypto.IllegalBlockSizeException
 import javax.crypto.NoSuchPaddingException
 import javax.crypto.ShortBufferException
 import javax.crypto.spec.SecretKeySpec
+import org.bouncycastle.util.encoders.Base64
 
 
 /**
@@ -956,7 +958,10 @@ object AppUtility {
     }
 
 }
-
+fun convertJsonToString(jsonObject: JsonObject): String {
+    val gson = Gson()
+    return gson.toJson(jsonObject)
+}
 fun decryptKey(key: String, strToDecrypt: String?): String? {
     Security.addProvider(BouncyCastleProvider())
     var keyBytes: ByteArray
@@ -997,7 +1002,39 @@ fun decryptKey(key: String, strToDecrypt: String?): String? {
     return null
 }
 
+fun encryptKey(key: String, strToEncrypt: String?): String? {
+    Security.addProvider(BouncyCastleProvider()) // Add BouncyCastle Provider for AES encryption
 
+    try {
+        // Convert the string key to bytes and create the SecretKeySpec
+        val keyBytes = key.toByteArray(Charsets.UTF_8)
+        val skey = SecretKeySpec(keyBytes, "AES")
+
+        // Initialize the cipher for encryption
+        val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
+        cipher.init(Cipher.ENCRYPT_MODE, skey)
+
+        // Encrypt the data
+        val encryptedBytes = cipher.doFinal(strToEncrypt?.toByteArray(Charsets.UTF_8))
+
+        // Encode the encrypted byte array to Base64 to return it as a string
+        return Base64.toBase64String(encryptedBytes)
+    } catch (e: UnsupportedEncodingException) {
+        e.printStackTrace()
+    } catch (e: InvalidKeyException) {
+        e.printStackTrace()
+    } catch (e: NoSuchAlgorithmException) {
+        e.printStackTrace()
+    } catch (e: NoSuchPaddingException) {
+        e.printStackTrace()
+    } catch (e: BadPaddingException) {
+        e.printStackTrace()
+    } catch (e: IllegalBlockSizeException) {
+        e.printStackTrace()
+    }
+
+    return null
+}
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun main() {

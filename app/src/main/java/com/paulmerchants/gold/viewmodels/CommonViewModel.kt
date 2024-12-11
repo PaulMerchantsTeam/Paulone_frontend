@@ -1,42 +1,38 @@
 package com.paulmerchants.gold.viewmodels
 
-import android.app.Activity
 import android.location.Location
 import android.os.Build
-import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.RespClosureReceipt
 import com.paulmerchants.gold.model.RespFetchFest
-import com.paulmerchants.gold.model.RespGetCustomer
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLoanRenewalProcess
 import com.paulmerchants.gold.model.RespLoanStatment
 import com.paulmerchants.gold.model.RespRenewalEligiblity
+import com.paulmerchants.gold.model.newmodel.BaseResponse
+import com.paulmerchants.gold.model.newmodel.DataDown
 import com.paulmerchants.gold.model.newmodel.GeOtStandingRespObj
 import com.paulmerchants.gold.model.newmodel.GepPendingRespObj
-import com.paulmerchants.gold.model.newmodel.LoginNewResp
-import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReGetLoanClosureReceipNew
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
-import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
 import com.paulmerchants.gold.model.newmodel.ReqGetLoanStatement
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCreateOrder
-import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
 import com.paulmerchants.gold.model.newmodel.RespGetLOanOutStanding
 import com.paulmerchants.gold.model.newmodel.RespPendingInterstDue
 import com.paulmerchants.gold.model.newmodel.RespUnderMain
@@ -62,6 +58,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CommonViewModel @Inject constructor(
     private val retrofitSetup: RetrofitSetup,
+    private val apiParams: ApiParams,
 ) : ViewModel() {
     val festivalLiveData = MutableLiveData<RespFetchFest>()
     var isCalled: Boolean = true
@@ -138,68 +135,54 @@ class CommonViewModel @Inject constructor(
      *      }
      * ]
      */
-    fun getUnderMaintenanceStatus1() = viewModelScope.launch {
-        retrofitSetup.callApi(
-            false,
-            object : CallHandler<Response<RespUnderMain>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
-                    return apiParams.isUnderMaintenance()
-                }
+//    fun getUnderMaintenanceStatus1() = viewModelScope.launch {
+//        retrofitSetup.callApi(
+//            false,
+//            object : CallHandler<Response<RespUnderMain>> {
+//                override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
+//                    return apiParams.isUnderMaintenance()
+//                }
+//
+//                override fun success(response: Response<RespUnderMain>) {
+//                    Log.d("TAG", "success: ......${response.body()}")
+//                    if (response.isSuccessful) {
+//                        isUnderMainLiveData.value = response.body()
+//                    }
+//                }
+//            })
+//    }
 
-                override fun success(response: Response<RespUnderMain>) {
-                    Log.d("TAG", "success: ......${response.body()}")
-                    if (response.isSuccessful) {
-                        isUnderMainLiveData.value = response.body()
-                    }
-                }
-            })
-    }
-    fun getUnderMaintenanceStatus(
+    fun getUnderMaintenanceStatus() = viewModelScope.launch {
+        try {
 
-    ) =
-        viewModelScope.launch {
+            val response = apiParams.isUnderMaintenance1()
+            // Get the plain text response
+            val plainTextResponse = response.string()
 
-//        if (mobileNum == "9999988888") {
-//            isCustomerExist.postValue(true)
-//            return@launch
-//        }
+            // Do something with the plain text response
+            Log.d("Response", plainTextResponse)
 
-            retrofitSetup.callApi(true, object : CallHandler<Response<RespUnderMain>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
-                    return apiParams.isUnderMaintenance()
-                }
+            val decryptData = decryptKey(
+                BuildConfig.SECRET_KEY_UAT,
+                plainTextResponse
+            )
+            println("decrypt-----$decryptData")
+            val gson = Gson()
+//           val  typeToken = object : TypeToken<BaseResponse<RespUnderMain>>() {}
+//            val respPending = gson.fromJson<BaseResponse<DataDown>>(decryptData.toString(),typeToken.type)
+            val respPending = gson.fromJson (decryptData.toString(),RespUnderMain::class.java)
 
-                override fun success(response: Response<RespUnderMain>) {
-                    if (response.isSuccessful) {
-                        try {
-                            val decryptData = decryptKey(
-                                BuildConfig.SECRET_KEY_UAT, response.toString()
-                            )
-                            Log.d("TAG", "success: .,cucucucu....$response")
+            isUnderMainLiveData.value = respPending
+            println("Str_To_Json------$respPending")
 
-                            val respCutomer: RespUnderMain? =
-                                AppUtility.convertStringToJson(decryptData.toString())
-                            Log.d("TAG", "success: .,cucucucu....$respCutomer")
-                            Log.d("TAG", "success: .,cucucucu....$decryptData")
-                            //getting initially first customer
 
-                        } catch (e: Exception) {
-                            Log.d("TAG", "success: ........${e.message}")
-                        }
-                    } else if (response.code() == 401) {
-//                        getLogin2(location)
-                    } else {
-
-                    }
-
-                }
-
-                override fun error(message: String) {
-                    super.error(message)
-                    Log.d("TAG", "error: ......$message")
-                }
-            })
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+        AppUtility.hideProgressBar()
+    }
+
+
     /*fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder, location: Location?) =
         viewModelScope.launch {
             retrofitSetup.callApi(
@@ -273,43 +256,44 @@ class CommonViewModel @Inject constructor(
             })
 
         }
-/*    fun getLogin2(location: Location?) = viewModelScope.launch {
-        Log.d("TAG", "getLogin: //../........")
-        retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
-            override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
-                return apiParams.getLogin(
-                    LoginReqNew(
-                        AppUtility.getDeviceDetails(location),
-                        BuildConfig.PASSWORD,
-                        BuildConfig.USERNAME
-                    )
-                )
-            }
 
-            override fun success(response: Response<LoginNewResp>) {
-                Log.d("TAG", "success: ......$response")
-                response.body()?.statusCode?.let {
-                    AppSharedPref.putStringValue(
-                        Constants.AUTH_STATUS,
-                        it
+    /*    fun getLogin2(location: Location?) = viewModelScope.launch {
+            Log.d("TAG", "getLogin: //../........")
+            retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
+                    return apiParams.getLogin(
+                        LoginReqNew(
+                            AppUtility.getDeviceDetails(location),
+                            BuildConfig.PASSWORD,
+                            BuildConfig.USERNAME
+                        )
                     )
                 }
-                response.body()?.token?.let {
-                    AppSharedPref.putStringValue(
-                        Constants.JWT_TOKEN,
-                        it
-                    )
-                }
-                AppUtility.hideProgressBar()
-            }
 
-            override fun error(message: String) {
-                super.error(message)
-                Log.d("TAG", "error: ......$message")
-                AppUtility.hideProgressBar()
-            }
-        })
-    }*/
+                override fun success(response: Response<LoginNewResp>) {
+                    Log.d("TAG", "success: ......$response")
+                    response.body()?.statusCode?.let {
+                        AppSharedPref.putStringValue(
+                            Constants.AUTH_STATUS,
+                            it
+                        )
+                    }
+                    response.body()?.token?.let {
+                        AppSharedPref.putStringValue(
+                            Constants.JWT_TOKEN,
+                            it
+                        )
+                    }
+                    AppUtility.hideProgressBar()
+                }
+
+                override fun error(message: String) {
+                    super.error(message)
+                    Log.d("TAG", "error: ......$message")
+                    AppUtility.hideProgressBar()
+                }
+            })
+        }*/
     fun getFestDetailsForHeaderHomePage() = viewModelScope.launch {
         retrofitSetup.callApi(
             true,
@@ -551,44 +535,44 @@ class CommonViewModel @Inject constructor(
 
     }
 
-  /*  fun getLogin2(AppSharedPref: AppSharedPref?, location: Location?) = viewModelScope.launch {
-        Log.d("TAG", "getLogin: //../........")
-        retrofitSetup.callApi(false, object : CallHandler<Response<LoginNewResp>> {
-            override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
-                return apiParams.getLogin(
-                    LoginReqNew(
-                        AppUtility.getDeviceDetails(location = location),
-                        BuildConfig.PASSWORD,
-                        BuildConfig.USERNAME
-                    )
-                )
-            }
+    /*  fun getLogin2(AppSharedPref: AppSharedPref?, location: Location?) = viewModelScope.launch {
+          Log.d("TAG", "getLogin: //../........")
+          retrofitSetup.callApi(false, object : CallHandler<Response<LoginNewResp>> {
+              override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
+                  return apiParams.getLogin(
+                      LoginReqNew(
+                          AppUtility.getDeviceDetails(location = location),
+                          BuildConfig.PASSWORD,
+                          BuildConfig.USERNAME
+                      )
+                  )
+              }
 
-            override fun success(response: Response<LoginNewResp>) {
-                Log.d("TAG", "success: ......$response")
-                response.body()?.statusCode?.let {
-                    AppSharedPref?.putStringValue(
-                        Constants.AUTH_STATUS,
-                        it
-                    )
-                }
+              override fun success(response: Response<LoginNewResp>) {
+                  Log.d("TAG", "success: ......$response")
+                  response.body()?.statusCode?.let {
+                      AppSharedPref?.putStringValue(
+                          Constants.AUTH_STATUS,
+                          it
+                      )
+                  }
 
-                response.body()?.token?.let {
-                    AppSharedPref?.putStringValue(
-                        JWT_TOKEN,
-                        it
-                    )
-                }
-                AppUtility.hideProgressBar()
-            }
+                  response.body()?.token?.let {
+                      AppSharedPref?.putStringValue(
+                          JWT_TOKEN,
+                          it
+                      )
+                  }
+                  AppUtility.hideProgressBar()
+              }
 
-            override fun error(message: String) {
-                super.error(message)
-                Log.d("TAG", "error: ......$message")
-                AppUtility.hideProgressBar()
-            }
-        })
-    }*/
+              override fun error(message: String) {
+                  super.error(message)
+                  Log.d("TAG", "error: ......$message")
+                  AppUtility.hideProgressBar()
+              }
+          })
+      }*/
 
     fun getLoanOutstanding(AppSharedPref: AppSharedPref?, location: Location?) =
         viewModelScope.launch {

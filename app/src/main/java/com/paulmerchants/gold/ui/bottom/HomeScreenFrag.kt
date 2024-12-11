@@ -270,16 +270,16 @@ class HomeScreenFrag :
                 if (it.status_code ==200) {
 //                    binding.swiperefresh.isRefreshing = false
 
-                    if (it.data.down && it.data.id == 1) {
+                    if (it.data?.down == true && it.data.id == 1) {
                         findNavController().navigate(R.id.mainScreenFrag)
                         (activity as MainActivity).binding.bottomNavigationView.hide()
-                    } else if (it.data.down && it.data.id == 2) {
+                    } else if (it.data?.down == true && it.data.id == 2) {
                         navController.popBackStack(R.id.homeScreenFrag,true)
                         findNavController().navigate(R.id.loginScreenFrag)
 
                         (activity as MainActivity).binding.bottomNavigationView.hide()
                         (activity as MainActivity).binding.underMainTimerParent.root.show()
-                    } else if (!it.data.down) {
+                    } else if (it.data?.down == true) {
 //
                         (activity as MainActivity).binding.underMainTimerParent.root.hide()
                         setUpNetworkCallbackFOrDueLoans()
