@@ -1,12 +1,15 @@
 package com.paulmerchants.gold.viewmodels
 
+import android.app.Activity
 import android.location.Location
 import android.os.Build
+import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
@@ -16,6 +19,7 @@ import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.RespClosureReceipt
 import com.paulmerchants.gold.model.RespFetchFest
+import com.paulmerchants.gold.model.RespGetCustomer
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLoanRenewalProcess
@@ -27,10 +31,12 @@ import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReGetLoanClosureReceipNew
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
+import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
 import com.paulmerchants.gold.model.newmodel.ReqGetLoanStatement
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespCommon
 import com.paulmerchants.gold.model.newmodel.RespCreateOrder
+import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
 import com.paulmerchants.gold.model.newmodel.RespGetLOanOutStanding
 import com.paulmerchants.gold.model.newmodel.RespPendingInterstDue
 import com.paulmerchants.gold.model.newmodel.RespUnderMain
@@ -132,7 +138,7 @@ class CommonViewModel @Inject constructor(
      *      }
      * ]
      */
-    fun getUnderMaintenanceStatus() = viewModelScope.launch {
+    fun getUnderMaintenanceStatus1() = viewModelScope.launch {
         retrofitSetup.callApi(
             false,
             object : CallHandler<Response<RespUnderMain>> {
@@ -148,6 +154,52 @@ class CommonViewModel @Inject constructor(
                 }
             })
     }
+    fun getUnderMaintenanceStatus(
+
+    ) =
+        viewModelScope.launch {
+
+//        if (mobileNum == "9999988888") {
+//            isCustomerExist.postValue(true)
+//            return@launch
+//        }
+
+            retrofitSetup.callApi(true, object : CallHandler<Response<RespUnderMain>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
+                    return apiParams.isUnderMaintenance()
+                }
+
+                override fun success(response: Response<RespUnderMain>) {
+                    if (response.isSuccessful) {
+                        try {
+                            val decryptData = decryptKey(
+                                BuildConfig.SECRET_KEY_UAT, response.toString()
+                            )
+                            Log.d("TAG", "success: .,cucucucu....$response")
+
+                            val respCutomer: RespUnderMain? =
+                                AppUtility.convertStringToJson(decryptData.toString())
+                            Log.d("TAG", "success: .,cucucucu....$respCutomer")
+                            Log.d("TAG", "success: .,cucucucu....$decryptData")
+                            //getting initially first customer
+
+                        } catch (e: Exception) {
+                            Log.d("TAG", "success: ........${e.message}")
+                        }
+                    } else if (response.code() == 401) {
+//                        getLogin2(location)
+                    } else {
+
+                    }
+
+                }
+
+                override fun error(message: String) {
+                    super.error(message)
+                    Log.d("TAG", "error: ......$message")
+                }
+            })
+        }
     /*fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder, location: Location?) =
         viewModelScope.launch {
             retrofitSetup.callApi(

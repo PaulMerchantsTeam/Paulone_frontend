@@ -52,7 +52,7 @@ interface ApiParams {
 //        @Body login: LoginReqNew,
 //    ): Response<LoginNewResp>
 
-    @GET("isdown")
+    @GET("is-down")
     suspend fun isUnderMaintenance(): Response<RespUnderMain>
 
     @POST("api/login_mpin")

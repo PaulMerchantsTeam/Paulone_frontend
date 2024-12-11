@@ -2,18 +2,24 @@ package com.paulmerchants.gold.viewmodels
 
 import android.app.Activity
 import android.location.Location
+import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import com.paulmerchants.gold.BuildConfig
+import com.paulmerchants.gold.common.Constants.PHONE_LOGIN
 import com.paulmerchants.gold.model.ReqCustomerOtpNew
 import com.paulmerchants.gold.model.ReqSetMPin
+import com.paulmerchants.gold.model.RespGetCustomer
 import com.paulmerchants.gold.model.RespSetMpin
 import com.paulmerchants.gold.model.ResponseGetOtp
 import com.paulmerchants.gold.model.ResponseVerifyOtp
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
+import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
 import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.networks.RetrofitSetup
 import com.paulmerchants.gold.remote.ApiParams
@@ -21,9 +27,11 @@ import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.Constants.CUSTOMER_ID
 import com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
+import com.paulmerchants.gold.utility.decryptKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -84,93 +92,93 @@ class AuthViewModel @Inject constructor(
         timer?.start()
     }
 
-//    fun getCustomer(
-//        navController: NavController,
-//        mobileNum: String,
-//        location: Location?,
-//        activity: Activity,
-//    ) =
-//        viewModelScope.launch {
-//
-////        if (mobileNum == "9999988888") {
-////            isCustomerExist.postValue(true)
-////            return@launch
-////        }
-//
-//            retrofitSetup.callApi(true, object : CallHandler<Response<RespCutomerInfo>> {
-//                override suspend fun sendRequest(apiParams: ApiParams): Response<RespCutomerInfo> {
-//                    return apiParams.getCustomer(
-//                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
-//                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location)),
-//                    )
-//                }
-//
-//                override fun success(response: Response<RespCutomerInfo>) {
-//                    if (response.isSuccessful) {
-//                        try {
-//                            val decryptData = decryptKey(
-//                                BuildConfig.SECRET_KEY_GEN, response.body()?.data
-//                            )
-//                            val respCutomer: RespGetCustomer? =
-//                                AppUtility.convertStringToJson(decryptData.toString())
-//                            Log.d("TAG", "success: .,cucucucu....$respCutomer")
-//                            //getting initially first customer
-//                            if (respCutomer != null) {
-//                                Log.d(
-//                                    "TAG",
-//                                    "getCustomer: -CustomerId---${respCutomer[0]}"
-//                                )
-//                                val customer = respCutomer[0]
-//                                if (customer.Status == true) {
-//                                    getOtp(mobileNum, activity)
-//                                    isCustomerExist.postValue(true)
-//                                    Log.d(
-//                                        "TAG",
-//                                        "getCustomer: -CustomerId---${customer.Cust_ID.toString()}"
-//                                    )
-//                                    Log.d(
-//                                        "TAG",
-//                                        "getCustomer: -CustName---${customer.CustName.toString()}"
-//                                    )
-//                                    AppSharedPref.putStringValue(
-//                                        CUSTOMER_ID,
-//                                        customer.Cust_ID.toString()
-//                                    )
-//                                    AppSharedPref.putStringValue(
-//                                        CUSTOMER_NAME, customer.CustName.toString()
-//                                    )
-//                                } else {
-//                                    //TODO: Show for queries for new customers.
-//                                    "No active Gold loan found for this number".showSnackBar()
-//                                    val bundle = Bundle().apply {
-//                                        putString(PHONE_LOGIN, mobileNum)
-//                                    }
-////                                    navController.navigate(
-////                                        R.id.newUserDialog, bundle
-////                                    )
-//                                    Log.i(
-//                                        "Auth_ViewModel",
-//                                        "Error: Status = ${customer.Status}"
-//                                    )
-//                                }
-//                            }
-//                        } catch (e: Exception) {
-//                            Log.d("TAG", "success: ........${e.message}")
-//                        }
-//                    } else if (response.code() == 401) {
-////                        getLogin2(location)
-//                    } else {
-//
-//                    }
-//
-//                }
-//
-//                override fun error(message: String) {
-//                    super.error(message)
-//                    Log.d("TAG", "error: ......$message")
-//                }
-//            })
+    fun getCustomer(
+        navController: NavController,
+        mobileNum: String,
+        location: Location?,
+        activity: Activity,
+    ) =
+        viewModelScope.launch {
+
+//        if (mobileNum == "9999988888") {
+//            isCustomerExist.postValue(true)
+//            return@launch
 //        }
+
+            retrofitSetup.callApi(true, object : CallHandler<Response<RespCutomerInfo>> {
+                override suspend fun sendRequest(apiParams: ApiParams): Response<RespCutomerInfo> {
+                    return apiParams.getCustomer(
+                        "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
+                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location)),
+                    )
+                }
+
+                override fun success(response: Response<RespCutomerInfo>) {
+                    if (response.isSuccessful) {
+                        try {
+                            val decryptData = decryptKey(
+                                BuildConfig.SECRET_KEY_GEN, response.body()?.data
+                            )
+                            val respCutomer: RespGetCustomer? =
+                                AppUtility.convertStringToJson(decryptData.toString())
+                            Log.d("TAG", "success: .,cucucucu....$respCutomer")
+                            //getting initially first customer
+                            if (respCutomer != null) {
+                                Log.d(
+                                    "TAG",
+                                    "getCustomer: -CustomerId---${respCutomer[0]}"
+                                )
+                                val customer = respCutomer[0]
+                                if (customer.Status == true) {
+                                    getOtp(mobileNum, activity)
+                                    isCustomerExist.postValue(true)
+                                    Log.d(
+                                        "TAG",
+                                        "getCustomer: -CustomerId---${customer.Cust_ID.toString()}"
+                                    )
+                                    Log.d(
+                                        "TAG",
+                                        "getCustomer: -CustName---${customer.CustName.toString()}"
+                                    )
+                                    AppSharedPref.putStringValue(
+                                        CUSTOMER_ID,
+                                        customer.Cust_ID.toString()
+                                    )
+                                    AppSharedPref.putStringValue(
+                                        CUSTOMER_NAME, customer.CustName.toString()
+                                    )
+                                } else {
+                                    //TODO: Show for queries for new customers.
+                                    "No active Gold loan found for this number".showSnackBar()
+                                    val bundle = Bundle().apply {
+                                        putString(PHONE_LOGIN, mobileNum)
+                                    }
+//                                    navController.navigate(
+//                                        R.id.newUserDialog, bundle
+//                                    )
+                                    Log.i(
+                                        "Auth_ViewModel",
+                                        "Error: Status = ${customer.Status}"
+                                    )
+                                }
+                            }
+                        } catch (e: Exception) {
+                            Log.d("TAG", "success: ........${e.message}")
+                        }
+                    } else if (response.code() == 401) {
+//                        getLogin2(location)
+                    } else {
+
+                    }
+
+                }
+
+                override fun error(message: String) {
+                    super.error(message)
+                    Log.d("TAG", "error: ......$message")
+                }
+            })
+        }
 
     fun getOtp(mobileNum: String, activity: Activity) =
         viewModelScope.launch {
