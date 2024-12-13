@@ -45,7 +45,7 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
         val toDate = ""
 
         commonViewModel.getLoanClosureReceipt(
-            AppSharedPref,
+
             loanOutStanding?.AcNo.toString(),
             (activity as MainActivity).mLocation
         )
@@ -62,7 +62,7 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
             (activity as MainActivity).mLocation
         )
 
-        commonViewModel.getRespLoanStatmentLiveData.observe(viewLifecycleOwner) {
+        commonViewModel.getRespLoanStatementLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 lastLoanAdapter.submitList(it)
                 binding.rvLastTrans.adapter = lastLoanAdapter

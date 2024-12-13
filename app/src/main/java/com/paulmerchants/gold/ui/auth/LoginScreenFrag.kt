@@ -179,7 +179,7 @@ class LoginScreenFrag :
                 dialogBinding.otpThreeEt.text.isNotEmpty() && dialogBinding.otpFourEt.text.isNotEmpty()
             ) {
                 loginViewModel.verifyOtp(
-                    AppSharedPref,
+
                     mobile,
                     otp = "${dialogBinding.otpOneEt.text}${dialogBinding.otpTwoEt.text}" +
                             "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}",
@@ -196,7 +196,7 @@ class LoginScreenFrag :
             if (otpFilled) {
                 val otp = "${dialogBinding.otpOneEt.text}${dialogBinding.otpTwoEt.text}" +
                         "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}"
-                loginViewModel.verifyOtp(AppSharedPref, mobile, otp, (activity as? MainActivity)?.mLocation)
+                loginViewModel.verifyOtp( mobile, otp, (activity as? MainActivity)?.mLocation)
             } else {
                 "Please fill OTP".showSnackBar()
             }

@@ -48,35 +48,5 @@ class TxnViewModel @Inject constructor(
         return pager
     }
 
-    /*
-        fun getTxnHistory(appSharedPref: AppSharedPref?) =
-            viewModelScope.launch {
-                retrofitSetup.callApi(true, object : CallHandler<Response<RespTxnHistory>> {
-                    override suspend fun sendRequest(apiParams: ApiParams): Response<RespTxnHistory> {
-                        return apiParams.txnHistory(
-                            "Bearer ${appSharedPref?.getStringValue(JWT_TOKEN).toString()}",
-                            appSharedPref?.getStringValue(Constants.CUSTOMER_ID).toString()
-                        )
-                    }
-
-                    override fun success(response: Response<RespTxnHistory>) {
-                        Log.d("TAG", "success: ..getTxnHistory....${response.body()}")
-                        if (response.body()?.statusCode == "200") {
-                            txnHistoryData.value = response.body()
-                        } else {
-                            "${response.body()?.message}".showSnackBar()
-                        }
-
-
-                    }
-
-                    override fun error(message: String) {
-                        super.error(message)
-                        Log.d("TAG", "error: ......$message")
-                    }
-                })
-
-            }
-    */
 
 }

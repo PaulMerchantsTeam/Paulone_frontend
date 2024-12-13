@@ -76,7 +76,8 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 null,
                 (activity as MainActivity).navOption
             )
-        } else if (AppSharedPref.getBooleanValue(OTP_VERIFIED) && AppSharedPref.getBooleanValue(
+        }
+        else if (AppSharedPref.getBooleanValue(OTP_VERIFIED) && AppSharedPref.getBooleanValue(
                 IS_USER_EXIST
             )
         ) {
@@ -86,7 +87,8 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 null,
                 (activity as MainActivity).navOption
             )
-        } else if (AppSharedPref.getBooleanValue(SPLASH_SCRN_VISITED) == true) {
+        }
+        else if (AppSharedPref.getBooleanValue(SPLASH_SCRN_VISITED)) {
             findNavController().popBackStack(R.id.splashFragment, true)
             findNavController().navigate(R.id.phoenNumVerifiactionFragment)
         } else {
@@ -182,12 +184,8 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                             )
                             setTextColor(getColor(requireContext(), R.color.splash_screen_three))
                             setStrokeColorResource(R.color.splash_screen_three)
-
-
                         }
                     }
-
-
                 }
             }
 

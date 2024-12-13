@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.model.ReqCustomerOtpNew
@@ -32,14 +33,18 @@ import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
 import com.paulmerchants.gold.utility.Constants.IS_LOGOUT
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
 import com.paulmerchants.gold.utility.decryptKey
+import com.paulmerchants.gold.utility.encryptKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
 import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val retrofitSetup: RetrofitSetup,
+    private val apiParams: ApiParams,
 ) : ViewModel() {
     companion object{
         const val TAG = "ProfileViewModel"
@@ -148,7 +153,7 @@ class ProfileViewModel @Inject constructor(
         })
     }
 
-    // {"status":"SUCCESS" , "statusCode":"200","message": "User Has Been Logout Successfully!"}
+
     fun logout(navController: NavController) =
         viewModelScope.launch {
             retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
@@ -182,70 +187,94 @@ class ProfileViewModel @Inject constructor(
             })
         }
 
-    fun getOtp(mobileNum: String,location: Location?) =
+    fun getOtp(mobileNum: String, location: Location?) =
         viewModelScope.launch {
+            try {
+                val gson = Gson()
+                val request =  ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location))
+                val jsonString = gson.toJson(request)
+                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
+                val requestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), encryptedString.toString())
 
-            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
-                    return apiParams.getOtp1(
+                val response = apiParams.getOtp(requestBody)
+                // Get the plain text response
+                val plainTextResponse = response.string()
 
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse.toString())
 
-                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location)),
-                    )
-                }
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_UAT,
+                    plainTextResponse)
+                println("decrypt-----$decryptData")
 
-                override fun success(response: Response<ResponseGetOtp>) {
-                    if (response.isSuccessful) {
+//           val  typeToken = object : TypeToken<BaseResponse<RespUnderMain>>() {}
+//            val respPending = gson.fromJson<BaseResponse<DataDown>>(decryptData.toString(),typeToken.type)
+                val respPending = gson.fromJson(decryptData.toString(), ResponseGetOtp::class.java)
+                println("Str_To_Json------$respPending")
+                respPending?.let {
+                    if(it.status_code == 200){
                         timerStart()
-                    } else {
+                        AppSharedPref.putStringValue(Constants.SESSION_ID, "Bearer ${it.data.session_id.toString()}")
+                    }
+                    else{
                         "Some thing went wrong..".showSnackBar()
                     }
-//                    val decryptData = decryptKey(
-//                        BuildConfig.SECRET_KEY_GEN, response.body()?.data
-//                    )
-
-
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            AppUtility.hideProgressBar()
 
-
-                override fun error(message: String) {
-                    super.error(message)
-                    Log.d("TAG", "error: ......$message")
-                }
-            })
         }
 
-    fun verifyOtp(mobileNum: String, otp: String,location: Location?) =
+    fun verifyOtp(mobileNum: String, otp: String, location: Location?) =
         viewModelScope.launch {
-            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
-                    return apiParams.verifyOtp(
+            try {
+                val gson = Gson()
+                val request = ReqCustomerOtpNew(
+                    mobileNum,
+                    otp,
+                    AppUtility.getDeviceDetails(location = location)
+                )
+                val jsonString = gson.toJson(request)
+                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
+                val requestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), encryptedString.toString())
 
-                        ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails(location)),
-                    )
-                }
+                val response = apiParams.verifyOtp(
+                    AppSharedPref.getStringValue(Constants.SESSION_ID),
+                    requestBody
+                )
+                // Get the plain text response
+                val plainTextResponse = response.string()
 
-                override fun success(response: Response<ResponseGetOtp>) {
-                    if (response.isSuccessful) {
-                        response.body()?.let {
-                            if (it.status_code ==200) {
-                                AppSharedPref.putStringValue(CUST_MOBILE, mobileNum)
-                                verifyOtp.value = response.body()
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse.toString())
 
-                            } else {
-                                it.message.showSnackBar()
-                            }
-                        }
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_UAT,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+                val respPending = gson.fromJson(decryptData.toString(), ResponseGetOtp::class.java)
+                println("Str_To_Json------$respPending")
+                respPending?.let {
+                    if (it.status_code == 200) {
+                        AppSharedPref?.putStringValue(Constants.CUST_MOBILE, mobileNum)
+                        verifyOtp.value = respPending
+
+                    } else {
+                        "${it.message}".showSnackBar()
                     }
 
-
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            AppUtility.hideProgressBar()
 
-
-                override fun error(message: String) {
-                    super.error(message)
-                    Log.d("TAG", "error: ......$message")
-                }
-            })
         }
+
 }

@@ -353,11 +353,11 @@ class HomeScreenFrag :
         changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
         (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
         (activity as MainActivity).commonViewModel.getPendingInterestDues(
-            AppSharedPref,
+
             (activity as MainActivity).mLocation
         )
         (activity as MainActivity).commonViewModel.getLoanOutstanding(
-            AppSharedPref,
+
             (activity as MainActivity).mLocation
         )
 

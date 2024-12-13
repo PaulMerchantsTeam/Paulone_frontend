@@ -1,30 +1,21 @@
 package com.paulmerchants.gold.viewmodels
 
-import android.content.Context
 import android.location.Location
 import android.os.CountDownTimer
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants.LOGIN_WITH_MPIN
 import com.paulmerchants.gold.model.ReqCustomerOtpNew
-import com.paulmerchants.gold.model.RequestLogin
-import com.paulmerchants.gold.model.RespCustomersDetails
-import com.paulmerchants.gold.model.RespLogin
 import com.paulmerchants.gold.model.ResponseGetOtp
-import com.paulmerchants.gold.model.ResponseVerifyOtp
 import com.paulmerchants.gold.model.newmodel.LoginNewResp
-import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
 import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
-import com.paulmerchants.gold.model.newmodel.ReqResetPin
-import com.paulmerchants.gold.model.newmodel.RespCommon
-import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
 import com.paulmerchants.gold.model.newmodel.RespLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.RespTxnHistory
 import com.paulmerchants.gold.networks.CallHandler
@@ -34,17 +25,19 @@ import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
-import com.paulmerchants.gold.utility.Constants.AUTH_STATUS
-import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
 import com.paulmerchants.gold.utility.decryptKey
+import com.paulmerchants.gold.utility.encryptKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
 import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val retrofitSetup: RetrofitSetup,
+    private val apiParams: ApiParams,
 ) : ViewModel() {
 
     val getTokenResp = MutableLiveData<Response<LoginNewResp>>()
@@ -95,70 +88,98 @@ class LoginViewModel @Inject constructor(
         timer?.start()
     }
 
-    fun getOtp( mobileNum: String,location: Location?) =
+    fun getOtp(mobileNum: String, location: Location?) =
         viewModelScope.launch {
+            try {
+                val gson = Gson()
+                val request = ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location))
+                val jsonString = gson.toJson(request)
+                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
+                val requestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), encryptedString.toString())
 
-            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
-                    return apiParams.getOtp1(
+                val response = apiParams.getOtp(requestBody)
+                // Get the plain text response
+                val plainTextResponse = response.string()
 
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse.toString())
 
-                        ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location)),
-                    )
-                }
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_UAT,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
 
-                override fun success(response: Response<ResponseGetOtp>) {
-                    if (response.isSuccessful) {
+//           val  typeToken = object : TypeToken<BaseResponse<RespUnderMain>>() {}
+//            val respPending = gson.fromJson<BaseResponse<DataDown>>(decryptData.toString(),typeToken.type)
+                val respPending = gson.fromJson(decryptData.toString(), ResponseGetOtp::class.java)
+                println("Str_To_Json------$respPending")
+                respPending?.let {
+                    if (it.status_code == 200) {
                         timerStart()
+                        AppSharedPref.putStringValue(
+                            Constants.SESSION_ID,
+                            "Bearer ${it.data.session_id.toString()}"
+                        )
                     } else {
                         "Some thing went wrong..".showSnackBar()
                     }
-//                    val decryptData = decryptKey(
-//                        BuildConfig.SECRET_KEY_GEN, response.body()?.data
-//                    )
-
-
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            AppUtility.hideProgressBar()
 
-
-                override fun error(message: String) {
-                    super.error(message)
-                    Log.d("TAG", "error: ......$message")
-                }
-            })
         }
-    fun verifyOtp(AppSharedPref: AppSharedPref?, mobileNum: String, otp: String,location: Location?) =
+
+
+    fun verifyOtp(mobileNum: String, otp: String, location: Location?) =
         viewModelScope.launch {
-            retrofitSetup.callApi(true, object : CallHandler<Response<ResponseGetOtp>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<ResponseGetOtp> {
-                    return apiParams.verifyOtp(
+            try {
+                val gson = Gson()
+                val request = ReqCustomerOtpNew(
+                    mobileNum,
+                    otp,
+                    AppUtility.getDeviceDetails(location = location)
+                )
+                val jsonString = gson.toJson(request)
+                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
+                val requestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), encryptedString.toString())
 
-                        ReqCustomerOtpNew(mobileNum, otp, AppUtility.getDeviceDetails(location)),
-                    )
-                }
+                val response = apiParams.verifyOtp(
+                    AppSharedPref.getStringValue(Constants.SESSION_ID),
+                    requestBody
+                )
+                // Get the plain text response
+                val plainTextResponse = response.string()
 
-                override fun success(response: Response<ResponseGetOtp>) {
-                    if (response.isSuccessful) {
-                        response.body()?.let {
-                            if (it.status_code == 200) {
-                                AppSharedPref?.putStringValue(Constants.CUST_MOBILE, mobileNum)
-                                verifyOtp.value = response.body()
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse.toString())
 
-                            } else {
-                                "${it.message}".showSnackBar()
-                            }
-                        }
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_UAT,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+                val respPending = gson.fromJson(decryptData.toString(), ResponseGetOtp::class.java)
+                println("Str_To_Json------$respPending")
+                respPending?.let {
+                    if (it.status_code == 200) {
+                        AppSharedPref?.putStringValue(Constants.CUST_MOBILE, mobileNum)
+                        verifyOtp.value = respPending
+
+                    } else {
+                        "${it.message}".showSnackBar()
                     }
 
-
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            AppUtility.hideProgressBar()
 
-
-                override fun error(message: String) {
-                    super.error(message)
-                    Log.d("TAG", "error: ......$message")
-                }
-            })
         }
     fun loginWithMpin(
         navController: NavController,
@@ -204,54 +225,5 @@ class LoginViewModel @Inject constructor(
 
         }
 
-
-    /*fun getLogin2(AppSharedPref: AppSharedPref?,location: Location?) = viewModelScope.launch {
-        Log.d("TAG", "getLogin: //../........")
-        retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
-            override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
-                return apiParams.getLogin(
-                    LoginReqNew(
-                        AppUtility.getDeviceDetails(location),
-                        BuildConfig.PASSWORD,
-                        BuildConfig.USERNAME
-                    )
-                )
-            }
-
-            override fun success(response: Response<LoginNewResp>) {
-                Log.d("TAG", "success: ......$response")
-                if (response.isSuccessful) {
-                    response.body()?.statusCode?.let {
-                        AppSharedPref?.putStringValue(
-                            Constants.AUTH_STATUS,
-                            it
-                        )
-                    }
-                    response.body()?.token?.let { AppSharedPref?.putStringValue(JWT_TOKEN, it) }
-                    getTokenResp.value = response
-                } else {
-                    Log.e(TAG, "success: .........")
-                }
-                AppUtility.hideProgressBar()
-            }
-
-            override fun error(message: String) {
-                super.error(message)
-                Log.d("TAG", "error: ......$message")
-                AppUtility.hideProgressBar()
-            }
-        })
-    }*/
-
-    /**
-     * FAILED_CASE
-     * {
-    "status": "SUCCESS",
-    "statusCode": "200",
-    "message": "Nope, Check Your MobileNo Or M-PIN are Incorrect!",
-    "data": false,
-    "response_message": "Request Processed Successfully"
-    }
-     */
 
 }

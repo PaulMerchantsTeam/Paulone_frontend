@@ -59,29 +59,4 @@ class MapViewModel @Inject constructor(
         return pager
     }
 
-//    fun getBranchLocation(AppSharedPref: AppSharedPref?) =
-//        viewModelScope.launch {
-//            Log.d("TAG", "getLogin: //../........")
-//            retrofitSetup.callApi(true, object : CallHandler<Response<RespAllBranch>> {
-//                override suspend fun sendRequest(apiParams: ApiParams): Response<RespAllBranch> {
-//                    return apiParams.fetchAllBranch(
-//                        "Bearer ${AppSharedPref?.getStringValue(JWT_TOKEN).toString()}"
-//                    )
-//                }
-//
-//                override fun success(response: Response<RespAllBranch>) {
-//                    Log.d("TAG", "success: ......$response")
-//                    branchLocation.value = response
-//                    AppUtility.hideProgressBar()
-//                }
-//
-//                override fun error(message: String) {
-//                    super.error(message)
-//                    Log.d("TAG", "error: ......$message")
-//                    AppUtility.hideProgressBar()
-//                }
-//            })
-//        }
-
-
 }

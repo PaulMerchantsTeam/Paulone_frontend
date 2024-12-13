@@ -92,28 +92,11 @@ class PaymentViewModel @Inject constructor(
             }
         }
     }
-    fun getUnderMaintenanceStatusCheck1() = viewModelScope.launch {
-        retrofitSetup.callApi(
-            false,
 
-            object : CallHandler<Response<RespUnderMain>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
-                    return apiParams.isUnderMaintenance()
-                }
-
-                override fun success(response: Response<RespUnderMain>) {
-                    Log.d("TAG", "success: ......${response.body()}")
-                    if (response.isSuccessful) {
-                        isUnderMainLiveData.value = response.body()
-                    }
-                    AppUtility.hideProgressBar()
-                }
-            })
-    }
     fun getUnderMaintenanceStatusCheck() = viewModelScope.launch {
         try {
 
-            val response = apiParams.isUnderMaintenance1()
+            val response = apiParams.isUnderMaintenance()
             // Get the plain text response
             val plainTextResponse = response.string()
 
@@ -142,7 +125,7 @@ class PaymentViewModel @Inject constructor(
     fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder, location: Location?) = viewModelScope.launch {
         try {
 
-            val response = apiParams.isUnderMaintenance1()
+            val response = apiParams.isUnderMaintenance()
             // Get the plain text response
             val plainTextResponse = response.string()
 
@@ -177,33 +160,7 @@ class PaymentViewModel @Inject constructor(
         }
         AppUtility.hideProgressBar()
     }
-    fun getUnderMaintenanceStatus1(reqCreateOrder: ReqCreateOrder, location: Location?) =
-        viewModelScope.launch {
-            retrofitSetup.callApi(
-                false,
-                object : CallHandler<Response<RespUnderMain>> {
-                    override suspend fun sendRequest(apiParams: ApiParams): Response<RespUnderMain> {
-                        return apiParams.isUnderMaintenance()
-                    }
 
-                    override fun success(response: Response<RespUnderMain>) {
-                        Log.d("TAG", "success: ......${response.body()}")
-                        if (response.isSuccessful) {
-                            if (response.body()?.status_code ==200) {
-                                if (response.body()?.data?.down == false) {
-                                    createOrder(reqCreateOrder, location = location)
-                                } else  {
-//                                    findNavController.navigate(R.id.loginScreenFrag)
-                                    isUnderMainLiveData.value = response.body()
-//                                    "App is under maintenance. Please try after some time".showSnackBarForPayment()
-                                }
-                            }
-                            AppUtility.hideProgressBar()
-                        }
-
-                    }
-                })
-        }
 
     fun getCustomerDetails(appSharedPref: AppSharedPref, location: Location?) =
         viewModelScope.launch {
@@ -521,52 +478,7 @@ class PaymentViewModel @Inject constructor(
 
     }
 
-/*    fun getLogin2(location: Location?) = viewModelScope.launch {
-        var requestid = AppUtility.generateUDID()
-        val randomid = requestid
-        val hashedPassword = BCrypt.hashpw(BuildConfig.PASSWORD, BCrypt.gensalt(12)).trim()
-        val hashedUserName = BCrypt.hashpw(BuildConfig.USERNAME, BCrypt.gensalt(12)).trim()
-//        map["X-Sign-Id"] = Utility.getSHA512(
-//            Utility.formattedString(
-//                mobile, hashed, randomid, Config.SALT
-//            )
-//        )
-        Log.d("TAG", "getLogin: //../........")
-        retrofitSetup.callApi(true, object : CallHandler<Response<LoginNewResp>> {
-            override suspend fun sendRequest(apiParams: ApiParams): Response<LoginNewResp> {
-                return apiParams.getLogin(
-                    LoginReqNew(
-                        AppUtility.getDeviceDetails(location),
-                        BuildConfig.PASSWORD,
-                        BuildConfig.USERNAME
-                    )
-                )
-            }
 
-            override fun success(response: Response<LoginNewResp>) {
-                Log.d("TAG", "success: ......$response")
-                response.body()?.statusCode?.let {
-                    AppSharedPref.putStringValue(
-                        Constants.AUTH_STATUS,
-                        it
-                    )
-                }
-                response.body()?.token?.let {
-                    AppSharedPref.putStringValue(
-                        Constants.JWT_TOKEN,
-                        it
-                    )
-                }
-                AppUtility.hideProgressBar()
-            }
-
-            override fun error(message: String) {
-                super.error(message)
-                Log.d("TAG", "error: ......$message")
-                AppUtility.hideProgressBar()
-            }
-        })
-    }*/
 
 
 }

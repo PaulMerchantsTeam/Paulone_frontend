@@ -1,20 +1,12 @@
 package com.paulmerchants.gold.remote
 
-import com.itextpdf.text.PageSize
-import com.paulmerchants.gold.model.ReqCustomerOtpNew
 import com.paulmerchants.gold.model.ReqSetMPin
 import com.paulmerchants.gold.model.RespFetchFest
 import com.paulmerchants.gold.model.RespSetMpin
-import com.paulmerchants.gold.model.ResponseGetOtp
-import com.paulmerchants.gold.model.ResponseVerifyOtp
 import com.paulmerchants.gold.model.newmodel.DeviceDetailsDTO
-import com.paulmerchants.gold.model.newmodel.EncryptedRequest
-import com.paulmerchants.gold.model.newmodel.LoginNewResp
-import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.ReGetLoanClosureReceipNew
 import com.paulmerchants.gold.model.newmodel.ReqComplaintRaise
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
-import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
 import com.paulmerchants.gold.model.newmodel.ReqGetLoanStatement
 import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.ReqPayAlInOnGo
@@ -23,11 +15,9 @@ import com.paulmerchants.gold.model.newmodel.ReqResetPin
 import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespAllBranch
 import com.paulmerchants.gold.model.newmodel.RespCommon
-import com.paulmerchants.gold.model.newmodel.RespCutomerInfo
 import com.paulmerchants.gold.model.newmodel.RespGetCustomer
 import com.paulmerchants.gold.model.newmodel.RespGetLOanOutStanding
 import com.paulmerchants.gold.model.newmodel.RespLoginWithMpin
-import com.paulmerchants.gold.model.newmodel.RespPaidSingleReceipt
 import com.paulmerchants.gold.model.newmodel.RespPayReceipt
 import com.paulmerchants.gold.model.newmodel.RespPayReceiptNew
 import com.paulmerchants.gold.model.newmodel.RespPaymentMethod
@@ -35,10 +25,9 @@ import com.paulmerchants.gold.model.newmodel.RespPendingInterstDue
 import com.paulmerchants.gold.model.newmodel.RespResetFogetMpin
 import com.paulmerchants.gold.model.newmodel.RespSearchBranch
 import com.paulmerchants.gold.model.newmodel.RespTxnHistory
-import com.paulmerchants.gold.model.newmodel.RespUnderMain
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
-
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -48,19 +37,39 @@ import retrofit2.http.Query
 
 interface ApiParams {
 
-//    @POST("auth/pml-login")
-//    suspend fun getLogin(
-//        @Body login: LoginReqNew,
-//    ): Response<LoginNewResp>
-
     @GET("is-down")
-    suspend fun isUnderMaintenance1():  ResponseBody
- @GET("is-down")
-    suspend fun isUnderMaintenance(): Response<RespUnderMain>
+    suspend fun isUnderMaintenance(): ResponseBody
+
+    @POST("otp/send")
+    suspend fun getOtp(
+        @Body data: RequestBody,
+    ): ResponseBody
+
+    @POST("otp/validate")
+    suspend fun verifyOtp(
+        @Header("Authorization") Authorization: String?,
+        @Body data: RequestBody
+    ): ResponseBody
+
+    @POST("api/signup")
+    suspend fun setMPin(
+        @Header("Authorization") Authorization: String?,
+        @Body requestBody: RequestBody,
+    ): ResponseBody
 
     @POST("api/login_mpin")
     suspend fun loginWithMpin(
+        @Body login: ReqLoginWithMpin,
+    ): Response<RespLoginWithMpin>
 
+    @POST("api/signup")
+    suspend fun setMPin1(
+        @Header("Authorization") Authorization: String,
+        @Body reqSetMPin: ReqSetMPin,
+    ): Response<RespSetMpin>
+
+    @POST("api/login_mpin")
+    suspend fun loginWithMpin1(
         @Body login: ReqLoginWithMpin,
     ): Response<RespLoginWithMpin>
 
@@ -70,37 +79,6 @@ interface ApiParams {
         @Header("Authorization") Authorization: String,
     ): Response<RespCommon>
 
-    @POST("api/CustomerInfo")
-    suspend fun getCustomer(
-        @Header("Authorization") Authorization: String,
-        @Body reqCustomerNew: ReqCustomerNew,
-    ): Response<RespCutomerInfo>   //RespGetCustomer
-
-    @POST("otp/send")
-    suspend fun getOtp(
-        @Body data: String,
-    ): ResponseBody
-    @POST("otp/get-otp")
-    suspend fun getOtp1(
-        @Body reqCustomerNew: ReqCustomerNew,
-    ): Response<ResponseGetOtp>
-
-    @POST("otp/validate-otp")
-    suspend fun verifyOtp(
-
-        @Body reqCustomerOtpNew: ReqCustomerOtpNew,
-    ): Response<ResponseGetOtp>
-
-    /**
-     * {"status":"SUCCESS","statusCode":"200","message":"Successfully Validate Your OTP: 9196",
-     * "userExist":true,"data":false,"response_message":"Request Processed Successfully"}
-     */
-
-    @POST("api/signup")
-    suspend fun setMPin(
-        @Header("Authorization") Authorization: String,
-        @Body reqSetMPin: ReqSetMPin,
-    ): Response<RespSetMpin>
 
     @POST("api/change-mpin") //change Mpin
     suspend fun reSetMPin(
@@ -311,6 +289,7 @@ interface ApiParams {
         @Header("Authorization") auth: String,
         @Path("paymentId") paymentId: String,
     ): Response<RespPayReceipt>
+
     @GET("payments/transaction-receipts-new/{paymentId}")   //
     suspend fun getPaidReceiptNew(
         @Header("Authorization") auth: String,

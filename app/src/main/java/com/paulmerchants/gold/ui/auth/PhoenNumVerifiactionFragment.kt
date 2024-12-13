@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
@@ -45,7 +44,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class PhoenNumVerifiactionFragment :
     BaseFragment<PhoneAuthFragmentBinding>(PhoneAuthFragmentBinding::inflate) {
-    private var signInRequest: BeginSignInRequest? = null
+
     private var isResendEnabled: Boolean = false
     private var isMobileEntered: Boolean = false
     private var isOtpVerified: Boolean = false
@@ -140,17 +139,23 @@ class PhoenNumVerifiactionFragment :
                         binding.signUpParentMain.etName.text.isNotEmpty() && binding.signUpParentMain.etEmailId.text.isNotEmpty() && binding.signUpParentMain.mpinOneEt.text.isNotEmpty() && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinFourEt.text.isNotEmpty() && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty() && binding.signUpParentMain.termsCb.isChecked
                     }"
                 )
-                if (isValidate()) {
-                    val confirmPin =
-                        (binding.signUpParentMain.mpinOneConfirmEt.text.toString() + binding.signUpParentMain.mpinConfirmTwoEt.text.toString() + binding.signUpParentMain.mpinConfirmThreeEt.text.toString() + binding.signUpParentMain.mpinConfirmFourEt.text.toString())
-                    val mPin =
-                        (binding.signUpParentMain.mpinOneEt.text.toString() + binding.signUpParentMain.mpinTwoEt.text.toString() + binding.signUpParentMain.mpinThreeEt.text.toString() + binding.signUpParentMain.mpinFourEt.text.toString())
-                    authViewModel.setMpin(
-                        confirmMPin = confirmPin,
-                        setUpMPin = mPin,
-                        email = binding.signUpParentMain.etEmailId.text.toString(),
-                        (activity as MainActivity).mLocation
-                    )
+                if (binding.signUpParentMain.etEmailId.text.isNotEmpty()) {
+
+
+                    if (isValidate()) {
+                        val confirmPin =
+                            (binding.signUpParentMain.mpinOneConfirmEt.text.toString() + binding.signUpParentMain.mpinConfirmTwoEt.text.toString() + binding.signUpParentMain.mpinConfirmThreeEt.text.toString() + binding.signUpParentMain.mpinConfirmFourEt.text.toString())
+                        val mPin =
+                            (binding.signUpParentMain.mpinOneEt.text.toString() + binding.signUpParentMain.mpinTwoEt.text.toString() + binding.signUpParentMain.mpinThreeEt.text.toString() + binding.signUpParentMain.mpinFourEt.text.toString())
+                        authViewModel.setMpin(
+                            confirmMPin = confirmPin,
+                            setUpMPin = mPin,
+                            email = binding.signUpParentMain.etEmailId.text.toString(),
+                            (activity as MainActivity).mLocation
+                        )
+                    }
+                } else {
+                    "Please enter Email".showSnackBar()
                 }
             } else {
                 noInternetDialog()
@@ -205,7 +210,8 @@ class PhoenNumVerifiactionFragment :
         }
         authViewModel.verifyOtp.observe(viewLifecycleOwner) {
             it?.let {
-                if (!it.user_exist) {
+                if (it.data.user_exist == false) {
+
                     hideAndShowSignUpScreen()
                 } else {
                     AppSharedPref.putBoolean("IS_USER_EXIST", true)
@@ -245,7 +251,7 @@ class PhoenNumVerifiactionFragment :
 //                            (activity as MainActivity).mLocation,
 //                            requireActivity()
 //                        )
-                        authViewModel.getOtp(binding.etPhoenNum.text.toString(),requireActivity() )
+                        authViewModel.getOtp(binding.etPhoenNum.text.toString(), requireActivity())
 //                        } else {
 //                            Log.e("TAG", "onStart: /////---12")
 //                            (activity as MainActivity).updateLocation()
@@ -386,7 +392,6 @@ class PhoenNumVerifiactionFragment :
     }
 
 
-
     private fun hideAndShowSignUpScreen() {
         authViewModel.timer?.cancel()
         authViewModel.countNum.postValue(0L)
@@ -521,7 +526,7 @@ class PhoenNumVerifiactionFragment :
             if (it == "00") {
                 isResendEnabled = true
                 binding.didnotReceiveTv.setTColor(
-                    "${getString(R.string.send_again)}", requireContext(), R.color.splash_screen_one
+                    getString(R.string.send_again), requireContext(), R.color.splash_screen_one
                 )
             } else {
                 diffColorText("Didn’t receive?", it, binding.didnotReceiveTv)

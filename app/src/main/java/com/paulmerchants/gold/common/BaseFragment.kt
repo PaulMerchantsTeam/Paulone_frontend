@@ -35,11 +35,7 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
 
     }
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//          myLifecycleObserver = MyLifecycleObserver(requireContext(),this)
-//        ProcessLifecycleOwner.get().lifecycle.addObserver(myLifecycleObserver)
-//    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,11 +51,7 @@ open class BaseFragment< T : ViewBinding>(private val inflateMethod: (LayoutInfl
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
-        // Initialize and register the ContentObserver
 
-    }
 
     override fun onStop() {
         super.onStop()
