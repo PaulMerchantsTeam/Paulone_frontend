@@ -5,6 +5,8 @@ object Constants {
     const val JWT_TOKEN = "JWT_TOKEN"
     const val CUSTOMER_ID = "CUSTOMER_ID"
     const val SESSION_ID = "SESSION_ID"
+
+    const val REFRESH_TOKEN = "REFRESH_TOKEN"
     const val ACC_NUM = "ACC_NUM"
     const val CUSTOMER_NAME = "CUSTOMER_NAME"
     const val CUST_MOBILE = "CUST_MOBILE"

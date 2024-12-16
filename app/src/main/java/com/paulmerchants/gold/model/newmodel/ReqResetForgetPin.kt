@@ -3,8 +3,8 @@ package com.paulmerchants.gold.model.newmodel
 import com.google.gson.annotations.SerializedName
 
 data class ReqResetForgetPin(
-    @SerializedName("confirmMPin") val confirmMPin: String,
-    @SerializedName("mobileNo") val mobileNo: String,
-    @SerializedName("newMPin") val newMPin: String,
-    @SerializedName("deviceDetailsDTO") val deviceDetailsDTO: DeviceDetailsDTO,
+    @SerializedName("confirm_mpin") val confirm_mpin: String,
+    @SerializedName("mobile_no") val mobile_no: String,
+    @SerializedName("new_mpin") val new_mpin: String,
+    @SerializedName("device_details_dto") val device_details_dto: DeviceDetailsDTO,
 )

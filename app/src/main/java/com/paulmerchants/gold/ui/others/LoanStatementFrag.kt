@@ -46,7 +46,7 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
 
         commonViewModel.getLoanClosureReceipt(
 
-            loanOutStanding?.AcNo.toString(),
+            loanOutStanding?.ac_no.toString(),
             (activity as MainActivity).mLocation
         )
         commonViewModel.getRespClosureReceiptLiveData.observe(viewLifecycleOwner) {
@@ -56,7 +56,7 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
         }
         //opening date to till now.
         commonViewModel.getLoanStatement(
-            loanOutStanding?.AcNo.toString(),
+            loanOutStanding?.ac_no.toString(),
             loanOutStanding?.openDate.toString(),
             fromDate,
             (activity as MainActivity).mLocation
@@ -95,7 +95,7 @@ class LoanStatementFrag : BaseFragment<LoanStatementBinding>(LoanStatementBindin
 
     private fun setData(loanOutStanding: RespGetLoanOutStandingItem?) {
         binding.apply {
-            loanNumTv.text = "Loan Number - ${loanOutStanding?.AcNo}"
+            loanNumTv.text = "Loan Number - ${loanOutStanding?.ac_no}"
             if (loanOutStanding?.openDate != null && loanOutStanding.openDate != "") {
                 loanStateDateLargeTv.text =
                     "Last Statement (${AppUtility.getDateWithYearOrdinals(loanOutStanding.openDate)} - ${AppUtility.getCurrentDateOnly()})"

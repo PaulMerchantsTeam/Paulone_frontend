@@ -78,11 +78,11 @@ class ResetMpinDialog : BottomSheetDialogFragment() {
         }
         resetMpinViewModel.responseResetForgetPin.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.body()?.statusCode == "200") {
-                    "${it.body()?.message}".showSnackBar()
+                if (it.status_code == 200) {
+                    "${it ?.message}".showSnackBar()
                     dismiss()
                 } else {
-                    "${it.body()?.message}".showSnackBar()
+                    "${it ?.message}".showSnackBar()
                 }
             }
         }
@@ -102,14 +102,9 @@ class ResetMpinDialog : BottomSheetDialogFragment() {
                 ) {
                     if ((activity as MainActivity).mLocation != null) {
                         resetMpinViewModel.resetForgetMpin(
-                            ReqResetForgetPin(
-                                confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
-                                mobileNo = AppSharedPref.getStringValue(
-                                    com.paulmerchants.gold.utility.Constants.CUST_MOBILE
-                                ).toString(),
-                                newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
-                                AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
-                            )
+                            confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
+                                    newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}"
+  , AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
                         )
                     } else {
                         (activity as MainActivity).locationProvider.startLocationUpdates()

@@ -158,7 +158,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         ( activity as MainActivity).commonViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
             it?.let {
                 Log.d(TAG, "onCreate: ...................$it")
-                if (it.statusCode == "200") {
+                if (it.status_code == 200) {
                     when {
                         bhmValue -> {
                             Log.e("TAG", "onStart: ---bhmValue")
@@ -482,7 +482,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         }
 
         if (paymentViewModel.isCalled) {
-            paymentViewModel.getCustomerDetails(AppSharedPref, mLocation)
+            paymentViewModel.getCustomerDetails( mLocation)
             initRazorpay()
             paymentViewModel.getPaymentMethod(AppSharedPref)
         }
@@ -575,18 +575,18 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 reqCreateOrder = ReqCreateOrder(
                     amount = amount,
                     currency = "INR",
-                    custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
+                    cust_id = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
                         .toString(),
                     notes = Notes(
                         "$notes custId=${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)}",
                         "Loan Acc Number: $customerAcc"
                     ),
                     receipt = "${AppUtility.getCurrentDate()}_${BuildConfig.VERSION_NAME}",
-                    accNo = customerAcc.toString(),
-                    makerId = "12545as",
+                    acc_no = customerAcc.toString(),
+                    maker_id = "12545as",
                     submit = true,
-                    macId = Build.ID,
-                    valueDate = AppUtility.getCurrentDate()
+                    mac_id = Build.ID,
+                    value_date = AppUtility.getCurrentDate()
                 ), mLocation
 //                , findNavController = findNavController()
             )
@@ -965,7 +965,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             payload.put("amount", amountToPay?.times(100.00)?.toInt())
             payload.put("currency", "INR")
             payload.put(
-                "contact", respCustomerDetail?.respGetCustomer?.MobileNo
+                "contact", respCustomerDetail?.respGetCustomer?.mobile_no
             )
             payload.put(
                 "email", respCustomerDetail?.emailIdNew
@@ -1331,7 +1331,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
        paymentViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
             it?.let {
                 Log.d(TAG, "onCreate: ...................$it")
-                if (it.statusCode == "200") {
+                if (it.status_code == 200) {
                     when {
                         bhmValue -> {
                             Log.e("TAG", "onStart: ---bhmValue")

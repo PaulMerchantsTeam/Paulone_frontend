@@ -93,13 +93,13 @@ class QuickPayDialog : BottomSheetDialogFragment() {
 
         Log.d(
             TAG,
-            "onCreate:--=====--------$dueLoans-----------dueDays-${dueLoans?.dueDate}\n-----amount---${dueLoans?.payableAmount} "
+            "onCreate:--=====--------$dueLoans-----------dueDays-${dueLoans?.due_date}\n-----amount---${dueLoans?.payable_amount} "
         )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setAmount(dueLoans?.payableAmount.toString())
+        setAmount(dueLoans?.payable_amount.toString())
         quickPayPopupBinding.quixPayParentBtn.setOnClickListener {
             if (quickPayPopupBinding.customPayRadio.isChecked) {
                 actualLoan?.let {
@@ -108,7 +108,7 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                             Toast.makeText(
                                 requireContext(),
                                 "Amount Due: ${
-                                    dueLoans?.payableAmount
+                                    dueLoans?.payable_amount
                                 }\nPlease fill valid amount",
                                 Toast.LENGTH_SHORT
                             ).show()
@@ -127,7 +127,7 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                                         "AMOUNT_PAYABLE",
                                         quickPayPopupBinding.customPayEt.text.toString().toDouble()
                                     )
-                                    putString(CUST_ACC, dueLoans?.acNo.toString())
+                                    putString(CUST_ACC, dueLoans?.ac_no.toString())
                                     putBoolean(IS_CUSTOM_AMOUNT, true)
                                 }
                                 findNavController().navigate(R.id.paymentModesFragNew, bundle)
@@ -151,10 +151,10 @@ class QuickPayDialog : BottomSheetDialogFragment() {
                 }
             } else {
                 dismiss()
-                dueLoans?.payableAmount?.let {
+                dueLoans?.payable_amount?.let {
                     val bundle = Bundle().apply {
-                        putDouble("AMOUNT_PAYABLE", it)
-                        putString(CUST_ACC, dueLoans?.acNo.toString())
+                        putDouble("AMOUNT_PAYABLE", it.toString().toDouble())
+                        putString(CUST_ACC, dueLoans?.ac_no.toString())
                         putBoolean(IS_CUSTOM_AMOUNT, false)
                     }
                     val intent = Intent(requireContext(),  PaymentActivity ::class.java)
@@ -173,8 +173,8 @@ class QuickPayDialog : BottomSheetDialogFragment() {
 //        }
         quickPayPopupBinding.apply {
             fullPayRadio.text =
-                "Pay INR ${dueLoans?.payableAmount} fully"
-            goldLoanNumTv.text = "Gold Loan - xxxx${dueLoans?.acNo.toString().takeLast(4)}"
+                "Pay INR ${dueLoans?.payable_amount} fully"
+            goldLoanNumTv.text = "Gold Loan - xxxx${dueLoans?.ac_no.toString().takeLast(4)}"
         }
         onCLickRadio()
     }
@@ -253,13 +253,13 @@ class QuickPayDialog : BottomSheetDialogFragment() {
     fun onCLickRadio() {
         quickPayPopupBinding.fullPayRadio.setOnClickListener {
             quickPayPopupBinding.customPayEt.hide()
-            dueLoans?.payableAmount?.toString()?.let { it1 -> setAmount(it1) }
+            dueLoans?.payable_amount?.toString()?.let { it1 -> setAmount(it1) }
         }
         quickPayPopupBinding.customPayRadio.setOnClickListener {
             quickPayPopupBinding.customPayEt.show()
-            dueLoans?.payableAmount?.toString()?.let { it1 -> setAmount(it1) }
+            dueLoans?.payable_amount?.toString()?.let { it1 -> setAmount(it1) }
         }
-        actualLoan = dueLoans?.payableAmount
+        actualLoan = dueLoans?.payable_amount?.toString()?.toDouble()
         quickPayPopupBinding.customPayEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 

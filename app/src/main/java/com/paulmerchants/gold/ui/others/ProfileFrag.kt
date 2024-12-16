@@ -114,8 +114,8 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             val respPending: RespCustomersDetails? =
                 AppUtility.convertStringToJson(decryptData.toString())
             respPending?.let {
-                binding.nameUserTv.text = it.DisplayName ?: "NA"
-                it.DisplayName?.let {
+                binding.nameUserTv.text = it.display_name ?: "NA"
+                it.display_name?.let {
                     AppSharedPref.putStringValue(
                         Constants.CUSTOMER_NAME,
                         it
@@ -123,8 +123,8 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                 }
                 binding.emailUserIv.text =
                     AppSharedPref.getStringValue(Constants.CUST_EMAIL)
-                binding.userNumTv.text = it.MobileNo ?: "NA"
-                binding.addressTv.text = "Address: ${it.MailingAddress ?: "NA"}"
+                binding.userNumTv.text = it.mobile_no ?: "NA"
+                binding.addressTv.text = "Address: ${it.mailing_address ?: "NA"}"
 //              Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
             }
         } else {
@@ -134,8 +134,8 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
         }
         profileViewModel.getRespCustomersDetailsLiveData.observe(viewLifecycleOwner) {
             it?.let {
-                binding.nameUserTv.text = "Name: ${it.respGetCustomer.DisplayName ?: "NA"}"
-                it.respGetCustomer.DisplayName?.let {
+                binding.nameUserTv.text = "Name: ${it.respGetCustomer.display_name ?: "NA"}"
+                it.respGetCustomer.display_name?.let {
                     AppSharedPref.putStringValue(
                         Constants.CUSTOMER_NAME,
                         it
@@ -143,8 +143,8 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                 }
                 binding.emailUserIv.text =
                     "Email Id: ${it.emailIdNew}"  // in profile we are showing latest email id ...
-                binding.userNumTv.text = "Mobile: ${it.respGetCustomer.MobileNo ?: "NA"}"
-                binding.addressTv.text = "Address: ${it.respGetCustomer.MailingAddress ?: "NA"}"
+                binding.userNumTv.text = "Mobile: ${it.respGetCustomer.mobile_no ?: "NA"}"
+                binding.addressTv.text = "Address: ${it.respGetCustomer.mailing_address ?: "NA"}"
 //                Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
             }
         }

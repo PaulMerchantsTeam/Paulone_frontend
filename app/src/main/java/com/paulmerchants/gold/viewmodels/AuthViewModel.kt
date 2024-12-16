@@ -236,17 +236,17 @@ class AuthViewModel @Inject constructor(
         try {
             val gson = Gson()
             val request =  ReqSetMPin(
-                confirmMPin = confirmMPin,
-                emailId = email,
-                fullName = AppSharedPref.getStringValue(
+                confirm_mpin = confirmMPin,
+                email_id = email,
+                full_name = AppSharedPref.getStringValue(
                     CUSTOMER_NAME
                 ).toString(),
-                mobileNo = AppSharedPref.getStringValue(
+                mobile_no = AppSharedPref.getStringValue(
                     CUST_MOBILE
                 ).toString(),
-                setUpMPin = setUpMPin,
-                termsAndCondition = true,
-                deviceDetailsDTO = AppUtility.getDeviceDetails(location = location)
+                set_up_mpin = setUpMPin,
+                terms_and_condition = true,
+                device_details_dto = AppUtility.getDeviceDetails(location = location)
             )
             val jsonString = gson.toJson(request)
             val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())

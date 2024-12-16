@@ -296,10 +296,10 @@ class HomeScreenFrag :
 
 
             it?.let {
-                for (i in it.getLoanOutstandingResponseData) {
-                    i.currentDate = it.currentDate
+                for (i in it.get_loan_outstanding_response_data) {
+                    i.current_date = it.current_date
                 }
-                setLoanOverView(it.getLoanOutstandingResponseData)
+                setLoanOverView(it.get_loan_outstanding_response_data)
                 binding.swiperefresh.isRefreshing = false
 
             }
@@ -312,18 +312,19 @@ class HomeScreenFrag :
                 binding.swiperefresh.isRefreshing = false
                 binding.shimmmerParent.hideShim()
                 (activity as MainActivity).commonViewModel.notZero =
-                    gepPendingRespObj.pendingInterestDuesResponseData.filter { getPendingInterestItem ->
-                        getPendingInterestItem.payableAmount != 0.0
+                    gepPendingRespObj.pending_interest_dues_response_data?.filter { getPendingInterestItem ->
+                        getPendingInterestItem.payable_amount != 0
                     }
                 Log.i(
                     TAG,
                     "setUpComingDueLoans: ${(activity as MainActivity).commonViewModel.notZero}"
                 )
-                for (i in gepPendingRespObj.pendingInterestDuesResponseData) {
-                    i.currentDate = gepPendingRespObj.currentDate
+                for (i in gepPendingRespObj.pending_interest_dues_response_data ?: emptyList()) {
+                    i.currentDate = gepPendingRespObj.current_date.toString()
+
                 }
 
-                if ((activity as MainActivity).commonViewModel.notZero.isNotEmpty()) {
+                if ((activity as MainActivity).commonViewModel.notZero?.isNotEmpty() == true) {
                     upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
                     binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
                     binding.noIntHaveParent.root.hide()
@@ -341,7 +342,7 @@ class HomeScreenFrag :
             parentFragment?.viewLifecycleOwner?.let { lifecycleOwner ->
                 (activity as MainActivity).commonViewModel.tokenExpiredResp.observe(lifecycleOwner) { resp ->
                     resp?.let {
-                        showSnackBar(it.errorMessage)
+                        showSnackBar(it.error_message)
                     }
                 }
             }
@@ -624,8 +625,8 @@ class HomeScreenFrag :
             loanOverViewCardParent.youHaveTotalLoanTv.text =
                 "You are having ${resp.size} active loans totalling interest due up to"
             for (i in resp) {
-                i.payableAmount?.let {
-                    totalAmount += i.payableAmount
+                i.payable_amount?.let {
+                    totalAmount += i.payable_amount
 
 
                 }

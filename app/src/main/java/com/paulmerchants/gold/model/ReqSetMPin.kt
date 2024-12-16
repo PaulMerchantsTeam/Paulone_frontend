@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 import com.paulmerchants.gold.model.newmodel.DeviceDetailsDTO
 
 data class ReqSetMPin(
-   @SerializedName("confirmMPin") val confirmMPin: String,
-   @SerializedName("deviceDetailsDTO") val deviceDetailsDTO: DeviceDetailsDTO,
-   @SerializedName("emailId") val emailId: String,
-   @SerializedName("fullName") val fullName: String,
-   @SerializedName("mobileNo") val mobileNo: String,
-   @SerializedName("setUpMPin") val setUpMPin: String,
-   @SerializedName("termsAndCondition") val termsAndCondition: Boolean
+   @SerializedName("full_name") val full_name: String?,
+   @SerializedName("email_id") val email_id: String?,
+   @SerializedName("mobile_no") val mobile_no: String?,
+   @SerializedName("set_up_mpin") val set_up_mpin: String?,
+   @SerializedName("confirm_mpin") val confirm_mpin: String?,
+   @SerializedName("terms_and_condition") val terms_and_condition: Boolean?,
+   @SerializedName("device_details_dto") val device_details_dto: DeviceDetailsDTO?,
 )

@@ -185,7 +185,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     } else {
                         binding.clOuter.show()
                         binding.underMainTimerParent.root.hide()
-                        paymentViewModel.getCustomerDetails(AppSharedPref, mLocation)
+                        paymentViewModel.getCustomerDetails(mLocation)
                         paymentViewModel.getPaymentMethod(AppSharedPref)
                     }
                 }
@@ -485,7 +485,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         paymentViewModel.responseCreateOrder.observe(this) {
             it?.let {
                 Log.d(TAG, "onCreate: ...................$it")
-                if (it.statusCode == "200") {
+                if (it.status_code == 200) {
                     when {
                         bhmValue -> {
                             Log.e("TAG", "onStart: ---bhmValue")
@@ -889,18 +889,18 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 reqCreateOrder = ReqCreateOrder(
                     amount = amount,
                     currency = "INR",
-                    custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
+                    cust_id = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
                         .toString(),
                     notes = Notes(
                         "$notes custId=${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)}",
                         "Loan Acc Number: $customerAcc"
                     ),
                     receipt = "${AppUtility.getCurrentDate()}_${BuildConfig.VERSION_NAME}",
-                    accNo = customerAcc.toString(),
-                    makerId = "12545as",
+                    acc_no = customerAcc.toString(),
+                    maker_id = "12545as",
                     submit = true,
-                    macId = Build.ID,
-                    valueDate = AppUtility.getCurrentDate()
+                    mac_id = Build.ID,
+                    value_date = AppUtility.getCurrentDate()
                 ), mLocation
             )
 //            }
@@ -1307,7 +1307,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             payload.put("amount", amountToPay?.times(100.00)?.toInt())
             payload.put("currency", "INR")
             payload.put(
-                "contact", respCustomerDetail?.respGetCustomer?.MobileNo
+                "contact", respCustomerDetail?.respGetCustomer?.mobile_no
             )
             payload.put(
                 "email", respCustomerDetail?.emailIdNew

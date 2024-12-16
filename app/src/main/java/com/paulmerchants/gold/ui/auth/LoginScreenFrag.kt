@@ -13,7 +13,6 @@ import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.LoginWithMobileMpinBinding
 import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
-import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
@@ -64,11 +63,11 @@ class LoginScreenFrag :
 
         setupMpinEditTextFocus()
         (activity as? MainActivity)?.apply {
-           commonViewModel. getUnderMaintenanceStatus()
+            commonViewModel.getUnderMaintenanceStatus()
             checkForDownFromRemoteConfig()
             commonViewModel.isRemoteConfigCheck.observe(viewLifecycleOwner) {
                 it?.let {
-                    if (it ) {
+                    if (it) {
                         (activity as MainActivity).showUnderMainTainPage()
                     }
                 }
@@ -117,28 +116,15 @@ class LoginScreenFrag :
                     loginViewModel.loginWithMpin(
                         findNavController(),
                         AppSharedPref,
-                        ReqLoginWithMpin(AppSharedPref.getStringValue(CUST_MOBILE).toString(), pin),
-                        (activity as? MainActivity)?.mLocation
+                        pin
+
                     )
                 }
             } else {
                 noInternetDialog()
             }
         }
-        loginViewModel.getTokenResp.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it.code() == 200 && isValidate()) {
-                    val pin =
-                        "${binding.pinOneEt.text}${binding.pinTwoEt.text}${binding.pinThreeEt.text}${binding.pinFourEt.text}"
-                    loginViewModel.loginWithMpin(
-                        findNavController(),
-                        AppSharedPref,
-                        ReqLoginWithMpin(AppSharedPref.getStringValue(CUST_MOBILE).toString(), pin),
-                        (activity as? MainActivity)?.mLocation
-                    )
-                }
-            }
-        }
+
     }
 
 
@@ -196,7 +182,7 @@ class LoginScreenFrag :
             if (otpFilled) {
                 val otp = "${dialogBinding.otpOneEt.text}${dialogBinding.otpTwoEt.text}" +
                         "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}"
-                loginViewModel.verifyOtp( mobile, otp, (activity as? MainActivity)?.mLocation)
+                loginViewModel.verifyOtp(mobile, otp, (activity as? MainActivity)?.mLocation)
             } else {
                 "Please fill OTP".showSnackBar()
             }
@@ -217,8 +203,22 @@ class LoginScreenFrag :
                             editTexts[index + 1]?.requestFocus()
                         }
                     }
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                    }
                 })
 
                 setOnKeyListener { _, keyCode, event ->
@@ -235,11 +235,21 @@ class LoginScreenFrag :
 
     // Usage
     private fun setupMpinEditTextFocus() {
-        setupEditTextFocusNavigation(binding.pinOneEt, binding.pinTwoEt, binding.pinThreeEt, binding.pinFourEt)
+        setupEditTextFocusNavigation(
+            binding.pinOneEt,
+            binding.pinTwoEt,
+            binding.pinThreeEt,
+            binding.pinFourEt
+        )
     }
 
     private fun setupOtpEditTextFocus(bindingOtp: OtpFillLayoutDialogBinding) {
-        setupEditTextFocusNavigation(bindingOtp.otpOneEt, bindingOtp.otpTwoEt, bindingOtp.otpThreeEt, bindingOtp.otpFourEt)
+        setupEditTextFocusNavigation(
+            bindingOtp.otpOneEt,
+            bindingOtp.otpTwoEt,
+            bindingOtp.otpThreeEt,
+            bindingOtp.otpFourEt
+        )
     }
 
 }

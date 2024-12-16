@@ -76,6 +76,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 null,
                 (activity as MainActivity).navOption
             )
+            Log.d(TAG, "initialize: loginScreenFrag SIGNUP_DONE")
         }
         else if (AppSharedPref.getBooleanValue(OTP_VERIFIED) && AppSharedPref.getBooleanValue(
                 IS_USER_EXIST
@@ -87,11 +88,17 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 null,
                 (activity as MainActivity).navOption
             )
+            Log.d(TAG, "initialize: loginScreenFrag OTP_VERIFIED")
+
         }
-        else if (AppSharedPref.getBooleanValue(SPLASH_SCRN_VISITED)) {
+        else if (AppSharedPref.getBooleanValue(SPLASH_SCRN_VISITED) || !AppSharedPref.getBooleanValue(SIGNUP_DONE)) {
             findNavController().popBackStack(R.id.splashFragment, true)
             findNavController().navigate(R.id.phoenNumVerifiactionFragment)
+            Log.d(TAG, "initialize: phoenNumVerifiactionFragment SPLASH_SCRN_VISITED")
+
         } else {
+            Log.d(TAG, "initialize: else  ")
+
             binding.mainSplash.show()
         }
     }

@@ -61,6 +61,7 @@ class AppModule {
         OkHttpClient.Builder()
             .readTimeout(10, TimeUnit.MINUTES)
             .connectTimeout(10, TimeUnit.MINUTES)
+            .writeTimeout(10, TimeUnit.MINUTES)
             .addInterceptor(loggingInterceptor)
         .sslSocketFactory(
             sslContext.getSocketFactory(),
@@ -72,6 +73,7 @@ class AppModule {
     } else OkHttpClient.Builder()
         .readTimeout(10, TimeUnit.MINUTES)
         .connectTimeout(10, TimeUnit.MINUTES)
+        .writeTimeout(10, TimeUnit.MINUTES)
         .cache(cache)
         .build()
 

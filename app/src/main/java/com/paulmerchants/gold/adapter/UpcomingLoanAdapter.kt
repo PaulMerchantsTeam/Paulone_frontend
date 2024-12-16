@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.paulmerchants.gold.adapterviewholders.UpcomingLoansViewHolder
 import com.paulmerchants.gold.databinding.ItemUpcomingDueLoanBinding
 import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
+import com.paulmerchants.gold.model.newmodel.PendingInterestDuesResponseData
 
 
 /**
@@ -38,15 +39,20 @@ class UpcomingLoanAdapter(private val onPayDueClicked: (GetPendingInrstDueRespIt
 
     companion object {
         private val DIFF_CALLBACK =
-            object : DiffUtil.ItemCallback<GetPendingInrstDueRespItem>() {
+            object : DiffUtil.ItemCallback<
+                    GetPendingInrstDueRespItem>() {
                 override fun areItemsTheSame(
-                    oldItem: GetPendingInrstDueRespItem,
-                    newItem: GetPendingInrstDueRespItem,
-                ): Boolean = oldItem.acNo == newItem.acNo
+                    oldItem:
+                    GetPendingInrstDueRespItem,
+                    newItem:
+                    GetPendingInrstDueRespItem,
+                ): Boolean = oldItem.ac_no == newItem.ac_no
 
                 override fun areContentsTheSame(
-                    oldItem: GetPendingInrstDueRespItem,
-                    newItem: GetPendingInrstDueRespItem,
+                    oldItem:
+                    GetPendingInrstDueRespItem,
+                    newItem:
+                    GetPendingInrstDueRespItem,
                 ): Boolean = true
             }
     }

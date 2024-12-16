@@ -5,6 +5,6 @@ import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 
 data class GeOtStandingRespObj(
-  @SerializedName("currentDate") val currentDate: String,
-  @SerializedName("getLoanOutstandingResponseData") val getLoanOutstandingResponseData: List<RespGetLoanOutStandingItem>,
+  @SerializedName("current_date") val current_date: String,
+  @SerializedName("get_loan_outstanding_response_data") val get_loan_outstanding_response_data: List<RespGetLoanOutStandingItem>,
 )

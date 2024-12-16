@@ -7,5 +7,5 @@ data class RespCreateOrder(
     @SerializedName("message") val message: String,
     @SerializedName("response_message") val response_message: String,
     @SerializedName("status") val status: String,
-    @SerializedName("statusCode") val statusCode: String,
+    @SerializedName("status_code") val status_code: Int,
 )

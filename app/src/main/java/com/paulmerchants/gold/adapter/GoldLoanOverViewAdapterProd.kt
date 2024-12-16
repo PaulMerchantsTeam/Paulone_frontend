@@ -57,7 +57,7 @@ class GoldLoanOverViewAdapterProd(
         ) {
             var isSelected = false
             binding.apply {
-                loanNumTv.text = actionItem.AcNo.toString()
+                loanNumTv.text = actionItem.ac_no.toString()
                 viewDetailsBtn.setOnClickListener {
 
                 }
@@ -88,19 +88,19 @@ class GoldLoanOverViewAdapterProd(
             }
 
             binding.apply {
-                if (actionItem.closed != true) {
+                if (actionItem.is_closed != true) {
                     binding.apply {
 
                         ovrDueParentArrow.show()
                         intDueAmountTitleTv.show()
                         intDueAmountTv.show()
 
-                        overDueDaysTv.text = "Due till date\n${actionItem.currentDate}"
+                        overDueDaysTv.text = "Due till date\n${actionItem.current_date}"
 
 
 
                         intDueAmountTv.text =
-                            if (actionItem.payableAmount != null) "INR ${actionItem.payableAmount}" else ""
+                            if (actionItem.payable_amount != null) "INR ${actionItem.payable_amount}" else ""
 
                         binding.loanClosedBtn.apply {
                             text = binding.root.context.getString(R.string.pay_now)
@@ -119,10 +119,10 @@ class GoldLoanOverViewAdapterProd(
                         intDueAmountTv.hide()
                         clickPayParent.hide()
                         outStaTitleTv.text = root.context.getString(R.string.final_due_paid)
-                        if (actionItem.closedDate != "" && actionItem.closedDate != null) {
+                        if (actionItem.closed_date != "" && actionItem.closed_date != null) {
 
                             outStandValueTv.text =
-                                AppUtility.getDateFormat(actionItem.closedDate.toString())
+                                AppUtility.getDateFormat(actionItem.closed_date.toString())
                             outStandValueTv.show()
                         } else {
                             outStandValueTv.hide()

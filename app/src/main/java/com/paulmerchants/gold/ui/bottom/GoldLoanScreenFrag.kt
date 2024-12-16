@@ -89,14 +89,14 @@ class GoldLoanScreenFrag :
 
         goldScreenViewModel.getRespGetLoanOutStandingLiveData.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.getLoanOutstandingResponseData.size != 0) {
-                    if (it.getLoanOutstandingResponseData.size == 1) {
+                if (it.get_loan_outstanding_response_data.size != 0) {
+                    if (it.get_loan_outstanding_response_data.size == 1) {
                         hideViews()
                     }
                     goldScreenViewModel.respGetLoanOutStanding =
-                        it.getLoanOutstandingResponseData as ArrayList<RespGetLoanOutStandingItem>
-                    for (i in it.getLoanOutstandingResponseData) {
-                        i.currentDate = it.currentDate
+                        it.get_loan_outstanding_response_data as ArrayList<RespGetLoanOutStandingItem>
+                    for (i in it.get_loan_outstanding_response_data) {
+                        i.current_date = it.current_date
                     }
 
                     setUiFoOpenGoldLoans()
@@ -108,8 +108,8 @@ class GoldLoanScreenFrag :
     }
 
     private fun optionsClicked(actionItem: RespGetLoanOutStandingItem, isSelect: Boolean) {
-        Log.d("TAG", "optionsClicked: .............${actionItem.interestDue}")
-        actionItem.payableAmount?.let {
+        Log.d("TAG", "optionsClicked: .............${actionItem.interest_due}")
+        actionItem.payable_amount?.let {
             totalAmount(
                 actionItem,
                 it.toInt(),
@@ -125,23 +125,23 @@ class GoldLoanScreenFrag :
     ) {
         if (isSelect) {
             amount += rupees
-            if (actionItem.payableAmount != null) {
+            if (actionItem.payable_amount != null) {
                 listPayAll.add(
                     PayAll(
-                        actionItem.AcNo.toString(),
-                        actionItem.payableAmount
+                        actionItem.ac_no.toString(),
+                        actionItem.payable_amount
                     )
                 )
             }
 
         } else {
             amount -= rupees
-            if (actionItem.payableAmount != null) {
+            if (actionItem.payable_amount != null) {
                 listPayAll.remove(
                     PayAll(
-                        actionItem.AcNo.toString(),
-                        actionItem.payableAmount.let {
-                            actionItem.payableAmount
+                        actionItem.ac_no.toString(),
+                        actionItem.payable_amount.let {
+                            actionItem.payable_amount
                         }
                     )
                 )
@@ -175,16 +175,16 @@ class GoldLoanScreenFrag :
 //    }
 
     private fun payNowClicked(actionItem: RespGetLoanOutStandingItem) {
-        if (actionItem.closed == false) {
+        if (actionItem.is_closed == false) {
             val bundle = Bundle().apply {
-                actionItem.payableAmount?.let {
+                actionItem.payable_amount?.let {
                     putDouble(
                         AMOUNT_PAYABLE,
                         it
                     )
 
                 }
-                putString(Constants.CUST_ACC, actionItem.AcNo.toString())
+                putString(Constants.CUST_ACC, actionItem.ac_no.toString())
 
             }
             goldScreenViewModel.isCalledGoldLoanScreen = true
@@ -296,7 +296,7 @@ class GoldLoanScreenFrag :
 
     private fun setUiForClosedGoldLoans() {
 //        binding.goldLoanParentMain.rvLoanOverViewMain.setGoldLoanOverView(0)
-        val closed = goldScreenViewModel.respGetLoanOutStanding.filter { it.closed == true }
+        val closed = goldScreenViewModel.respGetLoanOutStanding.filter { it.is_closed == true }
         Log.d("TAG", "setUiFoOpenGoldLoans: $closed")
         setData(closed as ArrayList<RespGetLoanOutStandingItem>)
     }
@@ -304,12 +304,12 @@ class GoldLoanScreenFrag :
     private fun setUiFoOpenGoldLoans() {
 //      binding.goldLoanParentMain.rvLoanOverViewMain.setGoldLoanOverView(1)
         var totalAmount = 0.0
-        val open = goldScreenViewModel.respGetLoanOutStanding.filter { it.closed == false }
+        val open = goldScreenViewModel.respGetLoanOutStanding.filter { it.is_closed == false }
         Log.d("TAG", "setUiFoOpenGoldLoans: $open")
 
         for (i in open) {
-            if (i.payableAmount != null) {
-                totalAmount += getTwoDigitAfterDecimal(i.payableAmount).toFloat()
+            if (i.payable_amount != null) {
+                totalAmount += getTwoDigitAfterDecimal(i.payable_amount).toFloat()
             }
         }
 
@@ -337,7 +337,7 @@ class GoldLoanScreenFrag :
             }
         }
 
-        val notZeroInterestData = open.filter { it.payableAmount != 0.0 }
+        val notZeroInterestData = open.filter { it.payable_amount != 0.0 }
         if (notZeroInterestData.isNotEmpty()) {
             binding.constraintLayout12.hide()
             setData(notZeroInterestData as ArrayList<RespGetLoanOutStandingItem>)

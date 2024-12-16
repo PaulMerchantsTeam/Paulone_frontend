@@ -6,29 +6,19 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
-import androidx.appcompat.widget.ViewUtils
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
-import com.paulmerchants.gold.databinding.CreditScoreScreenBinding
-import com.paulmerchants.gold.databinding.ResetCardPinBinding
 import com.paulmerchants.gold.databinding.ResetMPinBinding
-import com.paulmerchants.gold.model.newmodel.ReqResetForgetPin
-import com.paulmerchants.gold.model.newmodel.ReqResetPin
-import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
-import com.paulmerchants.gold.utility.Constants
-import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
 import com.paulmerchants.gold.utility.Constants.IS_RESET_MPIN
 import com.paulmerchants.gold.utility.disableButton
 import com.paulmerchants.gold.utility.enableButton
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
-import com.paulmerchants.gold.utility.showResetPinSuccessDialog
 import com.paulmerchants.gold.viewmodels.ResetMpinViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -74,13 +64,13 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
         resetMpinViewModel.responseResetPin.observe(viewLifecycleOwner) {
             it?.let {
 //                if (it.isSuccessful) {
-                if (it.body()?.statusCode == "200") {
-                    "${it.body()?.message}".showSnackBar()
+                if (it.status_code == 200) {
+                    "${it ?.message}".showSnackBar()
                     findNavController().popBackStack(R.id.resetMPinFrag, true)
                     findNavController().popBackStack(R.id.profileFrag, true)
                     findNavController().navigate(R.id.profileFrag)
                 } else {
-                    "${it.body()?.message}".showSnackBar()
+                    "${it ?.message}".showSnackBar()
                 }
 
 //                }
@@ -92,13 +82,13 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
         resetMpinViewModel.responseResetForgetPin.observe(viewLifecycleOwner) {
             it?.let {
 //                if (it.isSuccessful) {
-                if (it.body()?.statusCode == "200") {
-                    "${it.body()?.message}".showSnackBar()
+                if (it.status_code == 200) {
+                    "${it?.message}".showSnackBar()
                     findNavController().popBackStack(R.id.resetMPinFrag, true)
                     findNavController().popBackStack(R.id.profileFrag, true)
                     findNavController().navigate(R.id.profileFrag)
                 } else {
-                    "${it.body()?.message}".showSnackBar()
+                    "${it?.message}".showSnackBar()
                 }
 //                }
             }
@@ -144,14 +134,11 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
                     ) {
                         if ((activity as MainActivity).mLocation != null) {
                             resetMpinViewModel.resetForgetMpin(
-                                ReqResetForgetPin(
-                                    confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
-                                    mobileNo = AppSharedPref.getStringValue(
-                                        CUST_MOBILE
-                                    ).toString(),
-                                    newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
-                                    AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
-                                )
+                                confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
+                                newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
+                                AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
+
+
                             )
                         } else {
                             (activity as MainActivity).locationProvider.startLocationUpdates()
@@ -170,14 +157,11 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
                     ) {
                         if ((activity as MainActivity).mLocation != null) {
                             resetMpinViewModel.changeMpin(
-                                ReqResetPin(
-                                    "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
-                                    "${binding.pinCurrOneEt.text}${binding.pinCurrTwoEt.text}${binding.pinCurrThreeEt.text}${binding.pinCurrFourEt.text}",
-                                    AppSharedPref.getStringValue(CUST_MOBILE)
-                                        .toString(),  //static for testing
-                                    "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
-                                    AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
-                                )
+                                confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
+                                current_mpin = "${binding.pinCurrOneEt.text}${binding.pinCurrTwoEt.text}${binding.pinCurrThreeEt.text}${binding.pinCurrFourEt.text}",
+                                newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
+                                deviceDetailsDTO = AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
+
                             )
                         } else {
                             (activity as MainActivity).locationProvider.startLocationUpdates()

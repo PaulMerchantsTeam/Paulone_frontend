@@ -18,7 +18,7 @@ class UpcomingLoansViewHolder(private val binding: ItemUpcomingDueLoanBinding) :
             overDueDaysTv.text = "Due till date\n${dueLoans.currentDate}"
 
 
-            dueAmountTv.text = "INR ${dueLoans.payableAmount}"
+            dueAmountTv.text = "INR ${dueLoans.payable_amount}"
 
         }
         binding.payNowBtn.setOnClickListener {

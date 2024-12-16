@@ -1,28 +1,17 @@
 package com.paulmerchants.gold.remote
 
-import com.paulmerchants.gold.model.ReqSetMPin
 import com.paulmerchants.gold.model.RespFetchFest
-import com.paulmerchants.gold.model.RespSetMpin
 import com.paulmerchants.gold.model.newmodel.DeviceDetailsDTO
 import com.paulmerchants.gold.model.newmodel.ReGetLoanClosureReceipNew
 import com.paulmerchants.gold.model.newmodel.ReqComplaintRaise
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.ReqGetLoanStatement
-import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.ReqPayAlInOnGo
-import com.paulmerchants.gold.model.newmodel.ReqResetForgetPin
-import com.paulmerchants.gold.model.newmodel.ReqResetPin
-import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
 import com.paulmerchants.gold.model.newmodel.RespAllBranch
 import com.paulmerchants.gold.model.newmodel.RespCommon
-import com.paulmerchants.gold.model.newmodel.RespGetCustomer
-import com.paulmerchants.gold.model.newmodel.RespGetLOanOutStanding
-import com.paulmerchants.gold.model.newmodel.RespLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.RespPayReceipt
 import com.paulmerchants.gold.model.newmodel.RespPayReceiptNew
 import com.paulmerchants.gold.model.newmodel.RespPaymentMethod
-import com.paulmerchants.gold.model.newmodel.RespPendingInterstDue
-import com.paulmerchants.gold.model.newmodel.RespResetFogetMpin
 import com.paulmerchants.gold.model.newmodel.RespSearchBranch
 import com.paulmerchants.gold.model.newmodel.RespTxnHistory
 import okhttp3.RequestBody
@@ -34,6 +23,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 interface ApiParams {
 
@@ -51,61 +41,72 @@ interface ApiParams {
         @Body data: RequestBody
     ): ResponseBody
 
-    @POST("api/signup")
+    @POST("mpin/signup")
     suspend fun setMPin(
         @Header("Authorization") Authorization: String?,
         @Body requestBody: RequestBody,
     ): ResponseBody
 
-    @POST("api/login_mpin")
+    @POST("mpin/login")
     suspend fun loginWithMpin(
-        @Body login: ReqLoginWithMpin,
-    ): Response<RespLoginWithMpin>
+        @Body requestBody: RequestBody,
+    ): ResponseBody
 
-    @POST("api/signup")
-    suspend fun setMPin1(
+    @POST("mpin/forget")
+    suspend fun resetOrForgetMpin(
+        @Header("Authorization") Authorization: String?,
+        @Body requestBody: RequestBody,
+    ): ResponseBody
+
+    @POST("mpin/change") //change Mpin
+    suspend fun reSetMPin(
         @Header("Authorization") Authorization: String,
-        @Body reqSetMPin: ReqSetMPin,
-    ): Response<RespSetMpin>
+        @Body requestBody: RequestBody,
+    ): ResponseBody
 
-    @POST("api/login_mpin")
-    suspend fun loginWithMpin1(
-        @Body login: ReqLoginWithMpin,
-    ): Response<RespLoginWithMpin>
+    @POST("api/pending-interest-dues") // GetPendingInrstDueResp
+    suspend fun getPendingInterestDues(
+        @Header("Authorization") auth: String,
+        @Body requestBody: RequestBody,
+//        @Query("AsOnDate") AsOnDate: String,
+    ): ResponseBody
 
+    @POST("api/loan-outstanding")   //RespGetLoanOutStanding
+    suspend fun getLoanOutstanding(
+        @Header("Authorization") auth: String,
+        @Body requestBody: RequestBody,
+    ): ResponseBody
+
+    @POST("api/customer-details") //RespCustomersDetails
+    suspend fun getCustomerDetails(
+        @Header("Authorization") auth: String,
+        @Body requestBody: RequestBody,
+    ): ResponseBody
 
     @POST("auth/logout")
     suspend fun logOut(
         @Header("Authorization") Authorization: String,
+    ): ResponseBody
+
+
+    @POST("auth/logout")
+    suspend fun logOut1(
+        @Header("Authorization") Authorization: String,
     ): Response<RespCommon>
 
 
-    @POST("api/change-mpin") //change Mpin
-    suspend fun reSetMPin(
-        @Header("Authorization") Authorization: String,
-        @Body reqResetPin: ReqResetPin,
-    ): Response<RespCommon>
-
-    @POST("api/forget-mpin")
-    suspend fun resetOrForgetMpin(
-        @Header("Authorization") Authorization: String,
-        @Body reqResetPin: ReqResetForgetPin,
-    ): Response<RespResetFogetMpin>
-
-
-    @POST("api/get-pending-interest-dues") // GetPendingInrstDueResp
-    suspend fun getPendingInterestDues(
+    @POST("payments/transaction-history")   //
+    suspend fun txnHistory1(
         @Header("Authorization") auth: String,
-        @Body reqpendingInterstDueNew: ReqpendingInterstDueNew,
-//        @Query("AsOnDate") AsOnDate: String,
-    ): Response<RespPendingInterstDue>
-
-
-    @POST("api/get-loan-outstanding")   //RespGetLoanOutStanding
-    suspend fun getLoanOutstanding(
-        @Header("Authorization") auth: String,
-        @Body reqpendingInterstDueNew: ReqpendingInterstDueNew,
-    ): Response<RespGetLOanOutStanding>
+        @Query("pageNumber") pageNumber: Int,
+        @Query("pageSize") pageSize: Int,
+        @Query("data") data: String?
+    ): ResponseBody
+//    @POST
+//    suspend fun txnHistory1(
+//        @Header("Authorization") auth: String,
+//        @Url url: String
+//    ): ResponseBody
 
     @POST("api/get-loan-due-date")   //RespLoanDueDate
     suspend fun getLoanDueDate(
@@ -124,6 +125,11 @@ interface ApiParams {
         @Header("Authorization") auth: String,
         @Body reqCreateOrder: ReqCreateOrder,
     ): Response<*>
+@POST("payment/create-order")   //RespLoanDueDate
+    suspend fun createOrder(
+        @Header("Authorization") auth: String,
+        @Body requestBody: RequestBody,
+    ): ResponseBody
 
     //https://www.globedu.in/paulgoldv01/
     @POST("payments/payment/success/{amount}/{contactCount}/{companyName}/{currency}/{description}")   //RespLoanDueDate
@@ -200,11 +206,6 @@ interface ApiParams {
         @Body reqGetLoanStatement: ReqGetLoanStatement,
     ): Response<RespCommon>
 
-    @POST("api/get-customer-details") //RespCustomersDetails
-    suspend fun getCustomerDetails(
-        @Header("Authorization") auth: String,
-        @Body reqpendingInterstDueNew: ReqpendingInterstDueNew,
-    ): Response<RespGetCustomer>
 
     /**
      *̄----------ResPaymentDone     -----------------
@@ -283,6 +284,14 @@ interface ApiParams {
         @Query("pageNumber") pageNumber: Int,
         @Query("pageSize") pageSize: Int,
     ): Response<RespTxnHistory>
+@POST("payments/transaction-history-search")   //
+    suspend fun txnHistorySearch1(
+        @Header("Authorization") auth: String,
+        @Query("custId") custId: String,
+        @Query("status") status: String,
+        @Query("pageNumber") pageNumber: Int,
+        @Query("pageSize") pageSize: Int,
+    ): ResponseBody
 
     @GET("payments/transaction-receipts/{paymentId}")   //
     suspend fun getPaidReceipt(

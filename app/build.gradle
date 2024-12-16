@@ -65,8 +65,8 @@ android {
             buildConfigField "String", "PASSWORD", "\"FU510N@pro\""
             buildConfigField "String", "USERNAME", "\"pml\""
             buildConfigField "String", "RAZORPAY_KEY", "\"rzp_test_sC3pnynLq27dfw\""
-            buildConfigField "String", "PRIVACY_POLICY", "\"https://uat.paulpaygifty.com/paulgoldv01/conditions/privacy-policy\""
-            buildConfigField "String", "TERMS_CONDITION", "\"https://uat.paulpaygifty.com/paulgoldv01/conditions/terms-conditions\""
+            buildConfigField "String", "PRIVACY_POLICY", "\"https://uat.paulpaygifty.com/paulgoldv01/legal/privacy-policy\""
+            buildConfigField "String", "TERMS_CONDITION", "\"https://uat.paulpaygifty.com/paulgoldv01/legal/terms-conditions\""
         }
 
         benchmark {

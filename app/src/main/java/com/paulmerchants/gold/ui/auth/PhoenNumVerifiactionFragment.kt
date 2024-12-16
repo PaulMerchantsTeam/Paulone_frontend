@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
+import com.paulmerchants.gold.common.Constants.IS_USER_EXIST
 import com.paulmerchants.gold.common.Constants.OTP_VERIFIED
 import com.paulmerchants.gold.common.Constants.SIGNUP_DONE
 import com.paulmerchants.gold.databinding.PhoneAuthFragmentBinding
@@ -162,10 +163,10 @@ class PhoenNumVerifiactionFragment :
             }
 
         }
-        if (AppSharedPref.getBooleanValue(OTP_VERIFIED)) {
-            binding.fillOtpParent.hideView()
-            binding.signUpParentMain.root.show()
-        }
+//        if (AppSharedPref.getBooleanValue(OTP_VERIFIED)) {
+//            binding.fillOtpParent.hideView()
+//            binding.signUpParentMain.root.show()
+//        }
         if (pinValue == 100) {
             binding.apply {
                 titleWelcomTvAuth.hide()
@@ -211,10 +212,9 @@ class PhoenNumVerifiactionFragment :
         authViewModel.verifyOtp.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.data.user_exist == false) {
-
                     hideAndShowSignUpScreen()
                 } else {
-                    AppSharedPref.putBoolean("IS_USER_EXIST", true)
+                    AppSharedPref.putBoolean(IS_USER_EXIST, true)
                     findNavController().popBackStack(R.id.phoenNumVerifiactionFragment, true)
                     findNavController().navigate(R.id.loginScreenFrag)
                 }
@@ -484,7 +484,7 @@ class PhoenNumVerifiactionFragment :
             delay(2000)
             findNavController().popBackStack(R.id.phoenNumVerifiactionFragment, true)
             findNavController().navigate(
-                R.id.homeScreenFrag
+                R.id.loginScreenFrag
             )
         }
     }

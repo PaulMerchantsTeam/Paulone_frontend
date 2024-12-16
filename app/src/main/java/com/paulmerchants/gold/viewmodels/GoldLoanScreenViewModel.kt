@@ -9,6 +9,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.model.RespGetLoanOutStanding
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
@@ -28,9 +29,12 @@ import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
 import com.paulmerchants.gold.utility.decryptKey
+import com.paulmerchants.gold.utility.encryptKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -56,56 +60,57 @@ class GoldLoanScreenViewModel @Inject constructor(
         isCalledGoldLoanScreen = false
     }
 
-    fun getLoanOutstanding(location: Location?) = viewModelScope.launch {
 
-        retrofitSetup.callApi(true, object : CallHandler<Response<RespGetLOanOutStanding>> {
-            override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetLOanOutStanding> {
-                return apiParams.getLoanOutstanding(
-                    "Bearer ${AppSharedPref.getStringValue(JWT_TOKEN).toString()}",
-                    ReqpendingInterstDueNew(
-                        AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
-                        AppUtility.getDeviceDetails(location)
-                    )
+    fun getLoanOutstanding(  location: Location?) =
+        viewModelScope.launch {
+            try {
+                val gson = Gson()
+                val request =  ReqpendingInterstDueNew(
+                    AppSharedPref.getStringValue(Constants.CUSTOMER_ID)
+                        .toString(),
+                    AppUtility.getDeviceDetails(location)
                 )
-            }
+                val jsonString = gson.toJson(request)
+                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
+                val requestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), encryptedString.toString())
 
-            override fun success(response: Response<RespGetLOanOutStanding>) {
-                try {
-//                    // Get the plain text response
-//                    val plainTextResponse = response.body()?.data
-//                    // Do something with the plain text response
-//                    if (plainTextResponse != null) {
-//                        Log.d("Response", plainTextResponse)
-//                        val decryptData = decryptKey(
-//                            BuildConfig.SECRET_KEY_GEN, plainTextResponse
-//                        )
-//                        println("decrypt-----$decryptData")
-//                        val respPending: RespGetLoanOutStanding? =
-//                            AppUtility.convertStringToJson(decryptData.toString())
-////                val respPending = AppUtility.stringToJsonGetPending(decryptData.toString())
-//                        respPending?.let { resp ->
-//                            getRespGetLoanOutStandingLiveData.value = resp
-//                        }
-//                        println("Str_To_Json------$respPending")
-//                    }
-                    if (response.body()?.statusCode == "200") {
-                        getRespGetLoanOutStandingLiveData.value = response.body()?.data
+                val response = apiParams.getLoanOutstanding(
+                    "Bearer ${
+                        AppSharedPref.getStringValue(JWT_TOKEN).toString()
+                    }",
+                    requestBody
+                )
+                // Get the plain text response
+                val plainTextResponse = response.string()
+
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse.toString())
+
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_UAT,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+                val respPending = gson.fromJson(decryptData.toString(), RespGetLOanOutStanding::class.java)
+                println("Str_To_Json------$respPending")
+                respPending?.let {
+                    if (it.status_code == 200) {
+
+
+                        getRespGetLoanOutStandingLiveData.value =
+                            respPending?.data
+
                     } else {
-                        "Some thing went wrong".showSnackBar()
+                        "${it.message}".showSnackBar()
                     }
-                } catch (e: Exception) {
-                    e.printStackTrace()
+
                 }
-                AppUtility.hideProgressBar()
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
+            AppUtility.hideProgressBar()
 
-            override fun error(message: String) {
-                super.error(message)
-            }
-        })
-
-
-    }
-
+        }
 
 }

@@ -7,22 +7,29 @@ import java.math.BigDecimal
 
 @Parcelize
 data class RespGetLoanOutStandingItem(
-    @SerializedName("acNo") val AcNo: Long,
-    @SerializedName("closedDate") val closedDate: String?,
-    @SerializedName("dueDate") val dueDate: String,
-    @SerializedName("interestDue") val interestDue: Double?,
-    @SerializedName("productName") val productName: String,
+    @SerializedName("ac_no") val ac_no: Long,
+    @SerializedName("closed_date") val closed_date: String?,
+    @SerializedName("due_date") val due_date: String,
+    @SerializedName("open_date") val open_date: String,
+    @SerializedName("interest_due") val interest_due: Int?,
+    @SerializedName("product_name") val product_name: String,
     @SerializedName("openDate") val openDate: String,
-    @SerializedName("interestPeriod") val interestPeriod: Int,
+    @SerializedName("interest_period") val interest_period: Int,
     @SerializedName("fine") val fine: Int,
-    @SerializedName("closed") val closed: Boolean?,
-    @SerializedName("openingAmount") val openingAmount: Double?,
-    @SerializedName("outStanding") val outStanding: Double?,
-    @SerializedName("rebateAmount") val rebateAmount: Double?,
-    @SerializedName("payableAmount") val payableAmount: Double?,
+    @SerializedName("is_closed") val is_closed: Boolean?,
+    @SerializedName("opening_amount") val opening_amount: Int?,
+    @SerializedName("out_standing") val out_standing: Int?,
+    @SerializedName("rebate_amount") val rebate_amount: Int?,
+    @SerializedName("payable_amount") val payable_amount: Double?,
     @SerializedName("created_at") val created_at: Long?,
-    var currentDate: String,
+    @SerializedName("id") val id: Int?,
+    var current_date: String,
 ) : Parcelable
+
+
+
+
+
 
 /**
  *  [RespGetLoanOutStandingItem(AcNo=104210000012072,

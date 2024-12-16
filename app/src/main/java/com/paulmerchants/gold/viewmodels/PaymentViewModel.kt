@@ -1,26 +1,18 @@
 package com.paulmerchants.gold.viewmodels
 
 import android.app.Activity
-import android.content.Intent
 import android.location.Location
 import android.os.Build
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import androidx.navigation.fragment.findNavController
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
-import com.paulmerchants.gold.R
-import com.paulmerchants.gold.model.RespCustomersDetails
-import com.paulmerchants.gold.model.newmodel.LoginNewResp
-import com.paulmerchants.gold.model.newmodel.LoginReqNew
 import com.paulmerchants.gold.model.newmodel.PayAll
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.ReqPayAlInOnGo
@@ -36,20 +28,16 @@ import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.networks.RetrofitSetup
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
-import com.paulmerchants.gold.ui.MainActivity
-import com.paulmerchants.gold.ui.PaymentActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
-import com.paulmerchants.gold.utility.AppUtility.showSnackBarForPayment
 import com.paulmerchants.gold.utility.Constants
-import com.paulmerchants.gold.utility.IS_SHOW_TXN
 import com.paulmerchants.gold.utility.decryptKey
+import com.paulmerchants.gold.utility.encryptKey
 import com.paulmerchants.gold.utility.showCustomDialogFoPaymentError
-import com.paulmerchants.gold.utility.showCustomDialogFoPaymentStatus
-import com.paulmerchants.gold.utility.showCustomDialogForError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import org.mindrot.jbcrypt.BCrypt
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
 
 import retrofit2.Response
 import javax.inject.Inject
@@ -161,8 +149,67 @@ class PaymentViewModel @Inject constructor(
         AppUtility.hideProgressBar()
     }
 
+    fun getCustomerDetails(location: Location?) =
+        viewModelScope.launch {
+            try {
+                val gson = Gson()
+                val request = ReqpendingInterstDueNew(
+                    AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
+                    AppUtility.getDeviceDetails(location)
+                )
+                val jsonString = gson.toJson(request)
+                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
+                val requestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), encryptedString.toString())
 
-    fun getCustomerDetails(appSharedPref: AppSharedPref, location: Location?) =
+                val response = apiParams.getCustomerDetails(
+                    "Bearer ${
+                        AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()
+                    }", requestBody
+                )
+                // Get the plain text response
+                val plainTextResponse = response.string()
+
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse.toString())
+
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_UAT,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+
+//           val  typeToken = object : TypeToken<BaseResponse<RespUnderMain>>() {}
+//            val respPending = gson.fromJson<BaseResponse<DataDown>>(decryptData.toString(),typeToken.type)
+                val respPending = gson.fromJson(decryptData.toString(), RespGetCustomer::class.java)
+                println("Str_To_Json------$respPending")
+                respPending?.let {
+                    if (it.status_code == 200) {
+                        AppSharedPref.putStringValue(
+                            Constants.CUSTOMER_FULL_DATA,
+                            decryptData.toString()
+                        )
+                        AppSharedPref.putStringValue(
+                            Constants.CUST_EMAIL,
+                            it.data?.email.toString()
+                        )
+                        getRespCustomersDetailsLiveData.value =
+                            RespCustomCustomerDetail(
+                                it.data.api_response,
+                                it.data?.email.toString()
+                            )
+
+                    } else {
+                        "Some thing went wrong..".showSnackBar()
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            AppUtility.hideProgressBar()
+
+        }
+   /* fun getCustomerDetails1(appSharedPref: AppSharedPref, location: Location?) =
         viewModelScope.launch {
             retrofitSetup.callApi(true, object : CallHandler<Response<RespGetCustomer>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespGetCustomer> {
@@ -179,7 +226,7 @@ class PaymentViewModel @Inject constructor(
                     try {
                         // Get the plain text response
                         if (response.isSuccessful) {
-                            val plainTextResponse = response.body()?.data?.apiResponse
+                            val plainTextResponse = response.body()?.data?.api_response
 
                             // Do something with the plain text response
                             if (plainTextResponse != null) {
@@ -224,7 +271,7 @@ class PaymentViewModel @Inject constructor(
                     super.error(message)
                 }
             })
-        }
+        }*/
 
     fun getPaymentMethod(AppSharedPref: AppSharedPref) =
         viewModelScope.launch {
@@ -249,6 +296,63 @@ class PaymentViewModel @Inject constructor(
 
 
     fun createOrder(reqCreateOrder: ReqCreateOrder, location: Location?) =
+
+        viewModelScope.launch {
+            try {
+                val gson = Gson()
+                val jsonString = gson.toJson(reqCreateOrder)
+                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
+                val requestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), encryptedString.toString())
+
+                val response = apiParams.createOrder(
+                    "Bearer ${
+                        AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()
+                    }", requestBody
+                )
+                // Get the plain text response
+                val plainTextResponse = response.string()
+
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse.toString())
+
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_UAT,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+
+//           val  typeToken = object : TypeToken<BaseResponse<RespUnderMain>>() {}
+//            val respPending = gson.fromJson<BaseResponse<DataDown>>(decryptData.toString(),typeToken.type)
+                val respPending = gson.fromJson(decryptData.toString(), RespCreateOrder::class.java)
+                println("Str_To_Json------$respPending")
+                respPending?.let {
+                    if (it.status_code == 200) {
+                        responseCreateOrder.value = respPending
+
+                    }
+                    else if (it.status_code == 401) {
+                        Log.d("FAILED_401", "400000111111: ...............${respPending}")
+                        val gson = Gson()
+                        val respFail: RespCommon? = gson.fromJson(
+                            gson.toJsonTree(respPending).asJsonObject,
+                            RespCommon::class.java
+                        )
+                        tokenExpiredResp.value = respFail
+//                        getLogin2(location = location)
+                    }else {
+                        "Some thing went wrong..".showSnackBar()
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            AppUtility.hideProgressBar()
+
+        }
+
+
+/* fun createOrder(reqCreateOrder: ReqCreateOrder, location: Location?) =
         viewModelScope.launch {
 
             retrofitSetup.callApi(false, object : CallHandler<Response<*>> {
@@ -296,7 +400,7 @@ class PaymentViewModel @Inject constructor(
                 }
             })
 
-        }
+        }*/
 
 
     fun updatePaymentStatus(

@@ -13,25 +13,24 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants.LOGIN_WITH_MPIN
 import com.paulmerchants.gold.model.ReqCustomerOtpNew
 import com.paulmerchants.gold.model.ResponseGetOtp
-import com.paulmerchants.gold.model.newmodel.LoginNewResp
 import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
 import com.paulmerchants.gold.model.newmodel.ReqLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.RespLoginWithMpin
 import com.paulmerchants.gold.model.newmodel.RespTxnHistory
-import com.paulmerchants.gold.networks.CallHandler
 import com.paulmerchants.gold.networks.RetrofitSetup
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
+import com.paulmerchants.gold.utility.Constants.REFRESH_TOKEN
+
 import com.paulmerchants.gold.utility.decryptKey
 import com.paulmerchants.gold.utility.encryptKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,7 +39,7 @@ class LoginViewModel @Inject constructor(
     private val apiParams: ApiParams,
 ) : ViewModel() {
 
-    val getTokenResp = MutableLiveData<Response<LoginNewResp>>()
+    //    val getTokenResp = MutableLiveData<Response<LoginNewResp>>()
     private val TAG = this.javaClass.name
     val txnHistoryData = MutableLiveData<RespTxnHistory>()
     val verifyOtp = MutableLiveData<ResponseGetOtp>()
@@ -181,47 +180,64 @@ class LoginViewModel @Inject constructor(
             AppUtility.hideProgressBar()
 
         }
+
     fun loginWithMpin(
         navController: NavController,
         AppSharedPref: AppSharedPref?,
-        reqLoginWithMpin: ReqLoginWithMpin,
-        location: Location?
-    ) =
+        pin: String,
+
+        ) =
         viewModelScope.launch {
-            retrofitSetup.callApi(true, object : CallHandler<Response<RespLoginWithMpin>> {
-                override suspend fun sendRequest(apiParams: ApiParams): Response<RespLoginWithMpin> {
-                    return apiParams.loginWithMpin(
+            try {
+                val gson = Gson()
+                val request = ReqLoginWithMpin(
+                    mobile_no = com.paulmerchants.gold.security.sharedpref.AppSharedPref.getStringValue(
+                        Constants.CUST_MOBILE
+                    ).toString(), pin = pin
+                )
+                val jsonString = gson.toJson(request)
+                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
+                val requestBody =
+                    RequestBody.create("text/plain".toMediaTypeOrNull(), encryptedString.toString())
 
-                        reqLoginWithMpin
-                    )
-                }
+                val response = apiParams.loginWithMpin(requestBody)
 
-                override fun success(response: Response<RespLoginWithMpin>) {
-                    Log.d("TAG", "success: ..loginWithMpin....${response.body()}")
-                    if (response.isSuccessful) {
-                        if (response.body()?.status_code == "200") {
-                            if (response.body()?.data == true) {  //user exist with valid credential..
-                                "${response.body()?.message}".showSnackBar()
-                                navController.popBackStack(R.id.loginScreenFrag, true)
-                                navController.navigate(R.id.homeScreenFrag)
-                                AppSharedPref?.putBoolean(LOGIN_WITH_MPIN, true)
-                            } else {
-                                "${response.body()?.message}".showSnackBar()
-                            }
-                        } else {
+                // Get the plain text response
+                val plainTextResponse = response.string()
 
-                        }
-                    } else if (response.code() == 401) {
-//                        getLogin2(AppSharedPref, location = location)
+                // Do something with the plain text response
+                Log.d("Response", plainTextResponse.toString())
+
+                val decryptData = decryptKey(
+                    BuildConfig.SECRET_KEY_UAT,
+                    plainTextResponse
+                )
+                println("decrypt-----$decryptData")
+                val respPending =
+                    gson.fromJson(decryptData.toString(), RespLoginWithMpin::class.java)
+                println("Str_To_Json------$respPending")
+                respPending?.let {
+                    if (it.status_code == 200) {
+
+                        "${respPending?.message}".showSnackBar()
+                        navController.popBackStack(R.id.loginScreenFrag, true)
+                        navController.navigate(R.id.homeScreenFrag)
+                        AppSharedPref?.putBoolean(LOGIN_WITH_MPIN, true)
+                        AppSharedPref?.putStringValue(Constants.JWT_TOKEN, it.data.token.toString())
+                        AppSharedPref?.putStringValue(
+                            REFRESH_TOKEN,
+                            it.data.refresh_token.toString()
+                        )
+
+                    } else {
+                        "${it.message}".showSnackBar()
                     }
 
                 }
-
-                override fun error(message: String) {
-                    super.error(message)
-                    Log.d("TAG", "error: ......$message")
-                }
-            })
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            AppUtility.hideProgressBar()
 
         }
 
