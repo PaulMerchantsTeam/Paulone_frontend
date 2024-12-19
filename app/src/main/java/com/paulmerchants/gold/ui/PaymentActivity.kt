@@ -29,7 +29,7 @@ import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.PaymentsModeNewBinding
 import com.paulmerchants.gold.location.LocationProvider
-import com.paulmerchants.gold.model.newmodel.Notes
+import com.paulmerchants.gold.model.usedModels.Notes
 import com.paulmerchants.gold.model.newmodel.PayAllnOneGoDataTobeSent
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
@@ -154,7 +154,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     isDown = it
                 } else {
 //                    if(!BuildConfig.DEBUG) {
-                    paymentViewModel.getUnderMaintenanceStatusCheck()
+                    paymentViewModel.getUnderMaintenanceStatusCheck(this@PaymentActivity)
 //                    }
                 }
             }
@@ -163,11 +163,11 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         paymentViewModel.isUnderMainLiveData.observe(this) {
             it?.let {
                 if (it.status_code ==200) {
-                    if (it.data.down && it.data.id == 1) {
+                    if (it.data?.down == true && it.data?.id == 1) {
                         binding.underMainParent.root.show()
                         binding.clOuter.hide()
                         isDown = it.data.down
-                    } else if (it.data.down && it.data.id == 2) {
+                    } else if (it.data?.down == true && it.data.id == 2) {
                         binding.clOuter.hide()
 
                         it.data.end_time?.let { endTime ->
@@ -185,8 +185,8 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     } else {
                         binding.clOuter.show()
                         binding.underMainTimerParent.root.hide()
-                        paymentViewModel.getCustomerDetails(mLocation)
-                        paymentViewModel.getPaymentMethod(AppSharedPref)
+                        paymentViewModel.getCustomerDetails(mLocation,this)
+                        paymentViewModel.getPaymentMethod(this@PaymentActivity)
                     }
                 }
             }
@@ -200,9 +200,9 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             }
         }
 
-        paymentViewModel.getPaymentMethod.observe(this) {
-            it?.let {
-                for (paymentMethods in it.data) {
+        paymentViewModel.getPaymentMethod.observe(this) { it ->
+            it?.data?.let {
+                for (paymentMethods in it) {
                     Log.e(TAG, "onCreate: .........$paymentMethods")
                     if (paymentMethods.method == PaymentMode.UPI_COLLECT.name) {
 //                        val isUpiCollect =
@@ -331,17 +331,18 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             it?.let {
                 Log.d(TAG, "ojnnnnnn: /.................${it.status}")
                 hideProgressBar()
-                if (it.statusCode == "200") {
+                if (it.status_code == 200) {
                     hideProgressBar()
                     Log.d(TAG, "ojnnnnnn: /.................$it")
                     val bundle = Bundle().apply {
                         putString(
-                            com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
-
-                            it.data.paymentId
+                            com.paulmerchants.gold.utility.Constants.ORDER_ID,
+                            it.data?.order_id
                         )
-
-
+                        putString(
+                            com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
+                            it.data?.payment_id
+                        )
                     }
                     val intent = Intent(this, PaymentConfirmed::class.java)
                     intent.putExtras(bundle)
@@ -414,7 +415,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 //                    navController.popBackStack(R.id.paymentModesFragNew, true)
 //                    navController.navigate(R.id.paidReceiptFrag, bundle)
                     showCustomDialogFoPaymentError(
-                        message = it.message, isClick = {
+                        message = it.message.toString(), isClick = {
 
                         })
                 }
@@ -506,7 +507,10 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
                         }
                     }
-                    payload.put("order_id", it.data.orderId)
+
+                        payload.put("order_id", it.data?.order_id)
+
+
 
 
                     try {
@@ -901,7 +905,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     submit = true,
                     mac_id = Build.ID,
                     value_date = AppUtility.getCurrentDate()
-                ), mLocation
+                ), this@PaymentActivity
             )
 //            }
         }
@@ -969,16 +973,18 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                         toggleWebViewVisibility(View.GONE)
                         if (p1?.paymentId != null) {
 //                            "Payment Success".showSnackBar()
-                            if (payAlllInOneGo != null) {
-                                updatePaymentStatusToServerToAllInOneGo(
-                                    StatusPayment("captured", p1)
-                                )
-                            } else {
+//                            if (payAlllInOneGo != null) {
+//                                updatePaymentStatusToServerToAllInOneGo(
+//                                    StatusPayment("captured", p1)
+//                                )
+//
+//
+//                            } else {
                                 updatePaymentStatusToServer(
                                     StatusPayment("captured", p1), false
                                     //                                                isCustomPay ?: false
                                 )
-                            }
+//                            }
                         } else {
                             "Unable to initiate the payment\nplease try again later".showSnackBar()
                         }
@@ -991,18 +997,18 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                         toggleWebViewVisibility(View.GONE)
 //                        if (p2?.paymentId != null) {
                         p2.let {
-                            if (payAlllInOneGo != null) {
-
-                                updatePaymentStatusToServerToAllInOneGo(
-                                    StatusPayment("not_captured", p2)
-                                )
-
-                            } else {
+//                            if (payAlllInOneGo != null) {
+//
+//                                updatePaymentStatusToServerToAllInOneGo(
+//                                    StatusPayment("not_captured", p2)
+//                                )
+//
+//                            } else {
                                 updatePaymentStatusToServer(
                                     StatusPayment("not_captured", p2), false
 //                                               isCustomPay ?: false
                                 )
-                            }
+//                            }
 //                            }
 
                         }
@@ -1071,7 +1077,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         if (customerAcc != null && amountToPay != null) {
             amountToPay?.let {
                 progressBarAlert(this@PaymentActivity)
-                paymentViewModel.updatePaymentStatus(
+                paymentViewModel.mTransaction(
                     this,
                     status = statusData.status,
                     razorpay_payment_id = statusData.paymentData?.paymentId ?: "",
@@ -1080,10 +1086,10 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
                         .toString(),
                     amount = amountToPay,
-                    contactCount = 0,
+
                     description = "desc_payment",
                     account = customerAcc.toString(),
-                    isCustom = isCustom, location = mLocation
+                     location = mLocation
                 )
             }
         } else {
@@ -1091,32 +1097,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         }
     }
 
-    private fun updatePaymentStatusToServerToAllInOneGo(
-        statusData: StatusPayment,
-    ) {
-        Log.d(TAG, "updatePaymentStatusToServer: $amountToPay....$statusData")
-        if (amountToPay != null) {
-            amountToPay?.let {
-                progressBarAlert(this@PaymentActivity)
-                payAlllInOneGo?.payAll?.let { payAllGo ->
-                    paymentViewModel.updatePaymentStatusAllInOneGo(
-                        status = statusData.status,
-                        razorpay_payment_id = statusData.paymentData?.paymentId.toString(),
-                        razorpay_order_id = statusData.paymentData?.orderId.toString(),
-                        razorpay_signature = statusData.paymentData?.signature.toString(),
-                        custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
-                            .toString(),
-                        amount = amountToPay,
-                        contactCount = 0,
-                        description = "desc_payment",
-                        listOfPaullINOneGo = payAllGo, location = mLocation
-                    )
-                }
-            }
-        } else {
-            "Amount: Some thing went wrong".showSnackBar()
-        }
-    }
+
 
     private fun initRazorpay() {
         Log.e(TAG, "initRazorpay: .")
@@ -1390,7 +1371,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             override fun onFinish() {
                 // Reset or refresh your UI, or restart the countdown for the next day if needed
                 binding.underMainTimerParent.timerTextView.text = "00:00"
-                paymentViewModel.getUnderMaintenanceStatusCheck()
+                paymentViewModel.getUnderMaintenanceStatusCheck(this@PaymentActivity)
 
 //                navController.clearBackStack(R.id.splashFragment)
 
@@ -1410,23 +1391,13 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun startTimeCountdown() {
-//            val now = LocalDateTime.now()
-//            val nowPlus10 = now.plusMinutes(10)
-//            println("Current time: $now")
-//            println("Time after 10 minutes: $nowPlus10")
 
-        // Get the current time (India Standard Time)
+
+
         val currentTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"))
 
-        // Get the time today when the countdown should end (today's 3:00:00 PM)
-        var targetISTTime = currentTime.plusMinutes(1)
+        val targetISTTime = currentTime.plusMinutes(10)
 
-        // If the current time is already past 3:00 PM, set the target to tomorrow at 3:00 PM
-//        if (currentTime.isAfter(targetISTTime)) {
-//            targetISTTime = targetISTTime.plusDays(1)
-//        }
-
-        // Calculate the difference between now and the target time in milliseconds
         val millisUntilTarget = ChronoUnit.MILLIS.between(currentTime, targetISTTime)
 
         // Start the countdown timer from now until the target time
@@ -1452,16 +1423,10 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             }
 
             override fun onFinish() {
-                // Reset or refresh your UI, or restart the countdown for the next day if needed
-//                binding.underMainTimerParent.timerTextView.text = "00:00"
-//                paymentViewModel.getUnderMaintenanceStatusCheck()
-
                 sessionExpiredMsg()
-//                navController.clearBackStack(R.id.splashFragment)
-
             }
         }.start()
-//        }
+
     }
 
     override fun onStop() {

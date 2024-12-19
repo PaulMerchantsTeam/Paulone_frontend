@@ -6,14 +6,12 @@ import androidx.paging.PagingState
 import com.bumptech.glide.load.HttpException
 import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
-import com.paulmerchants.gold.model.newmodel.GetPendingResponse
-import com.paulmerchants.gold.model.newmodel.PmlBranch
+import com.paulmerchants.gold.model.newmodel.RespTxnHistory
 import com.paulmerchants.gold.model.newmodel.Transactions
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.utility.decryptKey
 import com.paulmerchants.gold.utility.encryptKey
 import java.io.IOException
-import java.net.URLEncoder
 import javax.inject.Inject
 
 private const val BRANCH_STARTING_PAGE_INDEX = 0
@@ -28,32 +26,48 @@ class TxnPagingSource @Inject constructor(
 
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Transactions> {
+        val gson = Gson()
         val position = params.key ?: BRANCH_STARTING_PAGE_INDEX
         return try {
-
+            val encryptedCustId = encryptKey(BuildConfig.SECRET_KEY_UAT, custId)
+            val encryptedCREATED = encryptKey(BuildConfig.SECRET_KEY_UAT, "CREATED")
+            val encryptedPAID = encryptKey(BuildConfig.SECRET_KEY_UAT, "PAID")
             val response = when (status) {
                 0 -> {
                     apiParams.txnHistorySearch(
-                        token, custId, "CREATED", position,
+                        token, cust_id = encryptedCustId, status = encryptedCREATED, position,
                         10
                     )
                 }
 
                 1 -> {
                     apiParams.txnHistorySearch(
-                        token, custId, "PAID", position,
+                        token, cust_id = encryptedCustId, status = encryptedPAID, position,
                         10
                     )
                 }
 
                 else -> {
                     apiParams.txnHistory(
-                        token, custId, position,
+                        token, encryptedCustId, position,
                         10
                     )
                 }
             }
-            val repos = response.body()?.data ?: emptyList<Transactions>()
+            val plainTextResponse = response.string()
+
+            // Do something with the plain text response
+            Log.d("Response", plainTextResponse.toString())
+
+            val decryptData = decryptKey(
+                BuildConfig.SECRET_KEY_UAT,
+                plainTextResponse
+            )
+            println("decrypt-----$decryptData")
+            val respPending =
+                gson.fromJson(decryptData.toString(), RespTxnHistory ::class.java)
+
+            val repos = respPending?.data?.data ?: emptyList<Transactions>()
 
 
             Log.d("PAGGGIIINNNGGG", "load: ............${repos.size}")

@@ -1,6 +1,7 @@
 package com.paulmerchants.gold.model.newmodel
 
 import com.google.gson.annotations.SerializedName
+import com.paulmerchants.gold.model.usedModels.RespLoginData
 
 data class RespLoginWithMpin(
     @SerializedName("status") val status: String?,

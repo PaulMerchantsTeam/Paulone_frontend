@@ -88,7 +88,7 @@ class GoldLoanScreenFrag :
 
 
         goldScreenViewModel.getRespGetLoanOutStandingLiveData.observe(viewLifecycleOwner) {
-            it?.let {
+            it.data?.let {
                 if (it.get_loan_outstanding_response_data.size != 0) {
                     if (it.get_loan_outstanding_response_data.size == 1) {
                         hideViews()
@@ -208,7 +208,7 @@ class GoldLoanScreenFrag :
 
     override fun onStart() {
         super.onStart()
-        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus(requireContext())
         (activity as MainActivity).checkForDownFromRemoteConfig()
 
         if (goldScreenViewModel.isCalledGoldLoanScreen) {
@@ -282,7 +282,7 @@ class GoldLoanScreenFrag :
     }
 
     private fun setUpNetworkCallbackFOrDueLoans() {
-        goldScreenViewModel.getLoanOutstanding((activity as MainActivity).mLocation)
+        goldScreenViewModel.getLoanOutstanding((activity as MainActivity).mLocation,requireContext())
     }
 
     private fun hideViews() {

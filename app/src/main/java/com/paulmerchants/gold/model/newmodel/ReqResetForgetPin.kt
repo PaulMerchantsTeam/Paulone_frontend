@@ -1,6 +1,7 @@
 package com.paulmerchants.gold.model.newmodel
 
 import com.google.gson.annotations.SerializedName
+import com.paulmerchants.gold.model.usedModels.DeviceDetailsDTO
 
 data class ReqResetForgetPin(
     @SerializedName("confirm_mpin") val confirm_mpin: String,

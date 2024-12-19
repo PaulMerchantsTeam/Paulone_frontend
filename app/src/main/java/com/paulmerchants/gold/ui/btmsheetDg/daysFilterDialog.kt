@@ -3,27 +3,13 @@ package com.paulmerchants.gold.ui.btmsheetDg
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
-import android.os.Build
-import android.os.Build.VERSION
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.paulmerchants.gold.R
-import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.ItemFiliterTimeBottomBinding
-import com.paulmerchants.gold.databinding.QuickPayPopupBinding
-import com.paulmerchants.gold.model.DueLoans
-import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
-import com.paulmerchants.gold.ui.MapActivity
-import com.paulmerchants.gold.utility.hide
-import com.paulmerchants.gold.utility.show
 import dagger.hilt.android.AndroidEntryPoint
 
 

@@ -21,7 +21,7 @@ import com.paulmerchants.gold.adapter.UpcomingLoanAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants.DUE_LOAN_DATA
 import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
-import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
+import com.paulmerchants.gold.model.usedModels.GetPendingInrstDueRespItem
 import com.paulmerchants.gold.model.MoreToComeModel
 import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.security.SecureFiles
@@ -295,7 +295,7 @@ class HomeScreenFrag :
         ) {
 
 
-            it?.let {
+            it.data?.let {
                 for (i in it.get_loan_outstanding_response_data) {
                     i.current_date = it.current_date
                 }
@@ -312,15 +312,16 @@ class HomeScreenFrag :
                 binding.swiperefresh.isRefreshing = false
                 binding.shimmmerParent.hideShim()
                 (activity as MainActivity).commonViewModel.notZero =
-                    gepPendingRespObj.pending_interest_dues_response_data?.filter { getPendingInterestItem ->
+
+                    gepPendingRespObj.data?.pending_interest_dues_response_data?.filter { getPendingInterestItem ->
                         getPendingInterestItem.payable_amount != 0
                     }
                 Log.i(
                     TAG,
                     "setUpComingDueLoans: ${(activity as MainActivity).commonViewModel.notZero}"
                 )
-                for (i in gepPendingRespObj.pending_interest_dues_response_data ?: emptyList()) {
-                    i.currentDate = gepPendingRespObj.current_date.toString()
+                for (i in gepPendingRespObj?.data?.pending_interest_dues_response_data ?: emptyList()) {
+                    i.currentDate = gepPendingRespObj.data?.current_date.toString()
 
                 }
 
@@ -352,14 +353,14 @@ class HomeScreenFrag :
     override fun onStart() {
         super.onStart()
         changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
-        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus(requireContext())
         (activity as MainActivity).commonViewModel.getPendingInterestDues(
 
-            (activity as MainActivity).mLocation
+            (activity as MainActivity).mLocation,requireContext()
         )
         (activity as MainActivity).commonViewModel.getLoanOutstanding(
 
-            (activity as MainActivity).mLocation
+            (activity as MainActivity).mLocation,requireContext()
         )
 
         navController = findNavController()
@@ -421,7 +422,7 @@ class HomeScreenFrag :
             if (InternetUtils.isNetworkAvailable(requireContext())) {
                 Log.d(com.paulmerchants.gold.ui.TAG, "onAvailable: ...........internet")
 
-                (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+                (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus(requireContext())
 
                 binding.swiperefresh.isRefreshing = false
 

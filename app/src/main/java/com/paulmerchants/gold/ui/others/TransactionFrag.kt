@@ -59,9 +59,10 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
         }
     }
     private fun showTxn(transactions: Transactions) {
-        if (transactions.orderId != null) {
+        if (transactions.order_id != null) {
             val bundle = Bundle().apply {
-                putString(Constants.PAYMENT_ID, transactions.orderId)
+                putString(Constants.ORDER_ID, transactions.order_id)
+                putString(Constants.PAYMENT_ID, transactions.payment_id)
             }
             findNavController().navigate(R.id.paidReceiptFrag, bundle)
         } else {
@@ -78,7 +79,7 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
 
         binding.chip2.performClick()
         getTxnHistory(11)
-        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus(requireContext())
         binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
             val chip: Chip? = group.findViewById(checkedId)
             chip?.let { chipView ->

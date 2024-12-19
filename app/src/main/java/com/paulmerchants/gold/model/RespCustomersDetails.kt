@@ -14,3 +14,4 @@ data class RespCustomersDetails(
     @SerializedName("updated_at") val updated_at: Long?,
     @SerializedName("id") val id: Long?,
 )
+

@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class PaymentMethod(
 
-    @SerializedName("method") val method: String,
+    @SerializedName("method") val method: String?,
+    @SerializedName("created_at") val created_at: String?,
+    @SerializedName("updated_at") val updated_at: String?,
     @SerializedName("value") val value: Boolean,
 
 

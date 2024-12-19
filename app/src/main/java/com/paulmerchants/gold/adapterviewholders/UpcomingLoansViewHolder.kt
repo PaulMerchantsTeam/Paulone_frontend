@@ -3,7 +3,7 @@ package com.paulmerchants.gold.adapterviewholders
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.paulmerchants.gold.databinding.ItemUpcomingDueLoanBinding
-import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
+import com.paulmerchants.gold.model.usedModels.GetPendingInrstDueRespItem
 
 class UpcomingLoansViewHolder(private val binding: ItemUpcomingDueLoanBinding) :
     ViewHolder(binding.root) {

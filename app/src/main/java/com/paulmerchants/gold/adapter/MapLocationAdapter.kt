@@ -30,7 +30,7 @@ class MapLocationAdapter(
                     oldItem: PmlBranch,
                     newItem: PmlBranch,
                 ): Boolean =
-                    oldItem.branchId == newItem.branchId
+                    oldItem.branch_id == newItem.branch_id
 
                 override fun areContentsTheSame(
                     oldItem: PmlBranch,
@@ -49,7 +49,7 @@ class MapLocationAdapter(
             onMarkLocation: (PmlBranch) -> Unit,
         ) {
             binding.apply {
-                addressLocTv.text = pmlBranch.branchName
+                addressLocTv.text = pmlBranch.branch_name
                 distanceFromHereTv.text = binding.root.context.getString(R.string.check_location)
             }
             binding.checkLocation.setOnClickListener {

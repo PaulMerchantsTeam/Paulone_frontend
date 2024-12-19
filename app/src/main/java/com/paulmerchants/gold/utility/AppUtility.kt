@@ -64,16 +64,13 @@ import com.paulmerchants.gold.databinding.NoInternetDgBinding
 import com.paulmerchants.gold.databinding.ProgressLayoutBinding
 import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.GetPendingInrstDueResp
-import com.paulmerchants.gold.model.RespClosureReceipt
 import com.paulmerchants.gold.model.RespGetCustomer
-import com.paulmerchants.gold.model.RespGetLoanOutStanding
-import com.paulmerchants.gold.model.RespGetReceipt
-import com.paulmerchants.gold.model.RespLoanDueDate
 import com.paulmerchants.gold.model.RespLogin
-import com.paulmerchants.gold.model.newmodel.DeviceDetailsDTO
+import com.paulmerchants.gold.model.usedModels.DeviceDetailsDTO
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.PaymentActivity
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.bouncycastle.util.encoders.Base64
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -108,7 +105,6 @@ import javax.crypto.IllegalBlockSizeException
 import javax.crypto.NoSuchPaddingException
 import javax.crypto.ShortBufferException
 import javax.crypto.spec.SecretKeySpec
-import org.bouncycastle.util.encoders.Base64
 
 
 /**
@@ -282,7 +278,7 @@ object AppUtility {
         location?.latitude.toString(),
         location?.longitude.toString(),
         "Android",
-        Build.BRAND
+        device_name = Build.DEVICE
     )
 
     fun blurTextView(blurredTextView: TextView, context: Context) {
@@ -335,10 +331,13 @@ object AppUtility {
         view.draw(canvas)
         return bitmap
     }
+
     fun hideKeyboardFromView(view: View, context: Context) {
-        val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
     fun saveAsPdf(
         context: Context,
         pdfWidth: Float,
@@ -726,6 +725,7 @@ object AppUtility {
     fun generateUDID(): String {
         return UUID.randomUUID().toString()
     }
+
     fun getSHA512(input: String): String {
         val md: MessageDigest = MessageDigest.getInstance("SHA-512")
         val messageDigest = md.digest(input.toByteArray())
@@ -740,6 +740,7 @@ object AppUtility {
         // return the HashText
         return hashtext
     }
+
     fun numberOfDaysWrtCurrent(date: String): Long {
         val daysDifference: Long
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -808,32 +809,6 @@ object AppUtility {
         return gson.fromJson(string, GetPendingInrstDueResp::class.java)
     }
 
-    fun stringToJsonGetLoanOutstanding(string: String): RespGetLoanOutStanding {
-        val gson = Gson()
-        return gson.fromJson(string, RespGetLoanOutStanding::class.java)
-    }
-
-    fun stringToJsonGetLoanDueDate(string: String): RespLoanDueDate {
-        val gson = Gson()
-        return gson.fromJson(string, RespLoanDueDate::class.java)
-    }
-
-    fun stringToJsonGetLoanClosureReceipt(string: String): RespClosureReceipt {
-        val gson = Gson()
-        return gson.fromJson(string, RespClosureReceipt::class.java)
-    }
-
-    fun stringToJsonGetReceipt(string: String): RespGetReceipt {
-        val gson = Gson()
-        return gson.fromJson(string, RespGetReceipt::class.java)
-    }
-
-
-    fun isDeveloperOptionsEnabled(context: Context): Boolean {
-        return Settings.Secure.getInt(
-            context.contentResolver, Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0
-        ) == 1
-    }
 
     fun isUsbDebuggingEnabled(context: Context): Boolean {
         return Settings.Global.getInt(
@@ -885,13 +860,13 @@ object AppUtility {
 
     fun progressBarAlert(context: Context) = try {
         hideProgressBar()
-            val builder = AlertDialog.Builder(context)
-            val layout = ProgressLayoutBinding.inflate(LayoutInflater.from(context))
-            builder.setCancelable(false)
-            builder.setView(layout.root)
-            dialog = builder.create()
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.show()
+        val builder = AlertDialog.Builder(context)
+        val layout = ProgressLayoutBinding.inflate(LayoutInflater.from(context))
+        builder.setCancelable(false)
+        builder.setView(layout.root)
+        dialog = builder.create()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.show()
 
     } catch (e: Exception) {
         e.printStackTrace()
@@ -933,6 +908,7 @@ object AppUtility {
             null
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun validateQRTime(QRexpire: String): Boolean {
         // Fix the input format by replacing the space before the time zone with a '+'
@@ -947,6 +923,7 @@ object AppUtility {
 
         return qrExpireTime.isAfter(currentISTTime)
     }
+
     public fun getDate(milliSeconds: Long): String {
         // Create a DateFormatter object for displaying date in specified format.
         val formatter = SimpleDateFormat("dd/MM/yyyy; HH:mm")
@@ -957,11 +934,14 @@ object AppUtility {
         return formatter.format(calendar.getTime());
     }
 
+
 }
+
 fun convertJsonToString(jsonObject: JsonObject): String {
     val gson = Gson()
     return gson.toJson(jsonObject)
 }
+
 fun decryptKey(key: String, strToDecrypt: String?): String? {
     Security.addProvider(BouncyCastleProvider())
     var keyBytes: ByteArray

@@ -1,46 +1,38 @@
 package com.paulmerchants.gold.ui.others
 
-import android.content.ActivityNotFoundException
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
 import com.paulmerchants.gold.databinding.ProfileLayoutBinding
-import com.paulmerchants.gold.enums.ScreenType
 import com.paulmerchants.gold.model.MenuServices
-import com.paulmerchants.gold.model.RespCustomersDetails
+import com.paulmerchants.gold.model.usedModels.BaseResponse
+import com.paulmerchants.gold.model.newmodel.RespDataCustomer
 import com.paulmerchants.gold.mylog.LogUtil.showLogD
-import com.paulmerchants.gold.mylog.LogUtil.showLogI
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
-import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.openUrl
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.CUSTOMER_FULL_DATA
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
 import com.paulmerchants.gold.utility.Constants.IS_RESET_MPIN
-import com.paulmerchants.gold.utility.disableButton
-import com.paulmerchants.gold.utility.enableButton
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.setServicesUi
 import com.paulmerchants.gold.utility.show
@@ -76,12 +68,12 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.status_code ==200) {
+                if (it.status_code == 200) {
                     if (it.data?.down == true && it.data.id == 1) {
                         findNavController().navigate(R.id.mainScreenFrag)
                         (activity as MainActivity).binding.bottomNavigationView.hide()
                     } else if (it.data?.down == true && it.data.id == 2) {
-                        findNavController().popBackStack(R.id.homeScreenFrag,true)
+                        findNavController().popBackStack(R.id.homeScreenFrag, true)
                         findNavController().navigate(R.id.loginScreenFrag)
 
                         (activity as MainActivity).binding.bottomNavigationView.hide()
@@ -101,7 +93,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
     override fun onStart() {
         super.onStart()
         binding.appVersion.text = "Paul One ${BuildConfig.VERSION_NAME}"
-        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus(requireContext())
         val backStack = findNavController().backQueue
 //        for (i in backStack) {
 //            showLogI("${i.id}..--------.${i.destination.displayName}")
@@ -109,13 +101,17 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
         if (AppSharedPref.getStringValue(CUSTOMER_FULL_DATA)
                 ?.isNotEmpty() == true
         ) {
-            val decryptData =
+            val jsonString =
                 AppSharedPref.getStringValue(CUSTOMER_FULL_DATA)
-            val respPending: RespCustomersDetails? =
-                AppUtility.convertStringToJson(decryptData.toString())
-            respPending?.let {
-                binding.nameUserTv.text = it.display_name ?: "NA"
-                it.display_name?.let {
+
+            val typeToken = object : TypeToken<BaseResponse<RespDataCustomer>>() {}
+            val jsonObject: BaseResponse<RespDataCustomer> = Gson().fromJson(jsonString, typeToken.type)
+            val jsonObject1: BaseResponse<RespDataCustomer>? =
+                AppUtility.convertStringToJson(jsonString.toString())
+            println(jsonObject)
+            jsonObject?.data?.let {
+                binding.nameUserTv.text = it.api_response.display_name ?: "NA"
+                it.api_response.display_name?.let {
                     AppSharedPref.putStringValue(
                         Constants.CUSTOMER_NAME,
                         it
@@ -123,28 +119,28 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                 }
                 binding.emailUserIv.text =
                     AppSharedPref.getStringValue(Constants.CUST_EMAIL)
-                binding.userNumTv.text = it.mobile_no ?: "NA"
-                binding.addressTv.text = "Address: ${it.mailing_address ?: "NA"}"
+                binding.userNumTv.text = it.api_response.mobile_no ?: "NA"
+                binding.addressTv.text = "Address: ${it.api_response.mailing_address ?: "NA"}"
 //              Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
             }
         } else {
             profileViewModel.getCustomerDetails(
-                (activity as MainActivity).mLocation
+                (activity as MainActivity).mLocation, requireContext()
             )
         }
         profileViewModel.getRespCustomersDetailsLiveData.observe(viewLifecycleOwner) {
-            it?.let {
-                binding.nameUserTv.text = "Name: ${it.respGetCustomer.display_name ?: "NA"}"
-                it.respGetCustomer.display_name?.let {
+            it.data?.let {
+                binding.nameUserTv.text = "Name: ${it.api_response?.display_name ?: "NA"}"
+                it.api_response?.display_name?.let {
                     AppSharedPref.putStringValue(
                         Constants.CUSTOMER_NAME,
                         it
                     )
                 }
                 binding.emailUserIv.text =
-                    "Email Id: ${it.emailIdNew}"  // in profile we are showing latest email id ...
-                binding.userNumTv.text = "Mobile: ${it.respGetCustomer.mobile_no ?: "NA"}"
-                binding.addressTv.text = "Address: ${it.respGetCustomer.mailing_address ?: "NA"}"
+                    "Email Id: ${it.email}"  // in profile we are showing latest email id ...
+                binding.userNumTv.text = "Mobile: ${it.api_response?.mobile_no ?: "NA"}"
+                binding.addressTv.text = "Address: ${it.api_response?.mailing_address ?: "NA"}"
 //                Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
             }
         }
@@ -270,7 +266,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                             CUST_MOBILE
                         )?.let {
                             profileViewModel.getOtp(
-                                it, (activity as MainActivity).mLocation
+                                it, requireActivity()
                             )
                         }
                     }
@@ -290,7 +286,8 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                 profileViewModel.verifyOtp(
                     mobile,
                     otp = "${dialogBinding.otpOneEt.text}${dialogBinding.otpTwoEt.text}" +
-                            "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}",(activity as MainActivity).mLocation
+                            "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}",
+                    (activity as MainActivity).mLocation, requireContext()
                 )
             } else {
                 "Please fill Otp".showSnackBar()
@@ -322,7 +319,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                 }
                 AppSharedPref.getStringValue(
                     CUST_MOBILE
-                )?.let { profileViewModel.getOtp(it,(activity as MainActivity).mLocation) }
+                )?.let { profileViewModel.getOtp(it, requireActivity()) }
             }
 
             104 -> {

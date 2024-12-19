@@ -26,7 +26,7 @@ import com.paulmerchants.gold.ui.MainActivity
  */
 
 abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivity(), MyLifecycleObserver.DialogListener {
-    var timeoutManager: TimeoutManager? = null
+//    var timeoutManager: TimeoutManager? = null
     protected abstract val mViewModel: VM
     private lateinit var myLifecycleObserver: MyLifecycleObserver
     private var dialog: AlertDialog? = null
@@ -38,13 +38,13 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
           myLifecycleObserver = MyLifecycleObserver(this, listener = this)
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(myLifecycleObserver)
-        timeoutManager?.stop() // Stop previous timeoutManager if exists
-        // Create a new TimeoutManager instance for the current activity
-        timeoutManager = TimeoutManager(
-            timeoutDuration = 1 * 3 * 1000L // 20 seconds timeout
-        ) {
-            onAppTimeout()
-        }
+//        timeoutManager?.stop() // Stop previous timeoutManager if exists
+//        // Create a new TimeoutManager instance for the current activity
+//        timeoutManager = TimeoutManager(
+//            timeoutDuration = 1 * 3 * 1000L // 20 seconds timeout
+//        ) {
+//            onAppTimeout()
+//        }
     }
 
     /**
@@ -104,49 +104,50 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
     override fun onPause() {
         super.onPause()
         dialog?.dismiss()
-        timeoutManager?.stop()
+//        timeoutManager?.stop()
     }
 
     override fun onStop() {
         super.onStop()
         dialog?.dismiss()
-        if (isAppInBackground(this)) {
-           onAppTimeout()
-            // Start the timer here
-            Log.d("TAG", "onStop: AppInBackground")
-        }
-        else{
-            timeoutManager?.stop()
-        }
+//        if (isAppInBackground(this)) {
+////           onAppTimeout()
+//            // Start the timer here
+//            Log.d("TAG", "onStop: AppInBackground")
+//        }
+//        else{
+////            timeoutManager?.stop()
+//        }
     }
     override fun onDestroy() {
         super.onDestroy()
         dialog?.dismiss()
         lifecycle.removeObserver(myLifecycleObserver)
     }
-    fun isAppInBackground(context: Context): Boolean {
-        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val appProcesses = activityManager.runningAppProcesses ?: return true
+//    fun isAppInBackground(context: Context): Boolean {
+//        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+//        val appProcesses = activityManager.runningAppProcesses ?: return true
+//
+//        for (appProcess in appProcesses) {
+//            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+//                if (appProcess.processName == context.packageName) {
+//                    return false
+//                }
+//            }
+//        }
+//        return true
+//    }
 
-        for (appProcess in appProcesses) {
-            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                if (appProcess.processName == context.packageName) {
-                    return false
-                }
-            }
-        }
-        return true
-    }
-    private fun onAppTimeout() {
-        timeoutManager?.stop()  // Stop the timeout manager before navigating
-        val mIntent = Intent(applicationContext,MainActivity::class.java ).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-        startActivity(mIntent)
-        finish()
-    }
-    fun getTimeoutManagerInstance(): TimeoutManager {
-        // Return the timeoutManager instance, or throw an exception if not initialized
-        return timeoutManager ?: throw IllegalStateException("TimeoutManager is not initialized.")
-    }
+//    private fun onAppTimeout() {
+//        timeoutManager?.stop()  // Stop the timeout manager before navigating
+//        val mIntent = Intent(applicationContext,MainActivity::class.java ).apply {
+//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//        }
+//        startActivity(mIntent)
+//        finish()
+//    }
+//    fun getTimeoutManagerInstance(): TimeoutManager {
+//        // Return the timeoutManager instance, or throw an exception if not initialized
+//        return timeoutManager ?: throw IllegalStateException("TimeoutManager is not initialized.")
+//    }
 }

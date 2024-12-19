@@ -63,7 +63,7 @@ class LoginScreenFrag :
 
         setupMpinEditTextFocus()
         (activity as? MainActivity)?.apply {
-            commonViewModel.getUnderMaintenanceStatus()
+            commonViewModel.getUnderMaintenanceStatus(requireContext())
             checkForDownFromRemoteConfig()
             commonViewModel.isRemoteConfigCheck.observe(viewLifecycleOwner) {
                 it?.let {
@@ -86,7 +86,7 @@ class LoginScreenFrag :
                 )
                 loginViewModel.getOtp(
                     mobileNumber,
-                    (activity as? MainActivity)?.mLocation
+                    requireActivity()
                 )
 
             } else {
@@ -108,6 +108,16 @@ class LoginScreenFrag :
                 }
             }
         }
+        loginViewModel.loginWithMpinLiveData.observe(viewLifecycleOwner) { loginResponse ->
+            loginResponse?.let {
+                if (it.status_code == 200) {
+                    findNavController().popBackStack(R.id.loginScreenFrag, true)
+                    findNavController().navigate(R.id.homeScreenFrag)
+                } else {
+                    Log.e("TAG", "onStart: .=======${it.data}")
+                }
+            }
+        }
         binding.signUpBtn.setOnClickListener {
             if (InternetUtils.isNetworkAvailable(requireContext())) {
                 if (isValidate()) {
@@ -116,7 +126,7 @@ class LoginScreenFrag :
                     loginViewModel.loginWithMpin(
                         findNavController(),
                         AppSharedPref,
-                        pin
+                        pin,requireContext()
 
                     )
                 }
@@ -151,7 +161,7 @@ class LoginScreenFrag :
                 dialogBinding.didnotReceiveTv.text = getString(R.string.send_again)
                 dialogBinding.didnotReceiveTv.setOnClickListener {
                     AppSharedPref.getStringValue(CUST_MOBILE)?.let { mobileNumber ->
-                        loginViewModel.getOtp(mobileNumber, (activity as? MainActivity)?.mLocation)
+                        loginViewModel.getOtp(mobileNumber, requireActivity())
                     }
                 }
             }
@@ -169,7 +179,7 @@ class LoginScreenFrag :
                     mobile,
                     otp = "${dialogBinding.otpOneEt.text}${dialogBinding.otpTwoEt.text}" +
                             "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}",
-                    (activity as MainActivity).mLocation
+                    (activity as MainActivity).mLocation,requireContext()
                 )
             } else {
                 "Please fill Otp".showSnackBar()
@@ -182,7 +192,7 @@ class LoginScreenFrag :
             if (otpFilled) {
                 val otp = "${dialogBinding.otpOneEt.text}${dialogBinding.otpTwoEt.text}" +
                         "${dialogBinding.otpThreeEt.text}${dialogBinding.otpFourEt.text}"
-                loginViewModel.verifyOtp(mobile, otp, (activity as? MainActivity)?.mLocation)
+                loginViewModel.verifyOtp(mobile, otp, (activity as? MainActivity)?.mLocation,requireContext())
             } else {
                 "Please fill OTP".showSnackBar()
             }

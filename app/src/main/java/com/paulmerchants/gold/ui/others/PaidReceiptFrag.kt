@@ -6,9 +6,12 @@ import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.TransacReceiptBinding
+import com.paulmerchants.gold.model.newmodel.PayReceipt
 import com.paulmerchants.gold.model.newmodel.RespPayReceipt
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.Constants.ORDER_ID
 import com.paulmerchants.gold.utility.Constants.PAYMENT_ID
+
 import com.paulmerchants.gold.utility.showCustomDialogForError
 import com.paulmerchants.gold.viewmodels.TxnReceiptViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,24 +20,30 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PaidReceiptFrag :
     BaseFragment<TransacReceiptBinding>(TransacReceiptBinding::inflate) {
-    var paymentId: String? = ""
+    var orderId: String? = ""
+    var payment_id: String? = ""
     private val txnReceiptViewModel: TxnReceiptViewModel by viewModels()
 
     override fun TransacReceiptBinding.initialize() {
-        paymentId = arguments?.getString(PAYMENT_ID)
-        Log.d("TAG", "initialize: ..........$paymentId")
+        orderId = arguments?.getString(ORDER_ID)
+        payment_id = arguments?.getString(PAYMENT_ID)
+        Log.d("TAG", "initialize: ..........$orderId")
     }
 
     override fun onStart() {
         super.onStart()
-        paymentId?.let {
-            txnReceiptViewModel.getPaidReceipt(
-                it
-            )
+        if (orderId?.isNotEmpty() == true){
+
+            orderId?.let { txnReceiptViewModel.getPaidReceipt(orderId = it, context = requireContext()) }
+        }else{
+            payment_id?.let {
+                txnReceiptViewModel.getPaidReceipt(paymentId = it, context = requireContext())
+            }
         }
+
         txnReceiptViewModel.paidReceipt.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.data.entityPayment == null && it.data.accNo == null) {
+                if (it.data?.payment_details_dto == null && it.data?.acc_no == null) {
 
 
                     requireActivity().showCustomDialogForError(
@@ -45,7 +54,7 @@ class PaidReceiptFrag :
                             findNavController().popBackStack()
                         })
                 }
-                setData(it)
+                setData(it.data)
 
 
             }
@@ -82,26 +91,30 @@ class PaidReceiptFrag :
         }
     }
 
-    private fun setData(it: RespPayReceipt) {
+    private fun setData(it: PayReceipt?) {
         binding.apply {
-            amountPaid.text = "${getString(R.string.Rs)}${it.data.entityPayment?.amount ?: "NA"}"
+            amountPaid.text = "${getString(R.string.Rs)}${it?.payment_details_dto?.amount ?: "NA"}"
             paymentConfirmIv.setImageResource(
-                if (it.data.entityPayment?.captured == true) {
+                if (it?.payment_details_dto?.captured == true) {
                     R.drawable.pay_confirm_tick_icon
                 } else {
                     R.drawable.baseline_error
                 }
             )
             statusPaymnet.text =
-                if (it.data.entityPayment?.captured == true) "SUCCESS!" else "FAIL!"
-            dateOfTrans.text = it.data.entityPayment?.created_at ?: "NA"
-            transIdNumTv.text = it.data.entityPayment?.paymentId ?: "NA"
-            paidFromNameTv.text = it.data.entityPayment?.method ?: "NA"
-            transTypeTv.text = it.data.entityPayment?.email ?: "NA"
-            viewRefNumTv.text = it.data.entityPayment?.contact ?: "NA"
-            paidToNameTv.text = it.data.accNo ?: "NA"
-            reasonOFCancelTv.text = it.data.entityPayment?.error_reason ?: "NA"
-            custToNameTv.text = it.data.custId ?: "NA"
+                if (it?.payment_details_dto?.captured == true) "SUCCESS!" else "FAIL!"
+            dateOfTrans.text = it?.payment_details_dto?.created_at?.let { it1 ->
+                AppUtility.getDate(
+                    it1
+                )
+            } ?: "NA"
+            transIdNumTv.text = it?.payment_details_dto?.id ?: it?.payment_details_dto?.order_id?: "NA"
+            paidFromNameTv.text = it?.payment_details_dto?.method ?: "NA"
+            transTypeTv.text = it?.payment_details_dto?.email ?: "NA"
+            viewRefNumTv.text = it?.payment_details_dto?.contact ?: "NA"
+            paidToNameTv.text = it?.acc_no ?: "NA"
+            reasonOFCancelTv.text = it?.payment_details_dto?.error_reason ?: "NA"
+            custToNameTv.text = it?.cust_id ?: "NA"
 //            cardNumTv.text = ""
 //            paidToNameTv.text = ""
 //            paidToCardNumTv.text = ""

@@ -13,10 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.transition.Fade
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
@@ -24,17 +21,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.paulmerchants.gold.R
-import com.paulmerchants.gold.adapter.GoldLoanOverViewAdapter
-import com.paulmerchants.gold.adapter.HomeSweetBillsAdapter
 import com.paulmerchants.gold.adapter.MenuServicesAdapter
-import com.paulmerchants.gold.adapter.NotificationAdapter
+
 import com.paulmerchants.gold.databinding.AppCloseDialogBinding
 import com.paulmerchants.gold.databinding.DialogPinRestSuccessBinding
 import com.paulmerchants.gold.databinding.ErrorDialogBinding
-import com.paulmerchants.gold.enums.BbpsType
-import com.paulmerchants.gold.model.ActionItem
 import com.paulmerchants.gold.model.MenuServices
-import com.paulmerchants.gold.model.Notifications
 
 const val IS_SHOW_TXN = "IS_SHOW_TXN"
 fun Activity.showCustomDialogFoPaymentStatus(
@@ -128,129 +120,10 @@ fun ImageView.startCustomAnimation(drawable: Int) {
     }
 }
 
-fun RecyclerView.setUiOnHomeSweetHomeBills(context: Context, onBillClicked: (ActionItem) -> Unit) {
-    val homeSweetBillsAdapter = HomeSweetBillsAdapter(onBillClicked)
-    val actionItem1 = ActionItem(
-        BbpsType.Electricity.type,
-        R.drawable.anim_elec_icon,
-        context.getString(R.string.electricity)
-    )
-    val actionItem2 =
-        ActionItem(
-            BbpsType.Broadband.type,
-            R.drawable.anim_broadband_icon,
-            context.getString(R.string.broadband)
-        )
-    val actionItem3 =
-        ActionItem(
-            BbpsType.Education.type,
-
-            R.drawable.anim_education,
-            context.getString(R.string.education)
-        )
-    val actionItem4 =
-        ActionItem(
-            BbpsType.GasCylinder.type,
-            R.drawable.anim_cylinder_gas,
-            context.getString(R.string.gas_cylinder)
-        )
-    val actionItem5 =
-        ActionItem(
-            BbpsType.Apartment.type,
-            R.drawable.anim_apartment,
-            context.getString(R.string.apartment)
-        )
-    val actionItem6 =
-        ActionItem(
-            BbpsType.GasPipeLine.type,
-            R.drawable.anim_gas_pipe_line,
-            context.getString(R.string.gas_pipline)
-        )
-    val actionItem7 = ActionItem(
-        BbpsType.HomeRent.type,
-        R.drawable.anim_home_rent_icon,
-        context.getString(R.string.homerent)
-    )
-    val actionItem8 =
-        ActionItem(
-            BbpsType.WaterBill.type,
-            R.drawable.anim_water_icon,
-            context.getString(R.string.water)
-        )
-    val actionItem9 =
-        ActionItem(
-            BbpsType.LandLineBill.type,
-            R.drawable.anim_landline_icon,
-            context.getString(R.string.landline)
-        )
-    val actionItem10 = ActionItem(
-        BbpsType.CableTvBill.type,
-        R.drawable.anim_cable_tv_icon,
-        context.getString(R.string.cabletv)
-    )
-    val list = listOf(
-        actionItem1,
-        actionItem2,
-        actionItem3,
-        actionItem4,
-        actionItem5,
-        actionItem6,
-        actionItem7,
-        actionItem8,
-        actionItem9,
-        actionItem10
-    )
-    val staggeredGridLayoutManager = StaggeredGridLayoutManager(4, LinearLayoutManager.VERTICAL)
-    homeSweetBillsAdapter.submitList(list)
-    this.apply {
-        layoutManager = staggeredGridLayoutManager
-        adapter = homeSweetBillsAdapter
-    }
-}
 
 
-fun RecyclerView.setNotificationDummy() {
-    val notifAdapter = NotificationAdapter()
-    val notif1 =
-        Notifications("Welcome User,\nBefore we get started please complete your profile", 1)
-    val notif2 =
-        Notifications("Welcome User,\nBefore we get started please complete your profile", 2)
-    val notif3 =
-        Notifications("Welcome User,\nBefore we get started please complete your profile", 3)
-    val notif4 =
-        Notifications("Welcome User,\nBefore we get started please complete your profile", 4)
-    val notif5 =
-        Notifications("Welcome User,\nBefore we get started please complete your profile", 5)
-    val notif6 =
-        Notifications("Welcome User,\nBefore we get started please complete your profile", 6)
-    val notif7 =
-        Notifications("Welcome User,\nBefore we get started please complete your profile", 7)
-    val notif8 =
-        Notifications("Welcome User,\nBefore we get started please complete your profile", 8)
-    val notif9 =
-        Notifications("Welcome User,\nBefore we get started please complete your profile", 9)
-    val notif10 =
-        Notifications("Welcome User,\nBefore we get started please complete your profile", 10)
-    val notif11 =
-        Notifications("Welcome User,\nBefore we get started please complete your profile", 11)
-    val list = listOf(
-        notif1,
-        notif2,
-        notif3,
-        notif4,
-        notif5,
-        notif6,
-        notif7,
-        notif8,
-        notif9,
-        notif10,
-        notif11
-    )
-    notifAdapter.submitList(list)
-    this.apply {
-        adapter = notifAdapter
-    }
-}
+
+
 
 
 //fun Fragment.showCustomDialogOTPVerify(
@@ -342,73 +215,7 @@ fun RecyclerView.setNotificationDummy() {
 
 }*/
 
-fun RecyclerView.setGoldLoanOverView(type: Int) {
-    fun clicked(actionItem: ActionItem) {
-        findNavController().navigate(R.id.pmlGoldLoan)
-    }
 
-    fun payNowClicked(actionItem: ActionItem) {
-        findNavController().navigate(R.id.paymentModesFrag)
-    }
-
-    val lastStatemnetAdapter = GoldLoanOverViewAdapter(::clicked, ::payNowClicked)
-    val actionItem1 = ActionItem(
-        type,
-        0, "231212121"
-    )
-    val actionItem2 = ActionItem(
-        type,
-        0, "231212121"
-    )
-
-    val actionItem3 = ActionItem(
-        type,
-        0, "231212121"
-    )
-
-    val actionItem4 = ActionItem(
-        type,
-        0, "231212121"
-    )
-
-    val actionItem5 = ActionItem(
-        type,
-        0, "231212121"
-    )
-
-    val actionItem6 = ActionItem(
-        6,
-        0, "231212121"
-    )
-
-
-    val actionItem7 = ActionItem(
-        7,
-        0, "231212121"
-    )
-
-    val actionItem8 = ActionItem(
-        8,
-        0, "231212121"
-    )
-
-
-    val list = listOf(
-        actionItem1,
-        actionItem2,
-        actionItem3,
-        actionItem4,
-        actionItem5,
-        actionItem6,
-        actionItem7,
-        actionItem8,
-    )
-    lastStatemnetAdapter.submitList(list)
-    this.apply {
-        adapter = lastStatemnetAdapter
-    }
-
-}
 
 
 fun RecyclerView.setServicesUi(

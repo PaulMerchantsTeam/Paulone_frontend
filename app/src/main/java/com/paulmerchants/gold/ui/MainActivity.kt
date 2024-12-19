@@ -82,7 +82,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     lateinit var locationProvider: LocationProvider
     var mLocation: Location? = null
 
-    private var paymentId: String? = null
+    private var orderId: String? = null
 
 
     companion object {
@@ -284,14 +284,14 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                             )
                         ) {
 
-                            if (paymentId.isNullOrEmpty()) {
+                            if (orderId.isNullOrEmpty()) {
                                 navController.navigate(R.id.loginScreenFrag)
                                 navController.popBackStack(R.id.homeScreenFrag, true)
                             } else {
                                 val bundleHomeLoan = Bundle().apply {
                                     putString(
-                                        com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
-                                        paymentId
+                                        com.paulmerchants.gold.utility.Constants.ORDER_ID,
+                                        orderId
                                     )
                                 }
                                 navController.navigate(R.id.paymentConfirmed, bundleHomeLoan)
@@ -338,7 +338,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 //                if (!BuildConfig.DEBUG) {
                 Log.d(TAG, "onAvailable: ...........internet")
                 lifecycleScope.launch {
-                    commonViewModel.getUnderMaintenanceStatus()
+                    commonViewModel.getUnderMaintenanceStatus(this@MainActivity)
                 }
 //                }
 
@@ -495,14 +495,14 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                         )
                     ) {
 
-                        if (paymentId.isNullOrEmpty()) {
+                        if (orderId.isNullOrEmpty()) {
                             navController.navigate(R.id.loginScreenFrag)
                             navController.popBackStack(R.id.homeScreenFrag, true)
                         } else {
                             val bundleHomeLoan = Bundle().apply {
                                 putString(
-                                    com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
-                                    paymentId
+                                    com.paulmerchants.gold.utility.Constants.ORDER_ID,
+                                    orderId
                                 )
                             }
                             navController.navigate(R.id.paymentConfirmed, bundleHomeLoan)

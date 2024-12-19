@@ -3,14 +3,14 @@ package com.paulmerchants.gold.model.newmodel
 import com.google.gson.annotations.SerializedName
 
 data class PmlBranch(
-    @SerializedName("branchAddress") val branchAddress: String,
-    @SerializedName("branchCity") val branchCity: String,
-    @SerializedName("branchId") val branchId: Int,
-    @SerializedName("branchLat") val branchLat: String,
-    @SerializedName("branchLng") val branchLng: String,
-    @SerializedName("branchName") val branchName: String,
-    @SerializedName("createdAt") val createdAt: Long,
-    @SerializedName("updatedAt") val updatedAt: Long,
+   @SerializedName("branch_address") val branch_address: String?,
+   @SerializedName("branch_city") val branch_city: String?,
+   @SerializedName("branch_id") val branch_id: Int?,
+   @SerializedName("branch_lat") val branch_lat: String?,
+   @SerializedName("branch_lng") val branch_lng: String?,
+   @SerializedName("branch_name") val branch_name: String?,
+   @SerializedName("created_at") val created_at: Long?,
+   @SerializedName("updated_at") val updated_at: Long?
 )
 
 /**

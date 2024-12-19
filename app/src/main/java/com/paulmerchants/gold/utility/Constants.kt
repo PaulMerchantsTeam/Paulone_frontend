@@ -15,6 +15,7 @@ object Constants {
     const val IS_LOGOUT = "IS_LOGOUT"
     const val IS_RESET_MPIN = "IS_RESET_MPIN"
     const val PAYMENT_ID = "PAYMENT_ID"
+    const val ORDER_ID = "ORDER_ID"
     const val GO_TO_HOME = "GO_TO_HOME"
     const val IS_RESET_MPIN_FROM_LOGIN_PAGE = "IS_RESET_MPIN_FROM_LOGIN_PAGE"
 }

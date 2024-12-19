@@ -7,8 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.paulmerchants.gold.adapterviewholders.UpcomingLoansViewHolder
 import com.paulmerchants.gold.databinding.ItemUpcomingDueLoanBinding
-import com.paulmerchants.gold.model.GetPendingInrstDueRespItem
-import com.paulmerchants.gold.model.newmodel.PendingInterestDuesResponseData
+import com.paulmerchants.gold.model.usedModels.GetPendingInrstDueRespItem
 
 
 /**

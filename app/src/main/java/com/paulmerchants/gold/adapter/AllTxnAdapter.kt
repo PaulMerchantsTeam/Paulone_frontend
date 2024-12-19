@@ -45,10 +45,10 @@ class AllTxnAdapter(private val showTxn: (Transactions) -> Unit) :
                 with(binding.transReferIdTv) {
                     text = buildString {
                         append("Amount: ${binding.root.context.getString(R.string.Rs)} ${item.amount}\n")
-                        append("Customer Id: ${item.custId}\n")
-                        append("Transaction Id: ${item.paymentId ?: ""}\n")
-                        append("Receipt Id:  ${item.receiptId}\n")
-                        append("Date: ${AppUtility.formatDateFromMilliSec(item.createdAt)}")
+                        append("Customer Id: ${item.cust_id}\n")
+                        append("Transaction Id: ${item.payment_id ?: ""}\n")
+                        append("Receipt Id:  ${item.receipt_id}\n")
+                        append("Date: ${AppUtility.formatDateFromMilliSec(item.created_at)}")
                     }
                 }
 

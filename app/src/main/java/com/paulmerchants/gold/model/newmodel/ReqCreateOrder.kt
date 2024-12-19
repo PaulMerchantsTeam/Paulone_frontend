@@ -1,7 +1,7 @@
 package com.paulmerchants.gold.model.newmodel
 
 import com.google.gson.annotations.SerializedName
-import retrofit2.http.Query
+import com.paulmerchants.gold.model.usedModels.Notes
 
 data class ReqCreateOrder(
     @SerializedName("amount") val amount: Double,

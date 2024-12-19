@@ -15,7 +15,6 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
@@ -31,7 +30,7 @@ import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.PaymentsModeNewBinding
 import com.paulmerchants.gold.location.LocationProvider
-import com.paulmerchants.gold.model.newmodel.Notes
+import com.paulmerchants.gold.model.usedModels.Notes
 import com.paulmerchants.gold.model.newmodel.PayAllnOneGoDataTobeSent
 import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
 import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
@@ -41,7 +40,6 @@ import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.PaymentActivity
 import com.paulmerchants.gold.ui.TAG
 import com.paulmerchants.gold.utility.AppUtility
-import com.paulmerchants.gold.utility.AppUtility.hideKeyboardFromView
 import com.paulmerchants.gold.utility.AppUtility.showCustomDialogForRenewCard
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.hide
@@ -134,7 +132,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onStart() {
         super.onStart()
-        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus(requireContext())
         if (amountToPay != 0.0) {
             binding.amountPaidTv.text = "${getString(R.string.Rs)}$amountToPay"
         } else {
@@ -179,7 +177,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
                         }
                     }
-                    payload.put("order_id", it.data.orderId)
+                    payload.put("order_id", it.data.order_id)
                     try {
                         sendRequest()
                     } catch (e: java.lang.Exception) {
@@ -482,9 +480,9 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         }
 
         if (paymentViewModel.isCalled) {
-            paymentViewModel.getCustomerDetails( mLocation)
+            paymentViewModel.getCustomerDetails( mLocation,requireContext())
             initRazorpay()
-            paymentViewModel.getPaymentMethod(AppSharedPref)
+            paymentViewModel.getPaymentMethod(requireContext())
         }
 
 
@@ -587,7 +585,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                     submit = true,
                     mac_id = Build.ID,
                     value_date = AppUtility.getCurrentDate()
-                ), mLocation
+                ), requireContext()
 //                , findNavController = findNavController()
             )
 //            }
@@ -638,17 +636,13 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                         toggleWebViewVisibility(View.GONE)
                         if (p1?.paymentId != null) {
 //                            "Payment Success".showSnackBar()
-                            if (payAlllInOneGo != null) {
-                                updatePaymentStatusToServerToAllInOneGo(
-                                    StatusPayment("captured", p1)
-                                )
-                            } else {
+
                                 updatePaymentStatusToServer(
                                     StatusPayment("captured", p1), false
                                     //                                                isCustomPay ?: false
                                 )
 
-                            }
+
                         } else {
                             "Unable to initiate the payment\nplease try again later".showSnackBar()
                         }
@@ -661,18 +655,12 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                         toggleWebViewVisibility(View.GONE)
 //                        if (p2?.paymentId != null) {
                         p2.let {
-                            if (payAlllInOneGo != null) {
 
-                                updatePaymentStatusToServerToAllInOneGo(
-                                    StatusPayment("not_captured", p2)
-                                )
-
-                            } else {
                                 updatePaymentStatusToServer(
                                     StatusPayment("not_captured", p2), false
 //                                                isCustomPay ?: false
                                 )
-                            }
+
 //                            }
 
                         }
@@ -749,7 +737,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         Log.d(TAG, "updatePaymentStatusToServer: $amountToPay....$statusData")
         if (customerAcc != null && amountToPay != null) {
             amountToPay?.let {
-                paymentViewModel.updatePaymentStatus(
+                paymentViewModel.mTransaction(
                     if (isAdded) activity as MainActivity else MainActivity(),
                     status = statusData.status,
                     razorpay_payment_id = statusData.paymentData?.paymentId ?: "",
@@ -758,10 +746,10 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                     custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
                         .toString(),
                     amount = amountToPay,
-                    contactCount = 0,
+
                     description = "desc_payment",
                     account = customerAcc.toString(),
-                    isCustom = isCustom, location = mLocation
+                     location = mLocation
                 )
             }
         } else {
@@ -769,31 +757,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         }
     }
 
-    private fun updatePaymentStatusToServerToAllInOneGo(
-        statusData: StatusPayment,
-    ) {
-        Log.d(TAG, "updatePaymentStatusToServer: $amountToPay....$statusData")
-        if (amountToPay != null) {
-            amountToPay?.let {
-                payAlllInOneGo?.payAll?.let { payAllGo ->
-                    paymentViewModel.updatePaymentStatusAllInOneGo(
-                        status = statusData.status,
-                        razorpay_payment_id = statusData.paymentData?.paymentId.toString(),
-                        razorpay_order_id = statusData.paymentData?.orderId.toString(),
-                        razorpay_signature = statusData.paymentData?.signature.toString(),
-                        custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
-                            .toString(),
-                        amount = amountToPay,
-                        contactCount = 0,
-                        description = "desc_payment",
-                        listOfPaullINOneGo = payAllGo, location = mLocation
-                    )
-                }
-            }
-        } else {
-            "Amount: Some thing went wrong".showSnackBar()
-        }
-    }
+
 
     private fun initRazorpay() {
         Log.e(TAG, "initRazorpay: .")
@@ -1055,8 +1019,8 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         paymentViewModel.getPaymentMethod.observe(viewLifecycleOwner) {
-            it?.let {
-                for (paymentMethods in it.data) {
+            it?.data?.let {
+                for (paymentMethods in it) {
                     Log.e(TAG, "onCreate: .........$paymentMethods")
                     if (paymentMethods.method == PaymentActivity.PaymentMode.UPI_COLLECT.name) {
 //                        val isUpiCollect =
@@ -1185,7 +1149,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             it?.let {
                 Log.d(TAG, "ojnnnnnn: /.................${it.status}")
 
-                if (it.statusCode == "200") {
+                if (it.status_code ==  200) {
                     Log.d(TAG, "ojnnnnnn: /.................$it")
 
 
@@ -1197,7 +1161,11 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                     val bundle = Bundle().apply {
                         putString(
                             com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
-                            it.data.paymentId
+                            it.data?.payment_id
+                        )
+                        putString(
+                            com.paulmerchants.gold.utility.Constants.ORDER_ID,
+                            it.data?.order_id
                         )
 
                     }
@@ -1228,7 +1196,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 //                    navController.popBackStack(R.id.paymentModesFragNew, true)
 //                    navController.navigate(R.id.paidReceiptFrag, bundle)
                     requireActivity().showCustomDialogFoPaymentStatus(
-                        message = it.message,
+                        message = it.message.toString(),
                         isClick = {
 
                         })
@@ -1352,7 +1320,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
                         }
                     }
-                    payload.put("order_id", it.data.orderId)
+                    payload.put("order_id", it.data?.order_id)
                     try {
                         sendRequest()
                     } catch (e: java.lang.Exception) {
@@ -1622,7 +1590,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
                 } else {
 //                    if(!BuildConfig.DEBUG) {
-                    (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+                    (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus(requireContext())
 //                    paymentViewModel.getUnderMaintenanceStatusCheck()
 //                    }
                 }

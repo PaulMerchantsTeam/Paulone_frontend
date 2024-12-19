@@ -1,8 +1,7 @@
 package com.paulmerchants.gold.model.newmodel
 
 import com.google.gson.annotations.SerializedName
-import com.paulmerchants.gold.model.GetPendingInrstDueResp
-import com.paulmerchants.gold.model.RespGetLoanOutStanding
+import com.paulmerchants.gold.model.usedModels.GeOtStandingRespObj
 
 data class RespGetLOanOutStanding(
     @SerializedName("data") val `data`: GeOtStandingRespObj,

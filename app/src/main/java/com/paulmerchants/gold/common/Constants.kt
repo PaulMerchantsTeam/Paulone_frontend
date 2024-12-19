@@ -17,7 +17,6 @@ object Constants {
 
     //Page_visit_boolean
     const val SPLASH_SCRN_VISITED = "SPLASH_SCRN_VISITED"
-
     const val SIGNUP_DONE = "SIGNUP_DONE"
     const val IS_USER_EXIST = "IS_USER_EXIST"
     const val OTP_VERIFIED = "OTP_VERIFIED"

@@ -68,13 +68,13 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
 
     private fun onMarkLocation(pmlBranch: PmlBranch) {
-        val pm22 = LatLng(pmlBranch.branchLat.toDouble(), pmlBranch.branchLng.toDouble())
+        val pm22 = LatLng(pmlBranch.branch_lat.toString().toDouble(), pmlBranch.branch_lng.toString().toDouble())
         Log.d(TAG, "addMarkers: $pm22")
         map?.clear()
         map?.addMarker(
             MarkerOptions()
                 .position(pm22)
-                .title(pmlBranch.branchCity)
+                .title(pmlBranch.branch_city)
         )
         map?.resetMinMaxZoomPreference()
         map?.moveCamera(CameraUpdateFactory.newLatLng(pm22))
@@ -82,7 +82,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
     private fun onLocationClicked(pmlBranch: PmlBranch) {
         val geoUri =
-            "geo:${pmlBranch.branchLat.toDouble()},${pmlBranch.branchLng.toDouble()}?z=15&q=${pmlBranch.branchLat.toDouble()},${pmlBranch.branchLng.toDouble()}(Paul Merchants)"
+            "geo:${pmlBranch.branch_lat.toString().toDouble()},${pmlBranch.branch_lng.toString().toDouble()}?z=15&q=${pmlBranch.branch_lat.toString().toDouble()},${pmlBranch.branch_lng.toString().toDouble()}(Paul Merchants)"
         val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
         startActivity(mapIntent)
     }
@@ -288,12 +288,12 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
     private fun addMarkers(places: PagingData<PmlBranch>) {
         places.map { i ->
-            val pm22 = LatLng(i.branchLat.toDouble(), i.branchLng.toDouble())
+            val pm22 = LatLng(i.branch_lat.toString().toDouble(), i.branch_lng.toString().toDouble())
             Log.d(TAG, "addMarkers: $pm22")
             map?.addMarker(
                 MarkerOptions()
                     .position(pm22)
-                    .title("Paul Merchants: ${i.branchAddress}")
+                    .title("Paul Merchants: ${i.branch_address}")
             )!!
         }
 

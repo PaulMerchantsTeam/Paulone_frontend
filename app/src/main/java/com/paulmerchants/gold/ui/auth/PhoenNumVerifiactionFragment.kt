@@ -152,7 +152,7 @@ class PhoenNumVerifiactionFragment :
                             confirmMPin = confirmPin,
                             setUpMPin = mPin,
                             email = binding.signUpParentMain.etEmailId.text.toString(),
-                            (activity as MainActivity).mLocation
+                            (activity as MainActivity).mLocation,requireContext()
                         )
                     }
                 } else {
@@ -211,7 +211,7 @@ class PhoenNumVerifiactionFragment :
         }
         authViewModel.verifyOtp.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.data.user_exist == false) {
+                if (it.data?.user_exist == false) {
                     hideAndShowSignUpScreen()
                 } else {
                     AppSharedPref.putBoolean(IS_USER_EXIST, true)
@@ -227,15 +227,12 @@ class PhoenNumVerifiactionFragment :
                     delay(2000)
                     binding.mainPgCons.cirStreakTimePg.endProgress(requireContext())
                     binding.mainPgCons.progessTv.apply {
-                        setTColor(
-                            getString(R.string.verified), requireContext(), R.color.green_verified
-                        )
+                        setTColor(getString(R.string.verified), requireContext(), R.color.green_verified)
                     }
                     delay(1000)
                 }
                 isOtpVerified = true
                 AppSharedPref.putBoolean(OTP_VERIFIED, isOtpVerified)
-
             }
         }
 
@@ -272,7 +269,7 @@ class PhoenNumVerifiactionFragment :
                             authViewModel.verifyOtp(
                                 binding.etPhoenNum.text.toString(),
                                 otp,
-                                (activity as MainActivity).mLocation
+                                (activity as MainActivity).mLocation,requireContext()
                             )
 
                         }
@@ -315,7 +312,6 @@ class PhoenNumVerifiactionFragment :
             isMobileEntered = false
             hideAndShowNumInputView()
         }
-
         binding.etPhoenNum.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 

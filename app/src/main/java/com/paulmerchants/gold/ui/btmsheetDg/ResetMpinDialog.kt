@@ -104,7 +104,7 @@ class ResetMpinDialog : BottomSheetDialogFragment() {
                         resetMpinViewModel.resetForgetMpin(
                             confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
                                     newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}"
-  , AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
+  , AppUtility.getDeviceDetails((activity as MainActivity).mLocation ),requireContext()
                         )
                     } else {
                         (activity as MainActivity).locationProvider.startLocationUpdates()

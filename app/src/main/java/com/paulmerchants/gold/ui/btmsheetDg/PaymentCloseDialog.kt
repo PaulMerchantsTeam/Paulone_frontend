@@ -34,25 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class PaymentCloseDialog : BottomSheetDialogFragment() {
     lateinit var quickPayPopupBinding: AppCloseDialogBinding
     val TAG = "AppCloseDialog"
-//    private var isForPaymentStatus: Boolean? = null
-//    private var paymentStatus: Boolean? = null
 
-//    // Method to set the listener
-//    fun setPaymentResultListener(listener: PaymentResultWithDataListener) {
-//        Log.d(TAG, "setPaymentResultListener: .............")
-//        paymentResultListener = listener
-//    }
-//
-//    // Methods inside the dialog where you trigger events
-//    private fun notifyPaymentSuccess(p0: String?, p1: PaymentData?) {
-//        paymentResultListener?.onPaymentSuccess(p0, p1)
-//    }
-//
-//    private fun notifyPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
-//        paymentResultListener?.onPaymentError(p0, p1, p2)
-//    }
-
-    //Pay INR 6,000 fully
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Log.d(TAG, "onAttach: ")

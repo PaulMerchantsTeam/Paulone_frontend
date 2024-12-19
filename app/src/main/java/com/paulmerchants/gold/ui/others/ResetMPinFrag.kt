@@ -65,12 +65,13 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
             it?.let {
 //                if (it.isSuccessful) {
                 if (it.status_code == 200) {
-                    "${it ?.message}".showSnackBar()
+                    "${it?.message}".showSnackBar()
                     findNavController().popBackStack(R.id.resetMPinFrag, true)
                     findNavController().popBackStack(R.id.profileFrag, true)
-                    findNavController().navigate(R.id.profileFrag)
+                    findNavController().popBackStack(R.id.homeScreenFrag, true)
+                    findNavController().navigate(R.id.loginScreenFrag)
                 } else {
-                    "${it ?.message}".showSnackBar()
+                    "${it?.message}".showSnackBar()
                 }
 
 //                }
@@ -86,7 +87,8 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
                     "${it?.message}".showSnackBar()
                     findNavController().popBackStack(R.id.resetMPinFrag, true)
                     findNavController().popBackStack(R.id.profileFrag, true)
-                    findNavController().navigate(R.id.profileFrag)
+                    findNavController().popBackStack(R.id.homeScreenFrag, true)
+                    findNavController().navigate(R.id.loginScreenFrag)
                 } else {
                     "${it?.message}".showSnackBar()
                 }
@@ -136,7 +138,8 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
                             resetMpinViewModel.resetForgetMpin(
                                 confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
                                 newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
-                                AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
+                                AppUtility.getDeviceDetails((activity as MainActivity).mLocation),
+                                requireContext()
 
 
                             )
@@ -160,7 +163,8 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
                                 confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
                                 current_mpin = "${binding.pinCurrOneEt.text}${binding.pinCurrTwoEt.text}${binding.pinCurrThreeEt.text}${binding.pinCurrFourEt.text}",
                                 newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
-                                deviceDetailsDTO = AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
+                                deviceDetailsDTO = AppUtility.getDeviceDetails((activity as MainActivity).mLocation),
+                                context = requireContext()
 
                             )
                         } else {
