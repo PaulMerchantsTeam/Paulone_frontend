@@ -1,10 +1,9 @@
-package com.paulmerchants.gold.networks
-
 import android.content.Context
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import com.paulmerchants.gold.BuildConfig
-import com.paulmerchants.gold.model.usedModels.BaseResponse
+import com.paulmerchants.gold.model.responsemodels.BaseResponse
 import com.paulmerchants.gold.utility.AppUtility.hideProgressBar
 import com.paulmerchants.gold.utility.AppUtility.progressBarAlert
 import com.paulmerchants.gold.utility.decryptKey
@@ -19,97 +18,135 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
-
+import retrofit2.Response
 
 inline fun <reified T> callApiGeneric(
     progress: Boolean,
     context: Context,
     request: Any? = null,
-    crossinline apiCall: suspend (RequestBody) -> ResponseBody,
+    crossinline apiCall: suspend (RequestBody) -> Response<ResponseBody>,  // This now returns Response<ResponseBody>
     crossinline onSuccess: (BaseResponse<T>) -> Unit,
+    crossinline onTokenExpired: (BaseResponse<T>) -> Unit,
     crossinline onClientError: (Int, String) -> Unit,
-    crossinline onServerError: (Int, String) -> Unit,
-    crossinline onUnexpectedError: (String) -> Unit,
-    crossinline onError: (String) -> Unit
+    crossinline onUnexpectedError: (String) -> Unit
 ) {
     val coRoutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
         CoroutineScope(Dispatchers.Main).launch {
-            throwable.message.let { onError(it ?: "") }
+            throwable.message?.let { onUnexpectedError(it) }
         }
     }
+
     CoroutineScope(Dispatchers.IO + coRoutineExceptionHandler + Job()).launch {
         withContext(Dispatchers.Main) {
             if (progress) {
                 progressBarAlert(context)
             }
-
         }
+
         try {
-            // Convert request to JSON and encrypt
+            // Prepare request body
             val gson = Gson()
-
-
             val requestBody = request?.let {
                 val jsonString = gson.toJson(it)
-                val encryptedRequest = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString)  ?: jsonString
+                val encryptedRequest =
+                    encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString) ?: jsonString
                 encryptedRequest.toRequestBody("text/plain".toMediaTypeOrNull())
             }
-            // Make API call
-            val response = requestBody?.let { apiCall(it) }
-            val plainTextResponse = response?.string()
 
-            // Decrypt the response
-            val decryptedResponse = decryptKey(BuildConfig.SECRET_KEY_UAT, plainTextResponse)
+            // Make the API call
+            val response: Response<ResponseBody> = requestBody?.let { apiCall(it) } ?: return@launch
 
-            // Parse the response generically
-            val typeToken = object : TypeToken<BaseResponse<T>>() {}
-            val parsedResponse: BaseResponse<T> = gson.fromJson(decryptedResponse, typeToken.type)
-            when (parsedResponse.status_code) {
-                200 -> {
-                    hideProgressBar()
-                    // Success
-                    onSuccess(parsedResponse)
+            // Check the HTTP status code
+            if (response.code() == 429) {
+                // Handle rate limit exceeded
+                val retryAfter = response.headers()["Retry-After"]?.toLongOrNull() ?: 2L
+                withContext(Dispatchers.Main) {
+                    onUnexpectedError("Rate limit exceeded. Retry after $retryAfter seconds.")
                 }
-
-                400, 401, 498 -> {
-                    hideProgressBar()
-                    // Client errors
-                    onClientError(
-                        parsedResponse.status_code,
-                        parsedResponse.message ?: "Client error"
+                return@launch // Early exit
+            } else if (
+                response.code() == 498
+            ) {
+                val plainTextResponse = response.errorBody()?.string()
+                val decryptedResponse =
+                    decryptKey(BuildConfig.SECRET_KEY_UAT, plainTextResponse)
+                val parsedResponse: BaseResponse<T> =
+                    gson.fromJson(
+                        decryptedResponse,
+                        object : TypeToken<BaseResponse<T>>() {}.type
                     )
+                onTokenExpired(parsedResponse)
+                return@launch
 
-                }
+            }
 
-                500 -> {
-                    hideProgressBar()
-                    // Server error
-                    onServerError(
-                        parsedResponse.status_code,
-                        parsedResponse.message ?: "Server error"
+            // Handle other non-200 status codes
+            if (response.isSuccessful) {
+                // Successful response
+                val plainTextResponse = response.body()?.string()
+                val decryptedResponse =
+                    decryptKey(BuildConfig.SECRET_KEY_UAT, plainTextResponse)
+
+                // Try to parse the response
+                val parsedResponse: BaseResponse<T>? = try {
+                    gson.fromJson(
+                        decryptedResponse,
+                        object : TypeToken<BaseResponse<T>>() {}.type
                     )
-
-
+                } catch (e: JsonSyntaxException) {
+                    null // If parsing fails, return null
                 }
 
-                else -> {
-                    hideProgressBar()
-                    // Unexpected or unhandled status codes
-                    onUnexpectedError(parsedResponse.message ?: "An Unexpected error occurred")
+                withContext(Dispatchers.Main) {
+                    if (parsedResponse != null) {
+                        when (parsedResponse.status_code) {
+                            200 -> {
+                                hideProgressBar()
+                                onSuccess(parsedResponse)
+                            }
 
+                            400, 401, 429 -> {
+                                hideProgressBar()
+                                onClientError(
+                                    parsedResponse.status_code,
+                                    parsedResponse.message ?: "Client error"
+                                )
+                            }
+
+                            498 -> {
+                                hideProgressBar()
+                                onTokenExpired(parsedResponse)
+                            }
+
+                            else -> {
+                                hideProgressBar()
+                                onUnexpectedError(
+                                    parsedResponse.message ?: "Unexpected error occurred"
+                                )
+                            }
+                        }
+                    } else {
+                        hideProgressBar()
+                        onUnexpectedError("Error body: $decryptedResponse")
+                    }
                 }
+            } else {
+                // Handle failure cases
+                hideProgressBar()
+                val errorBody = response.errorBody()?.string() ?: "Unknown error"
+                onUnexpectedError(errorBody)
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            hideProgressBar()
-            onUnexpectedError(e.localizedMessage ?: "An exception occurred")
+            withContext(Dispatchers.Main) {
+                hideProgressBar()
+                onUnexpectedError(e.localizedMessage ?: "Exception occurred")
+            }
         } finally {
-            hideProgressBar()
+            withContext(Dispatchers.Main) {
+                hideProgressBar()
+            }
         }
     }
 }
-
-
-
-

@@ -5,7 +5,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
-import com.paulmerchants.gold.databinding.CreditScoreScreenBinding
+
 import com.paulmerchants.gold.databinding.ResetCardPinBinding
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.showResetPinSuccessDialog

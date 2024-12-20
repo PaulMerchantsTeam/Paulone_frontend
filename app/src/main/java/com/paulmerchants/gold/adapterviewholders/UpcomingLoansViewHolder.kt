@@ -3,14 +3,14 @@ package com.paulmerchants.gold.adapterviewholders
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.paulmerchants.gold.databinding.ItemUpcomingDueLoanBinding
-import com.paulmerchants.gold.model.usedModels.GetPendingInrstDueRespItem
+import com.paulmerchants.gold.model.responsemodels.PendingInterestDuesResponseData
 
 class UpcomingLoansViewHolder(private val binding: ItemUpcomingDueLoanBinding) :
     ViewHolder(binding.root) {
 
     fun bind(
-        dueLoans: GetPendingInrstDueRespItem,
-        onPayDueClicked: (GetPendingInrstDueRespItem) -> Unit,
+        dueLoans: PendingInterestDuesResponseData,
+        onPayDueClicked: (PendingInterestDuesResponseData) -> Unit,
     ) {
         Log.d("TAG", "bind: ............$dueLoans")
         binding.apply {

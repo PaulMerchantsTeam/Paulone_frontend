@@ -63,7 +63,7 @@ class LoginScreenFrag :
 
         setupMpinEditTextFocus()
         (activity as? MainActivity)?.apply {
-            commonViewModel.getUnderMaintenanceStatus(requireContext())
+//            commonViewModel.getUnderMaintenanceStatus(requireContext())
             checkForDownFromRemoteConfig()
             commonViewModel.isRemoteConfigCheck.observe(viewLifecycleOwner) {
                 it?.let {
@@ -94,7 +94,15 @@ class LoginScreenFrag :
             }
 
         }
-
+        loginViewModel.getOtpLiveData.observe(viewLifecycleOwner) { getOtpResp ->
+            getOtpResp?.let {
+                if (it.status_code == 200) {
+                     loginViewModel.timerStart()
+                } else {
+                    Log.e("TAG", "onStart: .=======${it.data}")
+                }
+            }
+        }
         loginViewModel.verifyOtp.observe(viewLifecycleOwner) { verifyOtpResponse ->
             verifyOtpResponse?.let {
                 if (it.status_code == 200) {
@@ -103,7 +111,11 @@ class LoginScreenFrag :
                     loginViewModel.timer?.cancel()
                     loginViewModel.countStr.postValue("")
                     findNavController().navigate(R.id.resetMpinDialog)
-                } else {
+                }else if (it.status_code == 498){
+                    customDialog?.dismiss()
+                    it.message.showSnackBar()
+                }
+                else {
                     Log.e("TAG", "onStart: .=======${it.data}")
                 }
             }
@@ -124,8 +136,6 @@ class LoginScreenFrag :
                     val pin =
                         "${binding.pinOneEt.text}${binding.pinTwoEt.text}${binding.pinThreeEt.text}${binding.pinFourEt.text}"
                     loginViewModel.loginWithMpin(
-                        findNavController(),
-                        AppSharedPref,
                         pin,requireContext()
 
                     )
@@ -185,7 +195,7 @@ class LoginScreenFrag :
                 "Please fill Otp".showSnackBar()
             }
 
-            val otpFilled = with(dialogBinding) {
+          /*  val otpFilled = with(dialogBinding) {
                 otpOneEt.text.isNotEmpty() && otpTwoEt.text.isNotEmpty() &&
                         otpThreeEt.text.isNotEmpty() && otpFourEt.text.isNotEmpty()
             }
@@ -195,7 +205,7 @@ class LoginScreenFrag :
                 loginViewModel.verifyOtp(mobile, otp, (activity as? MainActivity)?.mLocation,requireContext())
             } else {
                 "Please fill OTP".showSnackBar()
-            }
+            }*/
         }
         dialogBinding.cancelDgBtn.setOnClickListener {
             customDialog?.dismiss()

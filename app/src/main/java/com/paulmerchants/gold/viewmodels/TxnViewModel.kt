@@ -8,9 +8,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.paulmerchants.gold.model.newmodel.RespTxnHistory
-import com.paulmerchants.gold.model.newmodel.Transactions
-import com.paulmerchants.gold.networks.RetrofitSetup
+import com.paulmerchants.gold.model.other.RespTxnHistory
+import com.paulmerchants.gold.model.responsemodels.Transactions
+
 import com.paulmerchants.gold.pagingdata.TxnPagingSource
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TxnViewModel @Inject constructor(
-    private val retrofitSetup: RetrofitSetup,
+
     private val apiParams: ApiParams,
 ) : ViewModel() {
 

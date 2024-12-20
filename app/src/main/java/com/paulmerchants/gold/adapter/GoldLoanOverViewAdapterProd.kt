@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.databinding.ItemLoansOverViewNewBinding
-import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
+import com.paulmerchants.gold.model.responsemodels.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show

@@ -14,22 +14,19 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
-import com.paulmerchants.gold.model.usedModels.BaseResponse
-import com.paulmerchants.gold.model.usedModels.Data
-import com.paulmerchants.gold.model.newmodel.PaymentDetail
-import com.paulmerchants.gold.model.newmodel.PaymentMethod
-import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
-import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
-import com.paulmerchants.gold.model.newmodel.RequestMTransaction
-import com.paulmerchants.gold.model.newmodel.RespCommon
-import com.paulmerchants.gold.model.newmodel.RespCreateOrder
-import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
-import com.paulmerchants.gold.model.newmodel.RespDataCustomer
-import com.paulmerchants.gold.model.newmodel.RespPaymentMethod
-import com.paulmerchants.gold.model.newmodel.RespUpdatePaymentStatus
-import com.paulmerchants.gold.model.usedModels.DataDown
-import com.paulmerchants.gold.networks.RetrofitSetup
-import com.paulmerchants.gold.networks.callApiGeneric
+import com.paulmerchants.gold.model.responsemodels.BaseResponse
+import com.paulmerchants.gold.model.responsemodels.RespMTransaction
+import com.paulmerchants.gold.model.requestmodels.ReqCreateOrder
+import com.paulmerchants.gold.model.requestmodels.ReqPendingInterstDue
+import com.paulmerchants.gold.model.requestmodels.RequestMTransaction
+import com.paulmerchants.gold.model.other.RespCommon
+import com.paulmerchants.gold.model.other.RespCustomCustomerDetail
+import com.paulmerchants.gold.model.responsemodels.RespGetCustomer
+import com.paulmerchants.gold.model.other.RespPaymentMethod
+import com.paulmerchants.gold.model.other.RespUpdatePaymentStatus
+import com.paulmerchants.gold.model.responsemodels.RespDataDown
+
+import  callApiGeneric
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
@@ -46,17 +43,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
-    private val retrofitSetup: RetrofitSetup,
+
     private val apiParams: ApiParams,
 ) : ViewModel() {
     private val TAG = this.javaClass.name
     var isCalled = true
-    val responseCreateOrder = MutableLiveData<BaseResponse<Data>?>()
-    val tokenExpiredResp = MutableLiveData<RespCommon?>()
-    val respPaymentUpdate = MutableLiveData<BaseResponse<PaymentDetail>?>()
-    val getPaymentMethod = MutableLiveData<BaseResponse<List<PaymentMethod>>?>()
-    val getRespCustomersDetailsLiveData = MutableLiveData<RespCustomCustomerDetail>()
-    val isUnderMainLiveData = MutableLiveData<BaseResponse<DataDown>>()
+    val responseCreateOrder = MutableLiveData<BaseResponse<com.paulmerchants.gold.model.responsemodels.RespCreateOrder>?>()
+
+    val respPaymentUpdate = MutableLiveData<BaseResponse<RespMTransaction>?>()
+    val getPaymentMethod = MutableLiveData<BaseResponse<List<com.paulmerchants.gold.model.responsemodels.RespPaymentMethod>>?>()
+
+    val getRespCustomersDetailsLiveData = MutableLiveData<BaseResponse<RespGetCustomer>>()
+    val isUnderMainLiveData = MutableLiveData<BaseResponse<RespDataDown>>()
     val isRemoteConfigCheck = MutableLiveData<Boolean>()
     var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
 
@@ -82,7 +80,7 @@ class PaymentViewModel @Inject constructor(
         }
     }
     fun getUnderMaintenanceStatusCheck(context: Context) {
-        callApiGeneric<DataDown>(
+        callApiGeneric<RespDataDown>(
             request = "",
             progress = true,
             context = context,
@@ -108,15 +106,13 @@ class PaymentViewModel @Inject constructor(
 
                     }
 
-                    498 -> {
+                    else -> {
                         Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                     }
                 }
             },
-            onServerError = { code, errorMessage ->
-                errorMessage.showSnackBar()
-
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+            onTokenExpired = { data ->
+                Log.d("TAG", "verifyOtp: Invalid Token: ${data.message}")
 
 
             },
@@ -124,16 +120,12 @@ class PaymentViewModel @Inject constructor(
                 errorMessage.showSnackBar()
                 Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
-            },
-            onError = { errorMessage ->
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-
             }
+
         )
     }
-    fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder,context: Context) {
-        callApiGeneric<DataDown>(
+    fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder, context: Context) {
+        callApiGeneric<RespDataDown>(
             request = "",
             progress = true,
             context = context,
@@ -164,15 +156,14 @@ class PaymentViewModel @Inject constructor(
 
                     }
 
-                    498 -> {
+                    else -> {
                         Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                     }
                 }
             },
-            onServerError = { code, errorMessage ->
-                errorMessage.showSnackBar()
+            onTokenExpired = { data ->
 
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+
 
 
             },
@@ -180,20 +171,15 @@ class PaymentViewModel @Inject constructor(
                 errorMessage.showSnackBar()
                 Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
-            },
-            onError = { errorMessage ->
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-
             }
         )
     }
     fun getCustomerDetails(location: Location?, context: Context) {
-        val request = ReqpendingInterstDueNew(
+        val request = ReqPendingInterstDue(
             AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
             AppUtility.getDeviceDetails(location)
         )
-        callApiGeneric<RespDataCustomer>(
+        callApiGeneric<RespGetCustomer>(
             request = request,
             progress = true,
             context = context,
@@ -214,11 +200,9 @@ class PaymentViewModel @Inject constructor(
                     data?.data?.email.toString()
                 )
                 getRespCustomersDetailsLiveData.postValue(
-                    RespCustomCustomerDetail(
-                        data.data?.api_response,
-                        data?.data?.email.toString()
-                    )
+                    data
                 )
+
 
 
             },
@@ -238,15 +222,17 @@ class PaymentViewModel @Inject constructor(
 
                     }
 
-                    498 -> {
+                    else -> {
                         Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                     }
                 }
             },
-            onServerError = { code, errorMessage ->
-                errorMessage.showSnackBar()
+            onTokenExpired = { data ->
 
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+
+                getRespCustomersDetailsLiveData.postValue(
+                    data
+                )
 
 
             },
@@ -254,80 +240,15 @@ class PaymentViewModel @Inject constructor(
                 errorMessage.showSnackBar()
                 Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
-            },
-            onError = { errorMessage ->
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-
             }
         )
     }
-    /*fun getCustomerDetails1(location: Location?, context: Context) =
-        viewModelScope.launch {
-            try {
-                val gson = Gson()
-                val request = ReqpendingInterstDueNew(
-                    AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
-                    AppUtility.getDeviceDetails(location)
-                )
-                val jsonString = gson.toJson(request)
-                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
-                val requestBody =
-                    encryptedString.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-
-                val response = apiParams.getCustomerDetails(
-                    "Bearer ${
-                        AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()
-                    }", requestBody
-                )
-                // Get the plain text response
-                val plainTextResponse = response.string()
-
-                // Do something with the plain text response
-                Log.d("Response", plainTextResponse.toString())
-
-                val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_UAT,
-                    plainTextResponse
-                )
-                println("decrypt-----$decryptData")
-
-//           val  typeToken = object : TypeToken<BaseResponse<RespUnderMain>>() {}
-//            val respPending = gson.fromJson<BaseResponse<DataDown>>(decryptData.toString(),typeToken.type)
-                val respPending = gson.fromJson(decryptData.toString(), RespGetCustomer::class.java)
-                println("Str_To_Json------$respPending")
-                respPending?.let {
-                    if (it.status_code == 200) {
-                        AppSharedPref.putStringValue(
-                            Constants.CUSTOMER_FULL_DATA,
-                            decryptData.toString()
-                        )
-                        AppSharedPref.putStringValue(
-                            Constants.CUST_EMAIL,
-                            it.data?.email.toString()
-                        )
-                        getRespCustomersDetailsLiveData.value =
-                            RespCustomCustomerDetail(
-                                it.data.api_response,
-                                it.data?.email.toString()
-                            )
-
-                    } else {
-                        "Some thing went wrong..".showSnackBar()
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            AppUtility.hideProgressBar()
-
-        }*/
 
     fun getPaymentMethod(context:Context) =
         viewModelScope.launch {
 
 
-            callApiGeneric<List<PaymentMethod>>(
+            callApiGeneric<List<com.paulmerchants.gold.model.responsemodels.RespPaymentMethod>>(
                 request = "",
                 progress = true,
                 context = context,
@@ -360,81 +281,30 @@ class PaymentViewModel @Inject constructor(
 
                         }
 
-                        498 -> {
+                        else -> {
                             Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                         }
                     }
                 },
-                onServerError = { code, errorMessage ->
-                    errorMessage.showSnackBar()
-
-                    Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-
+                onTokenExpired = { data ->
+                    getPaymentMethod.postValue(data)
                 },
                 onUnexpectedError = { errorMessage ->
                     errorMessage.showSnackBar()
                     Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-                },
-                onError = { errorMessage ->
-                    Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
 
                 }
             )
 
 
         }
-    fun getPaymentMethod1() =
-        viewModelScope.launch {
-            try {
-                val gson = Gson()
 
 
-                val response = apiParams.getPaymentMethod(
-                    "Bearer ${
-                        AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()
-                    }",
-                )
-                // Get the plain text response
-                val plainTextResponse = response.string()
-
-                // Do something with the plain text response
-                Log.d("Response", plainTextResponse.toString())
-
-                val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_UAT,
-                    plainTextResponse
-                )
-                println("decrypt-----$decryptData")
-
-//           val  typeToken = object : TypeToken<BaseResponse<RespUnderMain>>() {}
-//            val respPending = gson.fromJson<BaseResponse<DataDown>>(decryptData.toString(),typeToken.type)
-                val respPending =
-                    gson.fromJson(decryptData.toString(), RespPaymentMethod::class.java)
-                println("Str_To_Json------$respPending")
-                respPending?.let {
-                    if (it.status_code == 200) {
-//                        getPaymentMethod.value = respPending
-
-
-                    } else {
-                        "Some thing went wrong..".showSnackBar()
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            AppUtility.hideProgressBar()
-
-        }
-
-    fun createOrder(reqCreateOrder: ReqCreateOrder,context:Context) =
+    fun createOrder(reqCreateOrder: ReqCreateOrder, context:Context) =
         viewModelScope.launch {
 
 
-            callApiGeneric<Data>(
+            callApiGeneric<com.paulmerchants.gold.model.responsemodels.RespCreateOrder>(
                 request = reqCreateOrder,
                 progress = true,
                 context = context,
@@ -467,15 +337,13 @@ class PaymentViewModel @Inject constructor(
 
                         }
 
-                        498 -> {
+                        else -> {
                             Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                         }
                     }
                 },
-                onServerError = { code, errorMessage ->
-                    errorMessage.showSnackBar()
-
-                    Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                onTokenExpired = { data ->
+                    responseCreateOrder.postValue(data)
 
 
                 },
@@ -483,70 +351,12 @@ class PaymentViewModel @Inject constructor(
                     errorMessage.showSnackBar()
                     Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
-                },
-                onError = { errorMessage ->
-                    Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-
                 }
             )
 
 
         }
-    fun createOrder1(reqCreateOrder: ReqCreateOrder) =
 
-        viewModelScope.launch {
-            try {
-                val gson = Gson()
-                val jsonString = gson.toJson(reqCreateOrder)
-                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
-                val requestBody =
-                    encryptedString.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-
-                val response = apiParams.createOrder(
-                    "Bearer ${
-                        AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()
-                    }", requestBody
-                )
-                // Get the plain text response
-                val plainTextResponse = response.string()
-
-                // Do something with the plain text response
-                Log.d("Response", plainTextResponse.toString())
-
-                val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_UAT,
-                    plainTextResponse
-                )
-                println("decrypt-----$decryptData")
-
-//           val  typeToken = object : TypeToken<BaseResponse<RespUnderMain>>() {}
-//            val respPending = gson.fromJson<BaseResponse<DataDown>>(decryptData.toString(),typeToken.type)
-                val respPending = gson.fromJson(decryptData.toString(), RespCreateOrder::class.java)
-                println("Str_To_Json------$respPending")
-                respPending?.let {
-                    if (it.status_code == 200) {
-//                        responseCreateOrder.value = respPending
-
-                    } else if (it.status_code == 401) {
-                        Log.d("FAILED_401", "400000111111: ...............${respPending}")
-                        val gson = Gson()
-                        val respFail: RespCommon? = gson.fromJson(
-                            gson.toJsonTree(respPending).asJsonObject,
-                            RespCommon::class.java
-                        )
-                        tokenExpiredResp.value = respFail
-//                        getLogin2(location = location)
-                    } else {
-                        "Some thing went wrong..".showSnackBar()
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            AppUtility.hideProgressBar()
-
-        }
 
     fun mTransaction(
         activity: Activity,
@@ -580,7 +390,7 @@ class PaymentViewModel @Inject constructor(
                     device_details_dto = AppUtility.getDeviceDetails(location)
                 )
 
-                callApiGeneric<PaymentDetail>(
+                callApiGeneric<RespMTransaction>(
                     request = request,
                     progress = true,
                     context = activity,
@@ -624,125 +434,27 @@ class PaymentViewModel @Inject constructor(
 
                             }
 
-                            498 -> {
+                            else -> {
                                 Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                             }
                         }
                     },
-                    onServerError = { code, errorMessage ->
-                        errorMessage.showSnackBar()
-
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-                        activity.showCustomDialogFoPaymentError(
-                            message = errorMessage,
-                            isClick = {
-
-                            })
+                    onTokenExpired = { data ->
+                        respPaymentUpdate.postValue(data)
 
                     },
                     onUnexpectedError = { errorMessage ->
                         errorMessage.showSnackBar()
                         Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
-                    },
-                    onError = { errorMessage ->
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-
                     }
+
                 )
 
 
 
         }
 
-    fun mTransaction1(
-        activity: Activity,
-        status: String?,
-        razorpay_payment_id: String,
-        razorpay_order_id: String,
-        razorpay_signature: String,
-        custId: String,
-        amount: Double?,
-        currency: String = "INR",
-        description: String = "desc_payment",
-        account: String,
-        location: Location?,
-    ) =
 
-        viewModelScope.launch {
-            try {
-                val gson = Gson()
-                val request = RequestMTransaction(
-                    ac_no = account,
-                    amount = amount,
-                    currency = currency,
-                    cust_id = custId,
-                    description = description,
-                    mac_id = Build.ID,
-                    maker_id = "12545as",
-                    razorpay_order_id = razorpay_order_id,
-                    razorpay_payment_id = razorpay_payment_id,
-                    razorpay_signature = razorpay_signature,
-                    status = status,
-                    device_details_dto = AppUtility.getDeviceDetails(location)
-                )
-                val jsonString = gson.toJson(request)
-                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
-                val requestBody =
-                    encryptedString.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-
-                val response = apiParams.mTransaction(
-                    "Bearer ${
-                        AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()
-                    }",
-                    requestBody
-                )
-                // Get the plain text response
-                val plainTextResponse = response.string()
-
-                // Do something with the plain text response
-                Log.d("Response", plainTextResponse.toString())
-
-                val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_UAT,
-                    plainTextResponse
-                )
-                println("decrypt-----$decryptData")
-                val respPending =
-                    gson.fromJson(decryptData.toString(), RespUpdatePaymentStatus::class.java)
-                println("Str_To_Json------$respPending")
-                respPending?.let {
-                    if (it.status_code == 200) {
-
-//                        respPaymentUpdate.value = respPending
-                        AppSharedPref.putStringValue(Constants.PAYMENT_ID, it.data.payment_id)
-
-                    } else if (it.status_code == 401) {
-//                        tokenExpiredResp.value = respPending // tokenExpiration work to be done here
-//                    "Some thing went wrong..try again later".showSnackBar()
-                        activity.showCustomDialogFoPaymentError(
-                            message = respPending.message,
-                            isClick = {
-
-                            })
-
-                    } else {
-//                        respPaymentUpdate.value = respPending
-                        activity.showCustomDialogFoPaymentError(
-                            message = respPending.message,
-                            isClick = {
-
-                            })
-                        "${it.message}".showSnackBar()
-                    }
-
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            AppUtility.hideProgressBar()
-
-        }
 
 }

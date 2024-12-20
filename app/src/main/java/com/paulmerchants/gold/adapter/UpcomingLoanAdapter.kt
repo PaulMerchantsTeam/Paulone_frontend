@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.paulmerchants.gold.adapterviewholders.UpcomingLoansViewHolder
 import com.paulmerchants.gold.databinding.ItemUpcomingDueLoanBinding
-import com.paulmerchants.gold.model.usedModels.GetPendingInrstDueRespItem
+import com.paulmerchants.gold.model.responsemodels.PendingInterestDuesResponseData
 
 
 /**
@@ -24,8 +24,8 @@ import com.paulmerchants.gold.model.usedModels.GetPendingInrstDueRespItem
  *
  *
  */
-class UpcomingLoanAdapter(private val onPayDueClicked: (GetPendingInrstDueRespItem) -> Unit) :
-    ListAdapter<GetPendingInrstDueRespItem, UpcomingLoansViewHolder>(DIFF_CALLBACK) {
+class UpcomingLoanAdapter(private val onPayDueClicked: (PendingInterestDuesResponseData) -> Unit) :
+    ListAdapter<PendingInterestDuesResponseData, UpcomingLoansViewHolder>(DIFF_CALLBACK) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = UpcomingLoansViewHolder(
@@ -39,22 +39,23 @@ class UpcomingLoanAdapter(private val onPayDueClicked: (GetPendingInrstDueRespIt
     companion object {
         private val DIFF_CALLBACK =
             object : DiffUtil.ItemCallback<
-                    GetPendingInrstDueRespItem>() {
+                    PendingInterestDuesResponseData>() {
                 override fun areItemsTheSame(
                     oldItem:
-                    GetPendingInrstDueRespItem,
+                    PendingInterestDuesResponseData,
                     newItem:
-                    GetPendingInrstDueRespItem,
+                    PendingInterestDuesResponseData,
                 ): Boolean = oldItem.ac_no == newItem.ac_no
 
                 override fun areContentsTheSame(
                     oldItem:
-                    GetPendingInrstDueRespItem,
+                    PendingInterestDuesResponseData,
                     newItem:
-                    GetPendingInrstDueRespItem,
+                    PendingInterestDuesResponseData,
                 ): Boolean = true
             }
     }
 
 
 }
+

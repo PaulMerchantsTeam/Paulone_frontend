@@ -1,32 +1,32 @@
 package com.paulmerchants.gold.viewmodels
 
+
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.paulmerchants.gold.model.usedModels.BaseResponse
-import com.paulmerchants.gold.model.usedModels.DeviceDetailsDTO
-import com.paulmerchants.gold.model.newmodel.ReqResetForgetPin
-import com.paulmerchants.gold.model.newmodel.ReqResetPin
-
-import com.paulmerchants.gold.networks.RetrofitSetup
-import com.paulmerchants.gold.networks.callApiGeneric
+import callApiGeneric
+import com.paulmerchants.gold.model.requestmodels.ReqDeviceDetailsDTO
+import com.paulmerchants.gold.model.requestmodels.ReqResetForgetPin
+import com.paulmerchants.gold.model.requestmodels.ReqResetPin
+import com.paulmerchants.gold.model.responsemodels.BaseResponse
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
+import com.paulmerchants.gold.utility.Constants.SESSION_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ResetMpinViewModel @Inject constructor(
-    private val retrofitSetup: RetrofitSetup,
+
     private val apiParams: ApiParams,
 ) : ViewModel() {
     private val TAG = this.javaClass.name
-    val responseResetPin = MutableLiveData<BaseResponse<Any>> ()
+    val responseResetPin = MutableLiveData<BaseResponse<Any>>()
     val responseResetForgetPin = MutableLiveData<BaseResponse<Any>>()
 
 
@@ -34,7 +34,13 @@ class ResetMpinViewModel @Inject constructor(
         Log.d(TAG, ": init_$TAG")
     }
 
-    fun changeMpin(confirmMPin: String, newMPin: String, current_mpin:String, deviceDetailsDTO: DeviceDetailsDTO, context: Context) {
+    fun changeMpin(
+        confirmMPin: String,
+        newMPin: String,
+        current_mpin: String,
+        deviceDetailsDTO: ReqDeviceDetailsDTO,
+        context: Context
+    ) {
         val request = ReqResetPin(
             current_mpin = current_mpin,
             confirm_mpin = confirmMPin,
@@ -53,7 +59,8 @@ class ResetMpinViewModel @Inject constructor(
                     "Bearer ${
                         AppSharedPref.getStringValue(JWT_TOKEN).toString()
                     }",
-                    requestBody)
+                    requestBody
+                )
             },
             onSuccess = { data ->
                 responseResetPin.postValue(data)
@@ -75,15 +82,12 @@ class ResetMpinViewModel @Inject constructor(
 
                     }
 
-                    498 -> {
+                    else -> {
                         Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                     }
                 }
             },
-            onServerError = { code, errorMessage ->
-                errorMessage.showSnackBar()
-
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+            onTokenExpired = { data ->
 
 
             },
@@ -91,73 +95,17 @@ class ResetMpinViewModel @Inject constructor(
                 errorMessage.showSnackBar()
                 Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
-            },
-            onError = { errorMessage ->
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-
             }
         )
     }
 
 
-
-/*
-fun changeMpin1(confirmMPin: String, newMPin: String,current_mpin:String, deviceDetailsDTO: DeviceDetailsDTO) =
-        viewModelScope.launch {
-            try {
-                val gson = Gson()
-                val request = ReqResetPin(
-                    current_mpin = current_mpin,
-                    confirm_mpin = confirmMPin,
-                    mobile_no = AppSharedPref.getStringValue(
-                        Constants.CUST_MOBILE
-                    ).toString(),
-                    new_mpin = newMPin,
-                    device_details_dto = deviceDetailsDTO
-                )
-                val jsonString = gson.toJson(request)
-                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
-                val requestBody =
-                    encryptedString.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-
-                val response = apiParams.reSetMPin(
-                    "Bearer ${AppSharedPref.getStringValue(Constants.JWT_TOKEN)}",
-                    requestBody
-                )
-                // Get the plain text response
-                val plainTextResponse = response.string()
-
-                // Do something with the plain text response
-                Log.d("Response", plainTextResponse.toString())
-
-                val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_UAT,
-                    plainTextResponse
-                )
-                println("decrypt-----$decryptData")
-                val respPending =
-                    gson.fromJson(decryptData.toString(), RespCommon::class.java)
-                println("Str_To_Json------$respPending")
-                respPending?.let {
-                    if (it.status_code == 200) {
-                        responseResetPin.value = respPending
-                        AppUtility.hideProgressBar()
-                    } else {
-                        "${it.message}".showSnackBar()
-                    }
-
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            AppUtility.hideProgressBar()
-
-        }
-*/
-
-
-    fun resetForgetMpin(confirmMPin: String, newMPin: String, deviceDetailsDTO: DeviceDetailsDTO, context: Context) {
+    fun resetForgetMpin(
+        confirmMPin: String,
+        newMPin: String,
+        deviceDetailsDTO: ReqDeviceDetailsDTO,
+        context: Context
+    ) {
         val request = ReqResetForgetPin(
             confirm_mpin = confirmMPin,
             mobile_no = AppSharedPref.getStringValue(
@@ -172,10 +120,9 @@ fun changeMpin1(confirmMPin: String, newMPin: String,current_mpin:String, device
             context = context,
             apiCall = { requestBody ->
                 apiParams.resetOrForgetMpin(
-                "Bearer ${
-                    AppSharedPref.getStringValue(JWT_TOKEN).toString()
-                }",
-                requestBody)
+                    AppSharedPref.getStringValue(SESSION_ID).toString(),
+                    requestBody
+                )
             },
             onSuccess = { data ->
                 responseResetForgetPin.postValue(data)
@@ -197,82 +144,21 @@ fun changeMpin1(confirmMPin: String, newMPin: String,current_mpin:String, device
 
                     }
 
-                    498 -> {
+                    else -> {
                         Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                     }
                 }
             },
-            onServerError = { code, errorMessage ->
-                errorMessage.showSnackBar()
-
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-
+            onTokenExpired = { data ->
+                responseResetForgetPin.postValue(data)
             },
             onUnexpectedError = { errorMessage ->
                 errorMessage.showSnackBar()
                 Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
-            },
-            onError = { errorMessage ->
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-
             }
         )
     }
-
-//fun resetForgetMpin1(confirmMPin: String, newMPin: String, deviceDetailsDTO: DeviceDetailsDTO) =
-//        viewModelScope.launch {
-//            try {
-//                val gson = Gson()
-//                val request = ReqResetForgetPin(
-//                    confirm_mpin = confirmMPin,
-//                    mobile_no = AppSharedPref.getStringValue(
-//                        Constants.CUST_MOBILE
-//                    ).toString(),
-//                    new_mpin = newMPin,
-//                    deviceDetailsDTO
-//                )
-//                val jsonString = gson.toJson(request)
-//                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
-//                val requestBody =
-//                    encryptedString.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-//
-//                val response = apiParams.resetOrForgetMpin(
-//                    AppSharedPref.getStringValue(Constants.SESSION_ID),
-//                    requestBody
-//                )
-//                // Get the plain text response
-//                val plainTextResponse = response.string()
-//
-//                // Do something with the plain text response
-//                Log.d("Response", plainTextResponse.toString())
-//
-//                val decryptData = decryptKey(
-//                    BuildConfig.SECRET_KEY_UAT,
-//                    plainTextResponse
-//                )
-//                println("decrypt-----$decryptData")
-//                val respPending =
-//                    gson.fromJson(decryptData.toString(), RespResetFogetMpin::class.java)
-//                println("Str_To_Json------$respPending")
-//                respPending?.let {
-//                    if (it.status_code == 200) {
-//                        responseResetForgetPin.value = respPending
-//                        AppUtility.hideProgressBar()
-//                    } else {
-//                        "${it.message}".showSnackBar()
-//                    }
-//
-//                }
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-//            AppUtility.hideProgressBar()
-//
-//        }
-
 
 
 }

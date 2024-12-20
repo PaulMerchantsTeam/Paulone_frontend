@@ -4,7 +4,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.databinding.ItemServiceMenuBinding
-import com.paulmerchants.gold.model.MenuServices
+import com.paulmerchants.gold.model.other.MenuServices
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 

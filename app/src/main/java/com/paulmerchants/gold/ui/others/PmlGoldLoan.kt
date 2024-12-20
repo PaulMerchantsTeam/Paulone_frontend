@@ -3,7 +3,6 @@ package com.paulmerchants.gold.ui.others
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
 import androidx.navigation.fragment.findNavController
@@ -11,8 +10,8 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.PmlGoldLoanBinding
-import com.paulmerchants.gold.model.DueLoans
-import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
+import com.paulmerchants.gold.model.other.DueLoans
+import com.paulmerchants.gold.model.responsemodels.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.utility.AppUtility
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.absoluteValue

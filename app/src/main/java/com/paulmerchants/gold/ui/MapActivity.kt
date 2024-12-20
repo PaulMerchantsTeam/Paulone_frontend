@@ -43,7 +43,7 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MapLocationAdapter
 import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.databinding.ActivityMapBinding
-import com.paulmerchants.gold.model.newmodel.PmlBranch
+import com.paulmerchants.gold.model.responsemodels.PmlBranch
 import com.paulmerchants.gold.place.BitmapHelper
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
@@ -53,7 +53,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapReadyCallback,

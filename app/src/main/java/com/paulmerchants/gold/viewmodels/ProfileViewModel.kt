@@ -13,15 +13,15 @@ import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
-import com.paulmerchants.gold.model.ReqCustomerOtpNew
-import com.paulmerchants.gold.model.usedModels.BaseResponse
-import com.paulmerchants.gold.model.newmodel.ReqCustomerNew
-import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
-import com.paulmerchants.gold.model.newmodel.RespCommon
-import com.paulmerchants.gold.model.newmodel.RespDataCustomer
-import com.paulmerchants.gold.model.usedModels.RespGetOtp
-import com.paulmerchants.gold.networks.RetrofitSetup
-import com.paulmerchants.gold.networks.callApiGeneric
+import com.paulmerchants.gold.model.requestmodels.ReqCustomerOtpNew
+import com.paulmerchants.gold.model.responsemodels.BaseResponse
+import com.paulmerchants.gold.model.requestmodels.ReqGetOtp
+import com.paulmerchants.gold.model.requestmodels.ReqPendingInterstDue
+import com.paulmerchants.gold.model.other.RespCommon
+import com.paulmerchants.gold.model.responsemodels.RespGetCustomer
+import com.paulmerchants.gold.model.responsemodels.RespGetOtp
+
+import  callApiGeneric
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
@@ -39,7 +39,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val retrofitSetup: RetrofitSetup,
+
     private val apiParams: ApiParams,
 ) : ViewModel() {
     companion object {
@@ -57,7 +57,7 @@ class ProfileViewModel @Inject constructor(
         Log.d(TAG, ": init_$TAG")
     }
 
-    val getRespCustomersDetailsLiveData = MutableLiveData<BaseResponse<RespDataCustomer>>()
+    val getRespCustomersDetailsLiveData = MutableLiveData<BaseResponse<RespGetCustomer>>()
 
     fun timerStart(millis: Long = 120000L) {
         timer = object : CountDownTimer(millis, 1000) {
@@ -92,11 +92,11 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun getCustomerDetails(location: Location?, context: Context) {
-        val request = ReqpendingInterstDueNew(
+        val request = ReqPendingInterstDue(
             AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
             AppUtility.getDeviceDetails(location)
         )
-        callApiGeneric<RespDataCustomer>(
+        callApiGeneric<RespGetCustomer>(
             request = request,
             progress = true,
             context = context,
@@ -141,88 +141,26 @@ class ProfileViewModel @Inject constructor(
 
                     }
 
-                    498 -> {
+                    else -> {
                         Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                     }
                 }
             },
-            onServerError = { code, errorMessage ->
-                errorMessage.showSnackBar()
-
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
+            onTokenExpired = { data ->
+                getRespCustomersDetailsLiveData.postValue(
+                    data
+                )
 
             },
             onUnexpectedError = { errorMessage ->
                 errorMessage.showSnackBar()
                 Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
-            },
-            onError = { errorMessage ->
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-
             }
         )
     }
 
-    /*fun getCustomerDetails1(location: Location?) =
-        viewModelScope.launch {
-            try {
-                val gson = Gson()
-                val request = ReqpendingInterstDueNew(
-                    AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
-                    AppUtility.getDeviceDetails(location)
-                )
-                val jsonString = gson.toJson(request)
-                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
-                val requestBody =
-                    encryptedString.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
-                val response = apiParams.getCustomerDetails(
-                    "Bearer ${
-                        AppSharedPref.getStringValue(JWT_TOKEN).toString()
-                    }", requestBody
-                )
-                // Get the plain text response
-                val plainTextResponse = response.string()
-
-                // Do something with the plain text response
-                Log.d("Response", plainTextResponse.toString())
-
-                val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_UAT,
-                    plainTextResponse
-                )
-                println("decrypt-----$decryptData")
-
-//           val  typeToken = object : TypeToken<BaseResponse<RespUnderMain>>() {}
-//            val respPending = gson.fromJson<BaseResponse<DataDown>>(decryptData.toString(),typeToken.type)
-                val respPending = gson.fromJson(decryptData.toString(), RespGetCustomer::class.java)
-                println("Str_To_Json------$respPending")
-                respPending?.let {
-                    if (it.status_code == 200) {
-                        AppSharedPref.putStringValue(
-                            CUSTOMER_FULL_DATA,
-                            decryptData.toString()
-                        )
-                        AppSharedPref.putStringValue(
-                            CUST_EMAIL,
-                            respPending?.data?.email.toString()
-                        )
-//                        getRespCustomersDetailsLiveData.value = respPending
-
-                    } else {
-                        "Some thing went wrong..".showSnackBar()
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            AppUtility.hideProgressBar()
-
-        }
-*/
     fun logout(navController: NavController, context: Context) {
 
 
@@ -260,78 +198,27 @@ class ProfileViewModel @Inject constructor(
 
                     }
 
-                    498 -> {
+                    else -> {
                         Log.d("TAG", "getOtp: Invalid Token: $errorMessage")
                     }
                 }
             },
-            onServerError = { code, errorMessage ->
-                Log.d("TAG", "getOtp: Invalid Token: $errorMessage")
+            onTokenExpired = { data ->
+
 
             },
             onUnexpectedError = { errorMessage ->
                 Log.d("TAG", "getOtp: Invalid Token: $errorMessage")
 
-            },
-            onError = { errorMessage ->
-                Log.d("TAG", "getOtp: Invalid Token: $errorMessage")
-
             }
         )
     }
-    fun logout(navController: NavController) =
-        viewModelScope.launch {
-            try {
-                val gson = Gson()
-                val response = apiParams.logOut(
-                    "Bearer ${
-                        AppSharedPref.getStringValue(JWT_TOKEN).toString()
-                    }"
-                )
-                // Get the plain text response
-                val plainTextResponse = response.string()
 
-                // Do something with the plain text response
-                Log.d("Response", plainTextResponse.toString())
-
-                val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_UAT,
-                    plainTextResponse
-                )
-                println("decrypt-----$decryptData")
-
-//           val  typeToken = object : TypeToken<BaseResponse<RespUnderMain>>() {}
-//            val respPending = gson.fromJson<BaseResponse<DataDown>>(decryptData.toString(),typeToken.type)
-                val respPending = gson.fromJson(decryptData.toString(), RespCommon::class.java)
-                println("Str_To_Json------$respPending")
-                respPending?.let {
-                    if (it.status_code == 200) {
-
-                        AppSharedPref.clearSharedPref()
-                        val bundle = Bundle().apply {
-                            putBoolean(IS_LOGOUT, true)
-                        }
-                        navController.popBackStack(R.id.homeScreenFrag, true)
-                        navController.popBackStack(R.id.profileFrag, true)
-                        navController.navigate(R.id.phoenNumVerifiactionFragment, bundle)
-                        "${it?.message}".showSnackBar()
-                    } else {
-                        "${it.message}".showSnackBar()
-                    }
-
-
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            AppUtility.hideProgressBar()
-
-        }
 
 
 
     fun getOtp(mobileNum: String, activity: Activity) {
-        val request = ReqCustomerNew(
+        val request = ReqGetOtp(
             mobileNum,
             AppUtility.getDeviceDetails((activity as MainActivity).mLocation)
         )
@@ -363,67 +250,21 @@ class ProfileViewModel @Inject constructor(
 
                     }
 
-                    498 -> {
+                    else -> {
                         Log.d("TAG", "getOtp: Invalid Token: $errorMessage")
                     }
                 }
             },
-            onServerError = { code, errorMessage ->
-                Log.d("TAG", "getOtp: Invalid Token: $errorMessage")
+            onTokenExpired = { data ->
+
 
             },
             onUnexpectedError = { errorMessage ->
                 Log.d("TAG", "getOtp: Invalid Token: $errorMessage")
 
-            },
-            onError = { errorMessage ->
-                Log.d("TAG", "getOtp: Invalid Token: $errorMessage")
-
             }
         )
     }
-//    fun getOtp(mobileNum: String, location: Location? ) =
-//        viewModelScope.launch {
-//            try {
-//                val gson = Gson()
-//                val request = ReqCustomerNew(mobileNum, AppUtility.getDeviceDetails(location))
-//                val jsonString = gson.toJson(request)
-//                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
-//                val requestBody =
-//                    encryptedString.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-//
-//                val response = apiParams.getOtp(requestBody)
-//                // Get the plain text response
-//                val plainTextResponse = response.string()
-//
-//                // Do something with the plain text response
-//                Log.d("Response", plainTextResponse.toString())
-//
-//                val decryptData = decryptKey(
-//                    BuildConfig.SECRET_KEY_UAT,
-//                    plainTextResponse
-//                )
-//                println("decrypt-----$decryptData")
-//
-//                val respPending = gson.fromJson(decryptData.toString(), ResponseGetOtp::class.java)
-//                println("Str_To_Json------$respPending")
-//                respPending?.let {
-//                    if (it.status_code == 200) {
-//                        timerStart()
-//                        AppSharedPref.putStringValue(
-//                            Constants.SESSION_ID,
-//                            "Bearer ${it.data.session_id.toString()}"
-//                        )
-//                    } else {
-//                        "Some thing went wrong..".showSnackBar()
-//                    }
-//                }
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-//            AppUtility.hideProgressBar()
-//
-//        }
 
     fun verifyOtp(mobileNum: String, otp: String, location: Location?, context: Context) {
         val request = ReqCustomerOtpNew(
@@ -464,77 +305,22 @@ class ProfileViewModel @Inject constructor(
 
                     }
 
-                    498 -> {
+                    else -> {
                         Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                     }
                 }
             },
-            onServerError = { code, errorMessage ->
-                errorMessage.showSnackBar()
-
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-
+            onTokenExpired = { data ->
+                verifyOtp.postValue(data)
             },
             onUnexpectedError = { errorMessage ->
                 errorMessage.showSnackBar()
                 Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
-            },
-            onError = { errorMessage ->
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-
             }
         )
 
     }
-    /*    fun verifyOtp(mobileNum: String, otp: String, location: Location? ) =
-            viewModelScope.launch {
-                try {
-                    val gson = Gson()
-                    val request = ReqCustomerOtpNew(
-                        mobileNum,
-                        otp,
-                        AppUtility.getDeviceDetails(location = location)
-                    )
-                    val jsonString = gson.toJson(request)
-                    val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
-                    val requestBody =
-                        encryptedString.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
-                    val response = apiParams.verifyOtp(
-                        AppSharedPref.getStringValue(Constants.SESSION_ID),
-                        requestBody
-                    )
-                    // Get the plain text response
-                    val plainTextResponse = response.string()
-
-                    // Do something with the plain text response
-                    Log.d("Response", plainTextResponse.toString())
-
-                    val decryptData = decryptKey(
-                        BuildConfig.SECRET_KEY_UAT,
-                        plainTextResponse
-                    )
-                    println("decrypt-----$decryptData")
-                    val respPending = gson.fromJson(decryptData.toString(), ResponseGetOtp::class.java)
-                    println("Str_To_Json------$respPending")
-                    respPending?.let {
-                        if (it.status_code == 200) {
-                            AppSharedPref?.putStringValue(Constants.CUST_MOBILE, mobileNum)
-                            verifyOtp.value = respPending
-
-                        } else {
-                            "${it.message}".showSnackBar()
-                        }
-
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                AppUtility.hideProgressBar()
-
-            }*/
 
 }

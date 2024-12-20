@@ -5,10 +5,11 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.bumptech.glide.load.HttpException
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.paulmerchants.gold.BuildConfig
-import com.paulmerchants.gold.model.newmodel.PmlBranch
-import com.paulmerchants.gold.model.newmodel.RespAllBranch
-import com.paulmerchants.gold.model.newmodel.RespSearchBranch
+import com.paulmerchants.gold.model.responsemodels.PmlBranch
+import com.paulmerchants.gold.model.responsemodels.BaseResponse
+import com.paulmerchants.gold.model.responsemodels.PagingRespAllBranches
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.utility.decryptKey
 import com.paulmerchants.gold.utility.encryptKey
@@ -45,8 +46,10 @@ class SearchLocationPagingSource @Inject constructor(
                 plainTextResponse
             )
             println("decrypt-----$decryptData")
-            val respPending =
-                gson.fromJson(decryptData.toString(), RespSearchBranch ::class.java)
+//            val respPending =
+//                gson.fromJson(decryptData.toString(), RespSearchBranch ::class.java)
+            val typeToken = object : TypeToken<BaseResponse<PagingRespAllBranches>>() {}
+            val respPending: BaseResponse<PagingRespAllBranches> = gson.fromJson(decryptData, typeToken.type)
 
 
             val repos = respPending?.data?.data ?: emptyList()

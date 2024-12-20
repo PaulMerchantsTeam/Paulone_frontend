@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.databinding.ItemTxnLayoutBinding
-import com.paulmerchants.gold.model.newmodel.Transactions
+import com.paulmerchants.gold.model.responsemodels.Transactions
 import com.paulmerchants.gold.utility.AppUtility
 
 class AllTxnAdapter(private val showTxn: (Transactions) -> Unit) :

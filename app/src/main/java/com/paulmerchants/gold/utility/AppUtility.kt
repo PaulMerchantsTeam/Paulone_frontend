@@ -20,7 +20,6 @@ import android.graphics.drawable.GradientDrawable
 import android.location.Location
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
@@ -43,14 +42,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
 import com.itextpdf.text.Image
@@ -58,15 +55,10 @@ import com.itextpdf.text.Rectangle
 import com.itextpdf.text.pdf.PdfWriter
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
-import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.AppCloseDialogBinding
 import com.paulmerchants.gold.databinding.NoInternetDgBinding
 import com.paulmerchants.gold.databinding.ProgressLayoutBinding
-import com.paulmerchants.gold.model.ActionItem
-import com.paulmerchants.gold.model.GetPendingInrstDueResp
-import com.paulmerchants.gold.model.RespGetCustomer
-import com.paulmerchants.gold.model.RespLogin
-import com.paulmerchants.gold.model.usedModels.DeviceDetailsDTO
+import com.paulmerchants.gold.model.requestmodels.ReqDeviceDetailsDTO
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.PaymentActivity
 import org.bouncycastle.jce.provider.BouncyCastleProvider
@@ -82,20 +74,15 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.security.Security
 import java.text.DecimalFormat
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoUnit
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import java.util.StringTokenizer
-import java.util.UUID
 import java.util.concurrent.TimeUnit
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -114,7 +101,6 @@ Note: These tags are need to be set under the TextView.
  */
 
 object AppUtility {
-
     fun Activity.showCustomDialogForRenewCard(onOkClick: (Boolean) -> Unit) {
         val payClose = AppCloseDialogBinding.inflate(layoutInflater)
         val dialog = BottomSheetDialog(this)
@@ -134,45 +120,12 @@ object AppUtility {
         dialog.setContentView(payClose.root)
         dialog.show()
     }
-    /*    val thePartOne = ""
-        val thePartTwo = ""
-        val thePartThree = ""
-        val thePartFour = ""
-        fun getEncodedApiKey() {
-            val plainApiKey = BuildConfig.MAPS_API_KEY //
-            val encodedApiKey: String = String(
-                Base64.encode(
-                    Base64.encode(
-                        plainApiKey.toByteArray(),
-                        Base64.DEFAULT
-                    ),
-                    Base64.DEFAULT
-                )
-            )
-            Log.i("AppUtility", "getEncodedApiKey: $encodedApiKey")
-        }*/
-
-    /*    fun getSplitedDecodedApiKey(): String {
-            return String(
-                Base64.decode(
-                    Base64.decode(
-                        "U2YyYk5lV1RqUkRJM" +
-                                "3JrcFdMVmRHVGxkVlpN" +
-                                "VUVNMldFcEtMVGRYVVRO" +
-                                "ck0zQkplVjgzY1daTgo=",
-                        Base64.DEFAULT
-                    ),
-                    Base64.DEFAULT
-                )
-            )
-        }*/
 
     fun openUrl(context: Context, uri: String) {
         val openURL = Intent(Intent.ACTION_VIEW)
         openURL.data = Uri.parse(uri)
         context.startActivity(openURL)
     }
-
 
     fun Fragment.noInternetDialog() {
         val dialogBinding =
@@ -259,7 +212,6 @@ object AppUtility {
     }
 
     private lateinit var dialog: AlertDialog
-
     fun ShimmerFrameLayout.showShimmer() {
         startShimmer()
         show()
@@ -271,7 +223,7 @@ object AppUtility {
         hide()
     }
 
-    fun getDeviceDetails(location: Location?) = DeviceDetailsDTO(
+    fun getDeviceDetails(location: Location?) = ReqDeviceDetailsDTO(
         BuildConfig.VERSION_NAME,
         BuildConfig.VERSION_CODE.toString(),
         Build.MODEL,
@@ -377,7 +329,6 @@ object AppUtility {
         }
     }
 
-
     fun getBitmapFromView(view: View, activity: Activity, callback: (Bitmap) -> Unit) {
         activity.window?.let { window ->
             val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
@@ -433,7 +384,6 @@ object AppUtility {
         return formattedDate
     }
 
-
     fun getYear(inputDate: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
         val outputFormat = SimpleDateFormat("yyyy", Locale.getDefault())
@@ -444,7 +394,6 @@ object AppUtility {
         println("Converted date:$outputDate")
         return outputDate.toString()
     }
-
 
     fun getDayOrdinal(day: Int): String {
         return when (day) {
@@ -488,7 +437,6 @@ object AppUtility {
         println("Current Date: $formattedDate")
         return formattedDate
     }
-
 
     fun formatWithOrdinalSuffix(date: Date, format: SimpleDateFormat): String {
         val day = SimpleDateFormat("d", Locale.getDefault()).format(date).toInt()
@@ -586,7 +534,6 @@ object AppUtility {
         return outputDate
     }
 
-
     fun Fragment.showSnackBar(message: String) {
         val snakbar = this.view?.let {
             Snackbar.make(
@@ -623,41 +570,6 @@ object AppUtility {
         return (dp * scale + 0.5f).toInt()
     }
 
-
-    /**
-     *
-     * Show Snack Bar
-     * **/
-    /*   fun String?.showSnackBar() = try {
-           var msg = this
-   //    if (msg?.contains("Unable to resolve host") == true || msg?.contains(
-   //            "Failed to connect", true
-   //        ) == true
-   //    ) msg = MainActivity.context.get()?.getString(R.string.internet_not_connected)
-           Snackbar.make(
-               (MainActivity.context.get() as Activity).findViewById(android.R.id.content),
-               msg ?: "Something went wrong.",
-               Snackbar.LENGTH_LONG
-           ).apply {
-               setBackgroundTint(
-                   ContextCompat.getColor(
-                       (MainActivity.context.get() as Activity), R.color.splash_screen_three
-                   )
-               )
-               animationMode = Snackbar.ANIMATION_MODE_SLIDE
-               setTextColor(
-                   ContextCompat.getColor(
-                       (MainActivity.context.get() as Activity), R.color.white
-                   )
-               )
-               view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = 5
-               show()
-           }
-
-
-       } catch (e: Exception) {
-           e.printStackTrace()
-       }*/
     fun String?.showSnackBarForPayment() = try {
         val msg = this ?: "Something went wrong."
         val activity = PaymentActivity.context.get() as Activity
@@ -722,10 +634,6 @@ object AppUtility {
         e.printStackTrace()
     }
 
-    fun generateUDID(): String {
-        return UUID.randomUUID().toString()
-    }
-
     fun getSHA512(input: String): String {
         val md: MessageDigest = MessageDigest.getInstance("SHA-512")
         val messageDigest = md.digest(input.toByteArray())
@@ -783,7 +691,6 @@ object AppUtility {
         layout.background = gradientDrawable
     }
 
-
     inline fun <reified T> convertStringToJson(string: String): T? {
         return try {
             val gson = Gson()
@@ -793,22 +700,6 @@ object AppUtility {
             null
         }
     }
-
-    fun stringToJson(string: String): RespLogin {
-        val gson = Gson()
-        return gson.fromJson(string, RespLogin::class.java)
-    }
-
-    fun stringToJsonCustomer(string: String): RespGetCustomer {
-        val gson = Gson()
-        return gson.fromJson(string, RespGetCustomer::class.java)
-    }
-
-    fun stringToJsonGetPending(string: String): GetPendingInrstDueResp {
-        val gson = Gson()
-        return gson.fromJson(string, GetPendingInrstDueResp::class.java)
-    }
-
 
     fun isUsbDebuggingEnabled(context: Context): Boolean {
         return Settings.Global.getInt(
@@ -847,13 +738,6 @@ object AppUtility {
         tv.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 
-    fun onBillClicked(actionItem: ActionItem, navController: NavController) {
-        val bundleHomeLoan = Bundle().apply {
-            putInt(Constants.BBPS_TYPE, actionItem.itemId)
-        }
-        navController.navigate(R.id.billsFragment, bundleHomeLoan)
-    }
-
     /**
      * Progress Bar Layout
      * */
@@ -871,7 +755,6 @@ object AppUtility {
     } catch (e: Exception) {
         e.printStackTrace()
     }
-
 
     /** Hide Progress Bar */
     fun hideProgressBar() {
@@ -909,21 +792,6 @@ object AppUtility {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun validateQRTime(QRexpire: String): Boolean {
-        // Fix the input format by replacing the space before the time zone with a '+'
-        val fixedQRexpire = QRexpire.replace(" ", "+")
-        // Define the formatter to parse the given timestamp
-        val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
-        //  Parse the QRexpire string to ZonedDateTime
-        val qrExpireTime = ZonedDateTime.parse(fixedQRexpire, formatter)
-        //  Get the current time in IST (Asia/Kolkata time zone)
-        val currentISTTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"))
-        //  Compare the QRexpire time with the current IST time
-
-        return qrExpireTime.isAfter(currentISTTime)
-    }
-
     public fun getDate(milliSeconds: Long): String {
         // Create a DateFormatter object for displaying date in specified format.
         val formatter = SimpleDateFormat("dd/MM/yyyy; HH:mm")
@@ -933,13 +801,6 @@ object AppUtility {
         calendar.setTimeInMillis(milliSeconds);
         return formatter.format(calendar.getTime());
     }
-
-
-}
-
-fun convertJsonToString(jsonObject: JsonObject): String {
-    val gson = Gson()
-    return gson.toJson(jsonObject)
 }
 
 fun decryptKey(key: String, strToDecrypt: String?): String? {
@@ -1016,71 +877,7 @@ fun encryptKey(key: String, strToEncrypt: String?): String? {
     return null
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-fun main() {
 
-    println(AppUtility.getDate(1727786821000))
-    val dateTime = "2024-09-19 00:50:30 AM"
-    val startTime = "2013-02-27 21:06:30"
-    val tk = StringTokenizer(dateTime)
-    val date = tk.nextToken()
-    val time = tk.nextToken()
-
-    val sdf1 = SimpleDateFormat("hh:mm:ss")
-    val sdfs = SimpleDateFormat("hh:mm:ss a")
-    val dt: Date
-    try {
-        dt = sdf1.parse(time)
-        val hour = dt.hours
-        val minute = dt.minutes
-        val second = dt.seconds
-        println("Time Display: $dt") // <-- I got result here
-        // <-- I got result here
-        println("Time Display: $time") // <-- I got result here
-
-        println("Time Display: " + sdfs.format(dt)) // <-- I got result here
-        println("Time Display: $time $hour  $minute, $second") // <-- I got result here
-    } catch (e: ParseException) {
-        e.printStackTrace()
-    }
-
-//        val givenDateString = "Tue Apr 23 16:08:28 GMT+05:30 2013"
-//        val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy")
-//        try {
-//            val mDate = sdf.parse(givenDateString)
-//            val timeInMilliseconds = mDate.time
-//            println("Date in milli :: $timeInMilliseconds")
-//        } catch (e: ParseException) {
-//            e.printStackTrace()
-//        }
-//        val dateTime = "2024-09-19 06:00:00 PM"
-//        val d = ZonedDateTime.parse(dateTime)
-//        val dateTimeString = "2015-03-04T00:00:00.000Z"
-//        val formattedTime1 = convertTo12HourFormat(dateTimeString)
-//
-//        println("Formatted time1: $formattedTime1")
-
-//        val timeString = "06:00:00 PM"
-//        val formattedTime = AppUtility.convertTimeOnly(timeString)
-
-//        println("Formatted time: $d")
-//        validateQRTime("")
-//    val a = decryptKey(
-//        "38665180BC70B97BA443CACF2BFDEE67",
-//        "KnxvW5yEeCfAWhhz0yRS4gKd9ENrCE9WAuV99u1jutL2r+M1XnP7V5Vc+p/h1jcsNtsqN3QITsqnFysPwSwOi9LGknlLZCkpcdCUXESdl9V06HDP/D0byNhENEAgBLHSUSlYJ7TgmpAGOn+l+wl6t6Cdu6KyQZHiNbmo0QO+Y47wiyw83OJdrFGHCKK6VhaRCKnITtZkqAxknnExD4DsRV8nTWwm20posgRa62P7RVOKUJAINR0zaI6RqdRHC8bSHit1GOITfSUMs6eFviMn3VqoLx8G7JcME3amZDF/JQWeTaUz09KpCMpLk1ARHO2l2J9+gduLOwYLhRIcwcWQ4SKiW0ArUXmna23k0C/bfU3UrVyPD7KiWH4uBFCenRRahuPWoU+5/6QlA2U4wJbdKw=="
-//    )
-//    println(a)
-//    val j = AppUtility.stringToJson(a.toString())
-//    val respLogin: RespLogin? = convertStringToJson(a.toString())
-//    println(j)
-//    println(respLogin)
-//    println(respLogin?.Status)
-//    println(respLogin?.JWToken)
-//    getDateWithOrdinals()
-//    println(getCurrentDate())
-//    println(getEncodedApiKey())
-//    println(AppUtility.getDateFormat("2024-06-20T00:00:00"))
-}
 
 
 

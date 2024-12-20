@@ -30,11 +30,14 @@ import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.PaymentsModeNewBinding
 import com.paulmerchants.gold.location.LocationProvider
-import com.paulmerchants.gold.model.usedModels.Notes
-import com.paulmerchants.gold.model.newmodel.PayAllnOneGoDataTobeSent
-import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
-import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
-import com.paulmerchants.gold.model.newmodel.StatusPayment
+import com.paulmerchants.gold.model.requestmodels.Notes
+import com.paulmerchants.gold.model.other.PayAllnOneGoDataTobeSent
+import com.paulmerchants.gold.model.requestmodels.ReqCreateOrder
+import com.paulmerchants.gold.model.other.RespCustomCustomerDetail
+import com.paulmerchants.gold.model.other.StatusPayment
+import com.paulmerchants.gold.model.responsemodels.BaseResponse
+import com.paulmerchants.gold.model.responsemodels.RespGetCustomer
+import com.paulmerchants.gold.mylog.LogUtil.showLogD
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.PaymentActivity
@@ -45,6 +48,7 @@ import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.utility.showCustomDialogFoPaymentStatus
+import com.paulmerchants.gold.viewmodels.CommonViewModel
 import com.paulmerchants.gold.viewmodels.PaymentViewModel
 import com.razorpay.PaymentData
 import com.razorpay.PaymentMethodsCallback
@@ -81,7 +85,9 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
     private lateinit var bankDialog: AlertDialog
     private lateinit var walletDialog: AlertDialog
     private val paymentViewModel: PaymentViewModel by viewModels()
-    private var respCustomerDetail: RespCustomCustomerDetail? = null
+    private val commonViewModel: CommonViewModel by viewModels()
+    private var respCustomerDetail:
+            BaseResponse<RespGetCustomer>? = null
     lateinit var locationProvider: LocationProvider
     var mLocation: Location? = null
     var bhmValue = true
@@ -177,7 +183,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
                         }
                     }
-                    payload.put("order_id", it.data.order_id)
+                    payload.put("order_id", it.data?.order_id)
                     try {
                         sendRequest()
                     } catch (e: java.lang.Exception) {
@@ -929,10 +935,10 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
             payload.put("amount", amountToPay?.times(100.00)?.toInt())
             payload.put("currency", "INR")
             payload.put(
-                "contact", respCustomerDetail?.respGetCustomer?.mobile_no
+                "contact", respCustomerDetail?.data?.api_response?.mobile_no
             )
             payload.put(
-                "email", respCustomerDetail?.emailIdNew
+                "email", respCustomerDetail?.data?.email
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -1019,6 +1025,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         paymentViewModel.getPaymentMethod.observe(viewLifecycleOwner) {
+            if( it?.status_code == 200){
             it?.data?.let {
                 for (paymentMethods in it) {
                     Log.e(TAG, "onCreate: .........$paymentMethods")
@@ -1137,13 +1144,27 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
                       }
                   }*/
+            }}
+            else if (it?.status_code == 498){
+                commonViewModel.refreshToken(requireContext())
             }
+            else{
+                showLogD(it?.message.toString())
+            }
+
         }
         paymentViewModel.getRespCustomersDetailsLiveData.observe(viewLifecycleOwner) {
-            it?.let {
-                isReadyForPayment = true
-                respCustomerDetail = it
-            }
+           if( it.status_code == 200){
+               it?.let {
+                   isReadyForPayment = true
+                   respCustomerDetail = it
+               }
+           }else if(it.status_code == 498){
+               commonViewModel.refreshToken(requireContext())
+           }
+            else{
+                showLogD(it.message.toString())
+           }
         }
         paymentViewModel.respPaymentUpdate.observe(viewLifecycleOwner) {
             it?.let {

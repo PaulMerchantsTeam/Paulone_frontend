@@ -22,7 +22,7 @@ import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.common.Constants.CUST_ACC
 import com.paulmerchants.gold.common.Constants.IS_CUSTOM_AMOUNT
 import com.paulmerchants.gold.databinding.QuickPayPopupBinding
-import com.paulmerchants.gold.model.usedModels.GetPendingInrstDueRespItem
+import com.paulmerchants.gold.model.responsemodels.PendingInterestDuesResponseData
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.PaymentActivity
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
@@ -48,7 +48,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class QuickPayDialog : BottomSheetDialogFragment() {
 
-    private var dueLoans: GetPendingInrstDueRespItem? = null
+    private var dueLoans: PendingInterestDuesResponseData? = null
     lateinit var quickPayPopupBinding: QuickPayPopupBinding
     val TAG = "QuickPayDialog"
     private var actualLoan: Double? = 0.000
@@ -71,8 +71,8 @@ class QuickPayDialog : BottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dueLoans = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) arguments?.getParcelable(
-            Constants.DUE_LOAN_DATA, GetPendingInrstDueRespItem::class.java
-        ) else arguments?.getParcelable<GetPendingInrstDueRespItem>(Constants.DUE_LOAN_DATA) as GetPendingInrstDueRespItem
+            Constants.DUE_LOAN_DATA, PendingInterestDuesResponseData::class.java
+        ) else arguments?.getParcelable<PendingInterestDuesResponseData>(Constants.DUE_LOAN_DATA) as PendingInterestDuesResponseData
 
         Log.d(
             TAG,

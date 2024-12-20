@@ -19,6 +19,7 @@ import com.paulmerchants.gold.utility.disableButton
 import com.paulmerchants.gold.utility.enableButton
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
+import com.paulmerchants.gold.viewmodels.CommonViewModel
 import com.paulmerchants.gold.viewmodels.ResetMpinViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,6 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) {
 
     private val resetMpinViewModel: ResetMpinViewModel by viewModels()
+    private val commonViewModel: CommonViewModel by viewModels()
     private var isForReset: Boolean? = false
     private val TAG = this.javaClass.name
 
@@ -70,7 +72,10 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
                     findNavController().popBackStack(R.id.profileFrag, true)
                     findNavController().popBackStack(R.id.homeScreenFrag, true)
                     findNavController().navigate(R.id.loginScreenFrag)
-                } else {
+                } else if(it.status_code == 498){
+                    commonViewModel.refreshToken(requireContext())
+                }
+                else {
                     "${it?.message}".showSnackBar()
                 }
 
@@ -89,7 +94,13 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
                     findNavController().popBackStack(R.id.profileFrag, true)
                     findNavController().popBackStack(R.id.homeScreenFrag, true)
                     findNavController().navigate(R.id.loginScreenFrag)
-                } else {
+                }else if (it.status_code == 498){
+                    "${it?.message}".showSnackBar()
+                    findNavController().popBackStack(R.id.resetMPinFrag, true)
+                    findNavController().popBackStack(R.id.profileFrag, true)
+                    findNavController().navigate(R.id.profileFrag)
+                }
+                else {
                     "${it?.message}".showSnackBar()
                 }
 //                }

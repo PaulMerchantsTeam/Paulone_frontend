@@ -17,8 +17,6 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.databinding.ResetMPinForgetBinding
-import com.paulmerchants.gold.model.newmodel.ReqResetForgetPin
-import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
@@ -81,7 +79,14 @@ class ResetMpinDialog : BottomSheetDialogFragment() {
                 if (it.status_code == 200) {
                     "${it ?.message}".showSnackBar()
                     dismiss()
-                } else {
+                }else if(
+                    it.status_code == 498
+                ){
+                    "${it ?.message}".showSnackBar()
+                    dismiss()
+                }
+
+                else {
                     "${it ?.message}".showSnackBar()
                 }
             }

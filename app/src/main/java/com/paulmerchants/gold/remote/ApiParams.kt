@@ -2,6 +2,7 @@ package com.paulmerchants.gold.remote
 
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -11,77 +12,77 @@ import retrofit2.http.Query
 interface ApiParams {
 
     @GET("is-down")
-    suspend fun isUnderMaintenance(): ResponseBody
+    suspend fun isUnderMaintenance(): Response<ResponseBody>
 
     @POST("otp/send")
     suspend fun getOtp(
         @Body data: RequestBody,
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @POST("otp/validate")
     suspend fun verifyOtp(
         @Header("Authorization") Authorization: String?,
         @Body data: RequestBody
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @POST("mpin/signup")
     suspend fun setMPin(
         @Header("Authorization") Authorization: String?,
         @Body requestBody: RequestBody,
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @POST("mpin/login")
     suspend fun loginWithMpin(
         @Body requestBody: RequestBody,
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @POST("mpin/forget")
     suspend fun resetOrForgetMpin(
         @Header("Authorization") Authorization: String?,
         @Body requestBody: RequestBody,
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @POST("mpin/change") //change Mpin
     suspend fun reSetMPin(
         @Header("Authorization") Authorization: String,
         @Body requestBody: RequestBody,
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @POST("api/pending-interest-dues") // GetPendingInrstDueResp
     suspend fun getPendingInterestDues(
         @Header("Authorization") auth: String,
         @Body requestBody: RequestBody,
 //        @Query("AsOnDate") AsOnDate: String,
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @POST("api/loan-outstanding")   //RespGetLoanOutStanding
     suspend fun getLoanOutstanding(
         @Header("Authorization") auth: String,
         @Body requestBody: RequestBody,
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @POST("api/customer-details") //RespCustomersDetails
     suspend fun getCustomerDetails(
         @Header("Authorization") auth: String,
         @Body requestBody: RequestBody,
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @GET("payment/methods-status")   //RespLoanDueDate
     suspend fun getPaymentMethod(
         @Header("Authorization") auth: String,
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @POST("payment/create-order")   //RespLoanDueDate
     suspend fun createOrder(
         @Header("Authorization") auth: String,
         @Body requestBody: RequestBody,
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @POST("payment/payment-confirmation")   //RespLoanDueDate
     suspend fun mTransaction(
         @Header("Authorization") auth: String,
         @Body requestBody: RequestBody
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @GET("branches")   //
     suspend fun fetchAllBranch(
@@ -125,16 +126,16 @@ interface ApiParams {
         @Header("Authorization") auth: String,
         @Query("order_id") order_id: String? = "",
         @Query("payment_id") payment_id: String? = "",
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @POST("auth/logout")
     suspend fun logOut(
         @Header("Authorization") Authorization: String,
-    ): ResponseBody
+    ): Response<ResponseBody>
 
     @POST("auth/refresh-token")
     suspend fun refreshToken(
        @Body requestBody: RequestBody,
-    ): ResponseBody
+    ): Response<ResponseBody>
 
 }

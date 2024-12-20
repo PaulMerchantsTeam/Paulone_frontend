@@ -21,9 +21,10 @@ import com.paulmerchants.gold.adapter.UpcomingLoanAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.common.Constants.DUE_LOAN_DATA
 import com.paulmerchants.gold.databinding.DummyHomeScreenFragmentBinding
-import com.paulmerchants.gold.model.usedModels.GetPendingInrstDueRespItem
-import com.paulmerchants.gold.model.MoreToComeModel
-import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
+import com.paulmerchants.gold.model.other.MoreToComeModel
+import com.paulmerchants.gold.model.responsemodels.PendingInterestDuesResponseData
+import com.paulmerchants.gold.model.responsemodels.RespGetLoanOutStandingItem
+import com.paulmerchants.gold.mylog.LogUtil.showLogD
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
@@ -267,14 +268,14 @@ class HomeScreenFrag :
 
         (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.status_code ==200) {
+                if (it.status_code == 200) {
 //                    binding.swiperefresh.isRefreshing = false
 
                     if (it.data?.down == true && it.data.id == 1) {
                         findNavController().navigate(R.id.mainScreenFrag)
                         (activity as MainActivity).binding.bottomNavigationView.hide()
                     } else if (it.data?.down == true && it.data.id == 2) {
-                        navController.popBackStack(R.id.homeScreenFrag,true)
+                        navController.popBackStack(R.id.homeScreenFrag, true)
                         findNavController().navigate(R.id.loginScreenFrag)
 
                         (activity as MainActivity).binding.bottomNavigationView.hide()
@@ -294,49 +295,64 @@ class HomeScreenFrag :
             viewLifecycleOwner
         ) {
 
+            if (it.status_code == 200) {
+                it.data?.let {
+                    for (i in it.get_loan_outstanding_response_data) {
+                        i.current_date = it.current_date
+                    }
+                    setLoanOverView(it.get_loan_outstanding_response_data)
+                    binding.swiperefresh.isRefreshing = false
 
-            it.data?.let {
-                for (i in it.get_loan_outstanding_response_data) {
-                    i.current_date = it.current_date
                 }
-                setLoanOverView(it.get_loan_outstanding_response_data)
-                binding.swiperefresh.isRefreshing = false
-
+            } else if (it.status_code == 498) {
+                (activity as MainActivity).commonViewModel.refreshToken(requireContext())
             }
+            else{
+                showLogD(it.message.toString())
+            }
+
 
         }
         (activity as MainActivity).commonViewModel.getPendingInterestDuesLiveData.observe(
             viewLifecycleOwner
         ) {
-            it?.let { gepPendingRespObj ->
-                binding.swiperefresh.isRefreshing = false
-                binding.shimmmerParent.hideShim()
-                (activity as MainActivity).commonViewModel.notZero =
+            if (it.status_code == 200) {
+                it?.let { gepPendingRespObj ->
+                    binding.swiperefresh.isRefreshing = false
+                    binding.shimmmerParent.hideShim()
+                    (activity as MainActivity).commonViewModel.notZero =
 
-                    gepPendingRespObj.data?.pending_interest_dues_response_data?.filter { getPendingInterestItem ->
-                        getPendingInterestItem.payable_amount != 0
+                        gepPendingRespObj.data?.pending_interest_dues_response_data?.filter { getPendingInterestItem ->
+                            getPendingInterestItem.payable_amount != 0
+                        }
+                    Log.i(
+                        TAG,
+                        "setUpComingDueLoans: ${(activity as MainActivity).commonViewModel.notZero}"
+                    )
+                    for (i in gepPendingRespObj?.data?.pending_interest_dues_response_data
+                        ?: emptyList()) {
+                        i.currentDate = gepPendingRespObj.data?.current_date.toString()
+
                     }
-                Log.i(
-                    TAG,
-                    "setUpComingDueLoans: ${(activity as MainActivity).commonViewModel.notZero}"
-                )
-                for (i in gepPendingRespObj?.data?.pending_interest_dues_response_data ?: emptyList()) {
-                    i.currentDate = gepPendingRespObj.data?.current_date.toString()
+
+                    if ((activity as MainActivity).commonViewModel.notZero?.isNotEmpty() == true) {
+                        upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
+                        binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
+                        binding.noIntHaveParent.root.hide()
+                        binding.rvUpcomingDueLoans.show()
+
+                    } else {
+                        binding.rvUpcomingDueLoans.hide()
+                        binding.noIntHaveParent.root.show()
+                    }
 
                 }
-
-                if ((activity as MainActivity).commonViewModel.notZero?.isNotEmpty() == true) {
-                    upcomingLoanAdapter.submitList((activity as MainActivity).commonViewModel.notZero)
-                    binding.rvUpcomingDueLoans.adapter = upcomingLoanAdapter
-                    binding.noIntHaveParent.root.hide()
-                    binding.rvUpcomingDueLoans.show()
-
-                } else {
-                    binding.rvUpcomingDueLoans.hide()
-                    binding.noIntHaveParent.root.show()
-                }
-
+            } else if (it.status_code == 498) {
+                (activity as MainActivity).commonViewModel.refreshToken(requireContext())
+            } else {
+                showLogD(it.message.toString())
             }
+
         }
 
         if (view != null) {
@@ -356,11 +372,11 @@ class HomeScreenFrag :
         (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus(requireContext())
         (activity as MainActivity).commonViewModel.getPendingInterestDues(
 
-            (activity as MainActivity).mLocation,requireContext()
+            (activity as MainActivity).mLocation, requireContext()
         )
         (activity as MainActivity).commonViewModel.getLoanOutstanding(
 
-            (activity as MainActivity).mLocation,requireContext()
+            (activity as MainActivity).mLocation, requireContext()
         )
 
         navController = findNavController()
@@ -426,7 +442,7 @@ class HomeScreenFrag :
 
                 binding.swiperefresh.isRefreshing = false
 
-            }   else {
+            } else {
                 lifecycleScope.launch {
                     noInternetDialog()
                 }
@@ -509,8 +525,8 @@ class HomeScreenFrag :
 
         }.attach()
     }
-         
-    private fun onPayDueClicked(dueLoans: GetPendingInrstDueRespItem) {
+
+    private fun onPayDueClicked(dueLoans: PendingInterestDuesResponseData) {
         if (InternetUtils.isNetworkAvailable(requireContext())) {
             (activity as MainActivity).commonViewModel.dueLoanSelected = dueLoans
             val bundle = Bundle().apply {
@@ -617,8 +633,6 @@ class HomeScreenFrag :
     }
 
 
-
-
     private fun setLoanOverView(resp: List<RespGetLoanOutStandingItem>) {
         var totalAmount = 0.0
         binding.shimmerCardLoanOverView.hideShim()
@@ -645,7 +659,6 @@ class HomeScreenFrag :
 
         binding.loanOverViewCardParent.root.show()
     }
-
 
 
 }

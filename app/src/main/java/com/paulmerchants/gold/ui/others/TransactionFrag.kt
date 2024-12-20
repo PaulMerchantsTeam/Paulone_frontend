@@ -3,7 +3,6 @@ package com.paulmerchants.gold.ui.others
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,10 +12,8 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.AllTxnAdapter
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.AllTxnFragBinding
-import com.paulmerchants.gold.model.newmodel.Transactions
-import com.paulmerchants.gold.security.sharedpref.AppSharedPref
+import com.paulmerchants.gold.model.responsemodels.Transactions
 import com.paulmerchants.gold.ui.MainActivity
-import com.paulmerchants.gold.ui.MapActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar

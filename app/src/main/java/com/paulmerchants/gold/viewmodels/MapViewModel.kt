@@ -1,6 +1,5 @@
 package com.paulmerchants.gold.viewmodels
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,9 +8,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.paulmerchants.gold.model.newmodel.PmlBranch
-import com.paulmerchants.gold.model.newmodel.RespAllBranch
-import com.paulmerchants.gold.networks.RetrofitSetup
+import com.paulmerchants.gold.model.responsemodels.PmlBranch
+
 import com.paulmerchants.gold.pagingdata.LocationPagingSource
 import com.paulmerchants.gold.pagingdata.SearchLocationPagingSource
 import com.paulmerchants.gold.remote.ApiParams
@@ -23,11 +21,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
-    private val retrofitSetup: RetrofitSetup,
+
     private val apiParams: ApiParams,
 ) : ViewModel() {
     private val TAG = this.javaClass.name
-    val branchLocation = MutableLiveData<Response<RespAllBranch>>()
+//    val branchLocation = MutableLiveData<Response<RespAllBranch>>()
 
     init {
         Log.d(TAG, ": init_$TAG")

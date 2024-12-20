@@ -29,11 +29,14 @@ import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.PaymentsModeNewBinding
 import com.paulmerchants.gold.location.LocationProvider
-import com.paulmerchants.gold.model.usedModels.Notes
-import com.paulmerchants.gold.model.newmodel.PayAllnOneGoDataTobeSent
-import com.paulmerchants.gold.model.newmodel.ReqCreateOrder
-import com.paulmerchants.gold.model.newmodel.RespCustomCustomerDetail
-import com.paulmerchants.gold.model.newmodel.StatusPayment
+import com.paulmerchants.gold.model.requestmodels.Notes
+import com.paulmerchants.gold.model.other.PayAllnOneGoDataTobeSent
+import com.paulmerchants.gold.model.requestmodels.ReqCreateOrder
+import com.paulmerchants.gold.model.other.RespCustomCustomerDetail
+import com.paulmerchants.gold.model.other.StatusPayment
+import com.paulmerchants.gold.model.responsemodels.BaseResponse
+import com.paulmerchants.gold.model.responsemodels.RespGetCustomer
+import com.paulmerchants.gold.mylog.LogUtil.showLogD
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.others.PaymentConfirmed
 import com.paulmerchants.gold.utility.AppUtility
@@ -45,6 +48,7 @@ import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.utility.showCustomDialogFoPaymentError
 import com.paulmerchants.gold.utility.showCustomDialogFoPaymentStatus
+import com.paulmerchants.gold.viewmodels.CommonViewModel
 import com.paulmerchants.gold.viewmodels.PaymentViewModel
 import com.razorpay.PaymentData
 import com.razorpay.PaymentMethodsCallback
@@ -78,7 +82,8 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     private lateinit var bankDialog: AlertDialog
     private lateinit var walletDialog: AlertDialog
     private val paymentViewModel: PaymentViewModel by viewModels()
-    private var respCustomerDetail: RespCustomCustomerDetail? = null
+    private val commonViewModel: CommonViewModel by viewModels()
+    private var respCustomerDetail: BaseResponse<RespGetCustomer>? = null
     private var isDown: Boolean = false
 
     override fun getViewBinding() = PaymentsModeNewBinding.inflate(layoutInflater)
@@ -201,6 +206,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         }
 
         paymentViewModel.getPaymentMethod.observe(this) { it ->
+            if( it?.status_code == 200){
             it?.data?.let {
                 for (paymentMethods in it) {
                     Log.e(TAG, "onCreate: .........$paymentMethods")
@@ -320,13 +326,27 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                       }
                   }*/
             }
-        }
-        paymentViewModel.getRespCustomersDetailsLiveData.observe(this) {
-            it?.let {
-                isReadyForPayment = true
-                respCustomerDetail = it
+            }else if(it?.status_code == 498){
+                commonViewModel.refreshToken(this)
+            }
+            else{
+                Log.d(TAG, "onCreate: ${it?.message}")
             }
         }
+        paymentViewModel.getRespCustomersDetailsLiveData.observe(this) {
+            if( it.status_code == 200){
+                it?.let {
+                    isReadyForPayment = true
+                    respCustomerDetail = it
+                }
+            }else if(it.status_code == 498){
+                commonViewModel.refreshToken(this)
+            }
+            else{
+                Log.d(TAG, "onCreate: ${it.message}")
+            }
+        }
+
         paymentViewModel.respPaymentUpdate.observe(this) {
             it?.let {
                 Log.d(TAG, "ojnnnnnn: /.................${it.status}")
@@ -880,10 +900,10 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     private fun createOrder(amount: Double, notes: String) {
         Log.d("TAG", "createOrder: ......$amount")
 
-        /*  if (BuildConfig.DEBUG && mLocation?.isMock == true) {
+          if (mLocation?.isMock == true) {
               "Please disable your mock Location from developer option".showSnackBar()
               return
-          }*/
+          }
         if (!isLocationEnabled()) {
             buildAlertMessageNoGps()
         } else {
@@ -1288,10 +1308,10 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             payload.put("amount", amountToPay?.times(100.00)?.toInt())
             payload.put("currency", "INR")
             payload.put(
-                "contact", respCustomerDetail?.respGetCustomer?.mobile_no
+                "contact", respCustomerDetail?.data?.api_response?.mobile_no
             )
             payload.put(
-                "email", respCustomerDetail?.emailIdNew
+                "email", respCustomerDetail?.data?.email
             )
         } catch (e: Exception) {
             e.printStackTrace()

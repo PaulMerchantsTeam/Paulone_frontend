@@ -6,8 +6,7 @@ import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.TransacReceiptBinding
-import com.paulmerchants.gold.model.newmodel.PayReceipt
-import com.paulmerchants.gold.model.newmodel.RespPayReceipt
+import com.paulmerchants.gold.model.responsemodels.RespPaymentReceipt
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.Constants.ORDER_ID
 import com.paulmerchants.gold.utility.Constants.PAYMENT_ID
@@ -91,7 +90,7 @@ class PaidReceiptFrag :
         }
     }
 
-    private fun setData(it: PayReceipt?) {
+    private fun setData(it: RespPaymentReceipt?) {
         binding.apply {
             amountPaid.text = "${getString(R.string.Rs)}${it?.payment_details_dto?.amount ?: "NA"}"
             paymentConfirmIv.setImageResource(

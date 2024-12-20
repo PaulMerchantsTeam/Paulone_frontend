@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.databinding.LoanEmiPaymentConfirmedBinding
-import com.paulmerchants.gold.model.newmodel.PayReceipt
+import com.paulmerchants.gold.model.responsemodels.RespPaymentReceipt
 
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
@@ -111,7 +111,7 @@ class PaymentConfirmed :
 
 
     // 82233213123
-    private fun setData(it: PayReceipt?) {
+    private fun setData(it: RespPaymentReceipt?) {
         binding.apply {
             paymentConfirmIv.setImageResource(
                 if (it?.payment_details_dto?.captured == true) {

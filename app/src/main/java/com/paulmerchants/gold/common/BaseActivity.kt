@@ -18,7 +18,7 @@ import androidx.viewbinding.ViewBinding
 import com.paulmerchants.gold.MainNavGraphDirections
 import com.paulmerchants.gold.MyLifecycleObserver
 import com.paulmerchants.gold.R
-import com.paulmerchants.gold.TimeoutManager
+
 import com.paulmerchants.gold.ui.MainActivity
 
 /**

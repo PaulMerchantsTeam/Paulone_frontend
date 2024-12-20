@@ -5,9 +5,11 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.bumptech.glide.load.HttpException
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.paulmerchants.gold.BuildConfig
-import com.paulmerchants.gold.model.newmodel.RespTxnHistory
-import com.paulmerchants.gold.model.newmodel.Transactions
+import com.paulmerchants.gold.model.responsemodels.PagingRespTransactions
+import com.paulmerchants.gold.model.responsemodels.Transactions
+import com.paulmerchants.gold.model.responsemodels.BaseResponse
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.utility.decryptKey
 import com.paulmerchants.gold.utility.encryptKey
@@ -64,8 +66,11 @@ class TxnPagingSource @Inject constructor(
                 plainTextResponse
             )
             println("decrypt-----$decryptData")
-            val respPending =
-                gson.fromJson(decryptData.toString(), RespTxnHistory ::class.java)
+//            val respPending =
+//                gson.fromJson(decryptData.toString(), RespTxnHistory ::class.java)
+            val typeToken = object : TypeToken<BaseResponse<PagingRespTransactions>>() {}
+            val respPending: BaseResponse<PagingRespTransactions> = gson.fromJson(decryptData, typeToken.type)
+
 
             val repos = respPending?.data?.data ?: emptyList<Transactions>()
 

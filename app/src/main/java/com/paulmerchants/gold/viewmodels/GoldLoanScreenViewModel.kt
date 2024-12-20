@@ -6,16 +6,16 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import callApiGeneric
 import com.google.gson.Gson
 import com.paulmerchants.gold.BuildConfig
-import com.paulmerchants.gold.model.RespGetLoanOutStandingItem
-import com.paulmerchants.gold.model.usedModels.BaseResponse
-import com.paulmerchants.gold.model.usedModels.GeOtStandingRespObj
-import com.paulmerchants.gold.model.newmodel.ReqpendingInterstDueNew
-import com.paulmerchants.gold.model.newmodel.RespGetLOanOutStanding
-import com.paulmerchants.gold.model.newmodel.RespTxnHistory
-import com.paulmerchants.gold.networks.RetrofitSetup
-import com.paulmerchants.gold.networks.callApiGeneric
+import com.paulmerchants.gold.model.other.RespGetLOanOutStanding
+import com.paulmerchants.gold.model.other.RespTxnHistory
+import com.paulmerchants.gold.model.requestmodels.ReqPendingInterstDue
+import com.paulmerchants.gold.model.responsemodels.BaseResponse
+import com.paulmerchants.gold.model.responsemodels.RespGetLoanOutStandingItem
+import com.paulmerchants.gold.model.responsemodels.RespOutstandingLoan
+
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
@@ -32,11 +32,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GoldLoanScreenViewModel @Inject constructor(
-    private val retrofitSetup: RetrofitSetup,
-    private val apiParams: ApiParams,
+
+    private val apiParams: ApiParams
 ) : ViewModel() {
     var isCalledGoldLoanScreen: Boolean = true
-    val getRespGetLoanOutStandingLiveData = MutableLiveData<BaseResponse<GeOtStandingRespObj>>()
+    val getRespGetLoanOutStandingLiveData = MutableLiveData<BaseResponse<RespOutstandingLoan>>()
     var respGetLoanOutStanding = ArrayList<RespGetLoanOutStandingItem>()
 
 
@@ -52,13 +52,13 @@ class GoldLoanScreenViewModel @Inject constructor(
         isCalledGoldLoanScreen = false
     }
 
-    fun getLoanOutstanding(location: Location?, context: Context)  {
-        val request = ReqpendingInterstDueNew(
+    fun getLoanOutstanding(location: Location?, context: Context) {
+        val request = ReqPendingInterstDue(
             AppSharedPref.getStringValue(Constants.CUSTOMER_ID)
                 .toString(),
             AppUtility.getDeviceDetails(location)
         )
-        callApiGeneric<GeOtStandingRespObj>(
+        callApiGeneric<RespOutstandingLoan>(
             request = request,
             progress = false,
             context = context,
@@ -91,81 +91,21 @@ class GoldLoanScreenViewModel @Inject constructor(
 
                     }
 
-                    498 -> {
+                    else -> {
                         Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                     }
                 }
             },
-            onServerError = { code, errorMessage ->
-                errorMessage.showSnackBar()
-
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-
+            onTokenExpired = { data ->
+                getRespGetLoanOutStandingLiveData.postValue(data)
             },
             onUnexpectedError = { errorMessage ->
                 errorMessage.showSnackBar()
                 Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
-            },
-            onError = { errorMessage ->
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-
-
             }
         )
     }
-    fun getLoanOutstanding1(  location: Location?,context: Context) =
-        viewModelScope.launch {
-            try {
-                val gson = Gson()
-                val request = ReqpendingInterstDueNew(
-                    AppSharedPref.getStringValue(Constants.CUSTOMER_ID)
-                        .toString(),
-                    AppUtility.getDeviceDetails(location)
-                )
-                val jsonString = gson.toJson(request)
-                val encryptedString = encryptKey(BuildConfig.SECRET_KEY_UAT, jsonString.toString())
-                val requestBody =
-                    encryptedString.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
-                val response = apiParams.getLoanOutstanding(
-                    "Bearer ${
-                        AppSharedPref.getStringValue(JWT_TOKEN).toString()
-                    }",
-                    requestBody
-                )
-                // Get the plain text response
-                val plainTextResponse = response.string()
-
-                // Do something with the plain text response
-                Log.d("Response", plainTextResponse.toString())
-
-                val decryptData = decryptKey(
-                    BuildConfig.SECRET_KEY_UAT,
-                    plainTextResponse
-                )
-                println("decrypt-----$decryptData")
-                val respPending =
-                    gson.fromJson(decryptData.toString(), RespGetLOanOutStanding::class.java)
-                println("Str_To_Json------$respPending")
-                respPending?.let {
-                    if (it.status_code == 200) {
-
-
-//                        getRespGetLoanOutStandingLiveData.value =
-//                            respPending?.data
-
-                    } else {
-                        "${it.message}".showSnackBar()
-                    }
-
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            AppUtility.hideProgressBar()
-
-        }
 
 }

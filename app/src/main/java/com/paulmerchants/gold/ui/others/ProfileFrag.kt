@@ -20,9 +20,9 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
 import com.paulmerchants.gold.databinding.ProfileLayoutBinding
-import com.paulmerchants.gold.model.MenuServices
-import com.paulmerchants.gold.model.usedModels.BaseResponse
-import com.paulmerchants.gold.model.newmodel.RespDataCustomer
+import com.paulmerchants.gold.model.other.MenuServices
+import com.paulmerchants.gold.model.responsemodels.BaseResponse
+import com.paulmerchants.gold.model.responsemodels.RespGetCustomer
 import com.paulmerchants.gold.mylog.LogUtil.showLogD
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
@@ -104,9 +104,9 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             val jsonString =
                 AppSharedPref.getStringValue(CUSTOMER_FULL_DATA)
 
-            val typeToken = object : TypeToken<BaseResponse<RespDataCustomer>>() {}
-            val jsonObject: BaseResponse<RespDataCustomer> = Gson().fromJson(jsonString, typeToken.type)
-            val jsonObject1: BaseResponse<RespDataCustomer>? =
+            val typeToken = object : TypeToken<BaseResponse<RespGetCustomer>>() {}
+            val jsonObject: BaseResponse<RespGetCustomer> = Gson().fromJson(jsonString, typeToken.type)
+            val jsonObject1: BaseResponse<RespGetCustomer>? =
                 AppUtility.convertStringToJson(jsonString.toString())
             println(jsonObject)
             jsonObject?.data?.let {
@@ -157,7 +157,13 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                     findNavController().navigate(R.id.resetMPinFrag, bundle)
                     profileViewModel.timer?.cancel()
                     profileViewModel.countStr.postValue("")
-                } else {
+                } else if (
+                    it.status_code == 498
+                ){
+                    customDialog?.dismiss()
+                    it.message.showSnackBar()
+                }
+                else {
                     showLogD("onStart: .=======${it.data}")
                 }
             }

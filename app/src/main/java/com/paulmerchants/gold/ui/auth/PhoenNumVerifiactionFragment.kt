@@ -152,7 +152,7 @@ class PhoenNumVerifiactionFragment :
                             confirmMPin = confirmPin,
                             setUpMPin = mPin,
                             email = binding.signUpParentMain.etEmailId.text.toString(),
-                            (activity as MainActivity).mLocation,requireContext()
+                            (activity as MainActivity).mLocation, requireContext()
                         )
                     }
                 } else {
@@ -196,6 +196,7 @@ class PhoenNumVerifiactionFragment :
         authViewModel.isCustomerExist.observe(viewLifecycleOwner) {
             it?.let {
                 if (it) {
+                    authViewModel.timerStart()
                     hideAndShowOtpView()
                     isMobileEntered = true
                 } else {
@@ -203,21 +204,40 @@ class PhoenNumVerifiactionFragment :
                 }
             }
         }
-        authViewModel.isMPinSet.observe(viewLifecycleOwner) {
+        authViewModel.MPinLivedata.observe(viewLifecycleOwner) {
             it?.let {
-                binding.signUpParentMain.root.hideView()
-                hideAndShowProgressView(true)
+                if (it.status_code == 200) {
+
+
+                    binding.signUpParentMain.root.hideView()
+                    hideAndShowProgressView(true)
+
+
+                } else if (it.status_code == 498) {
+                    findNavController().popBackStack(R.id.phoenNumVerifiactionFragment, true)
+                    findNavController().navigate(R.id.phoenNumVerifiactionFragment)
+                }
             }
         }
+
         authViewModel.verifyOtp.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.data?.user_exist == false) {
-                    hideAndShowSignUpScreen()
-                } else {
-                    AppSharedPref.putBoolean(IS_USER_EXIST, true)
+                if (it.status_code == 200) {
+                    if (it.data?.user_exist == false) {
+                        hideAndShowSignUpScreen()
+                    } else {
+                        AppSharedPref.putBoolean(IS_USER_EXIST, true)
+                        findNavController().popBackStack(R.id.phoenNumVerifiactionFragment, true)
+                        findNavController().navigate(R.id.loginScreenFrag)
+                    }
+                } else if (it.status_code == 498) {
                     findNavController().popBackStack(R.id.phoenNumVerifiactionFragment, true)
-                    findNavController().navigate(R.id.loginScreenFrag)
+                    findNavController().navigate(R.id.phoenNumVerifiactionFragment)
+//                    hideAndShowNumInputView()
+                } else {
+                    //
                 }
+
             }
         }
         authViewModel.isOtpVerify.observe(viewLifecycleOwner) {
@@ -227,7 +247,11 @@ class PhoenNumVerifiactionFragment :
                     delay(2000)
                     binding.mainPgCons.cirStreakTimePg.endProgress(requireContext())
                     binding.mainPgCons.progessTv.apply {
-                        setTColor(getString(R.string.verified), requireContext(), R.color.green_verified)
+                        setTColor(
+                            getString(R.string.verified),
+                            requireContext(),
+                            R.color.green_verified
+                        )
                     }
                     delay(1000)
                 }
@@ -269,7 +293,7 @@ class PhoenNumVerifiactionFragment :
                             authViewModel.verifyOtp(
                                 binding.etPhoenNum.text.toString(),
                                 otp,
-                                (activity as MainActivity).mLocation,requireContext()
+                                (activity as MainActivity).mLocation, requireContext()
                             )
 
                         }
@@ -354,24 +378,6 @@ class PhoenNumVerifiactionFragment :
                 }
             }
         }
-
-//        authViewModel.getTokenResp.observe(viewLifecycleOwner) {
-//            it?.let {
-//                if (it.code() == 200) {
-//                    if (binding.etPhoenNum.text.isNotEmpty()) {
-//                        if ((activity as MainActivity).mLocation != null) {
-////                            authViewModel.getCustomer(
-////                                findNavController(),
-////                                binding.etPhoenNum.text.toString(),
-////                                (activity as MainActivity).mLocation, requireActivity(),
-////                            )
-//                        } else {
-//                            (activity as MainActivity).locationProvider.startLocationUpdates()
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
 
     private fun hideAndShowNumInputView() {
