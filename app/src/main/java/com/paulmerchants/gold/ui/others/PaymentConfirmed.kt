@@ -14,8 +14,10 @@ import com.paulmerchants.gold.model.responsemodels.RespPaymentReceipt
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
+import com.paulmerchants.gold.viewmodels.CommonViewModel
 import com.paulmerchants.gold.viewmodels.TxnReceiptViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -31,6 +33,7 @@ class PaymentConfirmed :
 
     override fun getViewBinding() = LoanEmiPaymentConfirmedBinding.inflate(layoutInflater)
     override val mViewModel: TxnReceiptViewModel by viewModels()
+    val commonViewModel: CommonViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +53,7 @@ class PaymentConfirmed :
         } else {
             paymentId?.let {
                 mViewModel.getPaidReceipt(
-                  paymentId =   it, context = this
+                    paymentId = it, context = this
                 )
             }
         }
@@ -74,16 +77,19 @@ class PaymentConfirmed :
             }
             downLoadReceiptTv.setOnClickListener {
 
-                val screenBitmap = AppUtility.getScreenBitmap(paymentConfirmMainParent)
+                val screenBitmap = AppUtility.getScreenBitmap(paymetRecieptcard)
                 val pdfWidth = 500f
                 val pdfHeight = 870f
-                AppUtility.saveAsPdf(
-                    this@PaymentConfirmed,
-                    pdfWidth,
-                    pdfHeight,
-                    screenBitmap,
-                    R.color.open_loans
-                )
+                if (AppUtility.checkAndRequestPermissions(this@PaymentConfirmed)) {
+                    AppUtility.saveAsPdf1(
+                        this@PaymentConfirmed,
+                        pdfWidth,
+                        pdfHeight,
+                        screenBitmap,
+                        R.color.open_loans
+                    )
+                }
+
             }
             lifecycleScope.launch {
                 delay(2000)
@@ -104,8 +110,31 @@ class PaymentConfirmed :
         }
         mViewModel.paidReceipt.observe(this) {
             it?.let {
-                setData(it.data)
+                if (it.status_code == 200) {
+                    setData(it.data)
+
+                } else if (it.status_code == 498) {
+                    commonViewModel.refreshToken(this)
+                } else {
+                    it.message.showSnackBar()
+                }
+
             }
+        }
+        commonViewModel.refreshTokenLiveData.observe(this) {
+            it?.let {
+               if (it.status_code == 200) {
+                   if (orderId?.isNotEmpty() == true){
+
+                       orderId?.let { mViewModel.getPaidReceipt(orderId = it, context = this) }
+                   }else{
+                       paymentId?.let {
+                           mViewModel.getPaidReceipt(paymentId = it, context = this)
+                       }
+                   }
+               }
+            }
+
         }
     }
 
@@ -127,7 +156,8 @@ class PaymentConfirmed :
                     "PAYMENT FAILED!!"
                 }
 
-            transIdTv.text = it?.payment_details_dto?.id ?:it?.payment_details_dto?.order_id?: "NA"
+            transIdTv.text =
+                it?.payment_details_dto?.id ?: it?.payment_details_dto?.order_id ?: "NA"
             accountNoTv.text = it?.acc_no ?: "NA"
             customerNameTv.text = AppSharedPref.getStringValue(
                 com.paulmerchants.gold.utility.Constants.CUSTOMER_NAME,

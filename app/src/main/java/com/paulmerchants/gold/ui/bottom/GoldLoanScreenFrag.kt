@@ -86,20 +86,36 @@ class GoldLoanScreenFrag :
 
 
         goldScreenViewModel.getRespGetLoanOutStandingLiveData.observe(viewLifecycleOwner) {
-            it.data?.let {
-                if (it.get_loan_outstanding_response_data.size != 0) {
-                    if (it.get_loan_outstanding_response_data.size == 1) {
+            if(it.status_code == 200){
+                it.data?.let {
+                    if (it.get_loan_outstanding_response_data.size != 0) {
+                        if (it.get_loan_outstanding_response_data.size == 1) {
+                            hideViews()
+                        }
+                        goldScreenViewModel.respGetLoanOutStanding =
+                            it.get_loan_outstanding_response_data as ArrayList<RespGetLoanOutStandingItem>
+                        for (i in it.get_loan_outstanding_response_data) {
+                            i.current_date = it.current_date
+                        }
+
+                        setUiFoOpenGoldLoans()
+                    } else {
                         hideViews()
                     }
-                    goldScreenViewModel.respGetLoanOutStanding =
-                        it.get_loan_outstanding_response_data as ArrayList<RespGetLoanOutStandingItem>
-                    for (i in it.get_loan_outstanding_response_data) {
-                        i.current_date = it.current_date
-                    }
+                }
+            }
+            else if( it.status_code == 498){
+                (activity as MainActivity).commonViewModel.refreshToken(requireContext())
+            }
+            else{
+                it.message.showSnackBar()
+            }
 
-                    setUiFoOpenGoldLoans()
-                } else {
-                    hideViews()
+        }
+        (activity as MainActivity).commonViewModel.refreshTokenLiveData.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.status_code == 200) {
+                    setUpNetworkCallbackFOrDueLoans()
                 }
             }
         }

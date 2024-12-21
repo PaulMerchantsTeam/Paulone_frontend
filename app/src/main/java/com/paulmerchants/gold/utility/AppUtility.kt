@@ -1,10 +1,13 @@
 package com.paulmerchants.gold.utility
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -23,6 +26,7 @@ import android.os.Build
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
 import android.provider.Settings
 import android.text.TextUtils
 import android.text.format.DateFormat
@@ -38,6 +42,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
@@ -290,6 +295,9 @@ object AppUtility {
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
+
+
+
     fun saveAsPdf(
         context: Context,
         pdfWidth: Float,
@@ -328,6 +336,75 @@ object AppUtility {
             Toast.makeText(context, "Failed to save PDF.", Toast.LENGTH_SHORT).show()
         }
     }
+  fun saveAsPdf1(
+        context: Context,
+        pdfWidth: Float,
+        pdfHeight: Float,
+        bitmap: Bitmap,
+        backgroundColor: Int,
+    ) {
+
+      val outputPath =
+          Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+      val outputFilename = "statement.pdf"
+      val outputFile = File(outputPath, outputFilename)
+      val contentValues = ContentValues().apply {
+          put(MediaStore.MediaColumns.DISPLAY_NAME, "statement.pdf")
+          put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
+          put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+      }
+
+      val resolver = context.contentResolver
+      val uri = resolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
+
+      uri?.let {
+          resolver.openOutputStream(it).use { outputStream ->
+              val document = Document(Rectangle(pdfWidth, pdfHeight))
+              PdfWriter.getInstance(document, outputStream)
+              document.open()
+
+              // Add image and background as before
+              val stream = ByteArrayOutputStream()
+              bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+              val image = Image.getInstance(stream.toByteArray())
+              image.scaleToFit(pdfWidth, pdfHeight)
+              document.add(image)
+
+              document.close()
+          }
+
+          Toast.makeText(context, "PDF saved to Downloads folder.", Toast.LENGTH_SHORT).show()
+      } ?: run {
+          Toast.makeText(context, "Failed to save PDF.", Toast.LENGTH_SHORT).show()
+      }
+
+    }
+
+    fun checkAndRequestPermissions(context: Context): Boolean {
+        val writePermission = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val readPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        val listPermissionsNeeded = mutableListOf<String>()
+
+        if (writePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+        if (readPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+        if (listPermissionsNeeded.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                context as Activity,
+                listPermissionsNeeded.toTypedArray(),
+                1001 // Any unique request code
+            )
+            return false
+        }
+        return true
+    }
+
 
     fun getBitmapFromView(view: View, activity: Activity, callback: (Bitmap) -> Unit) {
         activity.window?.let { window ->

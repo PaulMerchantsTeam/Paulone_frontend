@@ -27,6 +27,7 @@ import com.paulmerchants.gold.databinding.AppCloseDialogBinding
 import com.paulmerchants.gold.databinding.DialogPinRestSuccessBinding
 import com.paulmerchants.gold.databinding.ErrorDialogBinding
 import com.paulmerchants.gold.model.other.MenuServices
+import com.paulmerchants.gold.ui.PaymentActivity
 
 const val IS_SHOW_TXN = "IS_SHOW_TXN"
 fun Activity.showCustomDialogFoPaymentStatus(

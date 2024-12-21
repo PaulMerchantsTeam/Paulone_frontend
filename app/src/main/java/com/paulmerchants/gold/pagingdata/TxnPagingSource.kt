@@ -94,65 +94,7 @@ class TxnPagingSource @Inject constructor(
             return LoadResult.Error(exception)
         }
     }
-/* override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Transactions> {
-        val position = params.key ?: BRANCH_STARTING_PAGE_INDEX
-       val data = encryptKey(BuildConfig.SECRET_KEY_UAT,custId)
 
-//       val data = URLEncoder.encode(encryptedData, "UTF-8")
-        return try {
-
-            val response = when (status) {
-                0 -> {
-                    apiParams.txnHistorySearch1(
-                        token, data.toString(), "CREATED", position,
-                        10
-                    )
-                }
-
-                1 -> {
-                    apiParams.txnHistorySearch1(
-                        token, data.toString(), "PAID", position,
-                        10
-                    )
-                }
-
-                else -> {
-
-                    apiParams.txnHistory1(
-                        token,  position,
-                        10,data
-                    )
-                }
-            }
-            val plainTextResp = response.string()
-            val decryptData = decryptKey(
-                BuildConfig.SECRET_KEY_UAT,
-                plainTextResp
-            )
-            val gson = Gson()
-            val repos1 =   gson.fromJson(decryptData.toString(), Transactions::class.java)
-            val repos = listOf(repos1)  ?: emptyList<Transactions>()
-
-
-//            Log.d("PAGGGIIINNNGGG", "load: ............${repos.size}")
-            val nextKey = if (repos.toString().isEmpty()) {
-                null
-            } else {
-                // initial load size = 3 * NETWORK_PAGE_SIZE
-                // ensure we're not requesting duplicating items, at the 2nd request
-                position + 1
-            }
-            LoadResult.Page(
-                data = repos ?: emptyList(),
-                prevKey = if (position <= BRANCH_STARTING_PAGE_INDEX) null else position - 1,
-                nextKey = nextKey
-            )
-        } catch (exception: IOException) {
-            return LoadResult.Error(exception)
-        } catch (exception: HttpException) {
-            return LoadResult.Error(exception)
-        }
-    }*/
 
     override fun getRefreshKey(state: PagingState<Int, Transactions>): Int? {
         return state.anchorPosition?.let { anchorPosition ->

@@ -1166,6 +1166,11 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                 showLogD(it.message.toString())
            }
         }
+        commonViewModel.refreshTokenLiveData.observe(viewLifecycleOwner){
+            if (it.status_code == 200){
+                paymentViewModel.getCustomerDetails( mLocation,requireContext())
+            }
+        }
         paymentViewModel.respPaymentUpdate.observe(viewLifecycleOwner) {
             it?.let {
                 Log.d(TAG, "ojnnnnnn: /.................${it.status}")
@@ -1200,7 +1205,13 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 //                    findNavController().navigate(R.id.transactionDoneScreenFrag)
 
 //                    (activity as MainActivity).commonViewModel.getPendingInterestDues((activity as MainActivity)?.appSharedPref)
-                } else {
+                }
+                else if (it.status_code == 498){
+                    "Something went Wrong Please try again".showSnackBar()
+                    commonViewModel.refreshToken(requireContext())
+                }
+
+                else {
 //                    val bundle = Bundle().apply {
 //                        putString(
 //                            com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
@@ -1349,8 +1360,20 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                     }
 
                 }
+                else if (it.status_code == 498){
+                    "Something went Wrong Please try again".showSnackBar()
+                    commonViewModel.refreshToken(requireContext())
+                }
+                else{
+                    it.message?.let { it1 -> showLogD(it1) }
+                }
             }
         }
+       /* commonViewModel.refreshTokenLiveData.observe(viewLifecycleOwner){
+            if (it.status_code == 200) {
+                createOrder()
+            }
+        }*/
         binding.spinnerNetBanking.setOnClickListener {
             if (this::bankDialog.isInitialized) bankDialog.show()
         }

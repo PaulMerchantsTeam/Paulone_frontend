@@ -133,7 +133,7 @@ interface ApiParams {
         @Header("Authorization") Authorization: String,
     ): Response<ResponseBody>
 
-    @POST("auth/refresh-token")
+    @POST("auth/refresh-token/v1")
     suspend fun refreshToken(
        @Body requestBody: RequestBody,
     ): Response<ResponseBody>

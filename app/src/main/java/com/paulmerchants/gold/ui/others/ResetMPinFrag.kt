@@ -85,6 +85,21 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
 //                }
             }
         }
+        commonViewModel.refreshTokenLiveData.observe(viewLifecycleOwner) {
+            it?.let {
+//                if (it.isSuccessful) {
+                if (it.status_code == 200) {
+                    resetMpinViewModel.changeMpin(progress= false,
+                        confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
+                        current_mpin = "${binding.pinCurrOneEt.text}${binding.pinCurrTwoEt.text}${binding.pinCurrThreeEt.text}${binding.pinCurrFourEt.text}",
+                        newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
+                        deviceDetailsDTO = AppUtility.getDeviceDetails((activity as MainActivity).mLocation),
+                        context = requireContext()
+                    )
+                }
+
+            }
+        }
         resetMpinViewModel.responseResetForgetPin.observe(viewLifecycleOwner) {
             it?.let {
 //                if (it.isSuccessful) {

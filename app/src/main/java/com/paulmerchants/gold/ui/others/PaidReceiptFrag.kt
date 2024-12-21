@@ -8,10 +8,12 @@ import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.TransacReceiptBinding
 import com.paulmerchants.gold.model.responsemodels.RespPaymentReceipt
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants.ORDER_ID
 import com.paulmerchants.gold.utility.Constants.PAYMENT_ID
 
 import com.paulmerchants.gold.utility.showCustomDialogForError
+import com.paulmerchants.gold.viewmodels.CommonViewModel
 import com.paulmerchants.gold.viewmodels.TxnReceiptViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +24,7 @@ class PaidReceiptFrag :
     var orderId: String? = ""
     var payment_id: String? = ""
     private val txnReceiptViewModel: TxnReceiptViewModel by viewModels()
+    private val commonViewModel: CommonViewModel by viewModels()
 
     override fun TransacReceiptBinding.initialize() {
         orderId = arguments?.getString(ORDER_ID)
@@ -41,21 +44,43 @@ class PaidReceiptFrag :
         }
 
         txnReceiptViewModel.paidReceipt.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it.data?.payment_details_dto == null && it.data?.acc_no == null) {
+            if (it.status_code == 200){
+                it?.let {
+                    if (it.data?.payment_details_dto == null && it.data?.acc_no == null) {
 
 
-                    requireActivity().showCustomDialogForError(
-                        header = "Error!",
-                        message = "Unable to retrieve the transaction details. Please try again in few moments.",
-                        isClick = {
+                        requireActivity().showCustomDialogForError(
+                            header = "Error!",
+                            message = "Unable to retrieve the transaction details. Please try again in few moments.",
+                            isClick = {
 //                            findNavController().navigateUp()
-                            findNavController().popBackStack()
-                        })
+                                findNavController().popBackStack()
+                            })
+                    }
+                    setData(it.data)
+
+
                 }
-                setData(it.data)
+            }
+            else if (it.status_code == 498){
+                commonViewModel.refreshToken(requireContext())
+            }
+            else{
+                it.message.showSnackBar()
+            }
 
+        }
 
+        commonViewModel.refreshTokenLiveData.observe(viewLifecycleOwner){
+            if(it.status_code == 200){
+                if (orderId?.isNotEmpty() == true){
+
+                    orderId?.let { txnReceiptViewModel.getPaidReceipt(orderId = it, context = requireContext()) }
+                }else{
+                    payment_id?.let {
+                        txnReceiptViewModel.getPaidReceipt(paymentId = it, context = requireContext())
+                    }
+                }
             }
         }
 

@@ -101,7 +101,7 @@ inline fun <reified T> callApiGeneric(
                 withContext(Dispatchers.Main) {
                     if (parsedResponse != null) {
                         when (parsedResponse.status_code) {
-                            200 -> {
+                            200,201-> {
                                 hideProgressBar()
                                 onSuccess(parsedResponse)
                             }
@@ -121,9 +121,12 @@ inline fun <reified T> callApiGeneric(
 
                             else -> {
                                 hideProgressBar()
-                                onUnexpectedError(
-                                    parsedResponse.message ?: "Unexpected error occurred"
-                                )
+                                parsedResponse?.status_code?.let {
+                                    onClientError(
+                                        it,
+                                        parsedResponse.message ?: "Unexpected error occurred"
+                                    )
+                                }
                             }
                         }
                     } else {
@@ -134,8 +137,17 @@ inline fun <reified T> callApiGeneric(
             } else {
                 // Handle failure cases
                 hideProgressBar()
-                val errorBody = response.errorBody()?.string() ?: "Unknown error"
-                onUnexpectedError(errorBody)
+
+
+                val plainTextResponse = response.errorBody()?.string()
+                val decryptedResponse =
+                    decryptKey(BuildConfig.SECRET_KEY_UAT, plainTextResponse)
+                val parsedResponse: BaseResponse<T> =
+                    gson.fromJson(
+                        decryptedResponse,
+                        object : TypeToken<BaseResponse<T>>() {}.type
+                    )
+                parsedResponse.status_code?.let { onClientError(it,parsedResponse.message.toString()) }
             }
         } catch (e: Exception) {
             e.printStackTrace()

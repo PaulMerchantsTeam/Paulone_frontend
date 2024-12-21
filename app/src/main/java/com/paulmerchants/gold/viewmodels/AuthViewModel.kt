@@ -104,19 +104,19 @@ class AuthViewModel @Inject constructor(
                     400 -> {
                         errorMessage.showSnackBar()
 
-                        Log.d("TAG", "getOtp: Bad Request: $errorMessage")
+
 
                     }
 
                     401 -> {
                         errorMessage.showSnackBar()
 
-                        Log.d("TAG", "getOtp: Unauthorized: $errorMessage")
+
                     }
 
                     else -> {
                         errorMessage.showSnackBar()
-                        Log.d("TAG", "getOtp:  : $errorMessage")
+
                     }
 
                 }

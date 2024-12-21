@@ -313,6 +313,25 @@ class HomeScreenFrag :
 
 
         }
+        (activity as MainActivity).commonViewModel.refreshTokenLiveData.observe(
+            viewLifecycleOwner
+        ) {
+
+            if (it.status_code == 200) {
+                (activity as MainActivity).commonViewModel.getPendingInterestDues(
+
+                    (activity as MainActivity).mLocation, requireContext()
+                )
+                (activity as MainActivity).commonViewModel.getLoanOutstanding(
+
+                    (activity as MainActivity).mLocation, requireContext()
+                )
+
+            }
+
+
+
+        }
         (activity as MainActivity).commonViewModel.getPendingInterestDuesLiveData.observe(
             viewLifecycleOwner
         ) {

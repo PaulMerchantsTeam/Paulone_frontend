@@ -44,6 +44,7 @@ import com.paulmerchants.gold.utility.AppUtility.hideProgressBar
 import com.paulmerchants.gold.utility.AppUtility.progressBarAlert
 import com.paulmerchants.gold.utility.AppUtility.showCustomDialogForRenewCard
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.AppUtility.showSnackBarForPayment
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.utility.showCustomDialogFoPaymentError
@@ -346,6 +347,11 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 Log.d(TAG, "onCreate: ${it.message}")
             }
         }
+        commonViewModel.refreshTokenLiveData.observe(this){
+            if(it?.status_code == 200){
+                paymentViewModel.getCustomerDetails(mLocation,this)
+            }
+        }
 
         paymentViewModel.respPaymentUpdate.observe(this) {
             it?.let {
@@ -390,7 +396,12 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 //                    findNavController().navigate(R.id.transactionDoneScreenFrag)
 
 //                    (activity as MainActivity).commonViewModel.getPendingInterestDues((activity as MainActivity)?.appSharedPref)
-                } else {
+                }
+                else if (it.status_code == 498){
+                    "Something went Wrong Please try again".showSnackBarForPayment()
+                    commonViewModel.refreshToken(this)
+                }
+                else {
                     hideProgressBar()
 //                    val bundle = Bundle().apply {
 //                        putString(
@@ -538,6 +549,13 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     } catch (e: java.lang.Exception) {
                         Log.d("TAG", "onResponse: ....${e.message}")
                     }
+
+                }
+                else if (it.status_code == 498){
+                    "Something went Wrong Please try again".showSnackBar()
+                    commonViewModel.refreshToken(this)
+                }
+                else{
 
                 }
             }
@@ -895,12 +913,19 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
             else -> true
         }
     }
-
+    fun isLocationMock(location: Location): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            location.isMock
+        } else {
+            // Fallback for older APIs
+            location.isFromMockProvider
+        }
+    }
     @RequiresApi(Build.VERSION_CODES.S)
     private fun createOrder(amount: Double, notes: String) {
         Log.d("TAG", "createOrder: ......$amount")
 
-          if (mLocation?.isMock == true) {
+          if (mLocation?.let { isLocationMock(it) } == true) {
               "Please disable your mock Location from developer option".showSnackBar()
               return
           }
@@ -968,14 +993,11 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 "OK"
             ) { dialog, _ ->
                 dialog.dismiss()
-
-
                 val intent = Intent(this, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
                 finish()
             }
-
         val alert: AlertDialog = builder.create()
         alert.show()
     }
@@ -1405,7 +1427,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         super.onStart()
         startTimeCountdown()
         binding.headerBillMore.timerTextView.show()
-        binding.headerBillMore.timerTextViewBg.show()
+
 
     }
 
@@ -1435,8 +1457,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                         String.format("%02d:%02d", minutes, seconds)
 
                 } else {
-                    binding.headerBillMore.timerTextViewBg.text =
-                        "88:88:88"
+
                     binding.headerBillMore.timerTextView.text =
                         String.format("%02d:%02d:%02d", hours, minutes, seconds)
                 }

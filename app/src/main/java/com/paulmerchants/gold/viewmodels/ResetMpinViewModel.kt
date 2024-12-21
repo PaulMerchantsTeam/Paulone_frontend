@@ -34,7 +34,7 @@ class ResetMpinViewModel @Inject constructor(
         Log.d(TAG, ": init_$TAG")
     }
 
-    fun changeMpin(
+    fun changeMpin(progress :Boolean = true,
         confirmMPin: String,
         newMPin: String,
         current_mpin: String,
@@ -52,7 +52,7 @@ class ResetMpinViewModel @Inject constructor(
         )
         callApiGeneric<Any>(
             request = request,
-            progress = true,
+            progress = progress,
             context = context,
             apiCall = { requestBody ->
                 apiParams.reSetMPin(
@@ -88,7 +88,7 @@ class ResetMpinViewModel @Inject constructor(
                 }
             },
             onTokenExpired = { data ->
-
+                responseResetPin.postValue(data)
 
             },
             onUnexpectedError = { errorMessage ->

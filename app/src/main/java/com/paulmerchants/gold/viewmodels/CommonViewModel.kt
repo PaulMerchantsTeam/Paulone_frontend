@@ -19,8 +19,10 @@ import com.paulmerchants.gold.model.requestmodels.ReqRefreshToken
 import com.paulmerchants.gold.model.responsemodels.BaseResponse
 import com.paulmerchants.gold.model.responsemodels.PendingInterestDuesResponseData
 import com.paulmerchants.gold.model.responsemodels.RespDataDown
+import com.paulmerchants.gold.model.responsemodels.RespLoginData
 import com.paulmerchants.gold.model.responsemodels.RespOutstandingLoan
 import com.paulmerchants.gold.model.responsemodels.RespPendingInterestDue
+import com.paulmerchants.gold.model.responsemodels.RespRefreshToken
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
@@ -55,6 +57,7 @@ class CommonViewModel @Inject constructor(
     val responseCreateOrder =
         MutableLiveData<BaseResponse<com.paulmerchants.gold.model.responsemodels.RespCreateOrder>?>()
     val isUnderMainLiveData = MutableLiveData<BaseResponse<RespDataDown>>()
+    val refreshTokenLiveData = MutableLiveData<BaseResponse<RespRefreshToken>>()
     val isRemoteConfigCheck = MutableLiveData<Boolean>()
 
 
@@ -114,16 +117,17 @@ class CommonViewModel @Inject constructor(
     }
 
     fun refreshToken(context: Context) {
-        val request = ReqRefreshToken("Bearer ${AppSharedPref.getStringValue(JWT_TOKEN)}")
-        callApiGeneric<Any>(
+        val request = ReqRefreshToken(AppSharedPref.getStringValue(JWT_TOKEN))
+        callApiGeneric<RespRefreshToken>(
             request = request,
-            progress = true,
+            progress = false,
             context = context,
             apiCall = { requestBody ->
                 apiParams.refreshToken(requestBody)
             },
             onSuccess = { data ->
-
+                AppSharedPref.putStringValue(JWT_TOKEN, data.data?.token.toString())
+                refreshTokenLiveData.postValue(data)
             },
             onClientError = { code, errorMessage ->
                 when (code) {
@@ -147,7 +151,7 @@ class CommonViewModel @Inject constructor(
                 }
             },
             onTokenExpired = { data ->
-                data.message.showSnackBar()
+
 
 
             },
@@ -207,7 +211,7 @@ class CommonViewModel @Inject constructor(
 
 
                 getPendingInterestDuesLiveData.postValue(data)
-                refreshToken(context)
+
 
             },
             onUnexpectedError = { errorMessage ->

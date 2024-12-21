@@ -36,6 +36,7 @@ import com.paulmerchants.gold.utility.Constants.IS_RESET_MPIN
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.setServicesUi
 import com.paulmerchants.gold.utility.show
+import com.paulmerchants.gold.viewmodels.CommonViewModel
 import com.paulmerchants.gold.viewmodels.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -58,6 +59,7 @@ import kotlinx.coroutines.launch
 class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inflate) {
 
     private val profileViewModel: ProfileViewModel by viewModels()
+    private val commonViewModel: CommonViewModel by viewModels()
     private var customDialog: androidx.appcompat.app.AlertDialog? = null
 
     override fun ProfileLayoutBinding.initialize() {
@@ -104,12 +106,11 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             val jsonString =
                 AppSharedPref.getStringValue(CUSTOMER_FULL_DATA)
 
-            val typeToken = object : TypeToken<BaseResponse<RespGetCustomer>>() {}
-            val jsonObject: BaseResponse<RespGetCustomer> = Gson().fromJson(jsonString, typeToken.type)
-            val jsonObject1: BaseResponse<RespGetCustomer>? =
-                AppUtility.convertStringToJson(jsonString.toString())
-            println(jsonObject)
-            jsonObject?.data?.let {
+            val jsonObject  =
+                Gson().fromJson(jsonString, RespGetCustomer::class.java)
+            showLogD("onStart: .=======${jsonObject.api_response}")
+
+            jsonObject?.let {
                 binding.nameUserTv.text = it.api_response.display_name ?: "NA"
                 it.api_response.display_name?.let {
                     AppSharedPref.putStringValue(
@@ -129,21 +130,39 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             )
         }
         profileViewModel.getRespCustomersDetailsLiveData.observe(viewLifecycleOwner) {
-            it.data?.let {
-                binding.nameUserTv.text = "Name: ${it.api_response?.display_name ?: "NA"}"
-                it.api_response?.display_name?.let {
-                    AppSharedPref.putStringValue(
-                        Constants.CUSTOMER_NAME,
-                        it
-                    )
-                }
-                binding.emailUserIv.text =
-                    "Email Id: ${it.email}"  // in profile we are showing latest email id ...
-                binding.userNumTv.text = "Mobile: ${it.api_response?.mobile_no ?: "NA"}"
-                binding.addressTv.text = "Address: ${it.api_response?.mailing_address ?: "NA"}"
+            if (it.status_code == 200) {
+                it.data?.let {
+                    binding.nameUserTv.text = "Name: ${it.api_response?.display_name ?: "NA"}"
+                    it.api_response?.display_name?.let {
+                        AppSharedPref.putStringValue(
+                            Constants.CUSTOMER_NAME,
+                            it
+                        )
+                    }
+                    binding.emailUserIv.text =
+                        "Email Id: ${it.email}"  // in profile we are showing latest email id ...
+                    binding.userNumTv.text = "Mobile: ${it.api_response?.mobile_no ?: "NA"}"
+                    binding.addressTv.text = "Address: ${it.api_response?.mailing_address ?: "NA"}"
 //                Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
+                }
+            } else if (it.status_code == 498) {
+                commonViewModel.refreshToken(
+                    requireContext()
+                )
+
+            } else {
+                it.message.showSnackBar()
+            }
+
+        }
+        commonViewModel.refreshTokenLiveData.observe(viewLifecycleOwner) {
+            if (it.status_code == 200) {
+                profileViewModel.getCustomerDetails(
+                    (activity as MainActivity).mLocation, requireContext()
+                )
             }
         }
+
         handlesClicks()
         settingUi()
         profileViewModel.verifyOtp.observe(viewLifecycleOwner) {
@@ -159,11 +178,10 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                     profileViewModel.countStr.postValue("")
                 } else if (
                     it.status_code == 498
-                ){
+                ) {
                     customDialog?.dismiss()
                     it.message.showSnackBar()
-                }
-                else {
+                } else {
                     showLogD("onStart: .=======${it.data}")
                 }
             }

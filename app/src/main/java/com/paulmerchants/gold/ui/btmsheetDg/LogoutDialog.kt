@@ -11,7 +11,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.paulmerchants.gold.R
 import com.paulmerchants.gold.databinding.LogoutDialogBinding
+import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.Constants
+import com.paulmerchants.gold.viewmodels.CommonViewModel
 import com.paulmerchants.gold.viewmodels.ProfileViewModel
 //import com.razorpay.Checkout
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +38,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LogoutDialog : BottomSheetDialogFragment() {
     private val profileViewModel: ProfileViewModel by viewModels()
+    private val commonViewModel: CommonViewModel by viewModels()
     lateinit var quickPayPopupBinding: LogoutDialogBinding
     val TAG = "LogoutDialog"
 
@@ -61,13 +66,44 @@ class LogoutDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         quickPayPopupBinding.loginParentBtn.setOnClickListener {
             profileViewModel.logout(
-                findNavController(),requireContext()
+               context =  requireContext()
             )
 
         }
 
         quickPayPopupBinding.cancelDgBtn.setOnClickListener {
             dismiss()
+        }
+
+        profileViewModel.logoutLiveData.observe(viewLifecycleOwner){
+            if(it.status_code == 200){
+                val bundle = Bundle().apply {
+                    putBoolean(Constants.IS_LOGOUT, true)
+                }
+                findNavController().popBackStack(R.id.homeScreenFrag, true)
+                findNavController().popBackStack(R.id.profileFrag, true)
+                findNavController().navigate(R.id.phoenNumVerifiactionFragment, bundle)
+                "${it?.message}".showSnackBar()
+            }
+            else if (it.status_code== 498){
+                commonViewModel.refreshToken(requireContext())
+            }
+            else{
+                "${it?.message}".showSnackBar()
+            }
+
+        }
+        commonViewModel.refreshTokenLiveData.observe(viewLifecycleOwner){
+            if(it.status_code == 200){
+                profileViewModel.logout(progress = false,
+                    requireContext()
+                )
+            }
+
+            else{
+                "${it?.message}".showSnackBar()
+            }
+
         }
 
     }

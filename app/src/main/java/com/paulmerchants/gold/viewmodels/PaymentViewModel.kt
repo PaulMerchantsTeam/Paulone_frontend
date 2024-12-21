@@ -31,6 +31,7 @@ import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.AppUtility.showSnackBarForPayment
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.decryptKey
 import com.paulmerchants.gold.utility.encryptKey
@@ -181,7 +182,7 @@ class PaymentViewModel @Inject constructor(
         )
         callApiGeneric<RespGetCustomer>(
             request = request,
-            progress = true,
+            progress = false,
             context = context,
             apiCall = { requestBody ->
                 apiParams.getCustomerDetails(
@@ -250,7 +251,7 @@ class PaymentViewModel @Inject constructor(
 
             callApiGeneric<List<com.paulmerchants.gold.model.responsemodels.RespPaymentMethod>>(
                 request = "",
-                progress = true,
+                progress = false,
                 context = context,
                 apiCall = { requestBody ->
                     apiParams.getPaymentMethod(
@@ -268,20 +269,21 @@ class PaymentViewModel @Inject constructor(
                 onClientError = { code, errorMessage ->
                     when (code) {
                         400 -> {
-                            errorMessage.showSnackBar()
+                            errorMessage.showSnackBarForPayment()
 
                             Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
 
                         }
 
                         401 -> {
-                            errorMessage.showSnackBar()
+                            errorMessage.showSnackBarForPayment()
 
                             Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
 
                         }
 
                         else -> {
+                            errorMessage.showSnackBarForPayment()
                             Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                         }
                     }
@@ -290,7 +292,7 @@ class PaymentViewModel @Inject constructor(
                     getPaymentMethod.postValue(data)
                 },
                 onUnexpectedError = { errorMessage ->
-                    errorMessage.showSnackBar()
+                    errorMessage.showSnackBarForPayment()
                     Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
                 }
@@ -324,20 +326,21 @@ class PaymentViewModel @Inject constructor(
                 onClientError = { code, errorMessage ->
                     when (code) {
                         400 -> {
-                            errorMessage.showSnackBar()
+                            errorMessage.showSnackBarForPayment()
 
                             Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
 
                         }
 
                         401 -> {
-                            errorMessage.showSnackBar()
+                            errorMessage.showSnackBarForPayment()
 //                            tokenExpiredResp.postValue() = respFail
                             Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
 
                         }
 
                         else -> {
+                            errorMessage.showSnackBarForPayment()
                             Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                         }
                     }
@@ -348,7 +351,7 @@ class PaymentViewModel @Inject constructor(
 
                 },
                 onUnexpectedError = { errorMessage ->
-                    errorMessage.showSnackBar()
+                    errorMessage.showSnackBarForPayment()
                     Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
                 }
@@ -413,28 +416,25 @@ class PaymentViewModel @Inject constructor(
                     onClientError = { code, errorMessage ->
                         when (code) {
                             400 -> {
-                                errorMessage.showSnackBar()
-                                activity.showCustomDialogFoPaymentError(
-                                    message = errorMessage,
-                                    isClick = {
+                                errorMessage.showSnackBarForPayment()
 
-                                    })
                                 Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
 
                             }
 
                             401 -> {
-                                errorMessage.showSnackBar()
-                                activity.showCustomDialogFoPaymentError(
-                                    message = errorMessage,
-                                    isClick = {
+                                errorMessage.showSnackBarForPayment()
 
-                                    })
                                 Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
 
                             }
 
+
                             else -> {
+                               activity. showCustomDialogFoPaymentError(
+                                    message = errorMessage, isClick = {
+
+                                    })
                                 Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                             }
                         }
@@ -444,7 +444,10 @@ class PaymentViewModel @Inject constructor(
 
                     },
                     onUnexpectedError = { errorMessage ->
-                        errorMessage.showSnackBar()
+                        activity. showCustomDialogFoPaymentError(
+                            message = errorMessage, isClick = {
+
+                            })
                         Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
                     }

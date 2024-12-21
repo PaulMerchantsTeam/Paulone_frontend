@@ -3,21 +3,15 @@ package com.paulmerchants.gold.viewmodels
 import android.app.Activity
 import android.content.Context
 import android.location.Location
-import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.google.gson.Gson
-import com.paulmerchants.gold.BuildConfig
-import com.paulmerchants.gold.R
 import com.paulmerchants.gold.model.requestmodels.ReqCustomerOtpNew
 import com.paulmerchants.gold.model.responsemodels.BaseResponse
 import com.paulmerchants.gold.model.requestmodels.ReqGetOtp
 import com.paulmerchants.gold.model.requestmodels.ReqPendingInterstDue
-import com.paulmerchants.gold.model.other.RespCommon
 import com.paulmerchants.gold.model.responsemodels.RespGetCustomer
 import com.paulmerchants.gold.model.responsemodels.RespGetOtp
 
@@ -30,11 +24,8 @@ import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.CUSTOMER_FULL_DATA
 import com.paulmerchants.gold.utility.Constants.CUST_EMAIL
-import com.paulmerchants.gold.utility.Constants.IS_LOGOUT
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
-import com.paulmerchants.gold.utility.decryptKey
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,6 +39,7 @@ class ProfileViewModel @Inject constructor(
 
     var isCalled: Boolean = true
     val verifyOtp = MutableLiveData<BaseResponse<RespGetOtp>>()
+    val logoutLiveData = MutableLiveData<BaseResponse<Any>>()
 
     var timer: CountDownTimer? = null
     val countNum = MutableLiveData<Long>()
@@ -98,7 +90,7 @@ class ProfileViewModel @Inject constructor(
         )
         callApiGeneric<RespGetCustomer>(
             request = request,
-            progress = true,
+            progress = false,
             context = context,
             apiCall = { requestBody ->
                 apiParams.getCustomerDetails(
@@ -109,8 +101,8 @@ class ProfileViewModel @Inject constructor(
             },
             onSuccess = { data ->
 
-                val jsonString = Gson().toJson(data)
-                println(jsonString)
+                val jsonString = Gson().toJson(data.data)
+
                 AppSharedPref.putStringValue(
                     CUSTOMER_FULL_DATA,
                     jsonString
@@ -161,12 +153,12 @@ class ProfileViewModel @Inject constructor(
     }
 
 
-    fun logout(navController: NavController, context: Context) {
+    fun logout(progress: Boolean = true, context: Context) {
 
 
         callApiGeneric<Any>(
             request = "",
-            progress = true,
+            progress = progress,
             context = context,
             apiCall = { requestBody -> apiParams.logOut(
                 "Bearer ${
@@ -174,14 +166,9 @@ class ProfileViewModel @Inject constructor(
                 }"
             )},
             onSuccess = { data ->
+                logoutLiveData.postValue(data)
                 AppSharedPref.clearSharedPref()
-                val bundle = Bundle().apply {
-                    putBoolean(IS_LOGOUT, true)
-                }
-                navController.popBackStack(R.id.homeScreenFrag, true)
-                navController.popBackStack(R.id.profileFrag, true)
-                navController.navigate(R.id.phoenNumVerifiactionFragment, bundle)
-                "${data?.message}".showSnackBar()
+
             }, onClientError = { code, errorMessage ->
                 when (code) {
                     400 -> {
@@ -204,7 +191,7 @@ class ProfileViewModel @Inject constructor(
                 }
             },
             onTokenExpired = { data ->
-
+                logoutLiveData.postValue(data)
 
             },
             onUnexpectedError = { errorMessage ->
