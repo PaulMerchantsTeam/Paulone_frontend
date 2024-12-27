@@ -47,6 +47,7 @@ import com.paulmerchants.gold.utility.AppUtility.showCustomDialogForRenewCard
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
+import com.paulmerchants.gold.utility.showCustomDialogFoPaymentError
 import com.paulmerchants.gold.utility.showCustomDialogFoPaymentStatus
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import com.paulmerchants.gold.viewmodels.PaymentViewModel
@@ -1210,7 +1211,15 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
                     "Something went Wrong Please try again".showSnackBar()
                     commonViewModel.refreshToken(requireContext())
                 }
+                else if (
+                    it.status_code == 422
+                ){
+                    AppUtility.hideProgressBar()
+                    requireActivity().showCustomDialogFoPaymentStatus(
+                        message = "Payment Failed", isClick = {
 
+                        })
+                }
                 else {
 //                    val bundle = Bundle().apply {
 //                        putString(
@@ -1331,7 +1340,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
        paymentViewModel.responseCreateOrder.observe(viewLifecycleOwner) {
             it?.let {
                 Log.d(TAG, "onCreate: ...................$it")
-                if (it.status_code == 200) {
+                if (it.status_code == 200 || it.status_code == 201) {
                     when {
                         bhmValue -> {
                             Log.e("TAG", "onStart: ---bhmValue")

@@ -99,23 +99,22 @@ class AuthViewModel @Inject constructor(
                     "Bearer ${data.data?.session_id.toString()}"
                 )
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
-
+                        data.message.showSnackBar()
 
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
 
                     }
 
                     else -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
                     }
 
@@ -154,21 +153,18 @@ class AuthViewModel @Inject constructor(
                 verifyOtp.postValue(data)
 
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
+                        data.message.showSnackBar()
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
+                        data.message.showSnackBar()
                     }
 
                     else -> {
-                        errorMessage.showSnackBar()
-                        Log.d("TAG", "verifyOtp:  : $errorMessage")
+                        data.message.showSnackBar()
                     }
                 }
             },
@@ -218,26 +214,23 @@ class AuthViewModel @Inject constructor(
 
                 MPinLivedata.postValue(data)
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
 
                     }
 
                     else -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
                     }
                 }
             },

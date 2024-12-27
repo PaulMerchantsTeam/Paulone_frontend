@@ -66,24 +66,25 @@ class ResetMpinViewModel @Inject constructor(
                 responseResetPin.postValue(data)
                 AppUtility.hideProgressBar()
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
+
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
+
 
                     }
 
                     else -> {
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                        data.message.showSnackBar()
+
                     }
                 }
             },
@@ -93,7 +94,7 @@ class ResetMpinViewModel @Inject constructor(
             },
             onUnexpectedError = { errorMessage ->
                 errorMessage.showSnackBar()
-                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+
 
             }
         )
@@ -128,24 +129,24 @@ class ResetMpinViewModel @Inject constructor(
                 responseResetForgetPin.postValue(data)
                 AppUtility.hideProgressBar()
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
+
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
+
 
                     }
 
                     else -> {
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                        data.message.showSnackBar()
                     }
                 }
             },

@@ -100,7 +100,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
 //        for (i in backStack) {
 //            showLogI("${i.id}..--------.${i.destination.displayName}")
 //        }
-        if (AppSharedPref.getStringValue(CUSTOMER_FULL_DATA)
+       /* if (AppSharedPref.getStringValue(CUSTOMER_FULL_DATA)
                 ?.isNotEmpty() == true
         ) {
             val jsonString =
@@ -124,11 +124,11 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                 binding.addressTv.text = "Address: ${it.api_response.mailing_address ?: "NA"}"
 //              Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
             }
-        } else {
+        } else {*/
             profileViewModel.getCustomerDetails(
                 (activity as MainActivity).mLocation, requireContext()
             )
-        }
+//        }
         profileViewModel.getRespCustomersDetailsLiveData.observe(viewLifecycleOwner) {
             if (it.status_code == 200) {
                 it.data?.let {
@@ -182,6 +182,15 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                     customDialog?.dismiss()
                     it.message.showSnackBar()
                 } else {
+                    showLogD("onStart: .=======${it.data}")
+                }
+            }
+        }
+        profileViewModel.getOtpLiveData.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.status_code == 200) {
+                  profileViewModel.timerStart()
+                }  else {
                     showLogD("onStart: .=======${it.data}")
                 }
             }

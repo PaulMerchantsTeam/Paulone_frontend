@@ -140,6 +140,9 @@ class LoginScreenFrag :
 
                     )
                 }
+                else{
+                    "Please enter Mpin".showSnackBar()
+                }
             } else {
                 noInternetDialog()
             }

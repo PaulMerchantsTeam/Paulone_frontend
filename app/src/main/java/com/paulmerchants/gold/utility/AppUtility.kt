@@ -53,6 +53,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
+import com.google.gson.reflect.TypeToken
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
 import com.itextpdf.text.Image
@@ -64,6 +66,7 @@ import com.paulmerchants.gold.databinding.AppCloseDialogBinding
 import com.paulmerchants.gold.databinding.NoInternetDgBinding
 import com.paulmerchants.gold.databinding.ProgressLayoutBinding
 import com.paulmerchants.gold.model.requestmodels.ReqDeviceDetailsDTO
+import com.paulmerchants.gold.model.responsemodels.BaseResponse
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.ui.PaymentActivity
 import org.bouncycastle.jce.provider.BouncyCastleProvider
@@ -879,6 +882,15 @@ object AppUtility {
         return formatter.format(calendar.getTime());
     }
 }
+inline fun <reified T> parseJson(response: String?): BaseResponse<T>? {
+    return try {
+        val type = object : TypeToken<BaseResponse<T>>() {}.type
+        Gson().fromJson(response, type)
+    } catch (e: JsonSyntaxException) {
+        Log.e("TAG", "JSON Parsing Error: ${e.message}")
+        null
+    }
+}
 
 fun decryptKey(key: String, strToDecrypt: String?): String? {
     Security.addProvider(BouncyCastleProvider())
@@ -887,9 +899,12 @@ fun decryptKey(key: String, strToDecrypt: String?): String? {
     try {
         keyBytes = key.toByteArray(charset("UTF8"))
         val skey = SecretKeySpec(keyBytes, "AES")
-        val input =
-            org.bouncycastle.util.encoders.Base64.decode(strToDecrypt?.trim { it <= ' ' }
-                ?.toByteArray(charset("UTF8")))
+        val input = strToDecrypt?.let {
+            Base64.decode(it.trim { it <= ' ' }
+                ?.toByteArray(charset("UTF8"))) // Process only if `input` is not null
+        } ?: throw IllegalArgumentException("Input for decryption cannot be null")
+
+
 
         synchronized(Cipher::class.java) {
             val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")

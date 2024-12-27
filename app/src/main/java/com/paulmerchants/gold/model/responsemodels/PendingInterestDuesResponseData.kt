@@ -10,11 +10,11 @@ data class  PendingInterestDuesResponseData(
     @SerializedName("id") val id: Int,
     @SerializedName("created_at") val created_at: Long,
     @SerializedName("due_date") val due_date: String?,
-    @SerializedName("rebate_amount") val rebate_amount: Int,
-    @SerializedName("fine") val fine: Int,
-    @SerializedName("interest_due") val interest_due: Int,
+    @SerializedName("rebate_amount") val rebate_amount: Double,
+    @SerializedName("fine") val fine: Double,
+    @SerializedName("interest_due") val interest_due: Double,
     @SerializedName("product_name") val product_name: String,
-    @SerializedName("payable_amount") val payable_amount: Int?,  //!=0.0
+    @SerializedName("payable_amount") val payable_amount: Double?,  //!=0.0
     var currentDate: String,
 ) : Parcelable
 

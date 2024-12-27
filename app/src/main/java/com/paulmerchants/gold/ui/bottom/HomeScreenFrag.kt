@@ -342,7 +342,7 @@ class HomeScreenFrag :
                     (activity as MainActivity).commonViewModel.notZero =
 
                         gepPendingRespObj.data?.pending_interest_dues_response_data?.filter { getPendingInterestItem ->
-                            getPendingInterestItem.payable_amount != 0
+                            getPendingInterestItem.payable_amount != 0.0
                         }
                     Log.i(
                         TAG,

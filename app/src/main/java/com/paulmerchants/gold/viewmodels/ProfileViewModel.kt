@@ -39,6 +39,7 @@ class ProfileViewModel @Inject constructor(
 
     var isCalled: Boolean = true
     val verifyOtp = MutableLiveData<BaseResponse<RespGetOtp>>()
+    val getOtpLiveData = MutableLiveData<BaseResponse<RespGetOtp>>()
     val logoutLiveData = MutableLiveData<BaseResponse<Any>>()
 
     var timer: CountDownTimer? = null
@@ -117,24 +118,24 @@ class ProfileViewModel @Inject constructor(
 
 
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
+
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
+
 
                     }
 
                     else -> {
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                        data.message.showSnackBar()
                     }
                 }
             },
@@ -169,24 +170,24 @@ class ProfileViewModel @Inject constructor(
                 logoutLiveData.postValue(data)
                 AppSharedPref.clearSharedPref()
 
-            }, onClientError = { code, errorMessage ->
-                when (code) {
+            }, onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "getOtp: Bad Request: $errorMessage")
+
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "getOtp: Unauthorized: $errorMessage")
+
 
                     }
 
                     else -> {
-                        Log.d("TAG", "getOtp: Invalid Token: $errorMessage")
+                        data.message.showSnackBar()
                     }
                 }
             },
@@ -216,29 +217,31 @@ class ProfileViewModel @Inject constructor(
             context = activity,
             apiCall = { requestBody -> apiParams.getOtp(requestBody) },
             onSuccess = { data ->
+                getOtpLiveData.postValue(data)
 //                timerStart()
                 AppSharedPref.putStringValue(
                     Constants.SESSION_ID,
                     "Bearer ${data.data?.session_id.toString()}"
                 )
-            }, onClientError = { code, errorMessage ->
-                when (code) {
+            }, onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "getOtp: Bad Request: $errorMessage")
+
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "getOtp: Unauthorized: $errorMessage")
+
 
                     }
 
                     else -> {
-                        Log.d("TAG", "getOtp: Invalid Token: $errorMessage")
+                        data.message.showSnackBar()
+
                     }
                 }
             },
@@ -247,6 +250,7 @@ class ProfileViewModel @Inject constructor(
 
             },
             onUnexpectedError = { errorMessage ->
+                errorMessage.showSnackBar()
                 Log.d("TAG", "getOtp: Invalid Token: $errorMessage")
 
             }
@@ -276,24 +280,24 @@ class ProfileViewModel @Inject constructor(
                 verifyOtp.postValue(data)
 
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
+
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
+
 
                     }
 
                     else -> {
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                        data.message.showSnackBar()
                     }
                 }
             },

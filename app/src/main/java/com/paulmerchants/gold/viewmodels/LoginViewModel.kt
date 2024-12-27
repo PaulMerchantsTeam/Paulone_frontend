@@ -98,26 +98,25 @@ class LoginViewModel @Inject constructor(
                     Constants.SESSION_ID,
                     "Bearer ${data.data?.session_id.toString()}"
                 )
-            }, onClientError = { code, errorMessage ->
-                when (code) {
+            }, onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "getOtp: Bad Request: $errorMessage")
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "getOtp: Unauthorized: $errorMessage")
+
 
                     }
 
                     else -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "getOtp: Invalid Token: $errorMessage")
+
                     }
                 }
             },
@@ -153,20 +152,20 @@ class LoginViewModel @Inject constructor(
                 AppSharedPref?.putStringValue(Constants.CUST_MOBILE, mobileNum)
                 verifyOtp.postValue(data)
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
+                        data.message.showSnackBar()
+
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
+                        data.message.showSnackBar()
+
                     }
 
                     else -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
                     }
 
 
@@ -224,26 +223,25 @@ class LoginViewModel @Inject constructor(
 
 
                 },
-                onClientError = { code, errorMessage ->
-                    when (code) {
+                onClientError = { data ->
+                    when (data.status_code) {
                         400 -> {
-                            errorMessage.showSnackBar()
+                            data.message.showSnackBar()
 
-                            Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
+
 
                         }
 
                         401 -> {
-                            errorMessage.showSnackBar()
+                            data.message.showSnackBar()
 
-                            Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
 
                         }
 
                         else -> {
-                            errorMessage.showSnackBar()
+                            data.message.showSnackBar()
 
-                            Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+
                         }
                     }
                 },

@@ -27,6 +27,7 @@ import com.paulmerchants.gold.model.other.RespUpdatePaymentStatus
 import com.paulmerchants.gold.model.responsemodels.RespDataDown
 
 import  callApiGeneric
+import com.paulmerchants.gold.model.responsemodels.RespCreateOrder
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
@@ -49,10 +50,12 @@ class PaymentViewModel @Inject constructor(
 ) : ViewModel() {
     private val TAG = this.javaClass.name
     var isCalled = true
-    val responseCreateOrder = MutableLiveData<BaseResponse<com.paulmerchants.gold.model.responsemodels.RespCreateOrder>?>()
+    val responseCreateOrder =
+        MutableLiveData<BaseResponse<com.paulmerchants.gold.model.responsemodels.RespCreateOrder>?>()
 
     val respPaymentUpdate = MutableLiveData<BaseResponse<RespMTransaction>?>()
-    val getPaymentMethod = MutableLiveData<BaseResponse<List<com.paulmerchants.gold.model.responsemodels.RespPaymentMethod>>?>()
+    val getPaymentMethod =
+        MutableLiveData<BaseResponse<List<com.paulmerchants.gold.model.responsemodels.RespPaymentMethod>>?>()
 
     val getRespCustomersDetailsLiveData = MutableLiveData<BaseResponse<RespGetCustomer>>()
     val isUnderMainLiveData = MutableLiveData<BaseResponse<RespDataDown>>()
@@ -80,6 +83,7 @@ class PaymentViewModel @Inject constructor(
             }
         }
     }
+
     fun getUnderMaintenanceStatusCheck(context: Context) {
         callApiGeneric<RespDataDown>(
             request = "",
@@ -91,24 +95,22 @@ class PaymentViewModel @Inject constructor(
             onSuccess = { data ->
                 isUnderMainLiveData.postValue(data)
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBarForPayment()
 
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBarForPayment()
 
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
 
                     }
 
                     else -> {
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                        data.message.showSnackBarForPayment()
                     }
                 }
             },
@@ -118,13 +120,14 @@ class PaymentViewModel @Inject constructor(
 
             },
             onUnexpectedError = { errorMessage ->
-                errorMessage.showSnackBar()
+                errorMessage.showSnackBarForPayment()
                 Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
             }
 
         )
     }
+
     fun getUnderMaintenanceStatus(reqCreateOrder: ReqCreateOrder, context: Context) {
         callApiGeneric<RespDataDown>(
             request = "",
@@ -135,36 +138,32 @@ class PaymentViewModel @Inject constructor(
             },
             onSuccess = { data ->
                 if (data?.data?.down == false) {
-                    createOrder(reqCreateOrder,context)
+                    createOrder(reqCreateOrder, context)
                 } else {
                     isUnderMainLiveData.postValue(data)
                 }
 
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBarForPayment()
 
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBarForPayment()
 
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
 
                     }
 
                     else -> {
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                        data.message.showSnackBarForPayment()
                     }
                 }
             },
             onTokenExpired = { data ->
-
-
 
 
             },
@@ -175,6 +174,7 @@ class PaymentViewModel @Inject constructor(
             }
         )
     }
+
     fun getCustomerDetails(location: Location?, context: Context) {
         val request = ReqPendingInterstDue(
             AppSharedPref.getStringValue(Constants.CUSTOMER_ID).toString(),
@@ -205,26 +205,23 @@ class PaymentViewModel @Inject constructor(
                 )
 
 
-
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBarForPayment()
 
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBarForPayment()
 
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
 
                     }
 
                     else -> {
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                        data.message.showSnackBarForPayment()
                     }
                 }
             },
@@ -238,14 +235,14 @@ class PaymentViewModel @Inject constructor(
 
             },
             onUnexpectedError = { errorMessage ->
-                errorMessage.showSnackBar()
+                errorMessage.showSnackBarForPayment()
                 Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
             }
         )
     }
 
-    fun getPaymentMethod(context:Context) =
+    fun getPaymentMethod(context: Context) =
         viewModelScope.launch {
 
 
@@ -264,27 +261,26 @@ class PaymentViewModel @Inject constructor(
                     getPaymentMethod.postValue(data)
 
 
-
                 },
-                onClientError = { code, errorMessage ->
-                    when (code) {
+                onClientError = { data ->
+                    when (data.status_code) {
                         400 -> {
-                            errorMessage.showSnackBarForPayment()
+                            data.message.showSnackBarForPayment()
 
-                            Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
+
 
                         }
 
                         401 -> {
-                            errorMessage.showSnackBarForPayment()
+                            data.message.showSnackBarForPayment()
 
-                            Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
+
 
                         }
 
                         else -> {
-                            errorMessage.showSnackBarForPayment()
-                            Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                            data.message.showSnackBarForPayment()
+
                         }
                     }
                 },
@@ -302,11 +298,10 @@ class PaymentViewModel @Inject constructor(
         }
 
 
-    fun createOrder(reqCreateOrder: ReqCreateOrder, context:Context) =
+    fun createOrder(reqCreateOrder: ReqCreateOrder, context: Context) =
         viewModelScope.launch {
 
-
-            callApiGeneric<com.paulmerchants.gold.model.responsemodels.RespCreateOrder>(
+            callApiGeneric<RespCreateOrder>(
                 request = reqCreateOrder,
                 progress = true,
                 context = context,
@@ -314,34 +309,32 @@ class PaymentViewModel @Inject constructor(
                     apiParams.createOrder(
                         "Bearer ${
                             AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()
-                        }",requestBody
+                        }", requestBody
                     )
                 },
                 onSuccess = { data ->
                     responseCreateOrder.postValue(data)
 
 
-
                 },
-                onClientError = { code, errorMessage ->
-                    when (code) {
+                onClientError = { data ->
+                    when (data.status_code) {
                         400 -> {
-                            errorMessage.showSnackBarForPayment()
+                            data.message.showSnackBarForPayment()
 
-                            Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
+
 
                         }
 
                         401 -> {
-                            errorMessage.showSnackBarForPayment()
-//                            tokenExpiredResp.postValue() = respFail
-                            Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
+                            data.message.showSnackBarForPayment()
+
 
                         }
 
                         else -> {
-                            errorMessage.showSnackBarForPayment()
-                            Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                            data.message.showSnackBarForPayment()
+
                         }
                     }
                 },
@@ -351,7 +344,7 @@ class PaymentViewModel @Inject constructor(
 
                 },
                 onUnexpectedError = { errorMessage ->
-                    errorMessage.showSnackBarForPayment()
+//                    errorMessage.showSnackBarForPayment()
                     Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
                 }
@@ -378,86 +371,77 @@ class PaymentViewModel @Inject constructor(
         viewModelScope.launch {
 
 
-                val request = RequestMTransaction(
-                    ac_no = account,
-                    amount = amount,
-                    currency = currency,
-                    cust_id = custId,
-                    description = description,
-                    mac_id = Build.ID,
-                    maker_id = "12545as",
-                    razorpay_order_id = razorpay_order_id,
-                    razorpay_payment_id = razorpay_payment_id,
-                    razorpay_signature = razorpay_signature,
-                    status = status,
-                    device_details_dto = AppUtility.getDeviceDetails(location)
-                )
+            val request = RequestMTransaction(
+                ac_no = account,
+                amount = amount,
+                currency = currency,
+                cust_id = custId,
+                description = description,
+                mac_id = Build.ID,
+                maker_id = "12545as",
+                razorpay_order_id = razorpay_order_id,
+                razorpay_payment_id = razorpay_payment_id,
+                razorpay_signature = razorpay_signature,
+                status = status,
+                device_details_dto = AppUtility.getDeviceDetails(location)
+            )
 
-                callApiGeneric<RespMTransaction>(
-                    request = request,
-                    progress = true,
-                    context = activity,
-                    apiCall = { requestBody ->
-                        apiParams.mTransaction(
-                            "Bearer ${
-                                AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()
-                            }", requestBody
-                        )
-                    },
-                    onSuccess = { data ->
-                        respPaymentUpdate.postValue(data)
-                        AppSharedPref.putStringValue(
-                            Constants.PAYMENT_ID,
-                            data.data?.payment_id.toString()
-                        )
-
-
-                    },
-                    onClientError = { code, errorMessage ->
-                        when (code) {
-                            400 -> {
-                                errorMessage.showSnackBarForPayment()
-
-                                Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
-
-                            }
-
-                            401 -> {
-                                errorMessage.showSnackBarForPayment()
-
-                                Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
-
-                            }
+            callApiGeneric<RespMTransaction>(
+                request = request,
+                progress = true,
+                context = activity,
+                apiCall = { requestBody ->
+                    apiParams.mTransaction(
+                        "Bearer ${
+                            AppSharedPref.getStringValue(Constants.JWT_TOKEN).toString()
+                        }", requestBody
+                    )
+                },
+                onSuccess = { data ->
+                    respPaymentUpdate.postValue(data)
+                    AppSharedPref.putStringValue(
+                        Constants.PAYMENT_ID,
+                        data.data?.payment_id.toString()
+                    )
 
 
-                            else -> {
-                               activity. showCustomDialogFoPaymentError(
-                                    message = errorMessage, isClick = {
+                },
+                onClientError = { data ->
+                    when (data.status_code) {
+                        400 -> {
+                            respPaymentUpdate.postValue(data)
 
-                                    })
-                                Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
-                            }
+
                         }
-                    },
-                    onTokenExpired = { data ->
-                        respPaymentUpdate.postValue(data)
 
-                    },
-                    onUnexpectedError = { errorMessage ->
-                        activity. showCustomDialogFoPaymentError(
-                            message = errorMessage, isClick = {
+                        401 -> {
+                            respPaymentUpdate.postValue(data)
 
-                            })
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
 
+
+                        }
+
+
+                        else -> {
+                            respPaymentUpdate.postValue(data)
+
+                        }
                     }
+                },
+                onTokenExpired = { data ->
+                    respPaymentUpdate.postValue(data)
 
-                )
+                },
+                onUnexpectedError = { errorMessage ->
 
+                     errorMessage.showSnackBarForPayment()
+
+                }
+
+            )
 
 
         }
-
 
 
 }

@@ -19,7 +19,6 @@ import com.paulmerchants.gold.model.requestmodels.ReqRefreshToken
 import com.paulmerchants.gold.model.responsemodels.BaseResponse
 import com.paulmerchants.gold.model.responsemodels.PendingInterestDuesResponseData
 import com.paulmerchants.gold.model.responsemodels.RespDataDown
-import com.paulmerchants.gold.model.responsemodels.RespLoginData
 import com.paulmerchants.gold.model.responsemodels.RespOutstandingLoan
 import com.paulmerchants.gold.model.responsemodels.RespPendingInterestDue
 import com.paulmerchants.gold.model.responsemodels.RespRefreshToken
@@ -83,24 +82,23 @@ class CommonViewModel @Inject constructor(
             onSuccess = { data ->
                 isUnderMainLiveData.postValue(data)
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
 
                     }
 
                     else -> {
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                        data.message.showSnackBar()
+
                     }
                 }
             },
@@ -129,29 +127,26 @@ class CommonViewModel @Inject constructor(
                 AppSharedPref.putStringValue(JWT_TOKEN, data.data?.token.toString())
                 refreshTokenLiveData.postValue(data)
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
 
                     }
 
-                    498 -> {
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                    else -> {
+
                     }
                 }
             },
             onTokenExpired = { data ->
-
 
 
             },
@@ -186,24 +181,24 @@ class CommonViewModel @Inject constructor(
                 getPendingInterestDuesLiveData.postValue(data)
 
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
+
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
+
 
                     }
 
                     else -> {
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                        data.message.showSnackBar()
                     }
                 }
             },
@@ -246,24 +241,24 @@ class CommonViewModel @Inject constructor(
 
 
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = { data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
+
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
+
 
                     }
 
                     else -> {
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                        data.message.showSnackBar()
                     }
                 }
             },

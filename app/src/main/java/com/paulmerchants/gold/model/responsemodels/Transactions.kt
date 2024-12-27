@@ -3,7 +3,7 @@ package com.paulmerchants.gold.model.responsemodels
 import com.google.gson.annotations.SerializedName
 
 data class Transactions(
-    @SerializedName("amount") val amount: Int?,
+    @SerializedName("amount") val amount: Double?,
     @SerializedName("created_at") val created_at: Long,
     @SerializedName("created_by") val created_by: Int?,
     @SerializedName("updated_by") val updated_by: Int?,

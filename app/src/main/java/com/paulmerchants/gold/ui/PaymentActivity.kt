@@ -10,6 +10,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
@@ -62,6 +64,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.ref.WeakReference
+import java.time.Instant
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -400,6 +403,14 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 else if (it.status_code == 498){
                     "Something went Wrong Please try again".showSnackBarForPayment()
                     commonViewModel.refreshToken(this)
+                }else if (
+                    it.status_code == 422
+                ){
+                    hideProgressBar()
+                    showCustomDialogFoPaymentError(
+                        message = "Payment Failed", isClick = {
+
+                        })
                 }
                 else {
                     hideProgressBar()
@@ -517,7 +528,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         paymentViewModel.responseCreateOrder.observe(this) {
             it?.let {
                 Log.d(TAG, "onCreate: ...................$it")
-                if (it.status_code == 200) {
+                if (it.status_code == 200 ||it.status_code == 201) {
                     when {
                         bhmValue -> {
                             Log.e("TAG", "onStart: ---bhmValue")
@@ -552,7 +563,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
 
                 }
                 else if (it.status_code == 498){
-                    "Something went Wrong Please try again".showSnackBar()
+                    "Something went Wrong Please try again".showSnackBarForPayment()
                     commonViewModel.refreshToken(this)
                 }
                 else{
@@ -587,7 +598,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 upiIntentGooglePay()
                 amountToPay?.let { it1 -> createOrder(it1, notes = "paying from g_pay_intent") }
             } else {
-                "Please Wait...".showSnackBar()
+                "Please Wait...".showSnackBarForPayment()
             }
             lifecycleScope.launch {
                 delay(5000) // Delay for 5 seconds
@@ -611,7 +622,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 upiIntentPhonePe()
                 amountToPay?.let { it1 -> createOrder(it1, notes = "paying from phone_pay_intent") }
             } else {
-                "Please Wait...".showSnackBar()
+                "Please Wait...".showSnackBarForPayment()
             }
             lifecycleScope.launch {
                 delay(5000) // Delay for 5 seconds
@@ -633,7 +644,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 upiIntentPaytm()
                 amountToPay?.let { it1 -> createOrder(it1, notes = "paying from paytm _intent") }
             } else {
-                "Please Wait...".showSnackBar()
+                "Please Wait...".showSnackBarForPayment()
             }
             lifecycleScope.launch {
                 delay(5000) // Delay for 5 seconds
@@ -655,7 +666,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 otherIntent()
                 amountToPay?.let { it1 -> createOrder(it1, notes = "paying from other_app") }
             } else {
-                "Please Wait...".showSnackBar()
+                "Please Wait...".showSnackBarForPayment()
             }
             lifecycleScope.launch {
                 delay(5000) // Delay for 5 seconds
@@ -679,7 +690,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                             )
                         }
                     } else {
-                        "Please enter valid UPI Id".showSnackBar()
+                        "Please enter valid UPI Id".showSnackBarForPayment()
                     }
                 }
             }
@@ -876,37 +887,37 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     private fun isValidate(): Boolean {
         return when {
             binding.enterNameOnCardEt.text?.isEmpty() == true && binding.enterCardNumEt.text?.isEmpty() == true && binding.enterExpireDateEt.text?.isEmpty() == true && binding.enterCvvEt.text?.isEmpty() == true -> {
-                "Please fill all card details".showSnackBar()
+                "Please fill all card details".showSnackBarForPayment()
                 false
             }
 
             binding.enterNameOnCardEt.text?.isEmpty() == true -> {
-                "Please enter card holder name".showSnackBar()
+                "Please enter card holder name".showSnackBarForPayment()
                 false
             }
 
             binding.enterCardNumEt.text?.isEmpty() == true -> {
-                "Please enter card number".showSnackBar()
+                "Please enter card number".showSnackBarForPayment()
                 false
             }
 
             binding.enterCardNumEt.text?.length != 19 -> {
-                "Please enter valid card number".showSnackBar()
+                "Please enter valid card number".showSnackBarForPayment()
                 false
             }
 
             binding.enterExpireDateEt.text?.isEmpty() == true -> {
-                "Please enter expiry month-date".showSnackBar()
+                "Please enter expiry month-date".showSnackBarForPayment()
                 false
             }
 
             binding.enterExpireDateEt.text?.length != 5 -> {
-                "Please enter valid expiry date in format".showSnackBar()
+                "Please enter valid expiry date in format".showSnackBarForPayment()
                 false
             }
 
             binding.enterCvvEt.text?.isEmpty() == true -> {
-                "Please enter CVV".showSnackBar()
+                "Please enter CVV".showSnackBarForPayment()
                 false
             }
 
@@ -926,7 +937,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         Log.d("TAG", "createOrder: ......$amount")
 
           if (mLocation?.let { isLocationMock(it) } == true) {
-              "Please disable your mock Location from developer option".showSnackBar()
+              "Please disable your mock Location from developer option".showSnackBarForPayment()
               return
           }
         if (!isLocationEnabled()) {
@@ -986,6 +997,30 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     }
 
     private fun sessionExpiredMsg() {
+        // Check if the activity is valid
+        if (isFinishing || isDestroyed) {
+            // Skip showing the dialog if the activity is not valid
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            return
+        }
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setMessage("Your Session is Expired, Please try again later")
+            .setCancelable(false)
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finish()
+            }
+        val alert: AlertDialog = builder.create()
+        alert.show()
+    }
+
+    private fun sessionExpiredMsg1() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setMessage("Your Session is Expired, Please try again later")
             .setCancelable(false)
@@ -1028,7 +1063,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                                 )
 //                            }
                         } else {
-                            "Unable to initiate the payment\nplease try again later".showSnackBar()
+                            "Unable to initiate the payment\nplease try again later".showSnackBarForPayment()
                         }
                     }
 
@@ -1135,7 +1170,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 )
             }
         } else {
-            "Amount: Some thing went wrong".showSnackBar()
+            "Amount: Some thing went wrong".showSnackBarForPayment()
         }
     }
 
@@ -1427,10 +1462,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         super.onStart()
         startTimeCountdown()
         binding.headerBillMore.timerTextView.show()
-
-
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun startTimeCountdown() {
 
@@ -1469,6 +1501,9 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         }.start()
 
     }
+
+
+
 
     override fun onStop() {
         super.onStop()

@@ -75,24 +75,24 @@ class GoldLoanScreenViewModel @Inject constructor(
 
 
             },
-            onClientError = { code, errorMessage ->
-                when (code) {
+            onClientError = {data ->
+                when (data.status_code) {
                     400 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Bad Request: $errorMessage")
+
 
                     }
 
                     401 -> {
-                        errorMessage.showSnackBar()
+                        data.message.showSnackBar()
 
-                        Log.d("TAG", "verifyOtp: Unauthorized: $errorMessage")
+
 
                     }
 
                     else -> {
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                        data.message.showSnackBar()
                     }
                 }
             },
