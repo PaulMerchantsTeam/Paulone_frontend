@@ -41,7 +41,6 @@ import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.MainNavGraphDirections
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseActivity
-import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.ActivityMainBinding
 import com.paulmerchants.gold.databinding.HeaderLayoutBinding
 import com.paulmerchants.gold.location.LocationProvider
@@ -50,6 +49,7 @@ import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.GO_TO_HOME
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
@@ -216,8 +216,8 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
                 if (
                     destination.id == R.id.mainScreenFrag ||
-                    destination.id == R.id.homeScreenFrag ||
-                    destination.id == R.id.menuScreenFrag
+                    destination.id == R.id.homeScreenFrag
+//                    || destination.id == R.id.menuScreenFrag
                 ) {
                     binding.bottomNavigationView.show()
                 } else {
@@ -290,11 +290,11 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                             } else {
                                 val bundleHomeLoan = Bundle().apply {
                                     putString(
-                                        com.paulmerchants.gold.utility.Constants.ORDER_ID,
+                                        Constants.ORDER_ID,
                                         orderId
                                     )
                                 }
-                                navController.navigate(R.id.paymentConfirmed, bundleHomeLoan)
+//                                navController.navigate(R.id.paymentConfirmed, bundleHomeLoan)
                             }
 
                         } else {
@@ -501,11 +501,11 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                         } else {
                             val bundleHomeLoan = Bundle().apply {
                                 putString(
-                                    com.paulmerchants.gold.utility.Constants.ORDER_ID,
+                                    Constants.ORDER_ID,
                                     orderId
                                 )
                             }
-                            navController.navigate(R.id.paymentConfirmed, bundleHomeLoan)
+//                            navController.navigate(R.id.paymentConfirmed, bundleHomeLoan)
                         }
 
                     } else {
@@ -513,8 +513,6 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                         navController.popBackStack(R.id.homeScreenFrag, true)
                     }
 
-
-//                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
 
                 } else if (it.data?.down == false) {
@@ -560,11 +558,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
 
-
-    }
 
     private fun updateLocation() {
         locationProvider = LocationProvider(this, object : LocationProvider.LocationListener {

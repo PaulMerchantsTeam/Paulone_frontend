@@ -32,17 +32,14 @@ class AuthViewModel @Inject constructor(
     private val apiParams: ApiParams
 ) : ViewModel() {
     var isCalledApi = true
-
-    //true initially when activity or fragment launch ..this is to handle the ui configuration changes...
     var isFrmLogout: Boolean? = false
-    var isCustomerExist = MutableLiveData<Boolean>()
-    var isOtpVerify = MutableLiveData<Boolean>()
-
-    var MPinLivedata = MutableLiveData<BaseResponse<RespSetMPinData>>()
-
-    val verifyOtp = MutableLiveData<BaseResponse<RespGetOtp>>()
     var enteredMobileTemp: String = ""
     var timer: CountDownTimer? = null
+
+    var isCustomerExist = MutableLiveData<Boolean>()
+    var isOtpVerify = MutableLiveData<Boolean>()
+    var MPinLivedata = MutableLiveData<BaseResponse<RespSetMPinData>>()
+    val verifyOtp = MutableLiveData<BaseResponse<RespGetOtp>>()
     val countNum = MutableLiveData<Long>()
     val countStr = MutableLiveData<String>()
 

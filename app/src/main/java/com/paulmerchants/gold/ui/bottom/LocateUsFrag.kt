@@ -16,24 +16,15 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.model.RectangularBounds
-import com.google.android.libraries.places.api.model.TypeFilter
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
-import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.LocateUsScreenFragmentBinding
-import com.paulmerchants.gold.ui.MainActivity
-import com.paulmerchants.gold.utility.hide
-import com.paulmerchants.gold.utility.show
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,7 +34,7 @@ class LocateUsFrag :
 
 
     private var map: GoogleMap? = null
-    private var cameraPosition: CameraPosition? = null
+
 
     // The entry point to the Places API.
     private lateinit var placesClient: PlacesClient
@@ -81,31 +72,6 @@ class LocateUsFrag :
 
     override fun onStart() {
         super.onStart()
-//        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
-//        (activity as MainActivity).commonViewModel.isUnderMainLiveData.observe(this) {
-//            it?.let {
-//                if (it.statusCode == "200") {
-//                    if (it.data.down && it.data.id == 1) {
-//                        findNavController().navigate(R.id.mainScreenFrag)
-//                        (activity as MainActivity).binding.bottomNavigationView.hide()
-//                    } else if (it.data.down && it.data.id == 2) {
-//                        findNavController().navigate(R.id.loginScreenFrag)
-//                        (activity as MainActivity).binding.bottomNavigationView.hide()
-//                        (activity as MainActivity).binding.underMainTimerParent.root.show()
-//                    }
-//                    else if (!it.data.down){
-////
-//                        (activity as MainActivity).binding.underMainTimerParent.root.hide()
-//
-//                    }
-//                    else {
-////                        (activity as MainActivity).binding.bottomNavigationView.show()
-////                        (activity as MainActivity).binding.underMainTimerParent.root.hide()
-//
-//                    }
-//                }
-//            }
-//        }
 
         // [START_EXCLUDE silent]
         // Construct a PlacesClient

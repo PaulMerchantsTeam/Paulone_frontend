@@ -18,7 +18,7 @@
         app:popUpToInclusive="true" />
     <action
         android:id="@+id/action_to_menuScreen"
-        app:destination="@id/menuScreenFrag"
+
         app:launchSingleTop="true"
         app:popUpTo="@id/homeScreenFrag" />
     <action
@@ -27,11 +27,7 @@
         app:launchSingleTop="true"
         app:popUpTo="@id/homeScreenFrag" />
 
-    <action
-        android:id="@+id/action_to_billsAndMore"
-        app:destination="@id/billsAndMoreScreenFrag"
-        app:launchSingleTop="true"
-        app:popUpTo="@id/homeScreenFrag" />
+
 
     <action
         android:id="@+id/action_to_goldLoan"
@@ -47,7 +43,7 @@
         app:launchSingleTop="true"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right"
-        app:popUpTo="@id/pcFrag" />
+         />
 
     <fragment
         android:id="@+id/splashFragment"
@@ -64,7 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/phoenNumVerifiactionFragment"
-        android:name="com.paulmerchants.gold.ui.auth.PhoenNumVerifiactionFragment"
+        android:name="com.paulmerchants.gold.ui.auth.PhoneNumVerificationFragment"
         android:label="PhoenNumVerifiactionFragment"
         tools:layout="@layout/phone_auth_fragment">
         <action
@@ -82,11 +78,7 @@
         android:label="MainScreenFrag"
         tools:layout="@layout/main_screen_fragment" />
 
-    <fragment
-        android:id="@+id/billsAndMoreScreenFrag"
-        android:name="com.paulmerchants.gold.ui.unused.BillsAndMoreScreenFrag"
-        android:label="BillsAndMoreScreenFrag"
-        tools:layout="@layout/bill_n_more_screen_fragment" />
+
 
     <fragment
         android:id="@+id/goldLoanScreenFrag"
@@ -105,7 +97,7 @@
         tools:layout="@layout/home_screen_fragment">
         <action
             android:id="@+id/action_homeScreenFrag_to_notificationsScreenFrag"
-            app:destination="@id/notificationsScreenFrag"
+
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:launchSingleTop="true"
@@ -114,61 +106,20 @@
             app:popUpTo="@id/homeScreenFrag"
             app:popUpToInclusive="true" />
     </fragment>
-    <fragment
-        android:id="@+id/menuScreenFrag"
-        android:name="com.paulmerchants.gold.ui.unused.MenuScreenFrag"
-        android:label="MenuScreenFrag"
-        tools:layout="@layout/menu_screen_fragment" />
-    <fragment
-        android:id="@+id/pcFrag"
-        android:name="com.paulmerchants.gold.ui.unused.PrepaidCardMainFrag"
-        android:label="PcFrag"
-        tools:layout="@layout/prepaid_screen_frag" />
-    <!--    <fragment-->
-    <!--        android:id="@+id/billsFragment"-->
-    <!--        android:name="com.paulmerchants.gold.ui.unused.BillsFragment"-->
-    <!--        android:label="BillsFragment"-->
-    <!--        tools:layout="@layout/bill_n_more_screen_fragment" />-->
-    <fragment
-        android:id="@+id/billsFragment"
-        android:name="com.paulmerchants.gold.ui.unused.BillsFragment"
-        android:label="BillsFragment"
-        tools:layout="@layout/layout_loan_emi" />
+
+
+
     <fragment
         android:id="@+id/proceedToPay"
         android:name="com.paulmerchants.gold.ui.others.ProceedToPay"
         android:label="ProceedToPay"
         tools:layout="@layout/layout_loan_emi_proceed_to_pay" />
-    <fragment
-        android:id="@+id/addCardFrag"
-        android:name="com.paulmerchants.gold.ui.unused.AddCardFrag"
-        android:label="AddCardFrag"
-        tools:layout="@layout/loan_pay_inr_secure" />
-    <fragment
-        android:id="@+id/addUpiCard"
-        android:name="com.paulmerchants.gold.ui.unused.AddUpiCard"
-        android:label="AddUpiCard"
-        tools:layout="@layout/add_card_upi_screen" />
-    <fragment
-        android:id="@+id/paymentModesFrag"
-        android:name="com.paulmerchants.gold.ui.unused.PaymentModesFrag"
-        android:label="PaymentModesFrag"
-        tools:layout="@layout/payment_modes" />
-    <fragment
-        android:id="@+id/paymentConfirmed"
-        android:name="com.paulmerchants.gold.ui.others.PaymentConfirmed"
-        android:label="ConfirmedPayment"
-        tools:layout="@layout/loan_emi_payment_confirmed" />
-    <fragment
-        android:id="@+id/transactionDetailFrag"
-        android:name="com.paulmerchants.gold.ui.unused.TransactionDetailFrag"
-        android:label="TransactionDetailFrag"
-        tools:layout="@layout/transaction_detail" />
-    <fragment
-        android:id="@+id/complaintRegister"
-        android:name="com.paulmerchants.gold.ui.unused.ComplaintRegister"
-        android:label="ComplaintRegister"
-        tools:layout="@layout/register_complaint" />
+
+
+
+
+
+
 
 
     <fragment
@@ -186,46 +137,18 @@
         android:name="com.paulmerchants.gold.ui.others.QuickPayMainFrag"
         android:label="QuickPayMainFrag"
         tools:layout="@layout/check_out_window_fr_payment" />
-    <fragment
-        android:id="@+id/confirmPaymentDueFrag"
-        android:name="com.paulmerchants.gold.ui.unused.ConfirmPaymentDueFrag"
-        android:label="ConfirmPaymentDueFrag"
-        tools:layout="@layout/payment_confirmed_qk_py" />
-    <fragment
-        android:id="@+id/editProfileScreenFrag"
-        android:name="com.paulmerchants.gold.ui.unused.EditProfileScreenFrag"
-        android:label="EditProfileScreenFrag"
-        tools:layout="@layout/edit_profile_layout" />
-    <fragment
-        android:id="@+id/creditScoreScreenFrag"
-        android:name="com.paulmerchants.gold.ui.unused.CreditScoreScreenFrag"
-        android:label="CreditScoreScreenFrag"
-        tools:layout="@layout/credit_score_screen" />
-    <fragment
-        android:id="@+id/applyLoanForNewUser"
-        android:name="com.paulmerchants.gold.ui.unused.ApplyLoanForNewUser"
-        android:label="ApplyLoanForNewUser"
-        tools:layout="@layout/applying_for_loan_layout" />
+
+
+
+
     <fragment
         android:id="@+id/pmlGoldLoan"
         android:name="com.paulmerchants.gold.ui.others.PmlGoldLoan"
         android:label="PmlGoldLoan"
         tools:layout="@layout/pml_gold_loan" />
-    <fragment
-        android:id="@+id/loanStatementFrag"
-        android:name="com.paulmerchants.gold.ui.unused.LoanStatementFrag"
-        android:label="LoanStatementFrag"
-        tools:layout="@layout/loan_statement" />
-    <fragment
-        android:id="@+id/notificationsScreenFrag"
-        android:name="com.paulmerchants.gold.ui.unused.NotificationsScreenFrag"
-        android:label="NotificationsScreenFrag"
-        tools:layout="@layout/fragment_notiification" />
-    <fragment
-        android:id="@+id/raiseComplaintFrag"
-        android:name="com.paulmerchants.gold.ui.unused.RaiseComplaint"
-        android:label="NotificationsScreenFrag"
-        tools:layout="@layout/register_complaint" />
+
+
+
     <fragment
         android:id="@+id/resetCardPinFrag"
         android:name="com.paulmerchants.gold.ui.others.ResetCardPinFrag"
@@ -236,11 +159,7 @@
         android:name="com.paulmerchants.gold.ui.others.TransactionDoneScreenFrag"
         android:label="TransactionDoneScreenFrag"
         tools:layout="@layout/transac_receipt" />
-    <dialog
-        android:id="@+id/daysFilterDialog"
-        android:name="com.paulmerchants.gold.ui.btmsheetDg.daysFilterDialog"
-        android:label="daysFilterDialog"
-        tools:layout="@layout/item_filiter_time_bottom" />
+
     <fragment
         android:id="@+id/resetMPinFrag"
         android:name="com.paulmerchants.gold.ui.others.ResetMPinFrag"
@@ -282,10 +201,6 @@
         android:id="@+id/resetMpinDialog"
         android:name="com.paulmerchants.gold.ui.btmsheetDg.ResetMpinDialog"
         android:label="ResetMpinDialog" />
-    <dialog
-        android:id="@+id/newUserDialog"
-        tools:layout="@layout/applying_for_loan_layout"
-        android:name="com.paulmerchants.gold.ui.btmsheetDg.NewUserDialog"
-        android:label="NewUserDialog" />
+
 
 </navigation>

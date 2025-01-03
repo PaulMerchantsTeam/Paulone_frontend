@@ -1,7 +1,6 @@
 package com.paulmerchants.gold.viewmodels
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -9,14 +8,12 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.paulmerchants.gold.model.responsemodels.PmlBranch
-
 import com.paulmerchants.gold.pagingdata.LocationPagingSource
 import com.paulmerchants.gold.pagingdata.SearchLocationPagingSource
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,14 +22,14 @@ class MapViewModel @Inject constructor(
     private val apiParams: ApiParams,
 ) : ViewModel() {
     private val TAG = this.javaClass.name
-//    val branchLocation = MutableLiveData<Response<RespAllBranch>>()
+
 
     init {
         Log.d(TAG, ": init_$TAG")
     }
 
     fun getBranchWithPaging(
-        AppSharedPref: AppSharedPref,
+
     ): Flow<PagingData<PmlBranch>> {
         val pager = Pager(config = PagingConfig(10, enablePlaceholders = false)) {
             LocationPagingSource(
@@ -45,8 +42,8 @@ class MapViewModel @Inject constructor(
 
     fun searchBranchWithPaging(
         branchName: String,
-        AppSharedPref: AppSharedPref,
-    ): Flow<PagingData<PmlBranch>> {
+
+        ): Flow<PagingData<PmlBranch>> {
         val pager = Pager(config = PagingConfig(10, enablePlaceholders = false)) {
             SearchLocationPagingSource(
                 apiParams,

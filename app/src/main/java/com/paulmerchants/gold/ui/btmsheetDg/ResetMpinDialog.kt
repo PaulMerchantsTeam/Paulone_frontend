@@ -1,9 +1,7 @@
 package com.paulmerchants.gold.ui.btmsheetDg
 
-//import com.razorpay.Checkout
-import android.app.Dialog
+
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -56,16 +54,13 @@ class ResetMpinDialog : BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = ResetMPinForgetBinding.inflate(inflater, container, false)
         Log.d(TAG, "onCreateView: ")
         return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,28 +71,24 @@ class ResetMpinDialog : BottomSheetDialogFragment() {
         }
         resetMpinViewModel.responseResetForgetPin.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.status_code == 200) {
-                    "${it ?.message}".showSnackBar()
-                    dismiss()
-                }else if(
-                    it.status_code == 498
-                ){
-                    "${it ?.message}".showSnackBar()
-                    dismiss()
-                }
-
-                else {
-                    "${it ?.message}".showSnackBar()
+                when (it.status_code) {
+                    200 -> {
+                        "${it.message}".showSnackBar()
+                        dismiss()
+                    }
+                    498 -> {
+                        "${it.message}".showSnackBar()
+                        dismiss()
+                    }
+                    else -> {
+                        "${it.message}".showSnackBar()
+                    }
                 }
             }
         }
 
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState)
-
-    }
 
     private fun setActionCust() {
         binding.proceedAuthBtn.setOnClickListener {
@@ -108,8 +99,9 @@ class ResetMpinDialog : BottomSheetDialogFragment() {
                     if ((activity as MainActivity).mLocation != null) {
                         resetMpinViewModel.resetForgetMpin(
                             confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
-                                    newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}"
-  , AppUtility.getDeviceDetails((activity as MainActivity).mLocation ),requireContext()
+                            newMPin = "${binding.pinOneNewEt.text}${binding.pinTwoNewEt.text}${binding.pinThreeNewEt.text}${binding.pinFourNewEt.text}",
+                            AppUtility.getDeviceDetails((activity as MainActivity).mLocation),
+                            requireContext()
                         )
                     } else {
                         (activity as MainActivity).locationProvider.startLocationUpdates()
@@ -134,27 +126,6 @@ class ResetMpinDialog : BottomSheetDialogFragment() {
                 binding.pinTwoCnfEt.text.isNotEmpty() &&
                 binding.pinThreeCnfEt.text.isNotEmpty() &&
                 binding.pinFourCnfEt.text.isNotEmpty()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
-
-    override fun onCancel(dialog: DialogInterface) {
-        super.onCancel(dialog)
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-
-    }
-
-    override fun setStyle(style: Int, theme: Int) {
-        super.setStyle(style, theme)
     }
 
 

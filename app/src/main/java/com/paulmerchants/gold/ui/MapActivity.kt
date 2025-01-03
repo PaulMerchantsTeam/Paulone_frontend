@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
@@ -32,27 +31,33 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.RectangularBounds
 import com.google.android.libraries.places.api.model.TypeFilter
-import com.google.android.libraries.places.api.net.*
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.MapLocationAdapter
 import com.paulmerchants.gold.common.BaseActivity
 import com.paulmerchants.gold.databinding.ActivityMapBinding
 import com.paulmerchants.gold.model.responsemodels.PmlBranch
 import com.paulmerchants.gold.place.BitmapHelper
-import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.viewmodels.CommonViewModel
 import com.paulmerchants.gold.viewmodels.MapViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Locale
 
 @AndroidEntryPoint
 class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapReadyCallback,
@@ -62,12 +67,15 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
     private var cityName: String = ""
     private val mapLocationAdapter = MapLocationAdapter(::onLocationClicked, ::onMarkLocation)
 
-    //    private val places: ArrayList<com.paulmerchants.gold.place.Place> = arrayListOf()
+
     private val mapViewModel: MapViewModel by viewModels()
 
 
     private fun onMarkLocation(pmlBranch: PmlBranch) {
-        val pm22 = LatLng(pmlBranch.branch_lat.toString().toDouble(), pmlBranch.branch_lng.toString().toDouble())
+        val pm22 = LatLng(
+            pmlBranch.branch_lat.toString().toDouble(),
+            pmlBranch.branch_lng.toString().toDouble()
+        )
         Log.d(TAG, "addMarkers: $pm22")
         map?.clear()
         map?.addMarker(
@@ -81,12 +89,16 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
     private fun onLocationClicked(pmlBranch: PmlBranch) {
         val geoUri =
-            "geo:${pmlBranch.branch_lat.toString().toDouble()},${pmlBranch.branch_lng.toString().toDouble()}?z=15&q=${pmlBranch.branch_lat.toString().toDouble()},${pmlBranch.branch_lng.toString().toDouble()}(Paul Merchants)"
+            "geo:${pmlBranch.branch_lat.toString().toDouble()},${
+                pmlBranch.branch_lng.toString().toDouble()
+            }?z=15&q=${pmlBranch.branch_lat.toString().toDouble()},${
+                pmlBranch.branch_lng.toString().toDouble()
+            }(Paul Merchants)"
         val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
         startActivity(mapIntent)
     }
 
-    var addressList: List<Address>? = null
+
     private var map: GoogleMap? = null
     private var cameraPosition: CameraPosition? = null
 
@@ -115,8 +127,8 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
             try {
-                mapViewModel.getBranchWithPaging(AppSharedPref).collectLatest { data ->
-                    Log.d(TAG, "onCreate: ..dattttttttt........}")
+                mapViewModel.getBranchWithPaging().collectLatest { data ->
+                    Log.d(TAG, "onCreate: ..data........}")
                     showDataToRv(data)
                 }
             } catch (e: java.lang.Exception) {
@@ -124,37 +136,6 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
             }
         }
 
-
-//
-//        mViewModel.placesLive.observe(this) {
-//            it?.let {
-//                Log.d(TAG, "onCreate: .....${it.size}")
-//                setupLocationsTile(it)
-//                addMarkers(it)
-//            }
-//        }
-        /*
-                mapViewModel.branchLocation.observe(this) {
-                    it?.let {
-                        Log.d(TAG, "onCreate: .....${it.body()?.data?.size}")
-                        it.body()?.data?.let {
-                            for (i in it) {
-                                places.add(
-                                    com.paulmerchants.gold.place.Place(
-                                        i.branchName,
-                                        i.branchLat.toDouble(),
-                                        i.branchLng.toDouble(),
-                                        i.branchAddress,
-                                        i.branchCity
-                                    )
-                                )
-                            }
-                        }
-                        setupLocationsTile(places)
-                        addMarkers(places)
-                    }
-                }
-        */
         binding.headerMap.apply {
             titlePageTv.text = getString(R.string.locate_us_near_u)
         }
@@ -180,8 +161,8 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         binding.viewAllLocation.setOnClickListener {
             lifecycleScope.launch {
                 try {
-                    mapViewModel.getBranchWithPaging(AppSharedPref).collectLatest { data ->
-                        Log.d(TAG, "onCreate: ..dattttttttt........}")
+                    mapViewModel.getBranchWithPaging().collectLatest { data ->
+                        Log.d(TAG, "onCreate: ..data........}")
                         showDataToRv(data)
                     }
                 } catch (e: java.lang.Exception) {
@@ -260,9 +241,9 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
                     Log.d(TAG, "onTextChanged: ........$p0")
                     lifecycleScope.launch {
                         try {
-                            mapViewModel.searchBranchWithPaging(p0.toString(), AppSharedPref)
+                            mapViewModel.searchBranchWithPaging(p0.toString())
                                 .collectLatest { data ->
-                                    Log.d(TAG, "onCreate: ..dattttttttt........}")
+                                    Log.d(TAG, "onCreate: ..data........}")
                                     showDataToRv(data)
                                 }
                         } catch (e: java.lang.Exception) {
@@ -270,7 +251,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
                         }
                     }
                 } else {
-
+//
                 }
             }
 
@@ -287,7 +268,8 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
     private fun addMarkers(places: PagingData<PmlBranch>) {
         places.map { i ->
-            val pm22 = LatLng(i.branch_lat.toString().toDouble(), i.branch_lng.toString().toDouble())
+            val pm22 =
+                LatLng(i.branch_lat.toString().toDouble(), i.branch_lng.toString().toDouble())
             Log.d(TAG, "addMarkers: $pm22")
             map?.addMarker(
                 MarkerOptions()
@@ -310,89 +292,10 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
     }
 
 
-    /*
-        fun getListLocation(){
-            val bounds = LatLngBounds.builder()
-                .include(LatLng(8.058430, 68.084473)) // Southwest corner of India
-                .include(LatLng(37.090240, 97.344664)) // Northeast corner of India
-                .build()
-
-            val filter = AutocompleteFilter.Builder()
-                .setTypeFilter(TypeFilter.ESTABLISHMENT)
-                .setCountry("IN")
-                .build()
-
-            val placesClient = Places.createClient(this)
-
-            placesClient.autocomplete(
-                "Paul Merchants",
-                bounds,
-                filter
-            ).addOnSuccessListener { response: AutocompleteResponse ->
-                // Handle the response here
-                val predictions = response.autocompletePredictions
-                for (prediction in predictions) {
-                    Log.i("Places API", prediction.placeId)
-                    // Get the latitude and longitude of the place
-                    placesClient.fetchPlace(
-                        FetchPlaceRequest.newInstance(prediction.placeId, listOf(Place.Field.LAT_LNG))
-                    ).addOnSuccessListener { fetchPlaceResponse: FetchPlaceResponse ->
-                        val latLng = fetchPlaceResponse.place.latLng
-                        Log.i("Places API", "Latitude: ${latLng?.latitude}, Longitude: ${latLng?.longitude}")
-                    }.addOnFailureListener { exception: Exception ->
-                        Log.e("Places API", exception.message, exception)
-                    }
-                }
-            }.addOnFailureListener { exception: Exception ->
-                // Handle the exception here
-                Log.e("Places API", exception.message, exception)
-            }
-
-        }
-    */
-
     @Suppress("OverridingDeprecatedMember")
     // [START maps_current_place_on_map_ready]
     override fun onMapReady(map: GoogleMap) {
         this.map = map
-
-//        val pm22 = LatLng(
-//            30.737825,
-//            76.7753962
-//        )
-//        val pmMp = LatLng(
-//            23.183592463587168, 75.87766528732615
-//        )
-//        val pmKarnatka = LatLng(
-//            13.145759284981244, 77.63917863544266
-//        )
-//        val pmTelangana = LatLng(
-//            17.773004934599374, 78.63262546429902
-//        )
-//        map.addMarker(
-//            MarkerOptions()
-//                .position(pm22)
-//                .title("Paul Merchants")
-//        )
-//        map.addMarker(
-//            MarkerOptions()
-//                .position(pmMp)
-//                .title("Royal Ratan Tower, U G-1, 7, Mahatma Gandhi Rd, Indore, Madhya Pradesh 452001")
-//        )
-//        map.addMarker(
-//            MarkerOptions()
-//                .position(pmKarnatka)
-//                .title("Liberty Plaza, 5&6 Upper Ground Floor, Himayatnagar, Hyderabad, Telangana 500029")
-//        )
-//        map.addMarker(
-//            MarkerOptions()
-//                .position(pmTelangana)
-//                .title("70, 4th Block, 2nd Floor 27th Cross, 9th Main Rd, Jayanagara, Bengaluru, Karnataka 560041")
-//        )
-
-//        addMarkers(map)
-        // [START_EXCLUDE silent]
-//        map.moveCamera(CameraUpdateFactory.newLatLng(pm22))
 
         // [START_EXCLUDE]
         // [START map_current_place_set_info_window_adapter]
@@ -434,10 +337,6 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
 
     }
 
-//    private fun setupLocationsTile(place: List<com.paulmerchants.gold.place.Place>) {
-//        mapLocationAdapter.submitList(place)
-//        binding.rvPmLocation.adapter = mapLocationAdapter
-//    }
 
     // [START maps_current_place_get_device_location]
     @SuppressLint("MissingPermission")
@@ -521,7 +420,7 @@ class MapActivity : BaseActivity<CommonViewModel, ActivityMapBinding>(), OnMapRe
         ) { location ->
             val addresses =
                 geocoder.getFromLocation(location.latitude, location.longitude, 1)
-            if (addresses != null && addresses.isNotEmpty()) {
+            if (!addresses.isNullOrEmpty()) {
                 cityName = addresses[0]?.locality.toString()
 //                Log.d("CityName", "$cityName")
                 if (count == 1) {

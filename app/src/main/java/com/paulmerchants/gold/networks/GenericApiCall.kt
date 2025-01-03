@@ -53,59 +53,63 @@ inline fun <reified T> callApiGeneric(
 
             val response: Response<ResponseBody> = requestBody?.let { apiCall(it) } ?: return@launch
 
-                when (response.code()) {
-                    200, 201 -> {
-                        val plainTextResponse = response.body()?.string()
-                        val decryptedResponse = decryptKey(BuildConfig.SECRET_KEY_UAT, plainTextResponse)
+            when (response.code()) {
+                200, 201 -> {
+                    val plainTextResponse = response.body()?.string()
+                    val decryptedResponse =
+                        decryptKey(BuildConfig.SECRET_KEY_UAT, plainTextResponse)
 
-                        Log.d("TAG", "Raw Response: $plainTextResponse")
-                        Log.d("TAG", "Decrypted Response: $decryptedResponse")
+                    Log.d("TAG", "Raw Response: $plainTextResponse")
+                    Log.d("TAG", "Decrypted Response: $decryptedResponse")
 
-                        if (decryptedResponse.isNullOrEmpty()) {
-                            onUnexpectedError("Decrypted response is empty.")
-                            return@launch
-                        }
-
-                        val parsedResponse: BaseResponse<T>? = parseJson(decryptedResponse)
-                        when (parsedResponse?.status_code) {
-                            200, 201 -> onSuccess(parsedResponse)
-                            498 -> onTokenExpired(parsedResponse)
-                            else -> parsedResponse?.let(onClientError)
-                        }
-                    }
-                    422->{
-                        val errorResponse = response.errorBody()?.string()
-                        val decryptedError = decryptKey(BuildConfig.SECRET_KEY_UAT, errorResponse)
-                        val parsedErrorResponse: BaseResponse<T>? = parseJson(decryptedError)
-                        parsedErrorResponse?.let(onClientError)
+                    if (decryptedResponse.isNullOrEmpty()) {
+                        onUnexpectedError("Decrypted response is empty.")
                         return@launch
                     }
 
-                    429 -> {
-                        // Handle rate limit exceeded
-                        val retryAfter = response.headers()["Retry-After"]?.toLongOrNull() ?: 2L
-                        withContext(Dispatchers.Main) {
-                            onUnexpectedError("Rate limit exceeded. Retry after $retryAfter seconds.")
-                        }
-                        return@launch // Early exit
-                    }
-                    498 -> {
-                        val plainTextErrorResponse = response.errorBody()?.string()
-                        val decryptedErrorResponse =
-                            decryptKey(BuildConfig.SECRET_KEY_UAT, plainTextErrorResponse)
-                        val parsedErrorResponse: BaseResponse<T>? =
-                            parseJson(decryptedErrorResponse)
-                        parsedErrorResponse?.let(onTokenExpired)
-                        return@launch
-                    }
-                    else -> {
-                        val errorResponse = response.errorBody()?.string()
-                        val decryptedError = decryptKey(BuildConfig.SECRET_KEY_UAT, errorResponse)
-                        val parsedErrorResponse: BaseResponse<T>? = parseJson(decryptedError)
-                        parsedErrorResponse?.let(onClientError)
-                            ?: onUnexpectedError("Error parsing response.")
+                    val parsedResponse: BaseResponse<T>? = parseJson(decryptedResponse)
+                    when (parsedResponse?.status_code) {
+                        200, 201 -> onSuccess(parsedResponse)
+                        498 -> onTokenExpired(parsedResponse)
+                        else -> parsedResponse?.let(onClientError)
                     }
                 }
+
+                422 -> {
+                    val errorResponse = response.errorBody()?.string()
+                    val decryptedError = decryptKey(BuildConfig.SECRET_KEY_UAT, errorResponse)
+                    val parsedErrorResponse: BaseResponse<T>? = parseJson(decryptedError)
+                    parsedErrorResponse?.let(onClientError)
+                    return@launch
+                }
+
+                429 -> {
+                    // Handle rate limit exceeded
+                    val retryAfter = response.headers()["Retry-After"]?.toLongOrNull() ?: 2L
+                    withContext(Dispatchers.Main) {
+                        onUnexpectedError("Rate limit exceeded. Retry after $retryAfter seconds.")
+                    }
+                    return@launch // Early exit
+                }
+
+                498 -> {
+                    val plainTextErrorResponse = response.errorBody()?.string()
+                    val decryptedErrorResponse =
+                        decryptKey(BuildConfig.SECRET_KEY_UAT, plainTextErrorResponse)
+                    val parsedErrorResponse: BaseResponse<T>? =
+                        parseJson(decryptedErrorResponse)
+                    parsedErrorResponse?.let(onTokenExpired)
+                    return@launch
+                }
+
+                else -> {
+                    val errorResponse = response.errorBody()?.string()
+                    val decryptedError = decryptKey(BuildConfig.SECRET_KEY_UAT, errorResponse)
+                    val parsedErrorResponse: BaseResponse<T>? = parseJson(decryptedError)
+                    parsedErrorResponse?.let(onClientError)
+                        ?: onUnexpectedError("Error parsing response.")
+                }
+            }
 
 
         } catch (e: Exception) {

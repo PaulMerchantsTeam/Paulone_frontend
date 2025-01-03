@@ -57,10 +57,7 @@ class LogoutDialog : BottomSheetDialogFragment() {
         return quickPayPopupBinding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,20 +73,22 @@ class LogoutDialog : BottomSheetDialogFragment() {
         }
 
         profileViewModel.logoutLiveData.observe(viewLifecycleOwner){
-            if(it.status_code == 200){
-                val bundle = Bundle().apply {
-                    putBoolean(Constants.IS_LOGOUT, true)
+            when (it.status_code) {
+                200 -> {
+                    val bundle = Bundle().apply {
+                        putBoolean(Constants.IS_LOGOUT, true)
+                    }
+                    findNavController().popBackStack(R.id.homeScreenFrag, true)
+                    findNavController().popBackStack(R.id.profileFrag, true)
+                    findNavController().navigate(R.id.phoenNumVerifiactionFragment, bundle)
+                    "${it?.message}".showSnackBar()
                 }
-                findNavController().popBackStack(R.id.homeScreenFrag, true)
-                findNavController().popBackStack(R.id.profileFrag, true)
-                findNavController().navigate(R.id.phoenNumVerifiactionFragment, bundle)
-                "${it?.message}".showSnackBar()
-            }
-            else if (it.status_code== 498){
-                commonViewModel.refreshToken(requireContext())
-            }
-            else{
-                "${it?.message}".showSnackBar()
+                498 -> {
+                    commonViewModel.refreshToken(requireContext())
+                }
+                else -> {
+                    "${it?.message}".showSnackBar()
+                }
             }
 
         }
@@ -109,34 +108,5 @@ class LogoutDialog : BottomSheetDialogFragment() {
     }
 
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState)
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
-    override fun onDetach() {
-
-        super.onDetach()
-
-    }
-
-    override fun onCancel(dialog: DialogInterface) {
-        super.onCancel(dialog)
-
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-
-
-    }
-
-    override fun setStyle(style: Int, theme: Int) {
-        super.setStyle(style, theme)
-    }
 
 }

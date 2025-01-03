@@ -2,19 +2,14 @@ package com.paulmerchants.gold.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-
-import com.paulmerchants.gold.remote.ApiParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel @Inject constructor(
-    private val apiParams: ApiParams,
-
-) : ViewModel() {
+class SplashViewModel @Inject constructor() : ViewModel() {
     private val TAG = "SplashViewModel"
 
-    //"pml", "FU510N@pro"
+
     init {
         Log.d(TAG, ": init_")
     }

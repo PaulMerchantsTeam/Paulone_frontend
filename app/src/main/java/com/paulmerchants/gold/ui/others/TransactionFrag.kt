@@ -49,7 +49,7 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
                         (activity as MainActivity).binding.underMainTimerParent.root.hide()
 
                     } else {
-
+//
                     }
                 }
             }
@@ -112,7 +112,7 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
             try {
                 txnViewModel.getTxnHistory(status)
                     .collectLatest { data ->
-                        Log.d("TAG", "onCreate: ..dattttttttt........}")
+                        Log.d("TAG", "onCreate: ..data.......}")
                         setTransaction(data)
                     }
             } catch (e: java.lang.Exception) {

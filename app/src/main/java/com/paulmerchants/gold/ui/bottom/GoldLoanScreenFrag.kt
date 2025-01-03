@@ -11,8 +11,6 @@ import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.adapter.GoldLoanOverViewAdapterProd
 import com.paulmerchants.gold.common.BaseFragment
-import com.paulmerchants.gold.common.Constants
-import com.paulmerchants.gold.common.Constants.AMOUNT_PAYABLE
 import com.paulmerchants.gold.databinding.GoldLoanScreenFragmentBinding
 import com.paulmerchants.gold.model.responsemodels.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.model.other.PayAll
@@ -22,6 +20,8 @@ import com.paulmerchants.gold.ui.PaymentActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.getTwoDigitAfterDecimal
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.Constants
+import com.paulmerchants.gold.utility.Constants.AMOUNT_PAYABLE
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import com.paulmerchants.gold.viewmodels.GoldLoanScreenViewModel
@@ -86,29 +86,31 @@ class GoldLoanScreenFrag :
 
 
         goldScreenViewModel.getRespGetLoanOutStandingLiveData.observe(viewLifecycleOwner) {
-            if(it.status_code == 200){
-                it.data?.let {
-                    if (it.get_loan_outstanding_response_data.size != 0) {
-                        if (it.get_loan_outstanding_response_data.size == 1) {
+            when (it.status_code) {
+                200 -> {
+                    it.data?.let { it ->
+                        if (it.get_loan_outstanding_response_data.isNotEmpty()) {
+                            if (it.get_loan_outstanding_response_data.size == 1) {
+                                hideViews()
+                            }
+                            goldScreenViewModel.respGetLoanOutStanding =
+                                it.get_loan_outstanding_response_data as ArrayList<RespGetLoanOutStandingItem>
+                            for (i in it.get_loan_outstanding_response_data) {
+                                i.current_date = it.current_date
+                            }
+
+                            setUiFoOpenGoldLoans()
+                        } else {
                             hideViews()
                         }
-                        goldScreenViewModel.respGetLoanOutStanding =
-                            it.get_loan_outstanding_response_data as ArrayList<RespGetLoanOutStandingItem>
-                        for (i in it.get_loan_outstanding_response_data) {
-                            i.current_date = it.current_date
-                        }
-
-                        setUiFoOpenGoldLoans()
-                    } else {
-                        hideViews()
                     }
                 }
-            }
-            else if( it.status_code == 498){
-                (activity as MainActivity).commonViewModel.refreshToken(requireContext())
-            }
-            else{
-                it.message.showSnackBar()
+                498 -> {
+                    (activity as MainActivity).commonViewModel.refreshToken(requireContext())
+                }
+                else -> {
+                    it.message.showSnackBar()
+                }
             }
 
         }
@@ -173,20 +175,7 @@ class GoldLoanScreenFrag :
         Log.d("TAG", "totalAmount: ....................listPayAll-----------$listPayAll")
     }
 
-//    private fun viewDetails(actionItem: RespGetLoanOutStandingItem) {
-//        if (actionItem.IsClosed == false) {
-//            val bundle = Bundle().apply {
-//                putParcelable(Constants.LOAN_OVERVIEW, actionItem)
-//            }
-//            findNavController().navigate(R.id.pmlGoldLoan, bundle)
-//        } else {
-//            val bundle = Bundle().apply {
-//                putParcelable(Constants.LOAN_OVERVIEW, actionItem)
-//            }
-//            findNavController().navigate(R.id.loanStatementFrag, bundle)
-//        }
 
-//    }
 
     private fun payNowClicked(actionItem: RespGetLoanOutStandingItem) {
         if (actionItem.is_closed == false) {
@@ -205,7 +194,7 @@ class GoldLoanScreenFrag :
             val intent = Intent(requireContext(), PaymentActivity ::class.java)
             intent.putExtras(bundle)
             startActivity(intent)
-//            findNavController().navigate(R.id.paymentModesFragNew, bundle)
+
         }
     }
 
@@ -275,14 +264,10 @@ class GoldLoanScreenFrag :
                                 listPayAll, true
                             )
                         )
-//                    putDouble("AMOUNT_PAYABLE", amount.toDouble())
-//                    putString(Constants.CUST_ACC, "182222222222222")
-//                    putBoolean(IS_FROM_ALL_IN_ONE_GO, true)
+
                     }
                     goldScreenViewModel.isCalledGoldLoanScreen = true
-//                    "val intent = Intent(requireContext(), PaymentActivity::class.java)
-//                    intent.putExtras(bundle)
-//                    startActivity(intent)"
+
                     findNavController().navigate(R.id.paymentModesFragNew, bundle)
                 } else {
                     lastStatementAdapter.isShowSelctOption(true)
@@ -291,7 +276,7 @@ class GoldLoanScreenFrag :
 
             }
         } else {
-
+//
         }
     }
 
@@ -369,9 +354,6 @@ class GoldLoanScreenFrag :
     }
 
 
-    private fun setClickListener() {
 
-
-    }
 
 }

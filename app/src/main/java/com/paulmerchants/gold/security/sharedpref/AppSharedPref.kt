@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.paulmerchants.gold.common.Constants.SHARED_PREF_FILE
+import com.paulmerchants.gold.utility.Constants.SHARED_PREF_FILE
 
 object AppSharedPref {
     private lateinit var preferences: SharedPreferences

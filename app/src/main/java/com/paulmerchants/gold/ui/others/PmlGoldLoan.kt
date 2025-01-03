@@ -8,11 +8,11 @@ import androidx.core.view.updateLayoutParams
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
-import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.PmlGoldLoanBinding
 import com.paulmerchants.gold.model.other.DueLoans
 import com.paulmerchants.gold.model.responsemodels.RespGetLoanOutStandingItem
 import com.paulmerchants.gold.utility.AppUtility
+import com.paulmerchants.gold.utility.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.absoluteValue
 
@@ -20,7 +20,7 @@ import kotlin.math.absoluteValue
 @AndroidEntryPoint
 class PmlGoldLoan : BaseFragment<PmlGoldLoanBinding>(PmlGoldLoanBinding::inflate) {
     private lateinit var dueLoans: DueLoans
-    var closedDate: String? = null
+    private var closedDate: String? = null
     override fun PmlGoldLoanBinding.initialize() {
         dueLoans = DueLoans(1, 12, 2000)
     }
@@ -36,7 +36,7 @@ class PmlGoldLoan : BaseFragment<PmlGoldLoanBinding>(PmlGoldLoanBinding::inflate
 
         binding.apply {
             dueLoanParent.viewStateMent.setOnClickListener {
-                findNavController().navigate(R.id.loanStatementFrag)
+//                findNavController().navigate(R.id.loanStatementFrag)
             }
             dueLoanParent.payNowBtn.setOnClickListener {
                 onPayDueClicked(dueLoans)
@@ -49,10 +49,10 @@ class PmlGoldLoan : BaseFragment<PmlGoldLoanBinding>(PmlGoldLoanBinding::inflate
             loanNumTv.text = loanOutStanding?.ac_no.toString()
             intPeriodNumTv.text = "${loanOutStanding?.interest_period} days"
             outStandLoanNumTv.text = "INR ${loanOutStanding?.out_standing}"
-            if (loanOutStanding?.closed_date != null && loanOutStanding.closed_date !="") {
-                closedDate = AppUtility.getDateFormat(loanOutStanding.closed_date)
+            closedDate = if (loanOutStanding?.closed_date != null && loanOutStanding.closed_date !="") {
+                AppUtility.getDateFormat(loanOutStanding.closed_date)
             } else {
-                closedDate = "NA"
+                "NA"
             }
             loanPeriodNumTv.text =
                 "${AppUtility.getDateFormat(loanOutStanding?.openDate.toString())}-$closedDate"
@@ -80,18 +80,18 @@ class PmlGoldLoan : BaseFragment<PmlGoldLoanBinding>(PmlGoldLoanBinding::inflate
 
         binding.dueLoanParent.apply {
 
-            val duedate = AppUtility.numberOfDaysWrtCurrent(loanOutStanding?.due_date.toString())
+            val dueDate = AppUtility.numberOfDaysWrtCurrent(loanOutStanding?.due_date.toString())
             when {
-                duedate.toInt() < 0 -> {
+                dueDate.toInt() < 0 -> {
                     Log.d("TAG", "bind: ----< than 0")
                     ovrDueParentArrow.setBackgroundResource(R.drawable.rect_due_green)
-                    overDueDaysTv.text = "Due in ${duedate.absoluteValue} days"
+                    overDueDaysTv.text = "Due in ${dueDate.absoluteValue} days"
                 }
 
                 else -> {
                     Log.d("TAG", "bind: ----else ---- ")
                     ovrDueParentArrow.setBackgroundResource(R.drawable.rectangle_due_red)
-                    overDueDaysTv.text = "Overdue by $duedate days"
+                    overDueDaysTv.text = "Overdue by $dueDate days"
                 }
             }
 

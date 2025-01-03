@@ -27,9 +27,9 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class PaymentConfirmed :
     BaseActivity<TxnReceiptViewModel, LoanEmiPaymentConfirmedBinding>() {
-    var headerValue: String? = null
-    var orderId: String? = null
-    var paymentId: String? = null
+
+    private var orderId: String? = null
+    private var paymentId: String? = null
 
     override fun getViewBinding() = LoanEmiPaymentConfirmedBinding.inflate(layoutInflater)
     override val mViewModel: TxnReceiptViewModel by viewModels()
@@ -110,13 +110,17 @@ class PaymentConfirmed :
         }
         mViewModel.paidReceipt.observe(this) {
             it?.let {
-                if (it.status_code == 200) {
-                    setData(it.data)
+                when (it.status_code) {
+                    200 -> {
+                        setData(it.data)
 
-                } else if (it.status_code == 498) {
-                    commonViewModel.refreshToken(this)
-                } else {
-                    it.message.showSnackBar()
+                    }
+                    498 -> {
+                        commonViewModel.refreshToken(this)
+                    }
+                    else -> {
+                        it.message.showSnackBar()
+                    }
                 }
 
             }
@@ -126,10 +130,10 @@ class PaymentConfirmed :
                if (it.status_code == 200) {
                    if (orderId?.isNotEmpty() == true){
 
-                       orderId?.let { mViewModel.getPaidReceipt(orderId = it, context = this) }
+                       orderId?.let { it1 -> mViewModel.getPaidReceipt(orderId = it1, context = this) }
                    }else{
-                       paymentId?.let {
-                           mViewModel.getPaidReceipt(paymentId = it, context = this)
+                       paymentId?.let { it1 ->
+                           mViewModel.getPaidReceipt(paymentId = it1, context = this)
                        }
                    }
                }
@@ -172,7 +176,7 @@ class PaymentConfirmed :
             amountPaidTv.text = "${getString(R.string.Rs)} ${
                 it?.payment_details_dto?.amount?.let { it1 ->
                     AppUtility.getTwoDigitAfterDecimal(
-                        it1.toDouble()
+                        it1 
                     )
                 } ?: "NA"
             }"

@@ -13,9 +13,6 @@ import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
-import com.paulmerchants.gold.common.Constants.IS_USER_EXIST
-import com.paulmerchants.gold.common.Constants.OTP_VERIFIED
-import com.paulmerchants.gold.common.Constants.SIGNUP_DONE
 import com.paulmerchants.gold.databinding.PhoneAuthFragmentBinding
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
@@ -26,6 +23,9 @@ import com.paulmerchants.gold.utility.AppUtility.openUrl
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.IS_LOGOUT
+import com.paulmerchants.gold.utility.Constants.IS_USER_EXIST
+import com.paulmerchants.gold.utility.Constants.OTP_VERIFIED
+import com.paulmerchants.gold.utility.Constants.SIGNUP_DONE
 import com.paulmerchants.gold.utility.InternetUtils
 import com.paulmerchants.gold.utility.disableButton
 import com.paulmerchants.gold.utility.enableButton
@@ -43,7 +43,7 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class PhoenNumVerifiactionFragment :
+class PhoneNumVerificationFragment :
     BaseFragment<PhoneAuthFragmentBinding>(PhoneAuthFragmentBinding::inflate) {
 
     private var isResendEnabled: Boolean = false
@@ -102,17 +102,8 @@ class PhoenNumVerifiactionFragment :
                 }
             }
         }
-//        val backStack = findNavController().backQueue
-        /*     for (i in backStack) {
-                 Log.d(
-                     "TAG", "STACK__COUNT_NAME: ...${i.id}..--------.${i.destination.displayName}"
-                 )
-             }*/
-        if (authViewModel.isFrmLogout == true) {
-//            (activity as MainActivity).commonViewModel.getLogin2(
-//                AppSharedPref, (activity as MainActivity).mLocation
-//            )
-        }
+
+
         //Welcome to Paul Gold,
         //we are happy to serve you!!
         callMpinNextFocus()
@@ -135,11 +126,7 @@ class PhoenNumVerifiactionFragment :
         binding.signUpParentMain.signUpBtn.setOnClickListener {
             if (InternetUtils.isNetworkAvailable(requireContext())) {
                 binding.enterPhoneNumMain.hide()
-                println(
-                    "-----------ggggggg---------${
-                        binding.signUpParentMain.etName.text.isNotEmpty() && binding.signUpParentMain.etEmailId.text.isNotEmpty() && binding.signUpParentMain.mpinOneEt.text.isNotEmpty() && binding.signUpParentMain.mpinTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinFourEt.text.isNotEmpty() && binding.signUpParentMain.mpinOneConfirmEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmTwoEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmThreeEt.text.isNotEmpty() && binding.signUpParentMain.mpinConfirmFourEt.text.isNotEmpty() && binding.signUpParentMain.termsCb.isChecked
-                    }"
-                )
+
                 if (binding.signUpParentMain.etEmailId.text.isNotEmpty()) {
 
 
@@ -163,10 +150,7 @@ class PhoenNumVerifiactionFragment :
             }
 
         }
-//        if (AppSharedPref.getBooleanValue(OTP_VERIFIED)) {
-//            binding.fillOtpParent.hideView()
-//            binding.signUpParentMain.root.show()
-//        }
+
         if (pinValue == 100) {
             binding.apply {
                 titleWelcomTvAuth.hide()
@@ -264,30 +248,20 @@ class PhoenNumVerifiactionFragment :
             if (InternetUtils.isNetworkAvailable(requireContext())) {
                 if (!isMobileEntered) {
                     if (binding.etPhoenNum.text.isNotEmpty()) {
-//                        if ((activity as MainActivity).mLocation != null) {
-                        Log.e("TAG", "onStart: /.....11")
-//                        authViewModel.getCustomer(
-//                            findNavController(),
-//                            binding.etPhoenNum.text.toString(),
-//                            (activity as MainActivity).mLocation,
-//                            requireActivity()
-//                        )
+
+
+
                         authViewModel.getOtp(binding.etPhoenNum.text.toString(), requireActivity())
-//                        } else {
-//                            Log.e("TAG", "onStart: /////---12")
-//                            (activity as MainActivity).updateLocation()
-//                        }
+
                     }
                 } else {
-                    Log.e("TAG", "onStart: /.....eheheh")
+
                     if (binding.otpOneEt.text.isNotEmpty() && binding.otpTwoEt.text.isNotEmpty() && binding.otpThreeEt.text.isNotEmpty() && binding.otpFourEt.text.isNotEmpty()) {
                         val otp =
                             binding.otpOneEt.text.toString() + binding.otpTwoEt.text.toString() + binding.otpThreeEt.text.toString() + binding.otpFourEt.text.toString()
-                        Log.d("TAG", "onStart: .........OTP_____$otp")
 
-                        /**
-                         * Currently setting OTP 0808...
-                         */
+
+
 
                         if (otp.isNotEmpty()) {
                             authViewModel.verifyOtp(
@@ -298,29 +272,7 @@ class PhoenNumVerifiactionFragment :
 
                         }
 
-//                    if (otp == "0808") {
-//                        hideAndShowProgressView(false)
-//                        lifecycleScope.launch {
-//                            delay(2000)
-//                            binding.mainPgCons.cirStreakTimePg.endProgress(requireContext())
-//                            binding.mainPgCons.progessTv.apply {
-//                                setTColor(
-//                                    getString(R.string.verified),
-//                                    requireContext(), R.color.green_verified
-//                                )
-//                            }
-//                            delay(1000)
-//                        }
-//                        isOtpVerified = true
-//                        AppSharedPref?.putBoolean(OTP_VERIFIED, isOtpVerified)
-//                        hideAndShowSignUpScreen()
-//                    } else {
-//                        Toast.makeText(
-//                            requireContext(),
-//                            "Please Enter Correct Otp",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
+//
                     }
                 }
             } else {
@@ -514,16 +466,13 @@ class PhoenNumVerifiactionFragment :
             "+91${binding.etPhoenNum.text}. <u>${getString(R.string.change_q)}</u>",
             binding.pleaseOtpTv
         )
-        Log.d("TAG", "hideAndShowOtpView: .....o=vdfghgf......${authViewModel.isCalledApi}")
+
         if (authViewModel.isCalledApi) {
             authViewModel.timerStart()
         }
         authViewModel.countStr.observe(viewLifecycleOwner) {
-            /**
-             * 2 Mins
-             * 120sec---1:12
-             */
-            Log.d("TAG", "hideAndShowOtpView: jsafjhfdshfjsf-----------------$it")
+
+
 
             if (it == "00") {
                 isResendEnabled = true

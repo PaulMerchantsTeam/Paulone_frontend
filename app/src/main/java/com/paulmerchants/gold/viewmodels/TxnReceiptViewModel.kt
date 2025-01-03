@@ -5,19 +5,14 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
+import callApiGeneric
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.model.responsemodels.BaseResponse
 import com.paulmerchants.gold.model.responsemodels.RespPaymentReceipt
-import com.paulmerchants.gold.model.other.RespPayReceipt
-
-import  callApiGeneric
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
-import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants.JWT_TOKEN
-import com.paulmerchants.gold.utility.decryptKey
 import com.paulmerchants.gold.utility.encryptKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -31,72 +26,68 @@ class TxnReceiptViewModel @Inject constructor(
 
     private val TAG = this.javaClass.name
     val paidReceipt = MutableLiveData<BaseResponse<RespPaymentReceipt>>()
+
     init {
         Log.d(TAG, ": init_$TAG")
     }
 
-    fun getPaidReceipt(orderId: String = "", paymentId: String = "",context: Context) =
+    fun getPaidReceipt(orderId: String = "", paymentId: String = "", context: Context) =
         viewModelScope.launch {
             val encryptedOrderId = encryptKey(BuildConfig.SECRET_KEY_UAT, orderId)
             val encryptedPaymentId = encryptKey(BuildConfig.SECRET_KEY_UAT, paymentId)
 
 
-                callApiGeneric<RespPaymentReceipt>(
-                    request = "",
-                    progress = true,
-                    context = context,
-                    apiCall = { requestBody ->
-                        apiParams.getPaidReceipt(
-                            "Bearer ${
-                                AppSharedPref.getStringValue(JWT_TOKEN).toString()
-                            }",
-                            order_id = (if (orderId.isEmpty()) "" else encryptedOrderId),
-                            payment_id = (if (paymentId.isEmpty()) "" else encryptedPaymentId)
+            callApiGeneric<RespPaymentReceipt>(
+                request = "",
+                progress = true,
+                context = context,
+                apiCall = { requestBody ->
+                    apiParams.getPaidReceipt(
+                        "Bearer ${
+                            AppSharedPref.getStringValue(JWT_TOKEN).toString()
+                        }",
+                        order_id = (if (orderId.isEmpty()) "" else encryptedOrderId),
+                        payment_id = (if (paymentId.isEmpty()) "" else encryptedPaymentId)
 
-                        )
-                    },
-                    onSuccess = { data ->
-                        paidReceipt.postValue(data)
-
-
-
-                    },
-                    onClientError = { data ->
-                        when (data.status_code) {
-                            400 -> {
-                                data.message.showSnackBar()
+                    )
+                },
+                onSuccess = { data ->
+                    paidReceipt.postValue(data)
 
 
+                },
+                onClientError = { data ->
+                    when (data.status_code) {
+                        400 -> {
+                            data.message.showSnackBar()
 
-                            }
 
-                            401 -> {
-                                data.message.showSnackBar()
-
-
-
-                            }
-
-                            else -> {
-                                data.message.showSnackBar()
-                            }
                         }
-                    },
-                    onTokenExpired = { data ->
-                        paidReceipt.postValue(data)
 
-                    },
-                    onUnexpectedError = { errorMessage ->
-                        errorMessage.showSnackBar()
-                        Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+                        401 -> {
+                            data.message.showSnackBar()
 
+
+                        }
+
+                        else -> {
+                            data.message.showSnackBar()
+                        }
                     }
-                )
+                },
+                onTokenExpired = { data ->
+                    paidReceipt.postValue(data)
+
+                },
+                onUnexpectedError = { errorMessage ->
+                    errorMessage.showSnackBar()
+                    Log.d("TAG", "verifyOtp: Invalid Token: $errorMessage")
+
+                }
+            )
 
 
         }
-
-
 
 
 }

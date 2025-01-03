@@ -1,16 +1,13 @@
 package com.paulmerchants.gold.viewmodels
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.paulmerchants.gold.model.other.RespTxnHistory
 import com.paulmerchants.gold.model.responsemodels.Transactions
-
 import com.paulmerchants.gold.pagingdata.TxnPagingSource
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
@@ -27,7 +24,7 @@ class TxnViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val TAG = this.javaClass.name
-    val txnHistoryData = MutableLiveData<RespTxnHistory>()
+
 
     init {
         Log.d(TAG, ": init_$TAG")

@@ -11,13 +11,12 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
-import com.paulmerchants.gold.model.other.RespCommon
-import com.paulmerchants.gold.model.other.RespUpdatePaymentStatus
-import com.paulmerchants.gold.model.other.StatusPayment
+
 import com.paulmerchants.gold.model.requestmodels.ReqPendingInterstDue
 import com.paulmerchants.gold.model.requestmodels.ReqRefreshToken
 import com.paulmerchants.gold.model.responsemodels.BaseResponse
 import com.paulmerchants.gold.model.responsemodels.PendingInterestDuesResponseData
+import com.paulmerchants.gold.model.responsemodels.RespCreateOrder
 import com.paulmerchants.gold.model.responsemodels.RespDataDown
 import com.paulmerchants.gold.model.responsemodels.RespOutstandingLoan
 import com.paulmerchants.gold.model.responsemodels.RespPendingInterestDue
@@ -36,31 +35,21 @@ class CommonViewModel @Inject constructor(
     private val apiParams: ApiParams
 ) : ViewModel() {
 
-    val paymentData = MutableLiveData<StatusPayment?>()
-    var dueLoanSelected: PendingInterestDuesResponseData? = null
 
+    var dueLoanSelected: PendingInterestDuesResponseData? = null
+    var timer: CountDownTimer? = null
+    private var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
     var notZero: List<PendingInterestDuesResponseData>? = arrayListOf()
 
-    val getPendingInterestDuesLiveData = MutableLiveData<BaseResponse<RespPendingInterestDue>>()
-
-    val tokenExpiredResp = MutableLiveData<RespCommon?>()
-    val getRespGetLoanOutStandingLiveData = MutableLiveData<BaseResponse<RespOutstandingLoan>>()
-
-
-    var timer: CountDownTimer? = null
     val countNum = MutableLiveData<Long>()
-
     var isStartAnim = MutableLiveData<Boolean>()
-    private var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
-
-    val responseCreateOrder =
-        MutableLiveData<BaseResponse<com.paulmerchants.gold.model.responsemodels.RespCreateOrder>?>()
+    val getPendingInterestDuesLiveData = MutableLiveData<BaseResponse<RespPendingInterestDue>>()
+    val getRespGetLoanOutStandingLiveData = MutableLiveData<BaseResponse<RespOutstandingLoan>>()
+    val responseCreateOrder = MutableLiveData<BaseResponse<RespCreateOrder>?>()
     val isUnderMainLiveData = MutableLiveData<BaseResponse<RespDataDown>>()
     val refreshTokenLiveData = MutableLiveData<BaseResponse<RespRefreshToken>>()
     val isRemoteConfigCheck = MutableLiveData<Boolean>()
 
-
-    val respPaymentUpdate = MutableLiveData<RespUpdatePaymentStatus?>()
 
     init {
         val configSettings = remoteConfigSettings {
@@ -187,12 +176,10 @@ class CommonViewModel @Inject constructor(
                         data.message.showSnackBar()
 
 
-
                     }
 
                     401 -> {
                         data.message.showSnackBar()
-
 
 
                     }
@@ -247,12 +234,10 @@ class CommonViewModel @Inject constructor(
                         data.message.showSnackBar()
 
 
-
                     }
 
                     401 -> {
                         data.message.showSnackBar()
-
 
 
                     }

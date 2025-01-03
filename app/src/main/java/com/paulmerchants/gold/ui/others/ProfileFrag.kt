@@ -13,24 +13,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
 import com.paulmerchants.gold.databinding.ProfileLayoutBinding
 import com.paulmerchants.gold.model.other.MenuServices
-import com.paulmerchants.gold.model.responsemodels.BaseResponse
-import com.paulmerchants.gold.model.responsemodels.RespGetCustomer
 import com.paulmerchants.gold.mylog.LogUtil.showLogD
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
-import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.openUrl
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
-import com.paulmerchants.gold.utility.Constants.CUSTOMER_FULL_DATA
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
 import com.paulmerchants.gold.utility.Constants.IS_RESET_MPIN
 import com.paulmerchants.gold.utility.hide
@@ -42,18 +36,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/**
- *
-{
-"DisplayName": "SEEMA",
-"Photo":",
-"MobileNo": "8968059147",
-"AadhaarNo": "908957640028",
-"PAN": "LHJPS7444D",
-"Email": "",
-"MailingAddress": "MSSEEMA,H.NO 42,MAULI JAGRAN FLAT PART-2CHANDIGARH ,Aerodrome Chandigarh [P.O],CHANDIGARH,160003"
-}
- */
+
+
 
 @AndroidEntryPoint
 class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inflate) {
@@ -85,7 +69,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                         (activity as MainActivity).binding.underMainTimerParent.root.hide()
 
                     } else {
-
+//
                     }
                 }
             }
@@ -96,62 +80,38 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
         super.onStart()
         binding.appVersion.text = "Paul One ${BuildConfig.VERSION_NAME}"
         (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus(requireContext())
-        val backStack = findNavController().backQueue
-//        for (i in backStack) {
-//            showLogI("${i.id}..--------.${i.destination.displayName}")
-//        }
-       /* if (AppSharedPref.getStringValue(CUSTOMER_FULL_DATA)
-                ?.isNotEmpty() == true
-        ) {
-            val jsonString =
-                AppSharedPref.getStringValue(CUSTOMER_FULL_DATA)
 
-            val jsonObject  =
-                Gson().fromJson(jsonString, RespGetCustomer::class.java)
-            showLogD("onStart: .=======${jsonObject.api_response}")
 
-            jsonObject?.let {
-                binding.nameUserTv.text = it.api_response.display_name ?: "NA"
-                it.api_response.display_name?.let {
-                    AppSharedPref.putStringValue(
-                        Constants.CUSTOMER_NAME,
-                        it
-                    )
-                }
-                binding.emailUserIv.text =
-                    AppSharedPref.getStringValue(Constants.CUST_EMAIL)
-                binding.userNumTv.text = it.api_response.mobile_no ?: "NA"
-                binding.addressTv.text = "Address: ${it.api_response.mailing_address ?: "NA"}"
-//              Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
-            }
-        } else {*/
-            profileViewModel.getCustomerDetails(
-                (activity as MainActivity).mLocation, requireContext()
-            )
-//        }
+        profileViewModel.getCustomerDetails(
+            (activity as MainActivity).mLocation, requireContext()
+        )
+
         profileViewModel.getRespCustomersDetailsLiveData.observe(viewLifecycleOwner) {
-            if (it.status_code == 200) {
-                it.data?.let {
-                    binding.nameUserTv.text = "Name: ${it.api_response?.display_name ?: "NA"}"
-                    it.api_response?.display_name?.let {
-                        AppSharedPref.putStringValue(
-                            Constants.CUSTOMER_NAME,
-                            it
-                        )
+            when (it.status_code) {
+                200 -> {
+                    it.data?.let { it1 ->
+                        binding.nameUserTv.text = "Name: ${it1.api_response?.display_name ?: "NA"}"
+                        it1.api_response?.display_name?.let { it2 ->
+                            AppSharedPref.putStringValue(
+                                Constants.CUSTOMER_NAME,
+                                it2
+                            )
+                        }
+                        binding.emailUserIv.text =
+                            "Email Id: ${it1.email}"  // in profile we are showing latest email id ...
+                        binding.userNumTv.text = "Mobile: ${it1.api_response?.mobile_no ?: "NA"}"
+                        binding.addressTv.text = "Address: ${it1.api_response?.mailing_address ?: "NA"}"
                     }
-                    binding.emailUserIv.text =
-                        "Email Id: ${it.email}"  // in profile we are showing latest email id ...
-                    binding.userNumTv.text = "Mobile: ${it.api_response?.mobile_no ?: "NA"}"
-                    binding.addressTv.text = "Address: ${it.api_response?.mailing_address ?: "NA"}"
-//                Glide.with(requireContext()).load(it.Photo?.toByteArray()).into(binding.backIv)
                 }
-            } else if (it.status_code == 498) {
-                commonViewModel.refreshToken(
-                    requireContext()
-                )
+                498 -> {
+                    commonViewModel.refreshToken(
+                        requireContext()
+                    )
 
-            } else {
-                it.message.showSnackBar()
+                }
+                else -> {
+                    it.message.showSnackBar()
+                }
             }
 
         }
@@ -167,30 +127,32 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
         settingUi()
         profileViewModel.verifyOtp.observe(viewLifecycleOwner) {
             it?.let {
-                if (it.status_code == 200) {
-                    showLogD("onStart: .=======${it.data}")
-                    customDialog?.dismiss()
-                    val bundle = Bundle().apply {
-                        putBoolean(IS_RESET_MPIN, true)
+                when (it.status_code) {
+                    200 -> {
+                        showLogD("onStart: .=======${it.data}")
+                        customDialog?.dismiss()
+                        val bundle = Bundle().apply {
+                            putBoolean(IS_RESET_MPIN, true)
+                        }
+                        findNavController().navigate(R.id.resetMPinFrag, bundle)
+                        profileViewModel.timer?.cancel()
+                        profileViewModel.countStr.postValue("")
                     }
-                    findNavController().navigate(R.id.resetMPinFrag, bundle)
-                    profileViewModel.timer?.cancel()
-                    profileViewModel.countStr.postValue("")
-                } else if (
-                    it.status_code == 498
-                ) {
-                    customDialog?.dismiss()
-                    it.message.showSnackBar()
-                } else {
-                    showLogD("onStart: .=======${it.data}")
+                    498 -> {
+                        customDialog?.dismiss()
+                        it.message.showSnackBar()
+                    }
+                    else -> {
+                        showLogD("onStart: .=======${it.data}")
+                    }
                 }
             }
         }
         profileViewModel.getOtpLiveData.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.status_code == 200) {
-                  profileViewModel.timerStart()
-                }  else {
+                    profileViewModel.timerStart()
+                } else {
                     showLogD("onStart: .=======${it.data}")
                 }
             }
@@ -216,9 +178,9 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             )
             lifecycleScope.launch {
                 delay(300)
-                findNavController().navigate(
-                    R.id.editProfileScreenFrag, null
-                )
+//                findNavController().navigate(
+//                    R.id.editProfileScreenFrag, null
+//                )
             }
 
         }
@@ -297,9 +259,9 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                     dialogBinding.didnotReceiveTv.setOnClickListener {
                         AppSharedPref.getStringValue(
                             CUST_MOBILE
-                        )?.let {
+                        )?.let { it1 ->
                             profileViewModel.getOtp(
-                                it, requireActivity()
+                                it1, requireActivity()
                             )
                         }
                     }
@@ -356,8 +318,8 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
             }
 
             104 -> {
-                findNavController().navigate(R.id.raiseComplaintFrag)
-            }
+//                findNavController().navigate(R.id.raiseComplaintFrag)
+            } 
 
             105 -> { //terms & Cond
                 openUrl(requireContext(), BuildConfig.TERMS_CONDITION)
@@ -447,28 +409,28 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
                     if (text.length == 1) {
                         nextView?.requestFocus()
                     } else {
-
+//
                     }
                 }
 
                 R.id.otpTwoEt -> {
                     if (text.length == 1) {
                         nextView?.requestFocus()
-                    } else {
+                    } else {//
                     }
                 }
 
                 R.id.otpThreeEt -> {
                     if (text.length == 1) {
                         nextView?.requestFocus()
-                    } else {
+                    } else {//
                     }
                 }
 
                 R.id.otpFourEt -> {
                     if (text.length == 1) {
                         nextView?.requestFocus()
-                    } else {
+                    } else {//
                     }
                 }
 

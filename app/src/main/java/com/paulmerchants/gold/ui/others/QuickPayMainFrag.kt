@@ -9,9 +9,7 @@ import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
 import com.paulmerchants.gold.databinding.CheckOutWindowFrPaymentBinding
 import com.paulmerchants.gold.ui.MainActivity
-import com.paulmerchants.gold.ui.auth.PhoenNumVerifiactionFragment
-import com.paulmerchants.gold.utility.disableButton
-import com.paulmerchants.gold.utility.enableButton
+
 import com.paulmerchants.gold.utility.hide
 import com.paulmerchants.gold.utility.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,16 +47,14 @@ class QuickPayMainFrag :
                         delay(2000)
                         binding.payConfirmedParentAnim.show()
                         delay(2000)
-                        findNavController().navigate(R.id.confirmPaymentDueFrag)
+//                        findNavController().navigate(R.id.confirmPaymentDueFrag)
                     }
                 }
             }
         }
     }
 
-    private fun showSuccessDialog() {
 
-    }
 
     private fun callMpinConfirmNextFocus() {
         //GenericTextWatcher here works only for moving to next EditText when a number is entered
@@ -94,28 +90,28 @@ class QuickPayMainFrag :
                 R.id.otpOneEt -> {
                     if (text.length == 1) {
                         nextView?.requestFocus()
-                    } else {
+                    } else {//
                     }
                 }
 
                 R.id.otpTwoEt -> {
                     if (text.length == 1) {
                         nextView?.requestFocus()
-                    } else {
+                    } else {//
                     }
                 }
 
                 R.id.otpThreeEt -> {
                     if (text.length == 1) {
                         nextView?.requestFocus()
-                    } else {
+                    } else {//
                     }
                 }
 
                 R.id.otpFourEt -> {
                     if (text.length == 1) {
                         nextView?.requestFocus()
-                    } else {
+                    } else {//
                     }
                 }
                 //You can use EditText4 same as above to hide the keyboard

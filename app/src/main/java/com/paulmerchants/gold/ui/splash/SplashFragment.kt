@@ -15,15 +15,15 @@ import com.paulmerchants.gold.BuildConfig
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
-import com.paulmerchants.gold.common.Constants.IS_USER_EXIST
-import com.paulmerchants.gold.common.Constants.LOGIN_WITH_MPIN
-import com.paulmerchants.gold.common.Constants.OTP_VERIFIED
-import com.paulmerchants.gold.common.Constants.SIGNUP_DONE
-import com.paulmerchants.gold.common.Constants.SPLASH_SCRN_VISITED
 import com.paulmerchants.gold.databinding.SplashFragmentBinding
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
+import com.paulmerchants.gold.utility.Constants.IS_USER_EXIST
+import com.paulmerchants.gold.utility.Constants.LOGIN_WITH_MPIN
+import com.paulmerchants.gold.utility.Constants.OTP_VERIFIED
+import com.paulmerchants.gold.utility.Constants.SIGNUP_DONE
+import com.paulmerchants.gold.utility.Constants.SPLASH_SCRN_VISITED
 import com.paulmerchants.gold.utility.InternetUtils
 import com.paulmerchants.gold.utility.hideViewGrp
 import com.paulmerchants.gold.utility.show
@@ -94,7 +94,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         else if (AppSharedPref.getBooleanValue(SPLASH_SCRN_VISITED) || !AppSharedPref.getBooleanValue(SIGNUP_DONE)) {
             findNavController().popBackStack(R.id.splashFragment, true)
             findNavController().navigate(R.id.phoenNumVerifiactionFragment)
-            Log.d(TAG, "initialize: phoenNumVerifiactionFragment SPLASH_SCRN_VISITED")
+            Log.d(TAG, "initialize: phoneNumVerificationFragment SPLASH_SCRN_VISITED")
 
         } else {
             Log.d(TAG, "initialize: else  ")
@@ -115,7 +115,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         binding.nextBtn.setOnClickListener {
             setIntroForNextCounter(splashViewModel.counter)
         }
-//        splashViewModel.getLogin()
+
         setUpNetworkCallback()
         if (!InternetUtils.isNetworkAvailable(requireContext())) {
             lifecycleScope.launch {
@@ -129,11 +129,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         Log.d(TAG, "setIntroForNextCounter: $counter")
         if (counter == 3) {
             binding.apply {
-//                personIv.startAnimation(
-//                    AnimationUtils.loadAnimation(
-//                        requireContext(), R.anim.slide_rotate
-//                    )
-//                )
+
                 lifecycleScope.launch {
                     delay(600)
                     AppSharedPref.putBoolean(SPLASH_SCRN_VISITED, true)
@@ -239,18 +235,13 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
     }
 
     private suspend fun animateOne() {
-//        AppAnimation.scaler(binding.imageView)
+
         delay(1000)
         animateSecondScreen(R.color.splash_screen_three, R.color.white)
         delay(1000)
         animateSecondScreen(R.color.splash_screen_two, R.color.splash_screen_one)
         delay(1000)
-//        try {
-//            AppUtility.progressBarAlert(requireContext())
-////            splashViewModel.getLogin2((activity as MainActivity).mLocation)
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
+
         showFirstPageIntro()
     }
 
@@ -266,9 +257,7 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
     private fun setUpNetworkCallback() {
         networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
-                // Network connection is available, perform actions here
-                // For example:
-                // fetchData()
+
                 Log.d(TAG, "onAvailable: ...........internet")
                 lifecycleScope.launch(Dispatchers.Main) {
                     animateOne()
@@ -320,8 +309,5 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         }
     }
 
-    override fun onPause() {
-        super.onPause()
 
-    }
 }

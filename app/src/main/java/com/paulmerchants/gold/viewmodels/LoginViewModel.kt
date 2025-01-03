@@ -9,8 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import callApiGeneric
-import com.paulmerchants.gold.common.Constants.LOGIN_WITH_MPIN
-import com.paulmerchants.gold.model.other.RespTxnHistory
+
 import com.paulmerchants.gold.model.requestmodels.ReqCustomerOtpNew
 import com.paulmerchants.gold.model.requestmodels.ReqGetOtp
 import com.paulmerchants.gold.model.requestmodels.ReqLoginWithMpin
@@ -24,6 +23,7 @@ import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
+import com.paulmerchants.gold.utility.Constants.LOGIN_WITH_MPIN
 import com.paulmerchants.gold.utility.Constants.REFRESH_TOKEN
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -35,7 +35,10 @@ class LoginViewModel @Inject constructor(
     private val apiParams: ApiParams
 ) : ViewModel() {
     private val TAG = this.javaClass.name
-    val txnHistoryData = MutableLiveData<RespTxnHistory>()
+    var timer: CountDownTimer? = null
+
+    val countNum = MutableLiveData<Long>()
+    val countStr = MutableLiveData<String>()
     val verifyOtp = MutableLiveData<BaseResponse<RespGetOtp>>()
     val getOtpLiveData = MutableLiveData<BaseResponse<RespGetOtp>>()
     val loginWithMpinLiveData = MutableLiveData<BaseResponse<RespLoginData>>()
@@ -44,29 +47,28 @@ class LoginViewModel @Inject constructor(
         Log.d(TAG, ": init_$TAG")
     }
 
-    var timer: CountDownTimer? = null
-    val countNum = MutableLiveData<Long>()
-    val countStr = MutableLiveData<String>()
+
+
 
     fun timerStart(millis: Long = 120000L) {
         timer = object : CountDownTimer(millis, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 var count = "${millisUntilFinished / 1000}"
                 val inSecond = millisUntilFinished / 1000
-                if (inSecond < 10) {
-                    count = "00:0$inSecond"
+                count = if (inSecond < 10) {
+                    "00:0$inSecond"
                 } else if (inSecond == 120L) {
-                    count = "2:00"
+                    "2:00"
                 } else if (inSecond > 60L) {
-                    count = if (inSecond - 60 < 10) {
+                    if (inSecond - 60 < 10) {
                         "1:0${inSecond - 60}"
                     } else {
                         "1:${inSecond - 60}"
                     }
                 } else if (inSecond < 60) {
-                    count = "00:$inSecond"
+                    "00:$inSecond"
                 } else {
-                    count = ""
+                    ""
                 }
                 Log.d("TAG", "hideAndShowOtpView: $count") //Didn’t receive? 00:30
                 countNum.postValue(millisUntilFinished / 1000)
@@ -149,7 +151,7 @@ class LoginViewModel @Inject constructor(
                 )
             },
             onSuccess = { data ->
-                AppSharedPref?.putStringValue(Constants.CUST_MOBILE, mobileNum)
+                AppSharedPref.putStringValue(Constants.CUST_MOBILE, mobileNum)
                 verifyOtp.postValue(data)
             },
             onClientError = { data ->
@@ -206,17 +208,17 @@ class LoginViewModel @Inject constructor(
                 },
                 onSuccess = { data ->
                     loginWithMpinLiveData.postValue(data)
-                    "${data?.message}".showSnackBar()
+                    "${data.message}".showSnackBar()
 
-                    AppSharedPref?.putBoolean(
+                    AppSharedPref.putBoolean(
                         LOGIN_WITH_MPIN,
                         true
                     )
-                    AppSharedPref?.putStringValue(
+                    AppSharedPref.putStringValue(
                         Constants.JWT_TOKEN,
                         data.data?.token.toString()
                     )
-                    AppSharedPref?.putStringValue(
+                    AppSharedPref.putStringValue(
                         REFRESH_TOKEN,
                         data.data?.refresh_token.toString()
                     )

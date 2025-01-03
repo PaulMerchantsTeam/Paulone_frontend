@@ -1,8 +1,7 @@
 package com.paulmerchants.gold.ui.btmsheetDg
 
-import android.app.Dialog
+//import com.razorpay.Checkout
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,7 +10,6 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.paulmerchants.gold.databinding.AppCloseDialogBinding
 import com.paulmerchants.gold.ui.MainActivity
-//import com.razorpay.Checkout
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -49,10 +47,6 @@ class AppCloseDialog : BottomSheetDialogFragment() {
         return quickPayPopupBinding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,31 +61,5 @@ class AppCloseDialog : BottomSheetDialogFragment() {
 
     }
 
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState)
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
-
-    override fun onCancel(dialog: DialogInterface) {
-        super.onCancel(dialog)
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-
-    }
-
-    override fun setStyle(style: Int, theme: Int) {
-        super.setStyle(style, theme)
-    }
 
 }

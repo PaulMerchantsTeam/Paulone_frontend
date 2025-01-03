@@ -25,14 +25,12 @@ class ResetMpinViewModel @Inject constructor(
 
     private val apiParams: ApiParams,
 ) : ViewModel() {
-    private val TAG = this.javaClass.name
+
     val responseResetPin = MutableLiveData<BaseResponse<Any>>()
     val responseResetForgetPin = MutableLiveData<BaseResponse<Any>>()
 
 
-    init {
-        Log.d(TAG, ": init_$TAG")
-    }
+
 
     fun changeMpin(progress :Boolean = true,
         confirmMPin: String,

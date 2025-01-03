@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
-import com.paulmerchants.gold.common.Constants
 import com.paulmerchants.gold.databinding.LoginWithMobileMpinBinding
 import com.paulmerchants.gold.databinding.OtpFillLayoutDialogBinding
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
@@ -18,6 +17,7 @@ import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
+import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
 import com.paulmerchants.gold.utility.InternetUtils
 import com.paulmerchants.gold.viewmodels.LoginViewModel
@@ -34,7 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class LoginScreenFrag :
     BaseFragment<LoginWithMobileMpinBinding>(LoginWithMobileMpinBinding::inflate) {
     private var customDialog: androidx.appcompat.app.AlertDialog? = null
-
     private val loginViewModel: LoginViewModel by viewModels()
 
     override fun LoginWithMobileMpinBinding.initialize() {
@@ -63,7 +62,7 @@ class LoginScreenFrag :
 
         setupMpinEditTextFocus()
         (activity as? MainActivity)?.apply {
-//            commonViewModel.getUnderMaintenanceStatus(requireContext())
+
             checkForDownFromRemoteConfig()
             commonViewModel.isRemoteConfigCheck.observe(viewLifecycleOwner) {
                 it?.let {
@@ -105,18 +104,21 @@ class LoginScreenFrag :
         }
         loginViewModel.verifyOtp.observe(viewLifecycleOwner) { verifyOtpResponse ->
             verifyOtpResponse?.let {
-                if (it.status_code == 200) {
-                    Log.e("TAG", "onStart: .=======${it.data}")
-                    customDialog?.dismiss()
-                    loginViewModel.timer?.cancel()
-                    loginViewModel.countStr.postValue("")
-                    findNavController().navigate(R.id.resetMpinDialog)
-                }else if (it.status_code == 498){
-                    customDialog?.dismiss()
-                    it.message.showSnackBar()
-                }
-                else {
-                    Log.e("TAG", "onStart: .=======${it.data}")
+                when (it.status_code) {
+                    200 -> {
+                        Log.e("TAG", "onStart: .=======${it.data}")
+                        customDialog?.dismiss()
+                        loginViewModel.timer?.cancel()
+                        loginViewModel.countStr.postValue("")
+                        findNavController().navigate(R.id.resetMpinDialog)
+                    }
+                    498 -> {
+                        customDialog?.dismiss()
+                        it.message.showSnackBar()
+                    }
+                    else -> {
+                        Log.e("TAG", "onStart: .=======${it.data}")
+                    }
                 }
             }
         }

@@ -38,11 +38,14 @@ class ProfileViewModel @Inject constructor(
     }
 
     var isCalled: Boolean = true
+    var timer: CountDownTimer? = null
+
     val verifyOtp = MutableLiveData<BaseResponse<RespGetOtp>>()
     val getOtpLiveData = MutableLiveData<BaseResponse<RespGetOtp>>()
     val logoutLiveData = MutableLiveData<BaseResponse<Any>>()
+    val getRespCustomersDetailsLiveData = MutableLiveData<BaseResponse<RespGetCustomer>>()
 
-    var timer: CountDownTimer? = null
+
     val countNum = MutableLiveData<Long>()
     val countStr = MutableLiveData<String>()
 
@@ -50,7 +53,6 @@ class ProfileViewModel @Inject constructor(
         Log.d(TAG, ": init_$TAG")
     }
 
-    val getRespCustomersDetailsLiveData = MutableLiveData<BaseResponse<RespGetCustomer>>()
 
     fun timerStart(millis: Long = 120000L) {
         timer = object : CountDownTimer(millis, 1000) {
@@ -110,7 +112,7 @@ class ProfileViewModel @Inject constructor(
                 )
                 AppSharedPref.putStringValue(
                     CUST_EMAIL,
-                    data?.data?.email.toString()
+                    data.data?.email.toString()
                 )
                 getRespCustomersDetailsLiveData.postValue(
                     data
@@ -275,7 +277,7 @@ class ProfileViewModel @Inject constructor(
             },
             onSuccess = { data ->
 
-                AppSharedPref?.putStringValue(Constants.CUST_MOBILE, mobileNum)
+                AppSharedPref.putStringValue(Constants.CUST_MOBILE, mobileNum)
 
                 verifyOtp.postValue(data)
 

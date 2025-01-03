@@ -65,29 +65,29 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
 
         resetMpinViewModel.responseResetPin.observe(viewLifecycleOwner) {
             it?.let {
-//                if (it.isSuccessful) {
-                if (it.status_code == 200) {
-                    "${it?.message}".showSnackBar()
-                    findNavController().popBackStack(R.id.resetMPinFrag, true)
-                    findNavController().popBackStack(R.id.profileFrag, true)
-                    findNavController().popBackStack(R.id.homeScreenFrag, true)
-                    findNavController().navigate(R.id.loginScreenFrag)
-                } else if(it.status_code == 498){
-                    commonViewModel.refreshToken(requireContext())
-                }
-                else {
-                    "${it?.message}".showSnackBar()
+
+                when (it.status_code) {
+                    200 -> {
+                        "${it.message}".showSnackBar()
+                        findNavController().popBackStack(R.id.resetMPinFrag, true)
+                        findNavController().popBackStack(R.id.profileFrag, true)
+                        findNavController().popBackStack(R.id.homeScreenFrag, true)
+                        findNavController().navigate(R.id.loginScreenFrag)
+                    }
+                    498 -> {
+                        commonViewModel.refreshToken(requireContext())
+                    }
+                    else -> {
+                        "${it.message}".showSnackBar()
+                    }
                 }
 
-//                }
-//                else{
-//                    "${it.body()?.message}".showSnackBar()
-//                }
+
             }
         }
         commonViewModel.refreshTokenLiveData.observe(viewLifecycleOwner) {
             it?.let {
-//                if (it.isSuccessful) {
+
                 if (it.status_code == 200) {
                     resetMpinViewModel.changeMpin(progress= false,
                         confirmMPin = "${binding.pinOneCnfEt.text}${binding.pinTwoCnfEt.text}${binding.pinThreeCnfEt.text}${binding.pinFourCnfEt.text}",
@@ -102,23 +102,26 @@ class ResetMPinFrag : BaseFragment<ResetMPinBinding>(ResetMPinBinding::inflate) 
         }
         resetMpinViewModel.responseResetForgetPin.observe(viewLifecycleOwner) {
             it?.let {
-//                if (it.isSuccessful) {
-                if (it.status_code == 200) {
-                    "${it?.message}".showSnackBar()
-                    findNavController().popBackStack(R.id.resetMPinFrag, true)
-                    findNavController().popBackStack(R.id.profileFrag, true)
-                    findNavController().popBackStack(R.id.homeScreenFrag, true)
-                    findNavController().navigate(R.id.loginScreenFrag)
-                }else if (it.status_code == 498){
-                    "${it?.message}".showSnackBar()
-                    findNavController().popBackStack(R.id.resetMPinFrag, true)
-                    findNavController().popBackStack(R.id.profileFrag, true)
-                    findNavController().navigate(R.id.profileFrag)
+
+                when (it.status_code) {
+                    200 -> {
+                        "${it.message}".showSnackBar()
+                        findNavController().popBackStack(R.id.resetMPinFrag, true)
+                        findNavController().popBackStack(R.id.profileFrag, true)
+                        findNavController().popBackStack(R.id.homeScreenFrag, true)
+                        findNavController().navigate(R.id.loginScreenFrag)
+                    }
+                    498 -> {
+                        "${it.message}".showSnackBar()
+                        findNavController().popBackStack(R.id.resetMPinFrag, true)
+                        findNavController().popBackStack(R.id.profileFrag, true)
+                        findNavController().navigate(R.id.profileFrag)
+                    }
+                    else -> {
+                        "${it.message}".showSnackBar()
+                    }
                 }
-                else {
-                    "${it?.message}".showSnackBar()
-                }
-//                }
+
             }
         }
     }

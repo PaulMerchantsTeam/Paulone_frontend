@@ -8,39 +8,28 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import callApiGeneric
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
-import com.google.gson.Gson
-import com.paulmerchants.gold.BuildConfig
-import com.paulmerchants.gold.model.responsemodels.BaseResponse
-import com.paulmerchants.gold.model.responsemodels.RespMTransaction
 import com.paulmerchants.gold.model.requestmodels.ReqCreateOrder
 import com.paulmerchants.gold.model.requestmodels.ReqPendingInterstDue
 import com.paulmerchants.gold.model.requestmodels.RequestMTransaction
-import com.paulmerchants.gold.model.other.RespCommon
-import com.paulmerchants.gold.model.other.RespCustomCustomerDetail
-import com.paulmerchants.gold.model.responsemodels.RespGetCustomer
-import com.paulmerchants.gold.model.other.RespPaymentMethod
-import com.paulmerchants.gold.model.other.RespUpdatePaymentStatus
-import com.paulmerchants.gold.model.responsemodels.RespDataDown
-
-import  callApiGeneric
+import com.paulmerchants.gold.model.responsemodels.BaseResponse
 import com.paulmerchants.gold.model.responsemodels.RespCreateOrder
+import com.paulmerchants.gold.model.responsemodels.RespDataDown
+import com.paulmerchants.gold.model.responsemodels.RespGetCustomer
+import com.paulmerchants.gold.model.responsemodels.RespMTransaction
+import com.paulmerchants.gold.model.responsemodels.RespPaymentMethod
 import com.paulmerchants.gold.remote.ApiParams
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.AppUtility.showSnackBarForPayment
 import com.paulmerchants.gold.utility.Constants
-import com.paulmerchants.gold.utility.decryptKey
-import com.paulmerchants.gold.utility.encryptKey
-import com.paulmerchants.gold.utility.showCustomDialogFoPaymentError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,17 +39,14 @@ class PaymentViewModel @Inject constructor(
 ) : ViewModel() {
     private val TAG = this.javaClass.name
     var isCalled = true
-    val responseCreateOrder =
-        MutableLiveData<BaseResponse<com.paulmerchants.gold.model.responsemodels.RespCreateOrder>?>()
+    private var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
 
+    val responseCreateOrder = MutableLiveData<BaseResponse< RespCreateOrder>?>()
     val respPaymentUpdate = MutableLiveData<BaseResponse<RespMTransaction>?>()
-    val getPaymentMethod =
-        MutableLiveData<BaseResponse<List<com.paulmerchants.gold.model.responsemodels.RespPaymentMethod>>?>()
-
+    val getPaymentMethod = MutableLiveData<BaseResponse<List<RespPaymentMethod>>?>()
     val getRespCustomersDetailsLiveData = MutableLiveData<BaseResponse<RespGetCustomer>>()
     val isUnderMainLiveData = MutableLiveData<BaseResponse<RespDataDown>>()
     val isRemoteConfigCheck = MutableLiveData<Boolean>()
-    var remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
 
     init {
         Log.d(TAG, ": init_$TAG")
@@ -137,7 +123,7 @@ class PaymentViewModel @Inject constructor(
                 apiParams.isUnderMaintenance()
             },
             onSuccess = { data ->
-                if (data?.data?.down == false) {
+                if (data.data?.down == false) {
                     createOrder(reqCreateOrder, context)
                 } else {
                     isUnderMainLiveData.postValue(data)
@@ -198,7 +184,7 @@ class PaymentViewModel @Inject constructor(
                 )
                 AppSharedPref.putStringValue(
                     Constants.CUST_EMAIL,
-                    data?.data?.email.toString()
+                    data.data?.email.toString()
                 )
                 getRespCustomersDetailsLiveData.postValue(
                     data
@@ -246,7 +232,7 @@ class PaymentViewModel @Inject constructor(
         viewModelScope.launch {
 
 
-            callApiGeneric<List<com.paulmerchants.gold.model.responsemodels.RespPaymentMethod>>(
+            callApiGeneric<List<RespPaymentMethod>>(
                 request = "",
                 progress = false,
                 context = context,
@@ -268,12 +254,10 @@ class PaymentViewModel @Inject constructor(
                             data.message.showSnackBarForPayment()
 
 
-
                         }
 
                         401 -> {
                             data.message.showSnackBarForPayment()
-
 
 
                         }
@@ -298,7 +282,7 @@ class PaymentViewModel @Inject constructor(
         }
 
 
-    fun createOrder(reqCreateOrder: ReqCreateOrder, context: Context) =
+    private fun createOrder(reqCreateOrder: ReqCreateOrder, context: Context) =
         viewModelScope.launch {
 
             callApiGeneric<RespCreateOrder>(
@@ -321,7 +305,6 @@ class PaymentViewModel @Inject constructor(
                     when (data.status_code) {
                         400 -> {
                             data.message.showSnackBarForPayment()
-
 
 
                         }
@@ -418,7 +401,6 @@ class PaymentViewModel @Inject constructor(
                             respPaymentUpdate.postValue(data)
 
 
-
                         }
 
 
@@ -434,7 +416,7 @@ class PaymentViewModel @Inject constructor(
                 },
                 onUnexpectedError = { errorMessage ->
 
-                     errorMessage.showSnackBarForPayment()
+                    errorMessage.showSnackBarForPayment()
 
                 }
 

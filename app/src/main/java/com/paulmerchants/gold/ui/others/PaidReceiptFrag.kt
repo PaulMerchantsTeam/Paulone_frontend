@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PaidReceiptFrag :
     BaseFragment<TransacReceiptBinding>(TransacReceiptBinding::inflate) {
-    var orderId: String? = ""
+    private var orderId: String? = ""
     var payment_id: String? = ""
     private val txnReceiptViewModel: TxnReceiptViewModel by viewModels()
     private val commonViewModel: CommonViewModel by viewModels()
@@ -44,29 +44,31 @@ class PaidReceiptFrag :
         }
 
         txnReceiptViewModel.paidReceipt.observe(viewLifecycleOwner) {
-            if (it.status_code == 200){
-                it?.let {
-                    if (it.data?.payment_details_dto == null && it.data?.acc_no == null) {
+            when (it.status_code) {
+                200 -> {
+                    it?.let {
+                        if (it.data?.payment_details_dto == null && it.data?.acc_no == null) {
 
 
-                        requireActivity().showCustomDialogForError(
-                            header = "Error!",
-                            message = "Unable to retrieve the transaction details. Please try again in few moments.",
-                            isClick = {
-//                            findNavController().navigateUp()
-                                findNavController().popBackStack()
-                            })
+                            requireActivity().showCustomDialogForError(
+                                header = "Error!",
+                                message = "Unable to retrieve the transaction details. Please try again in few moments.",
+                                isClick = {
+        //                            findNavController().navigateUp()
+                                    findNavController().popBackStack()
+                                })
+                        }
+                        setData(it.data)
+
+
                     }
-                    setData(it.data)
-
-
                 }
-            }
-            else if (it.status_code == 498){
-                commonViewModel.refreshToken(requireContext())
-            }
-            else{
-                it.message.showSnackBar()
+                498 -> {
+                    commonViewModel.refreshToken(requireContext())
+                }
+                else -> {
+                    it.message.showSnackBar()
+                }
             }
 
         }
@@ -75,10 +77,10 @@ class PaidReceiptFrag :
             if(it.status_code == 200){
                 if (orderId?.isNotEmpty() == true){
 
-                    orderId?.let { txnReceiptViewModel.getPaidReceipt(orderId = it, context = requireContext()) }
+                    orderId?.let { it1 -> txnReceiptViewModel.getPaidReceipt(orderId = it1, context = requireContext()) }
                 }else{
-                    payment_id?.let {
-                        txnReceiptViewModel.getPaidReceipt(paymentId = it, context = requireContext())
+                    payment_id?.let { it1 ->
+                        txnReceiptViewModel.getPaidReceipt(paymentId = it1, context = requireContext())
                     }
                 }
             }
@@ -139,14 +141,9 @@ class PaidReceiptFrag :
             paidToNameTv.text = it?.acc_no ?: "NA"
             reasonOFCancelTv.text = it?.payment_details_dto?.error_reason ?: "NA"
             custToNameTv.text = it?.cust_id ?: "NA"
-//            cardNumTv.text = ""
-//            paidToNameTv.text = ""
-//            paidToCardNumTv.text = ""
+
         }
     }
 
-    override fun onResume() {
-        super.onResume()
 
-    }
 }

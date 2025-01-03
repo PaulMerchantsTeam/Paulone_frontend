@@ -3,16 +3,14 @@ package com.paulmerchants.gold.ui.others
 import android.os.Bundle
 import android.util.Log
 import android.view.animation.AnimationUtils
-import androidx.appcompat.widget.ViewUtils
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.BaseFragment
-import com.paulmerchants.gold.common.Constants
-import com.paulmerchants.gold.common.Constants.AMOUNT_PAYABLE
 import com.paulmerchants.gold.databinding.LayoutLoanEmiProceedToPayBinding
 import com.paulmerchants.gold.utility.*
+import com.paulmerchants.gold.utility.Constants.AMOUNT_PAYABLE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -30,10 +28,7 @@ class ProceedToPay :
         super.onCreate(savedInstanceState)
         bbpsHeaderVale = arguments?.getString(Constants.BBPS_HEADER, "")
         amountToPay = arguments?.getDouble(AMOUNT_PAYABLE)
-        Log.d(
-            "TAGHeader",
-            "onCreate--------------amountToPay----------$amountToPay--------: $bbpsHeaderVale"
-        )
+
     }
 
     override fun onStart() {
@@ -54,7 +49,7 @@ class ProceedToPay :
             val headerBundle = Bundle().apply {
                 putString(Constants.BBPS_HEADER, bbpsHeaderVale)
             }
-            headerLoan.titlePageTv.setText(bbpsHeaderVale.toString())
+            headerLoan.titlePageTv.text = bbpsHeaderVale.toString()
             Log.d("TAG", "onResume: $bhmValue")
 
             prePaidcardSelectParent.setOnClickListener {
@@ -85,10 +80,7 @@ class ProceedToPay :
                     arrowDowmBhmIv.setImageResource(R.drawable.cross_icon)
                     upiMethodParent.show()
                     verifyUpiBtn.setOnClickListener {
-//                        showCustomDialogOTPVerify(
-//                            context =requireContext(),
-//                           title =  "OTP send to the number ending with *4555"
-//                        )
+
                         addNewUpiTv.hide()
                         selectUpiIdParent.show()
                         upiCardTv.show()
@@ -99,11 +91,6 @@ class ProceedToPay :
                     }
 
 
-//                    upiMethodParent.startAnimation(
-//                        AnimationUtils.loadAnimation(
-//                            requireContext(), R.anim.slide_down
-//                        )
-//                    )
                     //wallet
                     walletMethodParent.hide()
                     walletParent.setBackgroundResource(R.drawable.card_sky_rect_6)
@@ -115,11 +102,7 @@ class ProceedToPay :
                     bhmValue = false
                 } else {
                     upiMethodParent.hide()
-//                    upiMethodParent.startAnimation(
-//                        AnimationUtils.loadAnimation(
-//                            requireContext(), R.anim.slide_up
-//                        )
-//                    )
+
                     arrowDowmBhmIv.setImageResource(R.drawable.arrow_down_black)
                     bhmUpiParent.setBackgroundResource(R.drawable.card_sky_rect_6)
                     bhmValue = true
@@ -169,7 +152,7 @@ class ProceedToPay :
                     bhmUpiParent.setBackgroundResource(R.drawable.card_sky_rect_6)
                     arrowDowmBhmIv.setImageResource(R.drawable.arrow_down_black)
                     addCardBtn.setOnClickListener {
-                        findNavController().navigate(R.id.addCardFrag, headerBundle)
+//                        findNavController().navigate(R.id.addCardFrag, headerBundle)
                     }
                     creditValue = false
                 } else {
@@ -188,27 +171,31 @@ class ProceedToPay :
 
 
             proceedToPayBtn.setOnClickListener {
-                if (proceedBtn == "1") {
-                    paymentModeTv.show()
-                    paymentModeCardTv.show()
-                    preferredModeParent.hide()
-                    otherModeParent.hide()
-                    otpFill.otpParent.show()
-                    proceedBtn = "3"
-                } else if (proceedBtn == "2") {
-                    proceedToPayParent.hide()
-                    preferredModeParent.hide()
-                    otherModeParent.hide()
-                    timeCountTv.show()
-                    openApplicationTv.show()
-                    lifecycleScope.launch {
-                        delay(1000)
-                        findNavController().navigate(R.id.paymentConfirmed, headerBundle)
+                when (proceedBtn) {
+                    "1" -> {
+                        paymentModeTv.show()
+                        paymentModeCardTv.show()
+                        preferredModeParent.hide()
+                        otherModeParent.hide()
+                        otpFill.otpParent.show()
+                        proceedBtn = "3"
+                    }
+                    "2" -> {
+                        proceedToPayParent.hide()
+                        preferredModeParent.hide()
+                        otherModeParent.hide()
+                        timeCountTv.show()
+                        openApplicationTv.show()
+                        lifecycleScope.launch {
+                            delay(1000)
+//                            findNavController().navigate(R.id.paymentConfirmed, headerBundle)
+
+                        }
 
                     }
-
-                } else if (proceedBtn == "3") {
-                    findNavController().navigate(R.id.paymentConfirmed, headerBundle)
+                    "3" -> {
+//                        findNavController().navigate(R.id.paymentConfirmed, headerBundle)
+                    }
                 }
 
             }
