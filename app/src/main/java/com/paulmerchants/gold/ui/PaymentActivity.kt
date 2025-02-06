@@ -82,6 +82,9 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     private var isDown: Boolean = false
     private var countDownTimer: CountDownTimer? = null
 
+    private var millisUntilTarget: Long = 0 // Stores remaining time
+    private var isTimerRunning: Boolean = false // Tracks if the timer is running
+
     override fun getViewBinding() = PaymentsModeNewBinding.inflate(layoutInflater)
     override val mViewModel: PaymentViewModel by viewModels()
     lateinit var locationProvider: LocationProvider
@@ -103,8 +106,10 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         context = WeakReference(this)
-
-
+        startTimeCountdown1() // Restart the timer
+        binding.headerBillMore.timerTextView.show()
+//        startTimeCountdown()
+//        binding.headerBillMore.timerTextView.show()
         AppUtility.changeStatusBarWithReqdColor(this, R.color.pg_color)
         val bundle = intent.extras
         amountToPay = bundle?.getDouble(Constants.AMOUNT_PAYABLE, 0.0)
@@ -937,25 +942,49 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         alert.show()
     }
 
-    private fun sessionExpiredMsg() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setMessage("Your Session is Expired, Please try again later")
-            .setCancelable(false)
-            .setPositiveButton(
-                "OK"
-            ) { dialog, _ ->
-                dialog.dismiss()
-
-
-                val intent = Intent(this, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-                finish()
-            }
-
-        val alert: AlertDialog = builder.create()
-        alert.show()
+//    private fun sessionExpiredMsg() {
+//        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+//        builder.setMessage("Your Session is Expired, Please try again later")
+//            .setCancelable(false)
+//            .setPositiveButton(
+//                "OK"
+//            ) { dialog, _ ->
+//                dialog.dismiss()
+//
+//
+//                val intent = Intent(this, MainActivity::class.java)
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+//                startActivity(intent)
+//                finish()
+//            }
+//
+//        val alert: AlertDialog = builder.create()
+//        alert.show()
+//    }
+private fun sessionExpiredMsg() {
+    // Check if the activity is valid
+    if (isFinishing || isDestroyed) {
+        // Skip showing the dialog if the activity is not valid
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        return
     }
+
+    val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+    builder.setMessage("Your Session is Expired, Please try again later")
+        .setCancelable(false)
+        .setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+        }
+    val alert: AlertDialog = builder.create()
+    alert.show()
+}
+
 
     private fun sendRequest() {
         Log.d("TAG", "sendRequest: .......$payload")
@@ -1024,7 +1053,11 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         super.onPause()
         Log.d(TAG, "onPause:......")
         paymentViewModel.isCalled = false
-        countDownTimer?.cancel()
+//        countDownTimer?.cancel()
+//        AppSharedPref.getLongValue("TimerPrefs")
+//        AppSharedPref.putLongValue("RemainingTime", millisUntilTarget)
+
+
     }
 
     override fun onRequestPermissionsResult(
@@ -1089,7 +1122,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                 )
             }
         } else {
-            "Amount: Some thing went wrong".showSnackBar()
+            "Amount: Something went wrong".showSnackBar()
         }
     }
 
@@ -1139,7 +1172,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     val bankNames = ArrayList<String>()
                     val bankListJson = JSONObject(it).getJSONObject("netbanking")
                     val itr: Iterator<String> = bankListJson.keys()
-                    while (itr.hasNext()) {
+                        while (itr.hasNext()) {
                         val key = itr.next()
                         bankKeys.add(key)
                         bankNames.add(bankListJson.getString(key))
@@ -1404,8 +1437,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStart() {
         super.onStart()
-        startTimeCountdown()
-        binding.headerBillMore.timerTextView.show()
+
 //        binding.headerBillMore.timerTextViewBg.show()
 
     }
@@ -1450,6 +1482,78 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         }
 
         countDownTimer?.start()
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun startTimeCountdown1() {
+        if (millisUntilTarget <= 0) {
+            // If the target time has not been set, calculate it for the first time
+            val currentTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"))
+
+            val targetISTTime = currentTime.plusMinutes(10)
+            millisUntilTarget = ChronoUnit.MILLIS.between(currentTime, targetISTTime)
+        }
+        AppSharedPref.putLongValue("CurrentTime", System.currentTimeMillis())
+
+        AppSharedPref.putLongValue("TargetTime", System.currentTimeMillis() + millisUntilTarget)
+
+        // Cancel the existing timer if it's running
+        countDownTimer?.cancel()
+
+        // Start the countdown timer
+        countDownTimer = object : CountDownTimer(millisUntilTarget, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                millisUntilTarget = millisUntilFinished // Update the remaining time
+                isTimerRunning = true
+
+                // Calculate hours, minutes, and seconds
+                val hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished)
+                val minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60
+                val seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60
+
+                // Update the timer text view
+                binding.headerBillMore.timerTextView.text = if (hours.toInt() == 0) {
+                    String.format("%02d:%02d", minutes, seconds)
+                } else {
+                    String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                }
+            }
+
+            override fun onFinish() {
+                isTimerRunning = false
+                millisUntilTarget = 0 // Reset the remaining time
+                sessionExpiredMsg() // Handle countdown completion
+            }
+        }.start()
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onResume() {
+        super.onResume()
+        // Restart the timer from where it left off if it was running
+//        if (millisUntilTarget > 0 && !isTimerRunning) {
+        startTimeCountdown1()
+        binding.headerBillMore.timerTextView.show()
+////
+//        }
+
+//        val remainingTime = AppSharedPref.getLongValue("RemainingTime")
+//
+//        if (remainingTime > 0) {
+//            val savedCurrentTime = AppSharedPref.getLongValue("currentTime")
+//            val currentTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"))
+//            val targetISTTime = currentTime.minusSeconds(savedCurrentTime)
+//            val targetISTTime1 = ChronoUnit.MILLIS.between(currentTime, targetISTTime)
+//            if (targetISTTime1 > 0) {
+//                millisUntilTarget = targetISTTime1
+//                startTimeCountdown1() // Restart the timer
+//                binding.headerBillMore.timerTextView.show()
+//            }
+//
+//        }
     }
 
     override fun onStop() {

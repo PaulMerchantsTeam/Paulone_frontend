@@ -51,6 +51,7 @@ class PhoenNumVerifiactionFragment :
     private var isOtpVerified: Boolean = false
     private var pinValue: Int? = null
     private val authViewModel: AuthViewModel by viewModels()
+     var isGetOtpClicked: Boolean = false
 
     override fun PhoneAuthFragmentBinding.initialize() {
         changeStatusBarWithReqdColor(requireActivity(), R.color.pg_color)
@@ -237,14 +238,20 @@ class PhoenNumVerifiactionFragment :
             if (InternetUtils.isNetworkAvailable(requireContext())) {
                 if (!isMobileEntered) {
                     if (binding.etPhoenNum.text.isNotEmpty()) {
+
 //                        if ((activity as MainActivity).mLocation != null) {
                         Log.e("TAG", "onStart: /.....11")
-                        authViewModel.getCustomer(
-                            findNavController(),
-                            binding.etPhoenNum.text.toString(),
-                            (activity as MainActivity).mLocation,
-                            requireActivity()
-                        )
+                        if (!isGetOtpClicked){
+                            isGetOtpClicked = true
+
+                            authViewModel.getCustomer(
+                                findNavController(),
+                                binding.etPhoenNum.text.toString(),
+                                (activity as MainActivity).mLocation,
+                                requireActivity()
+                            )
+                        }
+
 //                        } else {
 //                            Log.e("TAG", "onStart: /////---12")
 //                            (activity as MainActivity).updateLocation()

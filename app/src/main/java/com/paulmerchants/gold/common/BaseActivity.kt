@@ -81,29 +81,29 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
         }
     }
 
-    fun isAppInBackground(context: Context): Boolean {
-        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val appProcesses = activityManager.runningAppProcesses ?: return true
+//    fun isAppInBackground(context: Context): Boolean {
+//        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+//        val appProcesses = activityManager.runningAppProcesses ?: return true
+//
+//        for (appProcess in appProcesses) {
+//            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+//                if (appProcess.processName == context.packageName) {
+//                    return false
+//                }
+//            }
+//        }
+//        return true
+//    }
 
-        for (appProcess in appProcesses) {
-            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                if (appProcess.processName == context.packageName) {
-                    return false
-                }
-            }
-        }
-        return true
-    }
-
-    private fun onAppTimeout() {
-
-        val mIntent = Intent(applicationContext, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-        startActivity(mIntent)
-        finish()
-
-    }
+//    private fun onAppTimeout() {
+//
+//        val mIntent = Intent(applicationContext, MainActivity::class.java).apply {
+//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//        }
+//        startActivity(mIntent)
+//        finish()
+//
+//    }
 
 
     private fun closeApp() {
@@ -135,15 +135,15 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
     override fun onStop() {
         super.onStop()
         dialog?.dismiss()
-        if (isAppInBackground(this)) {
-
-            if (AppSharedPref.getBooleanValue(
-                    Constants.LOGIN_WITH_MPIN
-                )
-            ) {
-                onAppTimeout()
-            }
-        }
+//        if (isAppInBackground(this)) {
+//
+//            if (AppSharedPref.getBooleanValue(
+//                    Constants.LOGIN_WITH_MPIN
+//                )
+//            ) {
+//                onAppTimeout()
+//            }
+//        }
     }
 
 

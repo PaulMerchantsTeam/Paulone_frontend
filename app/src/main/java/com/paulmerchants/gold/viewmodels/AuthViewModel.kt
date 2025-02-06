@@ -9,9 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import com.paulmerchants.gold.BuildConfig
-import com.paulmerchants.gold.R
 import com.paulmerchants.gold.common.Constants.PHONE_LOGIN
 import com.paulmerchants.gold.model.ReqCustomerOtpNew
 import com.paulmerchants.gold.model.ReqSetMPin
@@ -204,7 +202,7 @@ class AuthViewModel @Inject constructor(
 //                    val decryptData = decryptKey(
 //                        BuildConfig.SECRET_KEY_GEN, response.body()?.data
 //                    )
-
+                    timerStart()
 
                 }
 

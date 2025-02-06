@@ -24,15 +24,15 @@ android {
         applicationId "com.paulmerchants.gold"
         minSdk 23
         targetSdk 34
-        versionCode 15
-        versionName "1.0.15"
+        versionCode 18
+        versionName "1.0.18"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            debuggable false
+            debuggable true
             minifyEnabled true
             shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -106,7 +106,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-config-ktx:21.0.2'
 
     implementation 'com.itextpdf:itextpdf:5.5.10'
-    implementation 'com.razorpay:customui:3.9.11'
+    implementation 'com.razorpay:customui:3.9.22'
 
     def lifecycle_version = "2.4.0"
     implementation 'androidx.core:core-ktx:1.7.0'

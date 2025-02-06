@@ -41,6 +41,8 @@
 
 -dontwarn com.razorpay.**
 -keep class com.razorpay.** {*;}
+#-keep class android.webkit.**{*;}
+#-keep class androidx.webkit.**{*;}
 
 -optimizations !method/inlining/*
 
