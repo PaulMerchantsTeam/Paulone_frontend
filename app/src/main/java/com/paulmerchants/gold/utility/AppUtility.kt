@@ -168,7 +168,12 @@ object AppUtility {
                 )
             )
         }*/
-
+//    fun restartApp(context: Context) {
+//        val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+//        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+//        context.startActivity(intent)
+//        Runtime.getRuntime().exit(0) // Forcefully close app
+//    }
     fun openUrl(context: Context, uri: String) {
         val openURL = Intent(Intent.ACTION_VIEW)
         openURL.data = Uri.parse(uri)
@@ -683,7 +688,7 @@ object AppUtility {
             view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).maxLines = 5
             show()
         }
-    } catch (e: Exception) {
+    } catch (e: Exception) { 
         e.printStackTrace()
     }
 

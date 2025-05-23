@@ -392,6 +392,19 @@
     <string name="do_you_want_to_close_this_app">Do you want to close this app?</string>
     <string name="forget_m_pin"><u>Forget M-Pin?</u></string>
     <string name="about_us">About Us</string>
+    <string name="visit_site">visit <u>www.LTFINANCE.com</u> > Login > \nQuick Pay > Pay for Gold Loan</string>
+    <string name="visit_site_hin">  <u>www.LTFINANCE.com</u> पर जाएं > लॉगिन > \nत्वरित भुगतान > सोने के ऋण के लिए भुगतान करें> </string>
+
+   <string name="visit_lnt">To know more about gold loan &amp; locate branches, visit <u><b>www.LTFINANCE.com</b></u></string>
+   <string name="visit_lnt_hin">सोने के ऋण के बारे में अधिक जानने और शाखाएँ खोजने के लिए, <u><b>www.LTFINANCE.com</b></u> पर जाएँ</string>
+
+    <string name="dwld_planet_app">You may also download \n<u><b>Planet App by L&amp;T Finance</b></u></string>
+    <string name="dwld_planet_app_hin">आप इसे डाउनलोड भी कर सकते हैं \n<u><b>Planet App by L&amp;T Finance</b></u></string>
+
+
+    <string name="lnt_text_eng">We are happy to inform you that the <b>Gold Loan</b> Portfolio of Paul Merchants Finance Private Limited (PMFPL) has been <b>transferred to L&amp;T Finance limited.</b> </string>
+    <string name="lnt_text_hi">हमें आपको सूचित करते हुए खुशी हो रही है कि पॉल मर्चेंट्स फाइनेंस प्राइवेट लिमिटेड (PMFPL) का <b>गोल्ड लोन</b> पोर्टफोलियो <b>L&amp;T फाइनेंस लिमिटेड को स्थानांतरित कर दिया गया है।</b></string>
+
     <string name="status">Status:</string>
     <string name="privacy_policy_"><b><u>Privacy &amp; Policy</u></b></string>
     <string name="t_and_c"> and <b><u>Terms &amp; Conditions</u></b></string>

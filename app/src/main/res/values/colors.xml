@@ -87,4 +87,12 @@
     <color name="hide_card_num">#7C7D7E</color>
 
     <color name="gray_2">#646464</color>
+
+
+    <color name="black_lnt">#0A0A0A</color>
+    <color name="button_lnt">#FFCB05</color>
+    <color name="divide_lnt">#806603</color>
+    <color name="or_lnt">#CCA204</color>
+
+
 </resources>

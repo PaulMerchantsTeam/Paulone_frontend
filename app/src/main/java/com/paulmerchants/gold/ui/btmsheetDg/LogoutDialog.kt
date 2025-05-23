@@ -3,6 +3,7 @@ package com.paulmerchants.gold.ui.btmsheetDg
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Build
 import android.os.Build.VERSION
 import android.os.Bundle
@@ -92,15 +93,15 @@ class LogoutDialog : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         quickPayPopupBinding.loginParentBtn.setOnClickListener {
             profileViewModel.logout(
-                findNavController(),
+                findNavController(),requireContext()
             )
+
             dismiss()
         }
 

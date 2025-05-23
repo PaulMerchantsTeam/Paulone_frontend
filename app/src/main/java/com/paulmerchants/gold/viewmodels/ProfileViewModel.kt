@@ -1,5 +1,6 @@
 package com.paulmerchants.gold.viewmodels
 
+import android.content.Context
 import android.location.Location
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -149,7 +150,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     // {"status":"SUCCESS" , "statusCode":"200","message": "User Has Been Logout Successfully!"}
-    fun logout(navController: NavController) =
+    fun logout(navController: NavController,context: Context) =
         viewModelScope.launch {
             retrofitSetup.callApi(true, object : CallHandler<Response<RespCommon>> {
                 override suspend fun sendRequest(apiParams: ApiParams): Response<RespCommon> {
@@ -163,6 +164,7 @@ class ProfileViewModel @Inject constructor(
                         // Get the plain text response
                         if (response.body()?.statusCode == "200") {
                             AppSharedPref.clearSharedPref()
+//                             AppUtility.restartApp(context)
                             val bundle = Bundle().apply {
                                 putBoolean(IS_LOGOUT, true)
                             }
@@ -249,3 +251,4 @@ class ProfileViewModel @Inject constructor(
             })
         }
 }
+
