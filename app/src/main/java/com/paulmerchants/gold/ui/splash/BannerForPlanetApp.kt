@@ -161,9 +161,9 @@ class BannerForPlanetApp :
             Triple(binding.visitSite, getString(R.string.visit_site), "www.LTFINANCE.com"),
             Triple(binding.dwnldAppText, getString(R.string.dwld_planet_app), "Planet App by L&T Finance"),
             Triple(binding.webLnt, getString(R.string.visit_lnt), "www.LTFINANCE.com"),
-            Triple(binding.visitSiteHin, getString(R.string.visit_site), "www.LTFINANCE.com"),
-            Triple(binding.dwnldAppTextHin, getString(R.string.dwld_planet_app), "Planet App by L&T Finance"),
-            Triple(binding.webLntHin, getString(R.string.visit_lnt), "www.LTFINANCE.com")
+            Triple(binding.visitSiteHin, getString(R.string.visit_site_hin), "www.LTFINANCE.com"),
+            Triple(binding.dwnldAppTextHin, getString(R.string.dwld_planet_app_hin), "Planet App by L&T Finance"),
+            Triple(binding.webLntHin, getString(R.string.visit_lnt_hin), "www.LTFINANCE.com")
         )
 
         val urlMap = mapOf(
