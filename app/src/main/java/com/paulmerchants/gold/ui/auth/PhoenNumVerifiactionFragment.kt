@@ -23,6 +23,7 @@ import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.diffColorText
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
 import com.paulmerchants.gold.utility.AppUtility.openUrl
+import com.paulmerchants.gold.utility.AppUtility.safeShowDialog
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
 import com.paulmerchants.gold.utility.Constants.IS_LOGOUT
@@ -154,7 +155,9 @@ class PhoenNumVerifiactionFragment :
                     )
                 }
             } else {
-                noInternetDialog()
+                safeShowDialog({ noInternetDialog()}
+
+                )
             }
 
         }
@@ -303,7 +306,9 @@ class PhoenNumVerifiactionFragment :
                     }
                 }
             } else {
-                noInternetDialog()
+                safeShowDialog({ noInternetDialog()}
+
+                )
             }
         }
         binding.pleaseOtpTv.setOnClickListener {

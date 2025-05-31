@@ -48,7 +48,6 @@ import com.paulmerchants.gold.location.LocationProvider
 import com.paulmerchants.gold.security.SecureFiles
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
-import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants.GO_TO_HOME
 import com.paulmerchants.gold.utility.hide
@@ -200,7 +199,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         navOptionTop = NavOptions.Builder().setEnterAnim(R.anim.slide_in_bottom)
             .setExitAnim(R.anim.slide_out_bottom).setPopEnterAnim(R.anim.slide_in_left)
             .setPopExitAnim(R.anim.slide_out_right).build()
-        updateLocation()
+//        updateLocation()
         if (!isAutomaticDateTimeEnabled(this) && !isAutomaticTimeZoneEnabled(this)) {
             showDateTimeSettingsDialog()
         } else {
@@ -358,7 +357,8 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
                 Log.d(TAG, "onLost: ..................")
                 lifecycleScope.launch {
-                    noInternetDialog()
+                    Log.d(TAG, "onLost: No Network Connection")
+
                 }
             }
         }
@@ -548,7 +548,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
     override fun onStop() {
         super.onStop()
-        locationProvider.stopLocationUpdates()
+//        locationProvider.stopLocationUpdates()
     }
 
     private fun checkForAppUpdate() {
@@ -604,7 +604,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
         if (requestCode == LocationProvider.REQUEST_LOCATION_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted, start location updates
-                locationProvider.startLocationUpdates()
+//                locationProvider.startLocationUpdates()
             } else {
                 Log.e(TAG, "onRequestPermissionsResult: ............no permission....")
 //                locationProvider.startLocationUpdates()

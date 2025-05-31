@@ -18,6 +18,7 @@ import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.ui.MainActivity
 import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
+import com.paulmerchants.gold.utility.AppUtility.safeShowDialog
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants.CUST_MOBILE
 import com.paulmerchants.gold.utility.InternetUtils
@@ -91,7 +92,9 @@ class LoginScreenFrag :
                 )
 
             } else {
-                noInternetDialog()
+                safeShowDialog({ noInternetDialog()}
+
+                )
             }
 
         }
@@ -122,7 +125,9 @@ class LoginScreenFrag :
                     )
                 }
             } else {
-                noInternetDialog()
+                safeShowDialog({ noInternetDialog()}
+
+                )
             }
         }
         loginViewModel.getTokenResp.observe(viewLifecycleOwner) {

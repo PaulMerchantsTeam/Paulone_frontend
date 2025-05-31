@@ -24,15 +24,15 @@ android {
         applicationId "com.paulmerchants.gold"
         minSdk 23
         targetSdk 34
-        versionCode 18
-        versionName "1.0.18"
+        versionCode 21
+        versionName "1.0.21"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            debuggable true
+
             minifyEnabled true
             shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
