@@ -208,7 +208,7 @@ class GoldLoanScreenFrag :
 
     override fun onStart() {
         super.onStart()
-        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+//        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
         (activity as MainActivity).checkForDownFromRemoteConfig()
 
         if (goldScreenViewModel.isCalledGoldLoanScreen) {

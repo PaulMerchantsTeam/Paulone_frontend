@@ -78,7 +78,7 @@ class TransactionFrag : BaseFragment<AllTxnFragBinding>(AllTxnFragBinding::infla
 
         binding.chip2.performClick()
         getTxnHistory(11)
-        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+//        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
         binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
             val chip: Chip? = group.findViewById(checkedId)
             chip?.let { chipView ->

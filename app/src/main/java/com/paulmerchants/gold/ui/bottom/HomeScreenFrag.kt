@@ -351,7 +351,7 @@ class HomeScreenFrag :
     override fun onStart() {
         super.onStart()
         changeStatusBarWithReqdColor(requireActivity(), R.color.splash_screen_two)
-        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+//        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
         (activity as MainActivity).commonViewModel.getPendingInterestDues(
             AppSharedPref,
             (activity as MainActivity).mLocation
@@ -420,7 +420,7 @@ class HomeScreenFrag :
             if (InternetUtils.isNetworkAvailable(requireContext())) {
                 Log.d(com.paulmerchants.gold.ui.TAG, "onAvailable: ...........internet")
 
-                (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+//                (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
 
                 binding.swiperefresh.isRefreshing = false
 

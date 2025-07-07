@@ -134,7 +134,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onStart() {
         super.onStart()
-        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+//        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
         if (amountToPay != 0.0) {
             binding.amountPaidTv.text = "${getString(R.string.Rs)}$amountToPay"
         } else {
@@ -571,25 +571,25 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
         } else {
             Log.d(TAG, "createOrder: ....api_Calls")
 //            if (!BuildConfig.DEBUG) {
-            paymentViewModel.getUnderMaintenanceStatus(
-                reqCreateOrder = ReqCreateOrder(
-                    amount = amount,
-                    currency = "INR",
-                    custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
-                        .toString(),
-                    notes = Notes(
-                        "$notes custId=${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)}",
-                        "Loan Acc Number: $customerAcc"
-                    ),
-                    receipt = "${AppUtility.getCurrentDate()}_${BuildConfig.VERSION_NAME}",
-                    accNo = customerAcc.toString(),
-                    makerId = "12545as",
-                    submit = true,
-                    macId = Build.ID,
-                    valueDate = AppUtility.getCurrentDate()
-                ), mLocation
-//                , findNavController = findNavController()
-            )
+//            paymentViewModel.getUnderMaintenanceStatus(
+//                reqCreateOrder = ReqCreateOrder(
+//                    amount = amount,
+//                    currency = "INR",
+//                    custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
+//                        .toString(),
+//                    notes = Notes(
+//                        "$notes custId=${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)}",
+//                        "Loan Acc Number: $customerAcc"
+//                    ),
+//                    receipt = "${AppUtility.getCurrentDate()}_${BuildConfig.VERSION_NAME}",
+//                    accNo = customerAcc.toString(),
+//                    makerId = "12545as",
+//                    submit = true,
+//                    macId = Build.ID,
+//                    valueDate = AppUtility.getCurrentDate()
+//                ), mLocation
+////                , findNavController = findNavController()
+//            )
 //            }
         }
     }
@@ -1622,7 +1622,7 @@ class PaymentModesFragNew : BaseFragment<PaymentsModeNewBinding>(PaymentsModeNew
 
                 } else {
 //                    if(!BuildConfig.DEBUG) {
-                    (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+//                    (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
 //                    paymentViewModel.getUnderMaintenanceStatusCheck()
 //                    }
                 }

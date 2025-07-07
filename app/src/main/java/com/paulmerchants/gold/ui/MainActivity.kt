@@ -268,7 +268,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
 
 
             setUpNetworkCallbackFOrDueLoans()
-            commonViewModel.isUnderMainLiveData.observe(this) {
+     /*       commonViewModel.isUnderMainLiveData.observe(this) {
                 it?.let {
                     if (it.statusCode == "200" && it.data.down && it.data.id == 1) {
                         showUnderMainTainPage()
@@ -314,7 +314,7 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                     }
 
                 }
-            }
+            }*/
             if (!BuildConfig.DEBUG) {
                 if (AppUtility.isUsbDebuggingEnabled(this)) {
                     "Please turn off the debug mode".showSnackBar()
@@ -345,9 +345,9 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
                 // For example:
 //                if (!BuildConfig.DEBUG) {
                 Log.d(TAG, "onAvailable: ...........internet")
-                lifecycleScope.launch {
-                    commonViewModel.getUnderMaintenanceStatus()
-                }
+//                lifecycleScope.launch {
+//                    commonViewModel.getUnderMaintenanceStatus()
+//                }
 //                }
 
             }
@@ -487,53 +487,53 @@ class MainActivity : BaseActivity<CommonViewModel, ActivityMainBinding>() {
     override fun onResume() {
         super.onResume()
 
-        commonViewModel.isUnderMainLiveData.observe(this) {
-            it?.let {
-                if (it.statusCode == "200" && it.data.down && it.data.id == 1) {
-                    showUnderMainTainPage()
-                } else if (it.statusCode == "200" && it.data.down && it.data.id == 2) {
-                    it.data.endTime?.let { endTime ->
-                        showUnderMainTainTimerPage(
-                            endTime
-
-                        )
-                    }
-                    if (AppSharedPref.getBooleanValue(
-                            Constants.SIGNUP_DONE
-                        )
-                    ) {
-
-                        if (paymentId.isNullOrEmpty()) {
-                            navController.navigate(R.id.loginScreenFrag)
-                            navController.popBackStack(R.id.homeScreenFrag, true)
-                        } else {
-                            val bundleHomeLoan = Bundle().apply {
-                                putString(
-                                    com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
-                                    paymentId
-                                )
-                            }
-                            navController.navigate(R.id.paymentConfirmed, bundleHomeLoan)
-                        }
-
-                    } else {
-
-                        navController.popBackStack(R.id.homeScreenFrag, true)
-                    }
+//        commonViewModel.isUnderMainLiveData.observe(this) {
+//            it?.let {
+//                if (it.statusCode == "200" && it.data.down && it.data.id == 1) {
+//                    showUnderMainTainPage()
+//                } else if (it.statusCode == "200" && it.data.down && it.data.id == 2) {
+//                    it.data.endTime?.let { endTime ->
+//                        showUnderMainTainTimerPage(
+//                            endTime
+//
+//                        )
+//                    }
+//                    if (AppSharedPref.getBooleanValue(
+//                            Constants.SIGNUP_DONE
+//                        )
+//                    ) {
+//
+//                        if (paymentId.isNullOrEmpty()) {
+//                            navController.navigate(R.id.loginScreenFrag)
+//                            navController.popBackStack(R.id.homeScreenFrag, true)
+//                        } else {
+//                            val bundleHomeLoan = Bundle().apply {
+//                                putString(
+//                                    com.paulmerchants.gold.utility.Constants.PAYMENT_ID,
+//                                    paymentId
+//                                )
+//                            }
+//                            navController.navigate(R.id.paymentConfirmed, bundleHomeLoan)
+//                        }
+//
+//                    } else {
+//
+//                        navController.popBackStack(R.id.homeScreenFrag, true)
+//                    }
 
 
 //                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
 
-                } else if (!it.data.down) {
-                    binding.batteryMainNavGraph.show()
-                    binding.underMainTimerParent.root.hide()
-                    binding.underMainParent.root.hide()
+//                } else if (!it.data.down) {
+//                    binding.batteryMainNavGraph.show()
+//                    binding.underMainTimerParent.root.hide()
+//                    binding.underMainParent.root.hide()
+//
+//                }
 
-                }
-
-            }
-        }
+//            }
+//        }
 
         appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
             if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {

@@ -101,7 +101,7 @@ class ProfileFrag : BaseFragment<ProfileLayoutBinding>(ProfileLayoutBinding::inf
     override fun onStart() {
         super.onStart()
         binding.appVersion.text = "Paul One ${BuildConfig.VERSION_NAME}"
-        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
+//        (activity as MainActivity).commonViewModel.getUnderMaintenanceStatus()
         val backStack = findNavController().backQueue
 //        for (i in backStack) {
 //            showLogI("${i.id}..--------.${i.destination.displayName}")

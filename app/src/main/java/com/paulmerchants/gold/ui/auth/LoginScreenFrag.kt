@@ -64,7 +64,7 @@ class LoginScreenFrag :
 
         setupMpinEditTextFocus()
         (activity as? MainActivity)?.apply {
-           commonViewModel. getUnderMaintenanceStatus()
+//           commonViewModel. getUnderMaintenanceStatus()
             checkForDownFromRemoteConfig()
             commonViewModel.isRemoteConfigCheck.observe(viewLifecycleOwner) {
                 it?.let {

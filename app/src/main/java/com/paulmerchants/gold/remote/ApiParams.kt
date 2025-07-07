@@ -319,5 +319,4 @@ interface ApiParams {
         @Query("sortBy") sortBy: String,
         @Query("sortDir") sortDir: String,
     ): Response<RespCommon>
-
 }

@@ -313,7 +313,7 @@ class PhoenNumVerifiactionFragment :
             authViewModel.timer?.cancel()
             authViewModel.isCalledApi = true
             isMobileEntered = false
-            hideAndShowNumInputView()
+//            hideAndShowNumInputView()
         }
 
         binding.etPhoenNum.addTextChangedListener(object : TextWatcher {

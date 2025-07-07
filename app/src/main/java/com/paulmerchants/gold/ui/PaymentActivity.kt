@@ -160,7 +160,7 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
                     isDown = it
                 } else {
 //                    if(!BuildConfig.DEBUG) {
-                    paymentViewModel.getUnderMaintenanceStatusCheck()
+//                    paymentViewModel.getUnderMaintenanceStatusCheck()
 //                    }
                 }
             }
@@ -891,24 +891,24 @@ class PaymentActivity : BaseActivity<PaymentViewModel, PaymentsModeNewBinding>()
         } else {
             Log.d(TAG, "createOrder: ....api_Calls")
 //            if (!BuildConfig.DEBUG) {
-            paymentViewModel.getUnderMaintenanceStatus(
-                reqCreateOrder = ReqCreateOrder(
-                    amount = amount,
-                    currency = "INR",
-                    custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
-                        .toString(),
-                    notes = Notes(
-                        "$notes custId=${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)}",
-                        "Loan Acc Number: $customerAcc"
-                    ),
-                    receipt = "${AppUtility.getCurrentDate()}_${BuildConfig.VERSION_NAME}",
-                    accNo = customerAcc.toString(),
-                    makerId = "12545as",
-                    submit = true,
-                    macId = Build.ID,
-                    valueDate = AppUtility.getCurrentDate()
-                ), mLocation
-            )
+//            paymentViewModel.getUnderMaintenanceStatus(
+//                reqCreateOrder = ReqCreateOrder(
+//                    amount = amount,
+//                    currency = "INR",
+//                    custId = AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)
+//                        .toString(),
+//                    notes = Notes(
+//                        "$notes custId=${AppSharedPref.getStringValue(com.paulmerchants.gold.utility.Constants.CUSTOMER_ID)}",
+//                        "Loan Acc Number: $customerAcc"
+//                    ),
+//                    receipt = "${AppUtility.getCurrentDate()}_${BuildConfig.VERSION_NAME}",
+//                    accNo = customerAcc.toString(),
+//                    makerId = "12545as",
+//                    submit = true,
+//                    macId = Build.ID,
+//                    valueDate = AppUtility.getCurrentDate()
+//                ), mLocation
+//            )
 //            }
         }
     }
@@ -1425,7 +1425,7 @@ private fun sessionExpiredMsg() {
             override fun onFinish() {
                 // Reset or refresh your UI, or restart the countdown for the next day if needed
                 binding.underMainTimerParent.timerTextView.text = "00:00"
-                paymentViewModel.getUnderMaintenanceStatusCheck()
+//                paymentViewModel.getUnderMaintenanceStatusCheck()
 
 //                navController.clearBackStack(R.id.splashFragment)
 
