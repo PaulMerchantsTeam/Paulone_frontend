@@ -24,6 +24,7 @@ import com.paulmerchants.gold.databinding.SplashFragmentBinding
 import com.paulmerchants.gold.security.sharedpref.AppSharedPref
 import com.paulmerchants.gold.utility.AppUtility
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
+import com.paulmerchants.gold.utility.AppUtility.safeShowDialog
 import com.paulmerchants.gold.utility.InternetUtils
 import com.paulmerchants.gold.utility.hideViewGrp
 import com.paulmerchants.gold.utility.show
@@ -110,7 +111,9 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
         setUpNetworkCallback()
         if (!InternetUtils.isNetworkAvailable(requireContext())) {
             lifecycleScope.launch {
-                noInternetDialog()
+                safeShowDialog({ noInternetDialog()}
+
+                )
             }
         }
     }
@@ -276,7 +279,9 @@ class SplashFragment : BaseFragment<SplashFragmentBinding>(SplashFragmentBinding
                 // showNoInternetMessage()
                 Log.d(TAG, "onLost: ..................")
                 lifecycleScope.launch {
-                    noInternetDialog()
+                    safeShowDialog({ noInternetDialog()}
+
+                    )
                 }
             }
         }

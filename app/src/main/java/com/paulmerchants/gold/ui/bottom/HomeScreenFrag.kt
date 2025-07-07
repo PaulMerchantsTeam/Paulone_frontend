@@ -32,6 +32,7 @@ import com.paulmerchants.gold.utility.AppUtility.changeStatusBarWithReqdColor
 import com.paulmerchants.gold.utility.AppUtility.getTwoDigitAfterDecimal
 import com.paulmerchants.gold.utility.AppUtility.hideShim
 import com.paulmerchants.gold.utility.AppUtility.noInternetDialog
+import com.paulmerchants.gold.utility.AppUtility.safeShowDialog
 import com.paulmerchants.gold.utility.AppUtility.showShimmer
 import com.paulmerchants.gold.utility.AppUtility.showSnackBar
 import com.paulmerchants.gold.utility.Constants
@@ -426,7 +427,10 @@ class HomeScreenFrag :
 
             }   else {
                 lifecycleScope.launch {
-                    noInternetDialog()
+                    safeShowDialog({ noInternetDialog()}
+
+                    )
+
                 }
                 binding.swiperefresh.isRefreshing = false
             }
@@ -454,7 +458,9 @@ class HomeScreenFrag :
                 // showNoInternetMessage()
                 Log.d(TAG, "onLost: ..................")
                 lifecycleScope.launch {
-                    noInternetDialog()
+                    safeShowDialog({ noInternetDialog()}
+
+                    )
                 }
             }
         }
@@ -521,7 +527,9 @@ class HomeScreenFrag :
                 R.id.quickPayDialog, bundle
             )
         } else {
-            noInternetDialog()
+            safeShowDialog({ noInternetDialog()}
+
+            )
         }
 
     }
@@ -589,7 +597,9 @@ class HomeScreenFrag :
                     R.id.profileFrag
                 )
             } else {
-                noInternetDialog()
+                safeShowDialog({ noInternetDialog()}
+
+                )
             }
 
         }
@@ -597,7 +607,9 @@ class HomeScreenFrag :
             if (InternetUtils.isNetworkAvailable(requireContext())) {
                 findNavController().navigate(R.id.transactionFrag)
             } else {
-                noInternetDialog()
+                safeShowDialog({ noInternetDialog()}
+
+                )
             }
 
         }

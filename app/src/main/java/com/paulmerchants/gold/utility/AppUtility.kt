@@ -205,6 +205,15 @@ object AppUtility {
         }
     }
 
+    fun Fragment.safeShowDialog(action:Fragment.()-> Unit){
+        if(isAdded && context!=null){
+            action()
+        }
+        else{
+            Log.w("FragmentUtils", "Fragment not attached- dialog skipped", )
+        }
+    }
+
     fun Activity.noInternetDialog() {
         val dialogBinding =
             NoInternetDgBinding.inflate(layoutInflater)
